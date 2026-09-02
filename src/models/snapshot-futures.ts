@@ -1,0 +1,14 @@
+import { s, type Schema } from "../core/index.js";
+import { snapshotVo2Schema, type SnapshotVo2 } from "./snapshot-vo2.js";
+
+export type SnapshotFutures = {
+  code: number;
+  msg: string;
+  snapshotVos: SnapshotVo2[];
+};
+
+export const snapshotFuturesSchema: Schema<SnapshotFutures> = s.object<SnapshotFutures>({
+  code: s.number(),
+  msg: s.string(),
+  snapshotVos: s.array(s.lazy(() => snapshotVo2Schema)),
+});

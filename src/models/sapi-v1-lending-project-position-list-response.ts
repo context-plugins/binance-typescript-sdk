@@ -1,0 +1,42 @@
+import { s, type Schema } from "../core/index.js";
+
+export type SapiV1LendingProjectPositionListResponse = {
+  asset: string;
+  canTransfer: boolean;
+  createTimestamp: number;
+  duration: number;
+  endTime: number;
+  interest: string;
+  interestRate: string;
+  lot: number;
+  positionId: number;
+  principal: string;
+  projectId: string;
+  projectName: string;
+  purchaseTime: number;
+  redeemDate: string;
+  startTime: number;
+  status: string;
+  type: string;
+};
+
+export const sapiV1LendingProjectPositionListResponseSchema: Schema<SapiV1LendingProjectPositionListResponse> =
+  s.object<SapiV1LendingProjectPositionListResponse>({
+    asset: s.string(),
+    canTransfer: s.boolean(),
+    createTimestamp: s.number(),
+    duration: s.number(),
+    endTime: s.number(),
+    interest: s.string(),
+    interestRate: s.string(),
+    lot: s.number(),
+    positionId: s.number(),
+    principal: s.string(),
+    projectId: s.string(),
+    projectName: s.string(),
+    purchaseTime: s.number(),
+    redeemDate: s.dateOnly(),
+    startTime: s.number(),
+    status: s.string(),
+    type: s.string(),
+  });

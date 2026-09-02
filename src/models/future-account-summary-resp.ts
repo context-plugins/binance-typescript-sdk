@@ -1,0 +1,27 @@
+import { s, type Schema } from "../core/index.js";
+import { subAccountListSchema, type SubAccountList } from "./sub-account-list.js";
+
+export type FutureAccountSummaryResp = {
+  totalInitialMargin: string;
+  totalMaintenanceMargin: string;
+  totalMarginBalance: string;
+  totalOpenOrderInitialMargin: string;
+  totalPositionInitialMargin: string;
+  totalUnrealizedProfit: string;
+  totalWalletBalance: string;
+  asset: string;
+  subAccountList: SubAccountList[];
+};
+
+export const futureAccountSummaryRespSchema: Schema<FutureAccountSummaryResp> =
+  s.object<FutureAccountSummaryResp>({
+    totalInitialMargin: s.string(),
+    totalMaintenanceMargin: s.string(),
+    totalMarginBalance: s.string(),
+    totalOpenOrderInitialMargin: s.string(),
+    totalPositionInitialMargin: s.string(),
+    totalUnrealizedProfit: s.string(),
+    totalWalletBalance: s.string(),
+    asset: s.string(),
+    subAccountList: s.array(s.lazy(() => subAccountListSchema)),
+  });

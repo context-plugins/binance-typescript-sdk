@@ -1,0 +1,30 @@
+import { s, type Schema } from "../core/index.js";
+import { orderReport6Schema, type OrderReport6 } from "./order-report6.js";
+import { order1Schema, type Order1 } from "./order1.js";
+
+export type SapiV1MarginOrderOtoResponse = {
+  orderListId: number;
+  contingencyType: string;
+  listStatusType: string;
+  listOrderStatus: string;
+  listClientOrderId: string;
+  transactionTime: number;
+  symbol: string;
+  isIsolated: boolean;
+  orders: Order1[];
+  orderReports: OrderReport6[];
+};
+
+export const sapiV1MarginOrderOtoResponseSchema: Schema<SapiV1MarginOrderOtoResponse> =
+  s.object<SapiV1MarginOrderOtoResponse>({
+    orderListId: s.number(),
+    contingencyType: s.string(),
+    listStatusType: s.string(),
+    listOrderStatus: s.string(),
+    listClientOrderId: s.string(),
+    transactionTime: s.number(),
+    symbol: s.string(),
+    isIsolated: s.boolean(),
+    orders: s.array(s.lazy(() => order1Schema)),
+    orderReports: s.array(s.lazy(() => orderReport6Schema)),
+  });

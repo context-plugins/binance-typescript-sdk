@@ -1,0 +1,16 @@
+import { s, type Schema } from "../core/index.js";
+import { data24Schema, type Data24 } from "./data24.js";
+
+export type Data23 = {
+  page: number;
+  totalRecords: number;
+  totalPageNum: number;
+  data: Data24[];
+};
+
+export const data23Schema: Schema<Data23> = s.object<Data23>({
+  page: s.number(),
+  totalRecords: s.number(),
+  totalPageNum: s.number(),
+  data: s.array(s.lazy(() => data24Schema)),
+});

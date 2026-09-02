@@ -1,0 +1,15 @@
+import { s, type Schema } from "../core/index.js";
+import { snapshotVo4Schema, type SnapshotVo4 } from "./snapshot-vo4.js";
+
+export type SapiV1ManagedSubaccountFetchFutureAssetResponse = {
+  code: number;
+  message: string;
+  snapshotVos: SnapshotVo4[];
+};
+
+export const sapiV1ManagedSubaccountFetchFutureAssetResponseSchema: Schema<SapiV1ManagedSubaccountFetchFutureAssetResponse> =
+  s.object<SapiV1ManagedSubaccountFetchFutureAssetResponse>({
+    code: s.number(),
+    message: s.string(),
+    snapshotVos: s.array(s.lazy(() => snapshotVo4Schema)),
+  });

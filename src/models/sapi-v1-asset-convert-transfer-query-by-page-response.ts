@@ -1,4 +1,5 @@
-import { s, type Schema } from "../core/index.js";
+import * as s from "../core/validation/index.js";
+import type { Schema } from "../core/validation/schema.js";
 import { row8Schema, type Row8 } from "./row8.js";
 
 export type SapiV1AssetConvertTransferQueryByPageResponse = {

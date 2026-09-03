@@ -1,4 +1,5 @@
-import { s, type Schema } from "../core/index.js";
+import * as s from "../core/validation/index.js";
+import type { Schema } from "../core/validation/schema.js";
 import { row1Schema, type Row1 } from "./row1.js";
 
 export type SapiV1MarginBorrowRepayResponse1 = {

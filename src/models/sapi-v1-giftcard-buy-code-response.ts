@@ -1,4 +1,5 @@
-import { s, type Schema } from "../core/index.js";
+import * as s from "../core/validation/index.js";
+import type { Schema } from "../core/validation/schema.js";
 import { data25Schema, type Data25 } from "./data25.js";
 
 export type SapiV1GiftcardBuyCodeResponse = {

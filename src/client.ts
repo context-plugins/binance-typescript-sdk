@@ -1,6 +1,6 @@
 import { buildAuthSchemes, type AuthSchemes } from "./auth-schemes.js";
 import { DEFAULT_CLIENT_OPTIONS, type ClientOptions } from "./client-options.js";
-import { RawClient } from "./core/index.js";
+import { RawClient } from "./core/raw-client.js";
 import { AutoInvest } from "./resources/auto-invest.js";
 import { Blvt } from "./resources/blvt.js";
 import { C2C } from "./resources/c2-c.js";

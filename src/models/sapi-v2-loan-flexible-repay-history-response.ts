@@ -1,4 +1,5 @@
-import { s, type Schema } from "../core/index.js";
+import * as s from "../core/validation/index.js";
+import type { Schema } from "../core/validation/schema.js";
 import { row27Schema, type Row27 } from "./row27.js";
 
 export type SapiV2LoanFlexibleRepayHistoryResponse = {

@@ -1,4 +1,5 @@
-import { s, type Schema } from "../core/index.js";
+import * as s from "../core/validation/index.js";
+import type { Schema } from "../core/validation/schema.js";
 import { plan1Schema, type Plan1 } from "./plan1.js";
 
 export type SapiV1LendingAutoInvestPlanIdResponse = {

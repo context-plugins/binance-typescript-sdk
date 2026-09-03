@@ -1,4 +1,5 @@
-import { s, type Schema } from "../core/index.js";
+import * as s from "../core/validation/index.js";
+import type { Schema } from "../core/validation/schema.js";
 import { orderReport6Schema, type OrderReport6 } from "./order-report6.js";
 import { order1Schema, type Order1 } from "./order1.js";
 

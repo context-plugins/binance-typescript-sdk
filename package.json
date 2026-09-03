@@ -34,6 +34,8 @@
   "files": [
     "dist",
     "src",
+    "tsconfig.json",
+    "tsconfig.tshy.json",
     "README.md",
     "api-reference.md",
     "sdk-map.md",
@@ -44,6 +46,7 @@
     "node": ">=20"
   },
   "scripts": {
+    "prepare": "tshy",
     "build": "tshy",
     "smoke": "node -e \"require('binance-public-spot-api')\" && node --input-type=module -e \"import('binance-public-spot-api')\"",
     "typecheck": "tsc --noEmit",

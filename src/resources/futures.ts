@@ -1,6 +1,9 @@
 import type { AuthSchemes } from "../auth-schemes.js";
-import type { ApiPromise, Declared, ErrorDecoders, RawClient, RequestOptions } from "../core/index.js";
-import { ResponseError, s } from "../core/index.js";
+import type { ApiPromise } from "../core/api-promise.js";
+import type { RequestOptions } from "../core/api-request.js";
+import type { RawClient } from "../core/raw-client.js";
+import { ResponseError, type Declared, type ErrorDecoders } from "../core/response-error.js";
+import * as s from "../core/validation/index.js";
 import { dataTypeSchema, type DataType } from "../models/data-type.js";
 import { errorSchema, type Error } from "../models/error.js";
 import {

@@ -1,4 +1,5 @@
-import { s, type Schema } from "../../core/index.js";
+import * as s from "../../core/validation/index.js";
+import type { Schema } from "../../core/validation/schema.js";
 import { orderResponseAckSchema, type OrderResponseAck } from "../order-response-ack.js";
 import { orderResponseFullSchema, type OrderResponseFull } from "../order-response-full.js";
 import { orderResponseResultSchema, type OrderResponseResult } from "../order-response-result.js";

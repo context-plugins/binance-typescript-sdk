@@ -1,4 +1,5 @@
-import { s, type Schema } from "../../core/index.js";
+import * as s from "../../core/validation/index.js";
+import type { Schema } from "../../core/validation/schema.js";
 import { snapshotFuturesSchema, type SnapshotFutures } from "../snapshot-futures.js";
 import { snapshotMarginSchema, type SnapshotMargin } from "../snapshot-margin.js";
 import { snapshotSpotSchema, type SnapshotSpot } from "../snapshot-spot.js";

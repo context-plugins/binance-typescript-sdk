@@ -12,6 +12,6 @@ export type SapiV1ManagedSubaccountInfoResponse = {
 
 export const sapiV1ManagedSubaccountInfoResponseSchema: Schema<SapiV1ManagedSubaccountInfoResponse> =
   s.object<SapiV1ManagedSubaccountInfoResponse>({
-    total: s.number(),
+    total: s.int(),
     managerSubUserInfoVoList: s.array(s.lazy(() => managerSubUserInfoVoListSchema)),
   });

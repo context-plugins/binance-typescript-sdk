@@ -17,12 +17,12 @@ export type MarginOcoOrder = {
 };
 
 export const marginOcoOrderSchema: Schema<MarginOcoOrder> = s.object<MarginOcoOrder>({
-  orderListId: s.number(),
+  orderListId: s.int(),
   contingencyType: s.string(),
   listStatusType: s.string(),
   listOrderStatus: s.string(),
   listClientOrderId: s.string(),
-  transactionTime: s.number(),
+  transactionTime: s.int(),
   symbol: s.string(),
   isIsolated: s.boolean(),
   orders: s.array(s.lazy(() => order1Schema)),

@@ -9,7 +9,7 @@ export type SapiV1LendingPositionChangedResponse = {
 
 export const sapiV1LendingPositionChangedResponseSchema: Schema<SapiV1LendingPositionChangedResponse> =
   s.object<SapiV1LendingPositionChangedResponse>({
-    dailyPurchaseId: s.number(),
+    dailyPurchaseId: s.int(),
     success: s.boolean(),
-    time: s.number(),
+    time: s.int(),
   });

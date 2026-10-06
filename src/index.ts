@@ -1,10 +1,9 @@
-export { BinancePublicSpotApiClient } from "./client.js";
-export { DEFAULT_CLIENT_OPTIONS, type ClientOptions } from "./client-options.js";
+export { BinanceClient } from "./client.js";
+export type { ClientOptions } from "./client-options.js";
 
 export type { TokenProvider } from "./core/auth/credentials.js";
 
-export { ServerEnvironment, DEFAULT_SERVER_OPTIONS } from "./servers.js";
-export type { ServerOptions, DefaultServerOptions } from "./servers.js";
+export { ServerEnvironment } from "./servers.js";
 
 export { Market } from "./resources/market.js";
 export { TradeApi } from "./resources/trade-api.js";
@@ -1630,17 +1629,21 @@ export { WorkingTimeInForce, workingTimeInForceSchema } from "./models/working-t
 export { WorkingType, workingTypeSchema } from "./models/working-type.js";
 
 export {
-  CoreError as BinancePublicSpotApiError,
+  CoreError as BinanceError,
+  ResponseError,
+  DecodeError,
+  EncodeError,
   ConnectionError,
   TimeoutError,
-  AbortError,
-  SdkError,
   AuthError,
+  ConfigurationError,
 } from "./core/errors.js";
-export { ResponseError } from "./core/response-error.js";
+export { ApiError } from "./core/api-error.js";
 export { SchemaError } from "./core/validation/schema-error.js";
 export type { ApiPromise, ApiResult } from "./core/api-promise.js";
-export type { RequestOptions } from "./core/api-request.js";
+export type { HttpMethod, RequestOptions } from "./core/api-request.js";
+export type { RetryOptions, RequestRetryOptions, RetryAttempt, RetryReason } from "./core/retry.js";
+export type { BinaryContent, BinaryData, BinaryErrorContent, FileData, FileInput } from "./core/binary.js";
 export type { ErrorKind } from "./core/errors.js";
-export type { ErrorPayload, Declared } from "./core/response-error.js";
+export type { ErrorPayload, Declared, Undeclared } from "./core/api-error.js";
 export type { Schema, EnumSchema, Encoded } from "./core/validation/schema.js";

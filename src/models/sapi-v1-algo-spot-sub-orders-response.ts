@@ -11,7 +11,7 @@ export type SapiV1AlgoSpotSubOrdersResponse = {
 
 export const sapiV1AlgoSpotSubOrdersResponseSchema: Schema<SapiV1AlgoSpotSubOrdersResponse> =
   s.object<SapiV1AlgoSpotSubOrdersResponse>({
-    total: s.number(),
+    total: s.int(),
     executedQty: s.string(),
     executedAmt: s.string(),
     subOrders: s.array(s.lazy(() => subOrder1Schema)),

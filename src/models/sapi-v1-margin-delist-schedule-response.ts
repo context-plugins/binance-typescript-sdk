@@ -9,7 +9,7 @@ export type SapiV1MarginDelistScheduleResponse = {
 
 export const sapiV1MarginDelistScheduleResponseSchema: Schema<SapiV1MarginDelistScheduleResponse> =
   s.object<SapiV1MarginDelistScheduleResponse>({
-    delistTime: s.optional(s.number()),
+    delistTime: s.optional(s.int()),
     crossMarginAssets: s.optional(s.array(s.string())),
     isolatedMarginSymbols: s.optional(s.array(s.string())),
   });

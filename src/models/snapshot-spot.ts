@@ -9,7 +9,7 @@ export type SnapshotSpot = {
 };
 
 export const snapshotSpotSchema: Schema<SnapshotSpot> = s.object<SnapshotSpot>({
-  code: s.number(),
+  code: s.int(),
   msg: s.string(),
   snapshotVos: s.array(s.lazy(() => snapshotVoSchema)),
 });

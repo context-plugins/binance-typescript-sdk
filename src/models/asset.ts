@@ -8,8 +8,10 @@ export type Asset = {
   quoteAsset: QuoteAsset;
   symbol: string;
   isolatedCreated: boolean;
+  /** true-enabled, false-disabled */
   enabled: boolean;
   marginLevel: string;
+  /** "EXCESSIVE", "NORMAL", "MARGIN_CALL", "PRE_LIQUIDATION", "FORCE_LIQUIDATION" */
   marginLevelStatus: string;
   marginRatio: string;
   indexPrice: string;

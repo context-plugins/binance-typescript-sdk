@@ -16,12 +16,12 @@ export type ApiV3AllOrderListResponse = {
 
 export const apiV3AllOrderListResponseSchema: Schema<ApiV3AllOrderListResponse> =
   s.object<ApiV3AllOrderListResponse>({
-    orderListId: s.number(),
+    orderListId: s.int(),
     contingencyType: s.string(),
     listStatusType: s.string(),
     listOrderStatus: s.string(),
     listClientOrderId: s.string(),
-    transactionTime: s.number(),
+    transactionTime: s.int(),
     symbol: s.string(),
     isIsolated: s.boolean(),
     orders: s.array(s.lazy(() => order1Schema)),

@@ -15,6 +15,6 @@ export const sapiV1FiatPaymentsResponseSchema: Schema<SapiV1FiatPaymentsResponse
     code: s.string(),
     message: s.string(),
     data: s.array(s.lazy(() => data8Schema)),
-    total: s.number(),
+    total: s.int(),
     success: s.boolean(),
   });

@@ -9,7 +9,7 @@ export type SapiV1SimpleEarnLockedSubscribeResponse = {
 
 export const sapiV1SimpleEarnLockedSubscribeResponseSchema: Schema<SapiV1SimpleEarnLockedSubscribeResponse> =
   s.object<SapiV1SimpleEarnLockedSubscribeResponse>({
-    purchaseId: s.number(),
+    purchaseId: s.int(),
     positionId: s.string(),
     success: s.boolean(),
   });

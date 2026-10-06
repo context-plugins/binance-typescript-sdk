@@ -9,6 +9,6 @@ export type Assets2 = {
 
 export const assets2Schema: Schema<Assets2> = s.object<Assets2>({
   asset: s.string(),
-  marginBalance: s.number(),
-  walletBalance: s.number(),
+  marginBalance: s.float64(),
+  walletBalance: s.float64(),
 });

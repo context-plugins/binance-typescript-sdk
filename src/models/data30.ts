@@ -8,5 +8,5 @@ export type Data30 = {
 
 export const data30Schema: Schema<Data30> = s.object<Data30>({
   isLeadTrader: s.boolean(),
-  time: s.number(),
+  time: s.int(),
 });

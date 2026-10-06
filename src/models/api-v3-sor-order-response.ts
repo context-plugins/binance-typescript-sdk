@@ -25,10 +25,10 @@ export type ApiV3SorOrderResponse = {
 
 export const apiV3SorOrderResponseSchema: Schema<ApiV3SorOrderResponse> = s.object<ApiV3SorOrderResponse>({
   symbol: s.string(),
-  orderId: s.number(),
-  orderListId: s.number(),
+  orderId: s.int(),
+  orderListId: s.int(),
   clientOrderId: s.string(),
-  transactTime: s.number(),
+  transactTime: s.int(),
   price: s.string(),
   origQty: s.string(),
   executedQty: s.string(),
@@ -37,7 +37,7 @@ export const apiV3SorOrderResponseSchema: Schema<ApiV3SorOrderResponse> = s.obje
   timeInForce: s.string(),
   type: s.string(),
   side: s.string(),
-  workingTime: s.number(),
+  workingTime: s.int(),
   fills: s.array(s.lazy(() => fill2Schema)),
   workingFloor: s.string(),
   selfTradePreventionMode: s.string(),

@@ -10,6 +10,6 @@ export type Data16 = {
 
 export const data16Schema: Schema<Data16> = s.object<Data16>({
   profitTransferDetails: s.array(s.lazy(() => profitTransferDetailSchema)),
-  totalNum: s.number(),
-  pageSize: s.number(),
+  totalNum: s.int(),
+  pageSize: s.int(),
 });

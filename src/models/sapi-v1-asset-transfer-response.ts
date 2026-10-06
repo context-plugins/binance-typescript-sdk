@@ -9,6 +9,6 @@ export type SapiV1AssetTransferResponse = {
 
 export const sapiV1AssetTransferResponseSchema: Schema<SapiV1AssetTransferResponse> =
   s.object<SapiV1AssetTransferResponse>({
-    total: s.number(),
+    total: s.int(),
     rows: s.array(s.lazy(() => row7Schema)),
   });

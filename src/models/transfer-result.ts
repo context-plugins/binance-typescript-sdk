@@ -13,8 +13,8 @@ export type TransferResult = {
 export const transferResultSchema: Schema<TransferResult> = s.object<TransferResult>({
   amount: s.string(),
   fromAsset: s.string(),
-  operateTime: s.number(),
+  operateTime: s.int(),
   serviceChargeAmount: s.string(),
-  tranId: s.number(),
+  tranId: s.int(),
   transferedAmount: s.string(),
 });

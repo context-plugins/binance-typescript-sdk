@@ -11,9 +11,9 @@ export type Row9 = {
 };
 
 export const row9Schema: Schema<Row9> = s.object<Row9>({
-  createTime: s.number(),
-  tranId: s.number(),
-  type: s.number(),
+  createTime: s.int(),
+  tranId: s.int(),
+  type: s.int(),
   asset: s.string(),
   amount: s.string(),
   status: s.string(),

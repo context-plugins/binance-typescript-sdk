@@ -19,8 +19,8 @@ export const row21Schema: Schema<Row21> = s.object<Row21>({
   amount: s.string(),
   preLtv: s.string(),
   afterLtv: s.string(),
-  adjustTime: s.number(),
-  orderId: s.number(),
+  adjustTime: s.int(),
+  orderId: s.int(),
   _keysMap: {
     preLtv: "preLTV",
     afterLtv: "afterLTV",

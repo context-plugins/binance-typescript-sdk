@@ -3,6 +3,7 @@ import type { Schema } from "../core/validation/schema.js";
 
 export type SapiV1DciProductAutoCompoundEditStatusResponse = {
   positionId: string;
+  /** NONE, STANDARD, ADVANCED */
   autoCompoundPlan: string;
 };
 

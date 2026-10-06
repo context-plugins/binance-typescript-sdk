@@ -8,7 +8,7 @@ export type ApiV3DepthResponse = {
 };
 
 export const apiV3DepthResponseSchema: Schema<ApiV3DepthResponse> = s.object<ApiV3DepthResponse>({
-  lastUpdateId: s.number(),
+  lastUpdateId: s.int(),
   bids: s.array(s.array(s.string())),
   asks: s.array(s.array(s.string())),
 });

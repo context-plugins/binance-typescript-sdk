@@ -7,6 +7,7 @@ export type SapiV1DciProductSubscribeResponse = {
   exercisedCoin: string;
   subscriptionAmount: string;
   duration: number;
+  /** STANDARD, ADVANCED, this field won't display when autocompound is set to None */
   autoCompoundPlan: string;
   strikePrice: string;
   settleDate: number;
@@ -19,20 +20,20 @@ export type SapiV1DciProductSubscribeResponse = {
 
 export const sapiV1DciProductSubscribeResponseSchema: Schema<SapiV1DciProductSubscribeResponse> =
   s.object<SapiV1DciProductSubscribeResponse>({
-    positionId: s.number(),
+    positionId: s.int(),
     investCoin: s.string(),
     exercisedCoin: s.string(),
     subscriptionAmount: s.string(),
-    duration: s.number(),
+    duration: s.int(),
     autoCompoundPlan: s.string(),
     strikePrice: s.string(),
-    settleDate: s.number(),
+    settleDate: s.int(),
     purchaseStatus: s.string(),
     apr: s.string(),
-    orderId: s.number(),
-    purchaseTime: s.number(),
+    orderId: s.int(),
+    purchaseTime: s.int(),
     optionType: s.optional(s.string()),
     _keysMap: {
-      optionType: "optionType\"",
+      optionType: 'optionType"',
     },
   });

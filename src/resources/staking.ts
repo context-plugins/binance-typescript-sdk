@@ -1,8 +1,9 @@
 import type { AuthSchemes } from "../auth-schemes.js";
+import { ApiError, type Declared, type ErrorDecoders, type ErrorPayload } from "../core/api-error.js";
 import type { ApiPromise } from "../core/api-promise.js";
 import type { RequestOptions } from "../core/api-request.js";
 import type { RawClient } from "../core/raw-client.js";
-import { ResponseError, type Declared, type ErrorDecoders } from "../core/response-error.js";
+import { uuid } from "../core/uuid.js";
 import * as s from "../core/validation/index.js";
 import { errorSchema, type Error } from "../models/error.js";
 import {
@@ -66,6 +67,21 @@ export class Staking {
     this.#auth = auth;
   }
 
+  /**
+   * ETH Staking account V2(USER_DATA)
+   *
+   * @remarks
+   * Weight(IP): 150
+   *
+   * @returns ETH Staking account
+   *
+   * @throws {@link Staking.EthStakingAccountV2UserDataError} when the API answers with an error
+   * status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   ethStakingAccountV2UserData(
     request: Staking.EthStakingAccountV2UserDataRequest,
     options?: RequestOptions,
@@ -73,13 +89,15 @@ export class Staking {
     return this.#rawClient.execute(
       {
         method: "GET",
-        url: this.#servers.default("/sapi/v2/eth-staking/account"),
+        urlTemplate: this.#servers.default("/sapi/v2/eth-staking/account"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [],
         body: { kind: "empty" },
       },
       {
@@ -90,6 +108,28 @@ export class Staking {
     );
   }
 
+  /**
+   * Get BETH rewards distribution history(USER_DATA)
+   *
+   * @remarks
+   * - The time between startTime and endTime cannot be longer than 3 months.
+   * - If startTime and endTime are both not sent, then the last 30 days' data will be returned.
+   * - If startTime is sent but endTime is not sent, the next 30 days' data beginning from startTime
+   *   will be returned.
+   * - If endTime is sent but startTime is not sent, the 30 days' data before endTime will be
+   *   returned.
+   *
+   * Weight(IP): 150
+   *
+   * @returns BETH rewards distribution history
+   *
+   * @throws {@link Staking.GetBethRewardsDistributionHistoryUserDataError} when the API answers
+   * with an error status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   getBethRewardsDistributionHistoryUserData(
     request: Staking.GetBethRewardsDistributionHistoryUserDataRequest,
     options?: RequestOptions,
@@ -100,17 +140,19 @@ export class Staking {
     return this.#rawClient.execute(
       {
         method: "GET",
-        url: this.#servers.default("/sapi/v1/eth-staking/eth/history/rewardsHistory"),
+        urlTemplate: this.#servers.default("/sapi/v1/eth-staking/eth/history/rewardsHistory"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
-          { name: "startTime", value: request.startTime, schema: s.optional(s.number()) },
-          { name: "endTime", value: request.endTime, schema: s.optional(s.number()) },
-          { name: "current", value: request.current, schema: s.optional(s.number()) },
-          { name: "size", value: request.size, schema: s.optional(s.number()) },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "startTime", value: request.startTime, schema: s.optional(s.int()) },
+          { name: "endTime", value: request.endTime, schema: s.optional(s.int()) },
+          { name: "current", value: request.current, schema: s.optional(s.int()) },
+          { name: "size", value: request.size, schema: s.optional(s.int()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [],
         body: { kind: "empty" },
       },
       {
@@ -121,6 +163,28 @@ export class Staking {
     );
   }
 
+  /**
+   * Get ETH redemption history (USER_DATA)
+   *
+   * @remarks
+   * - The time between startTime and endTime cannot be longer than 3 months.
+   * - If startTime and endTime are both not sent, then the last 30 days' data will be returned.
+   * - If startTime is sent but endTime is not sent, the next 30 days' data beginning from startTime
+   *   will be returned.
+   * - If endTime is sent but startTime is not sent, the 30 days' data before endTime will be
+   *   returned.
+   *
+   * Weight(IP): 150
+   *
+   * @returns ETH redemption history
+   *
+   * @throws {@link Staking.GetEthRedemptionHistoryUserDataError} when the API answers with an error
+   * status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   getEthRedemptionHistoryUserData(
     request: Staking.GetEthRedemptionHistoryUserDataRequest,
     options?: RequestOptions,
@@ -131,17 +195,19 @@ export class Staking {
     return this.#rawClient.execute(
       {
         method: "GET",
-        url: this.#servers.default("/sapi/v1/eth-staking/eth/history/redemptionHistory"),
+        urlTemplate: this.#servers.default("/sapi/v1/eth-staking/eth/history/redemptionHistory"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
-          { name: "startTime", value: request.startTime, schema: s.optional(s.number()) },
-          { name: "endTime", value: request.endTime, schema: s.optional(s.number()) },
-          { name: "current", value: request.current, schema: s.optional(s.number()) },
-          { name: "size", value: request.size, schema: s.optional(s.number()) },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "startTime", value: request.startTime, schema: s.optional(s.int()) },
+          { name: "endTime", value: request.endTime, schema: s.optional(s.int()) },
+          { name: "current", value: request.current, schema: s.optional(s.int()) },
+          { name: "size", value: request.size, schema: s.optional(s.int()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [],
         body: { kind: "empty" },
       },
       {
@@ -152,6 +218,28 @@ export class Staking {
     );
   }
 
+  /**
+   * Get ETH staking history (USER_DATA)
+   *
+   * @remarks
+   * - The time between startTime and endTime cannot be longer than 3 months.
+   * - If startTime and endTime are both not sent, then the last 30 days' data will be returned.
+   * - If startTime is sent but endTime is not sent, the next 30 days' data beginning from startTime
+   *   will be returned.
+   * - If endTime is sent but startTime is not sent, the 30 days' data before endTime will be
+   *   returned.
+   *
+   * Weight(IP): 150
+   *
+   * @returns ETH staking history
+   *
+   * @throws {@link Staking.GetEthStakingHistoryUserDataError} when the API answers with an error
+   * status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   getEthStakingHistoryUserData(
     request: Staking.GetEthStakingHistoryUserDataRequest,
     options?: RequestOptions,
@@ -159,17 +247,19 @@ export class Staking {
     return this.#rawClient.execute(
       {
         method: "GET",
-        url: this.#servers.default("/sapi/v1/eth-staking/eth/history/stakingHistory"),
+        urlTemplate: this.#servers.default("/sapi/v1/eth-staking/eth/history/stakingHistory"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
-          { name: "startTime", value: request.startTime, schema: s.optional(s.number()) },
-          { name: "endTime", value: request.endTime, schema: s.optional(s.number()) },
-          { name: "current", value: request.current, schema: s.optional(s.number()) },
-          { name: "size", value: request.size, schema: s.optional(s.number()) },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "startTime", value: request.startTime, schema: s.optional(s.int()) },
+          { name: "endTime", value: request.endTime, schema: s.optional(s.int()) },
+          { name: "current", value: request.current, schema: s.optional(s.int()) },
+          { name: "size", value: request.size, schema: s.optional(s.int()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [],
         body: { kind: "empty" },
       },
       {
@@ -180,6 +270,28 @@ export class Staking {
     );
   }
 
+  /**
+   * Get WBETH Rate History (USER_DATA)
+   *
+   * @remarks
+   * - The time between startTime and endTime cannot be longer than 3 months.
+   * - If startTime and endTime are both not sent, then the last 30 days' data will be returned.
+   * - If startTime is sent but endTime is not sent, the next 30 days' data beginning from startTime
+   *   will be returned.
+   * - If endTime is sent but startTime is not sent, the 30 days' data before endTime will be
+   *   returned.
+   *
+   * Weight(IP): 150
+   *
+   * @returns WBETH Rate History
+   *
+   * @throws {@link Staking.GetWbethRateHistoryUserDataError} when the API answers with an error
+   * status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   getWbethRateHistoryUserData(
     request: Staking.GetWbethRateHistoryUserDataRequest,
     options?: RequestOptions,
@@ -187,17 +299,19 @@ export class Staking {
     return this.#rawClient.execute(
       {
         method: "GET",
-        url: this.#servers.default("/sapi/v1/eth-staking/eth/history/rateHistory"),
+        urlTemplate: this.#servers.default("/sapi/v1/eth-staking/eth/history/rateHistory"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
-          { name: "startTime", value: request.startTime, schema: s.optional(s.number()) },
-          { name: "endTime", value: request.endTime, schema: s.optional(s.number()) },
-          { name: "current", value: request.current, schema: s.optional(s.number()) },
-          { name: "size", value: request.size, schema: s.optional(s.number()) },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "startTime", value: request.startTime, schema: s.optional(s.int()) },
+          { name: "endTime", value: request.endTime, schema: s.optional(s.int()) },
+          { name: "current", value: request.current, schema: s.optional(s.int()) },
+          { name: "size", value: request.size, schema: s.optional(s.int()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [],
         body: { kind: "empty" },
       },
       {
@@ -208,6 +322,28 @@ export class Staking {
     );
   }
 
+  /**
+   * Get WBETH rewards history(USER_DATA)
+   *
+   * @remarks
+   * - The time between startTime and endTime cannot be longer than 3 months.
+   * - If startTime and endTime are both not sent, then the last 30 days' data will be returned.
+   * - If startTime is sent but endTime is not sent, the next 30 days' data beginning from startTime
+   *   will be returned.
+   * - If endTime is sent but startTime is not sent, the 30 days' data before endTime will be
+   *   returned.
+   *
+   * Weight(IP): 150
+   *
+   * @returns WBETH rewards history
+   *
+   * @throws {@link Staking.GetWbethRewardsHistoryUserDataError} when the API answers with an error
+   * status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   getWbethRewardsHistoryUserData(
     request: Staking.GetWbethRewardsHistoryUserDataRequest,
     options?: RequestOptions,
@@ -218,17 +354,19 @@ export class Staking {
     return this.#rawClient.execute(
       {
         method: "GET",
-        url: this.#servers.default("/sapi/v1/eth-staking/eth/history/wbethRewardsHistory"),
+        urlTemplate: this.#servers.default("/sapi/v1/eth-staking/eth/history/wbethRewardsHistory"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
-          { name: "startTime", value: request.startTime, schema: s.optional(s.number()) },
-          { name: "endTime", value: request.endTime, schema: s.optional(s.number()) },
-          { name: "current", value: request.current, schema: s.optional(s.number()) },
-          { name: "size", value: request.size, schema: s.optional(s.number()) },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "startTime", value: request.startTime, schema: s.optional(s.int()) },
+          { name: "endTime", value: request.endTime, schema: s.optional(s.int()) },
+          { name: "current", value: request.current, schema: s.optional(s.int()) },
+          { name: "size", value: request.size, schema: s.optional(s.int()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [],
         body: { kind: "empty" },
       },
       {
@@ -239,6 +377,28 @@ export class Staking {
     );
   }
 
+  /**
+   * Get WBETH unwrap history (USER_DATA)
+   *
+   * @remarks
+   * - The time between startTime and endTime cannot be longer than 3 months.
+   * - If startTime and endTime are both not sent, then the last 30 days' data will be returned.
+   * - If startTime is sent but endTime is not sent, the next 30 days' data beginning from startTime
+   *   will be returned.
+   * - If endTime is sent but startTime is not sent, the 30 days' data before endTime will be
+   *   returned.
+   *
+   * Weight(IP): 150
+   *
+   * @returns WBETH unwrap history
+   *
+   * @throws {@link Staking.GetWbethUnwrapHistoryUserDataError} when the API answers with an error
+   * status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   getWbethUnwrapHistoryUserData(
     request: Staking.GetWbethUnwrapHistoryUserDataRequest,
     options?: RequestOptions,
@@ -249,17 +409,19 @@ export class Staking {
     return this.#rawClient.execute(
       {
         method: "GET",
-        url: this.#servers.default("/sapi/v1/eth-staking/wbeth/history/unwrapHistory"),
+        urlTemplate: this.#servers.default("/sapi/v1/eth-staking/wbeth/history/unwrapHistory"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
-          { name: "startTime", value: request.startTime, schema: s.optional(s.number()) },
-          { name: "endTime", value: request.endTime, schema: s.optional(s.number()) },
-          { name: "current", value: request.current, schema: s.optional(s.number()) },
-          { name: "size", value: request.size, schema: s.optional(s.number()) },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "startTime", value: request.startTime, schema: s.optional(s.int()) },
+          { name: "endTime", value: request.endTime, schema: s.optional(s.int()) },
+          { name: "current", value: request.current, schema: s.optional(s.int()) },
+          { name: "size", value: request.size, schema: s.optional(s.int()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [],
         body: { kind: "empty" },
       },
       {
@@ -270,6 +432,28 @@ export class Staking {
     );
   }
 
+  /**
+   * Get WBETH wrap history (USER_DATA)
+   *
+   * @remarks
+   * - The time between startTime and endTime cannot be longer than 3 months.
+   * - If startTime and endTime are both not sent, then the last 30 days' data will be returned.
+   * - If startTime is sent but endTime is not sent, the next 30 days' data beginning from startTime
+   *   will be returned.
+   * - If endTime is sent but startTime is not sent, the 30 days' data before endTime will be
+   *   returned.
+   *
+   * Weight(IP): 150
+   *
+   * @returns WBETH wrap history
+   *
+   * @throws {@link Staking.GetWbethWrapHistoryUserDataError} when the API answers with an error
+   * status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   getWbethWrapHistoryUserData(
     request: Staking.GetWbethWrapHistoryUserDataRequest,
     options?: RequestOptions,
@@ -277,17 +461,19 @@ export class Staking {
     return this.#rawClient.execute(
       {
         method: "GET",
-        url: this.#servers.default("/sapi/v1/eth-staking/wbeth/history/wrapHistory"),
+        urlTemplate: this.#servers.default("/sapi/v1/eth-staking/wbeth/history/wrapHistory"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
-          { name: "startTime", value: request.startTime, schema: s.optional(s.number()) },
-          { name: "endTime", value: request.endTime, schema: s.optional(s.number()) },
-          { name: "current", value: request.current, schema: s.optional(s.number()) },
-          { name: "size", value: request.size, schema: s.optional(s.number()) },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "startTime", value: request.startTime, schema: s.optional(s.int()) },
+          { name: "endTime", value: request.endTime, schema: s.optional(s.int()) },
+          { name: "current", value: request.current, schema: s.optional(s.int()) },
+          { name: "size", value: request.size, schema: s.optional(s.int()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [],
         body: { kind: "empty" },
       },
       {
@@ -298,6 +484,21 @@ export class Staking {
     );
   }
 
+  /**
+   * Get current ETH staking quota (USER_DATA)
+   *
+   * @remarks
+   * Weight(IP): 150
+   *
+   * @returns Eth staking quota
+   *
+   * @throws {@link Staking.GetCurrentEthStakingQuotaUserDataError} when the API answers with an
+   * error status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   getCurrentEthStakingQuotaUserData(
     request: Staking.GetCurrentEthStakingQuotaUserDataRequest,
     options?: RequestOptions,
@@ -305,13 +506,15 @@ export class Staking {
     return this.#rawClient.execute(
       {
         method: "GET",
-        url: this.#servers.default("/sapi/v1/eth-staking/eth/quota"),
+        urlTemplate: this.#servers.default("/sapi/v1/eth-staking/eth/quota"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [],
         body: { kind: "empty" },
       },
       {
@@ -322,6 +525,26 @@ export class Staking {
     );
   }
 
+  /**
+   * Redeem ETH (TRADE)
+   *
+   * @remarks
+   * Redeem WBETH or BETH and get ETH
+   *
+   * - You need to open Enable Spot & Margin Trading permission for the API Key which requests this
+   *   endpoint.
+   *
+   * Weight(IP): 150
+   *
+   * @returns Returned ETH
+   *
+   * @throws {@link Staking.RedeemEthTradeError} when the API answers with an error status — narrow
+   * on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   redeemEthTrade(
     request: Staking.RedeemEthTradeRequest,
     options?: RequestOptions,
@@ -329,15 +552,17 @@ export class Staking {
     return this.#rawClient.execute(
       {
         method: "POST",
-        url: this.#servers.default("/sapi/v1/eth-staking/eth/redeem"),
+        urlTemplate: this.#servers.default("/sapi/v1/eth-staking/eth/redeem"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
-          { name: "amount", value: request.amount, schema: s.number() },
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "amount", value: request.amount, schema: s.float64() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
           { name: "asset", value: request.asset, schema: s.optional(s.string()) },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [{ name: "Idempotency-Key", value: uuid(), schema: s.string() }],
         body: { kind: "empty" },
       },
       {
@@ -348,6 +573,26 @@ export class Staking {
     );
   }
 
+  /**
+   * Subscribe ETH Staking V2(TRADE)
+   *
+   * @remarks
+   * Stake ETH to get WBETH
+   *
+   * - You need to open Enable Spot & Margin Trading permission for the API Key which requests this
+   *   endpoint.
+   *
+   * Weight(IP): 150
+   *
+   * @returns Subscribed WBETH
+   *
+   * @throws {@link Staking.SubscribeEthStakingV2TradeError} when the API answers with an error
+   * status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   subscribeEthStakingV2Trade(
     request: Staking.SubscribeEthStakingV2TradeRequest,
     options?: RequestOptions,
@@ -355,14 +600,16 @@ export class Staking {
     return this.#rawClient.execute(
       {
         method: "POST",
-        url: this.#servers.default("/sapi/v2/eth-staking/eth/stake"),
+        urlTemplate: this.#servers.default("/sapi/v2/eth-staking/eth/stake"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
-          { name: "amount", value: request.amount, schema: s.number() },
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "amount", value: request.amount, schema: s.float64() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [{ name: "Idempotency-Key", value: uuid(), schema: s.string() }],
         body: { kind: "empty" },
       },
       {
@@ -373,6 +620,24 @@ export class Staking {
     );
   }
 
+  /**
+   * Wrap BETH(TRADE)
+   *
+   * @remarks
+   * - You need to open Enable Spot & Margin Trading permission for the API Key which requests this
+   *   endpoint.
+   *
+   * Weight(IP): 150
+   *
+   * @returns Wrap BETH
+   *
+   * @throws {@link Staking.WrapBethTradeError} when the API answers with an error status — narrow
+   * on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   wrapBethTrade(
     request: Staking.WrapBethTradeRequest,
     options?: RequestOptions,
@@ -380,14 +645,16 @@ export class Staking {
     return this.#rawClient.execute(
       {
         method: "POST",
-        url: this.#servers.default("/sapi/v1/eth-staking/wbeth/wrap"),
+        urlTemplate: this.#servers.default("/sapi/v1/eth-staking/wbeth/wrap"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
-          { name: "amount", value: request.amount, schema: s.number() },
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "amount", value: request.amount, schema: s.float64() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [{ name: "Idempotency-Key", value: uuid(), schema: s.string() }],
         body: { kind: "empty" },
       },
       {
@@ -401,14 +668,17 @@ export class Staking {
 
 export namespace Staking {
   export type EthStakingAccountV2UserDataRequest = {
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class EthStakingAccountV2UserDataError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class EthStakingAccountV2UserDataError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<EthStakingAccountV2UserDataError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -416,18 +686,25 @@ export namespace Staking {
   }
 
   export type GetBethRewardsDistributionHistoryUserDataRequest = {
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
+    /** UTC timestamp in ms */
     startTime?: number;
+    /** UTC timestamp in ms */
     endTime?: number;
+    /** Current querying page. Start from 1. Default:1 */
     current?: number;
+    /** Default:10 Max:100 */
     size?: number;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class GetBethRewardsDistributionHistoryUserDataError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class GetBethRewardsDistributionHistoryUserDataError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<GetBethRewardsDistributionHistoryUserDataError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -435,18 +712,25 @@ export namespace Staking {
   }
 
   export type GetEthRedemptionHistoryUserDataRequest = {
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
+    /** UTC timestamp in ms */
     startTime?: number;
+    /** UTC timestamp in ms */
     endTime?: number;
+    /** Current querying page. Start from 1. Default:1 */
     current?: number;
+    /** Default:10 Max:100 */
     size?: number;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class GetEthRedemptionHistoryUserDataError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class GetEthRedemptionHistoryUserDataError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<GetEthRedemptionHistoryUserDataError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -454,18 +738,25 @@ export namespace Staking {
   }
 
   export type GetEthStakingHistoryUserDataRequest = {
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
+    /** UTC timestamp in ms */
     startTime?: number;
+    /** UTC timestamp in ms */
     endTime?: number;
+    /** Current querying page. Start from 1. Default:1 */
     current?: number;
+    /** Default:10 Max:100 */
     size?: number;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class GetEthStakingHistoryUserDataError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class GetEthStakingHistoryUserDataError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<GetEthStakingHistoryUserDataError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -473,18 +764,25 @@ export namespace Staking {
   }
 
   export type GetWbethRateHistoryUserDataRequest = {
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
+    /** UTC timestamp in ms */
     startTime?: number;
+    /** UTC timestamp in ms */
     endTime?: number;
+    /** Current querying page. Start from 1. Default:1 */
     current?: number;
+    /** Default:10 Max:100 */
     size?: number;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class GetWbethRateHistoryUserDataError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class GetWbethRateHistoryUserDataError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<GetWbethRateHistoryUserDataError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -492,18 +790,25 @@ export namespace Staking {
   }
 
   export type GetWbethRewardsHistoryUserDataRequest = {
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
+    /** UTC timestamp in ms */
     startTime?: number;
+    /** UTC timestamp in ms */
     endTime?: number;
+    /** Current querying page. Start from 1. Default:1 */
     current?: number;
+    /** Default:10 Max:100 */
     size?: number;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class GetWbethRewardsHistoryUserDataError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class GetWbethRewardsHistoryUserDataError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<GetWbethRewardsHistoryUserDataError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -511,18 +816,25 @@ export namespace Staking {
   }
 
   export type GetWbethUnwrapHistoryUserDataRequest = {
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
+    /** UTC timestamp in ms */
     startTime?: number;
+    /** UTC timestamp in ms */
     endTime?: number;
+    /** Current querying page. Start from 1. Default:1 */
     current?: number;
+    /** Default:10 Max:100 */
     size?: number;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class GetWbethUnwrapHistoryUserDataError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class GetWbethUnwrapHistoryUserDataError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<GetWbethUnwrapHistoryUserDataError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -530,18 +842,25 @@ export namespace Staking {
   }
 
   export type GetWbethWrapHistoryUserDataRequest = {
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
+    /** UTC timestamp in ms */
     startTime?: number;
+    /** UTC timestamp in ms */
     endTime?: number;
+    /** Current querying page. Start from 1. Default:1 */
     current?: number;
+    /** Default:10 Max:100 */
     size?: number;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class GetWbethWrapHistoryUserDataError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class GetWbethWrapHistoryUserDataError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<GetWbethWrapHistoryUserDataError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -549,14 +868,17 @@ export namespace Staking {
   }
 
   export type GetCurrentEthStakingQuotaUserDataRequest = {
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class GetCurrentEthStakingQuotaUserDataError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class GetCurrentEthStakingQuotaUserDataError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<GetCurrentEthStakingQuotaUserDataError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -564,16 +886,21 @@ export namespace Staking {
   }
 
   export type RedeemEthTradeRequest = {
+    /** Amount in BETH, limit 8 decimals */
     amount: number;
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
+    /** WBETH or BETH, default to BETH */
     asset?: string;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class RedeemEthTradeError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class RedeemEthTradeError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<RedeemEthTradeError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -581,15 +908,19 @@ export namespace Staking {
   }
 
   export type SubscribeEthStakingV2TradeRequest = {
+    /** Amount in ETH, limit 4 decimals */
     amount: number;
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class SubscribeEthStakingV2TradeError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class SubscribeEthStakingV2TradeError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<SubscribeEthStakingV2TradeError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -597,15 +928,19 @@ export namespace Staking {
   }
 
   export type WrapBethTradeRequest = {
+    /** Amount in BETH, limit 4 decimals */
     amount: number;
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class WrapBethTradeError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class WrapBethTradeError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<WrapBethTradeError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },

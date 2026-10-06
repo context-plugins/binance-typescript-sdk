@@ -7,5 +7,5 @@ export type SapiV1MarginBorrowRepayResponse = {
 
 export const sapiV1MarginBorrowRepayResponseSchema: Schema<SapiV1MarginBorrowRepayResponse> =
   s.object<SapiV1MarginBorrowRepayResponse>({
-    tranId: s.number(),
+    tranId: s.int(),
   });

@@ -16,5 +16,5 @@ export const row27Schema: Schema<Row27> = s.object<Row27>({
   collateralCoin: s.string(),
   collateralReturn: s.string(),
   repayStatus: s.string(),
-  repayTime: s.number(),
+  repayTime: s.int(),
 });

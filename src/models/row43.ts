@@ -9,18 +9,26 @@ export type Row43 = {
   asset: string;
   amount: string;
   lockPeriod: string;
+  /**
+   * NORMAL for normal subscription, AUTO for auto-subscription order, ACTIVITY for activity order,
+   * TRIAL for trial fund order, RESTAKE for restake order
+   */
   type: string;
+  /** SPOT, FUNDING, SPOTANDFUNDING */
   sourceAccount: string;
+  /** Display if sourceAccount is SPOTANDFUNDING */
   amtFromSpot: string;
+  /** Display if sourceAccount is SPOTANDFUNDING */
   amtFromFunding: string;
+  /** PURCHASING/SUCCESS/FAILED */
   status: string;
 };
 
 export const row43Schema: Schema<Row43> = s.object<Row43>({
   positionId: s.string(),
-  purchaseId: s.number(),
+  purchaseId: s.int(),
   projectId: s.string(),
-  time: s.number(),
+  time: s.int(),
   asset: s.string(),
   amount: s.string(),
   lockPeriod: s.string(),

@@ -17,6 +17,6 @@ export const fill2Schema: Schema<Fill2> = s.object<Fill2>({
   qty: s.string(),
   commission: s.string(),
   commissionAsset: s.string(),
-  tradeId: s.number(),
-  allocId: s.number(),
+  tradeId: s.int(),
+  allocId: s.int(),
 });

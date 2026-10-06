@@ -9,5 +9,5 @@ export type MarginTransferDetails = {
 
 export const marginTransferDetailsSchema: Schema<MarginTransferDetails> = s.object<MarginTransferDetails>({
   rows: s.array(s.lazy(() => rowSchema)),
-  total: s.number(),
+  total: s.int(),
 });

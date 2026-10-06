@@ -14,9 +14,9 @@ export type Row8 = {
 };
 
 export const row8Schema: Schema<Row8> = s.object<Row8>({
-  tranId: s.number(),
-  type: s.number(),
-  time: s.number(),
+  tranId: s.int(),
+  type: s.int(),
+  time: s.int(),
   deductedAsset: s.string(),
   deductedAmount: s.string(),
   targetAsset: s.string(),

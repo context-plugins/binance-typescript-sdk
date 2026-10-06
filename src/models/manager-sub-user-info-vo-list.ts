@@ -17,11 +17,11 @@ export type ManagerSubUserInfoVoList = {
 
 export const managerSubUserInfoVoListSchema: Schema<ManagerSubUserInfoVoList> =
   s.object<ManagerSubUserInfoVoList>({
-    rootUserId: s.number(),
-    managersubUserId: s.number(),
-    bindParentUserId: s.number(),
+    rootUserId: s.int(),
+    managersubUserId: s.int(),
+    bindParentUserId: s.int(),
     email: s.optional(s.string()),
-    insertTimeStamp: s.number(),
+    insertTimeStamp: s.int(),
     bindParentEmail: s.string(),
     isSubUserEnabled: s.boolean(),
     isUserActive: s.boolean(),

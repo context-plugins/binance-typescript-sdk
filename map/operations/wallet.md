@@ -4,7 +4,7 @@
 
 Accessor: `client.wallet` · Source: `src/resources/wallet.ts` · 34 operations · Request and error types: namespace `Wallet`
 
-**Type sources**: every type an operation names, with the file that declares it and the schema value exported beside it. Import every name from `binance-public-spot-api`; the `Source` path is where to **read** the shape, never what to import. `ResponseError` and the runtime error family are excluded — see sdk-map.md.
+**Type sources**: every type an operation names, with the file that declares it and the schema value exported beside it. Import every name from `binance`; the `Source` path is where to **read** the shape, never what to import. `ApiError`, the runtime error family and the file vocabulary are excluded — see sdk-map.md.
 
 ### accountApiTradingStatusUserData
 
@@ -13,7 +13,7 @@ Accessor: `client.wallet` · Source: `src/resources/wallet.ts` · 34 operations 
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1AccountApiTradingStatusResponse`
-- **Error**: `Wallet.AccountApiTradingStatusUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Wallet.AccountApiTradingStatusUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Wallet.AccountApiTradingStatusUserDataRequest` (3):
@@ -36,7 +36,7 @@ Accessor: `client.wallet` · Source: `src/resources/wallet.ts` · 34 operations 
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1AccountStatusResponse`
-- **Error**: `Wallet.AccountStatusUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Wallet.AccountStatusUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Wallet.AccountStatusUserDataRequest` (3):
@@ -59,7 +59,7 @@ Accessor: `client.wallet` · Source: `src/resources/wallet.ts` · 34 operations 
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1AccountInfoResponse`
-- **Error**: `Wallet.AccountInfoUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Wallet.AccountInfoUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Wallet.AccountInfoUserDataRequest` (3):
@@ -82,7 +82,7 @@ Accessor: `client.wallet` · Source: `src/resources/wallet.ts` · 34 operations 
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1CapitalConfigGetallResponse[]` — a bare `application/json` array; the success type *is* the array, not a wrapper model
-- **Error**: `Wallet.AllCoinsInformationUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Wallet.AllCoinsInformationUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Wallet.AllCoinsInformationUserDataRequest` (3):
@@ -105,7 +105,7 @@ Accessor: `client.wallet` · Source: `src/resources/wallet.ts` · 34 operations 
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1AssetAssetDetailResponse`
-- **Error**: `Wallet.AssetDetailUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Wallet.AssetDetailUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Wallet.AssetDetailUserDataRequest` (4):
@@ -129,7 +129,7 @@ Accessor: `client.wallet` · Source: `src/resources/wallet.ts` · 34 operations 
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1AssetAssetDividendResponse`
-- **Error**: `Wallet.AssetDividendRecordUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Wallet.AssetDividendRecordUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Wallet.AssetDividendRecordUserDataRequest` (7):
@@ -155,8 +155,9 @@ Accessor: `client.wallet` · Source: `src/resources/wallet.ts` · 34 operations 
 - **Wire**: `POST /sapi/v1/asset/convert-transfer`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `SapiV1AssetConvertTransferResponse`
-- **Error**: `Wallet.ConvertTransferUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Wallet.ConvertTransferUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Wallet.ConvertTransferUserDataRequest` (7):
@@ -183,7 +184,7 @@ Accessor: `client.wallet` · Source: `src/resources/wallet.ts` · 34 operations 
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1AccountSnapshotResponse`
-- **Error**: `Wallet.DailyAccountSnapshotUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Wallet.DailyAccountSnapshotUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Wallet.DailyAccountSnapshotUserDataRequest` (7):
@@ -211,7 +212,7 @@ Accessor: `client.wallet` · Source: `src/resources/wallet.ts` · 34 operations 
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1CapitalDepositAddressResponse`
-- **Error**: `Wallet.DepositAddressSupportingNetworkUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Wallet.DepositAddressSupportingNetworkUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Wallet.DepositAddressSupportingNetworkUserDataRequest` (5):
@@ -236,7 +237,7 @@ Accessor: `client.wallet` · Source: `src/resources/wallet.ts` · 34 operations 
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1CapitalDepositHisrecResponse[]` — a bare `application/json` array; the success type *is* the array, not a wrapper model
-- **Error**: `Wallet.DepositHistorySupportingNetworkUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Wallet.DepositHistorySupportingNetworkUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Wallet.DepositHistorySupportingNetworkUserDataRequest` (9):
@@ -264,8 +265,9 @@ Accessor: `client.wallet` · Source: `src/resources/wallet.ts` · 34 operations 
 - **Wire**: `POST /sapi/v1/account/disableFastWithdrawSwitch`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `Record<string, unknown>` — a bare `application/json` map; the success type *is* the map
-- **Error**: `Wallet.DisableFastWithdrawSwitchUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Wallet.DisableFastWithdrawSwitchUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Wallet.DisableFastWithdrawSwitchUserDataRequest` (3):
@@ -286,8 +288,9 @@ Accessor: `client.wallet` · Source: `src/resources/wallet.ts` · 34 operations 
 - **Wire**: `POST /sapi/v1/asset/dust`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `SapiV1AssetDustResponse`
-- **Error**: `Wallet.DustTransferUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Wallet.DustTransferUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Wallet.DustTransferUserDataRequest` (5):
@@ -313,7 +316,7 @@ Accessor: `client.wallet` · Source: `src/resources/wallet.ts` · 34 operations 
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1AssetDribbletResponse`
-- **Error**: `Wallet.DustLogUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Wallet.DustLogUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Wallet.DustLogUserDataRequest` (6):
@@ -339,8 +342,9 @@ Accessor: `client.wallet` · Source: `src/resources/wallet.ts` · 34 operations 
 - **Wire**: `POST /sapi/v1/account/enableFastWithdrawSwitch`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `Record<string, unknown>` — a bare `application/json` map; the success type *is* the map
-- **Error**: `Wallet.EnableFastWithdrawSwitchUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Wallet.EnableFastWithdrawSwitchUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Wallet.EnableFastWithdrawSwitchUserDataRequest` (3):
@@ -362,7 +366,7 @@ Accessor: `client.wallet` · Source: `src/resources/wallet.ts` · 34 operations 
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1CapitalDepositAddressListResponse[]` — a bare `application/json` array; the success type *is* the array, not a wrapper model
-- **Error**: `Wallet.FetchDepositAddressListWithNetworkUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Wallet.FetchDepositAddressListWithNetworkUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Wallet.FetchDepositAddressListWithNetworkUserDataRequest` (5):
@@ -387,7 +391,7 @@ Accessor: `client.wallet` · Source: `src/resources/wallet.ts` · 34 operations 
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1CapitalWithdrawAddressListResponse[]` — a bare `application/json` array; the success type *is* the array, not a wrapper model
-- **Error**: `Wallet.FetchWithdrawAddressListUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Wallet.FetchWithdrawAddressListUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 | Type | Schema value | Source |
@@ -401,8 +405,9 @@ Accessor: `client.wallet` · Source: `src/resources/wallet.ts` · 34 operations 
 - **Wire**: `POST /sapi/v1/asset/get-funding-asset`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `SapiV1AssetGetFundingAssetResponse[]` — a bare `application/json` array; the success type *is* the array, not a wrapper model
-- **Error**: `Wallet.FundingWalletUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Wallet.FundingWalletUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Wallet.FundingWalletUserDataRequest` (5):
@@ -428,7 +433,7 @@ Accessor: `client.wallet` · Source: `src/resources/wallet.ts` · 34 operations 
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1AccountApiRestrictionsResponse`
-- **Error**: `Wallet.GetApiKeyPermissionUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Wallet.GetApiKeyPermissionUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Wallet.GetApiKeyPermissionUserDataRequest` (3):
@@ -450,8 +455,9 @@ Accessor: `client.wallet` · Source: `src/resources/wallet.ts` · 34 operations 
 - **Wire**: `POST /sapi/v1/asset/dust-btc`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `SapiV1AssetDustBtcResponse`
-- **Error**: `Wallet.GetAssetsThatCanBeConvertedIntoBnbUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Wallet.GetAssetsThatCanBeConvertedIntoBnbUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Wallet.GetAssetsThatCanBeConvertedIntoBnbUserDataRequest` (4):
@@ -476,7 +482,7 @@ Accessor: `client.wallet` · Source: `src/resources/wallet.ts` · 34 operations 
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1AssetLedgerTransferCloudMiningQueryByPageResponse`
-- **Error**: `Wallet.GetCloudMiningPaymentAndRefundHistoryUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Wallet.GetCloudMiningPaymentAndRefundHistoryUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Wallet.GetCloudMiningPaymentAndRefundHistoryUserDataRequest` (10):
@@ -506,7 +512,7 @@ Accessor: `client.wallet` · Source: `src/resources/wallet.ts` · 34 operations 
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1SpotDelistScheduleResponse[]` — a bare `application/json` array; the success type *is* the array, not a wrapper model
-- **Error**: `Wallet.GetSymbolsDelistScheduleForSpotMarketDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Wallet.GetSymbolsDelistScheduleForSpotMarketDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Wallet.GetSymbolsDelistScheduleForSpotMarketDataRequest` (3):
@@ -528,8 +534,9 @@ Accessor: `client.wallet` · Source: `src/resources/wallet.ts` · 34 operations 
 - **Wire**: `POST /sapi/v1/capital/deposit/credit-apply`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `SapiV1CapitalDepositCreditApplyResponse`
-- **Error**: `Wallet.OneClickArrivalDepositApplyUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Wallet.OneClickArrivalDepositApplyUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Wallet.OneClickArrivalDepositApplyUserDataRequest` (7):
@@ -556,7 +563,7 @@ Accessor: `client.wallet` · Source: `src/resources/wallet.ts` · 34 operations 
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1AssetConvertTransferQueryByPageResponse`
-- **Error**: `Wallet.QueryConvertTransferUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Wallet.QueryConvertTransferUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Wallet.QueryConvertTransferUserDataRequest` (10):
@@ -587,7 +594,7 @@ Accessor: `client.wallet` · Source: `src/resources/wallet.ts` · 34 operations 
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1AssetCustodyTransferHistoryResponse`
-- **Error**: `Wallet.QueryUserDelegationHistoryForMasterAccountUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Wallet.QueryUserDelegationHistoryForMasterAccountUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Wallet.QueryUserDelegationHistoryForMasterAccountUserDataRequest` (10):
@@ -617,7 +624,7 @@ Accessor: `client.wallet` · Source: `src/resources/wallet.ts` · 34 operations 
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1AssetTransferResponse`
-- **Error**: `Wallet.QueryUserUniversalTransferHistoryUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Wallet.QueryUserUniversalTransferHistoryUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Wallet.QueryUserUniversalTransferHistoryUserDataRequest` (10):
@@ -648,7 +655,7 @@ Accessor: `client.wallet` · Source: `src/resources/wallet.ts` · 34 operations 
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1AssetWalletBalanceResponse[]` — a bare `application/json` array; the success type *is* the array, not a wrapper model
-- **Error**: `Wallet.QueryUserWalletBalanceUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Wallet.QueryUserWalletBalanceUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Wallet.QueryUserWalletBalanceUserDataRequest` (3):
@@ -671,7 +678,7 @@ Accessor: `client.wallet` · Source: `src/resources/wallet.ts` · 34 operations 
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1CapitalContractConvertibleCoinsResponse`
-- **Error**: `Wallet.QueryAutoConvertingStableCoinsUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Wallet.QueryAutoConvertingStableCoinsUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 | Type | Schema value | Source |
@@ -685,8 +692,9 @@ Accessor: `client.wallet` · Source: `src/resources/wallet.ts` · 34 operations 
 - **Wire**: `POST /sapi/v1/capital/contract/convertible-coins`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `Record<string, unknown>` — a bare `application/json` map; the success type *is* the map
-- **Error**: `Wallet.SwitchOnOffBusdAndStableCoinsConversionUserDataUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Wallet.SwitchOnOffBusdAndStableCoinsConversionUserDataUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Wallet.SwitchOnOffBusdAndStableCoinsConversionUserDataUserDataRequest` (2):
@@ -702,12 +710,12 @@ Accessor: `client.wallet` · Source: `src/resources/wallet.ts` · 34 operations 
 
 ### systemStatusSystem
 
-- **Signature**: `systemStatusSystem(options?: RequestOptions): ApiPromise<SapiV1SystemStatusResponse, ResponseError>`
+- **Signature**: `systemStatusSystem(options?: RequestOptions): ApiPromise<SapiV1SystemStatusResponse, ApiError>`
 - **Wire**: `GET /sapi/v1/system/status`
 - **Auth**: none — public; no credential is sent
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1SystemStatusResponse`
-- **Error**: `ResponseError` — untyped, `payload.kind` always `"undeclared"`
+- **Error**: `BinanceError` with `kind: "api"` — untyped, `payload.kind` always `"undeclared"`
 
 | Type | Schema value | Source |
 | --- | --- | --- |
@@ -720,7 +728,7 @@ Accessor: `client.wallet` · Source: `src/resources/wallet.ts` · 34 operations 
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1AssetTradeFeeResponse[]` — a bare `application/json` array; the success type *is* the array, not a wrapper model
-- **Error**: `Wallet.TradeFeeUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Wallet.TradeFeeUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Wallet.TradeFeeUserDataRequest` (4):
@@ -743,8 +751,9 @@ Accessor: `client.wallet` · Source: `src/resources/wallet.ts` · 34 operations 
 - **Wire**: `POST /sapi/v3/asset/getUserAsset`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `SapiV3AssetGetUserAssetResponse[]` — a bare `application/json` array; the success type *is* the array, not a wrapper model
-- **Error**: `Wallet.UserAssetUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Wallet.UserAssetUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Wallet.UserAssetUserDataRequest` (5):
@@ -769,8 +778,9 @@ Accessor: `client.wallet` · Source: `src/resources/wallet.ts` · 34 operations 
 - **Wire**: `POST /sapi/v1/asset/transfer`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `SapiV1AssetTransferResponse1`
-- **Error**: `Wallet.UserUniversalTransferUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Wallet.UserUniversalTransferUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Wallet.UserUniversalTransferUserDataRequest` (8):
@@ -798,8 +808,9 @@ Accessor: `client.wallet` · Source: `src/resources/wallet.ts` · 34 operations 
 - **Wire**: `POST /sapi/v1/capital/withdraw/apply`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `SapiV1CapitalWithdrawApplyResponse`
-- **Error**: `Wallet.WithdrawUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Wallet.WithdrawUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Wallet.WithdrawUserDataRequest` (12):
@@ -831,7 +842,7 @@ Accessor: `client.wallet` · Source: `src/resources/wallet.ts` · 34 operations 
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1CapitalWithdrawHistoryResponse[]` — a bare `application/json` array; the success type *is* the array, not a wrapper model
-- **Error**: `Wallet.WithdrawHistorySupportingNetworkUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Wallet.WithdrawHistorySupportingNetworkUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Wallet.WithdrawHistorySupportingNetworkUserDataRequest` (10):

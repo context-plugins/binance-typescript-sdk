@@ -13,5 +13,5 @@ export const sapiV1LoanVipRequestInterestRateResponseSchema: Schema<SapiV1LoanVi
     asset: s.string(),
     flexibleDailyInterestRate: s.string(),
     flexibleYearlyInterestRate: s.string(),
-    time: s.number(),
+    time: s.int(),
   });

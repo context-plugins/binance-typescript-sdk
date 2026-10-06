@@ -12,6 +12,6 @@ export const sapiV1AlgoFuturesNewOrderVpResponseSchema: Schema<SapiV1AlgoFutures
   s.object<SapiV1AlgoFuturesNewOrderVpResponse>({
     clientAlgoId: s.string(),
     success: s.boolean(),
-    code: s.number(),
+    code: s.int(),
     msg: s.string(),
   });

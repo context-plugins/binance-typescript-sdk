@@ -4,7 +4,7 @@
 
 Accessor: `client.mining` · Source: `src/resources/mining.ts` · 13 operations · Request and error types: namespace `Mining`
 
-**Type sources**: every type an operation names, with the file that declares it and the schema value exported beside it. Import every name from `binance-public-spot-api`; the `Source` path is where to **read** the shape, never what to import. `ResponseError` and the runtime error family are excluded — see sdk-map.md.
+**Type sources**: every type an operation names, with the file that declares it and the schema value exported beside it. Import every name from `binance`; the `Source` path is where to **read** the shape, never what to import. `ApiError`, the runtime error family and the file vocabulary are excluded — see sdk-map.md.
 
 ### accountListUserData
 
@@ -13,7 +13,7 @@ Accessor: `client.mining` · Source: `src/resources/mining.ts` · 13 operations 
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1MiningStatisticsUserListResponse`
-- **Error**: `Mining.AccountListUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Mining.AccountListUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Mining.AccountListUserDataRequest` (5):
@@ -38,7 +38,7 @@ Accessor: `client.mining` · Source: `src/resources/mining.ts` · 13 operations 
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1MiningPubAlgoListResponse`
-- **Error**: `Mining.AcquiringAlgorithmMarketDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Mining.AcquiringAlgorithmMarketDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 | Type | Schema value | Source |
@@ -53,7 +53,7 @@ Accessor: `client.mining` · Source: `src/resources/mining.ts` · 13 operations 
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1MiningPubCoinListResponse`
-- **Error**: `Mining.AcquiringCoinNameMarketDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Mining.AcquiringCoinNameMarketDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 | Type | Schema value | Source |
@@ -67,8 +67,9 @@ Accessor: `client.mining` · Source: `src/resources/mining.ts` · 13 operations 
 - **Wire**: `POST /sapi/v1/mining/hash-transfer/config/cancel`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `SapiV1MiningHashTransferConfigCancelResponse`
-- **Error**: `Mining.CancelHashrateResaleConfigurationUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Mining.CancelHashrateResaleConfigurationUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Mining.CancelHashrateResaleConfigurationUserDataRequest` (5):
@@ -93,7 +94,7 @@ Accessor: `client.mining` · Source: `src/resources/mining.ts` · 13 operations 
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1MiningPaymentListResponse`
-- **Error**: `Mining.EarningsListUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Mining.EarningsListUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Mining.EarningsListUserDataRequest` (10):
@@ -123,7 +124,7 @@ Accessor: `client.mining` · Source: `src/resources/mining.ts` · 13 operations 
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1MiningPaymentOtherResponse`
-- **Error**: `Mining.ExtraBonusListUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Mining.ExtraBonusListUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Mining.ExtraBonusListUserDataRequest` (10):
@@ -153,7 +154,7 @@ Accessor: `client.mining` · Source: `src/resources/mining.ts` · 13 operations 
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1MiningHashTransferProfitDetailsResponse`
-- **Error**: `Mining.HashrateResaleDetailsUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Mining.HashrateResaleDetailsUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Mining.HashrateResaleDetailsUserDataRequest` (7):
@@ -180,7 +181,7 @@ Accessor: `client.mining` · Source: `src/resources/mining.ts` · 13 operations 
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1MiningHashTransferConfigDetailsListResponse`
-- **Error**: `Mining.HashrateResaleListUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Mining.HashrateResaleListUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Mining.HashrateResaleListUserDataRequest` (5):
@@ -204,8 +205,9 @@ Accessor: `client.mining` · Source: `src/resources/mining.ts` · 13 operations 
 - **Wire**: `POST /sapi/v1/mining/hash-transfer/config`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `SapiV1MiningHashTransferConfigResponse`
-- **Error**: `Mining.HashrateResaleRequestUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Mining.HashrateResaleRequestUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Mining.HashrateResaleRequestUserDataRequest` (9):
@@ -234,7 +236,7 @@ Accessor: `client.mining` · Source: `src/resources/mining.ts` · 13 operations 
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1MiningPaymentUidResponse`
-- **Error**: `Mining.MiningAccountEarningUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Mining.MiningAccountEarningUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Mining.MiningAccountEarningUserDataRequest` (8):
@@ -262,7 +264,7 @@ Accessor: `client.mining` · Source: `src/resources/mining.ts` · 13 operations 
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1MiningWorkerDetailResponse`
-- **Error**: `Mining.RequestForDetailMinerListUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Mining.RequestForDetailMinerListUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Mining.RequestForDetailMinerListUserDataRequest` (6):
@@ -288,7 +290,7 @@ Accessor: `client.mining` · Source: `src/resources/mining.ts` · 13 operations 
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1MiningWorkerListResponse`
-- **Error**: `Mining.RequestForMinerListUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Mining.RequestForMinerListUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Mining.RequestForMinerListUserDataRequest` (9):
@@ -317,7 +319,7 @@ Accessor: `client.mining` · Source: `src/resources/mining.ts` · 13 operations 
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1MiningStatisticsUserStatusResponse`
-- **Error**: `Mining.StatisticListUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Mining.StatisticListUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Mining.StatisticListUserDataRequest` (5):

@@ -12,7 +12,7 @@ export const sapiV1EthStakingEthHistoryWbethRewardsHistoryResponseSchema: Schema
   s.object<SapiV1EthStakingEthHistoryWbethRewardsHistoryResponse>({
     estRewardsInEth: s.string(),
     rows: s.array(s.lazy(() => row37Schema)),
-    total: s.number(),
+    total: s.int(),
     _keysMap: {
       estRewardsInEth: "estRewardsInETH",
     },

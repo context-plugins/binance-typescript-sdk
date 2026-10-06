@@ -9,6 +9,6 @@ export type SapiV1AlgoSpotHistoricalOrdersResponse = {
 
 export const sapiV1AlgoSpotHistoricalOrdersResponseSchema: Schema<SapiV1AlgoSpotHistoricalOrdersResponse> =
   s.object<SapiV1AlgoSpotHistoricalOrdersResponse>({
-    total: s.number(),
+    total: s.int(),
     orders: s.array(s.lazy(() => order17Schema)),
   });

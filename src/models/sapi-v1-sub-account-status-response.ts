@@ -5,9 +5,11 @@ export type SapiV1SubAccountStatusResponse = {
   email: string;
   isSubUserEnabled: boolean;
   isUserActive: boolean;
+  /** sub account create time */
   insertTime: number;
   isMarginEnabled: boolean;
   isFutureEnabled: boolean;
+  /** user mobile number */
   mobile: number;
 };
 
@@ -16,8 +18,8 @@ export const sapiV1SubAccountStatusResponseSchema: Schema<SapiV1SubAccountStatus
     email: s.string(),
     isSubUserEnabled: s.boolean(),
     isUserActive: s.boolean(),
-    insertTime: s.number(),
+    insertTime: s.int(),
     isMarginEnabled: s.boolean(),
     isFutureEnabled: s.boolean(),
-    mobile: s.number(),
+    mobile: s.int(),
   });

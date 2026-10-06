@@ -10,5 +10,5 @@ export type SapiV1MarginAvailableInventoryResponse = {
 export const sapiV1MarginAvailableInventoryResponseSchema: Schema<SapiV1MarginAvailableInventoryResponse> =
   s.object<SapiV1MarginAvailableInventoryResponse>({
     assets: assetsSchema,
-    updateTime: s.number(),
+    updateTime: s.int(),
   });

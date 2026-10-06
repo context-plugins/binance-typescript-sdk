@@ -7,5 +7,5 @@ export type SapiV1PortfolioBnbTransferResponse = {
 
 export const sapiV1PortfolioBnbTransferResponseSchema: Schema<SapiV1PortfolioBnbTransferResponse> =
   s.object<SapiV1PortfolioBnbTransferResponse>({
-    tranId: s.number(),
+    tranId: s.int(),
   });

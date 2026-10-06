@@ -10,5 +10,5 @@ export type SapiV1MarginInterestHistoryResponse = {
 export const sapiV1MarginInterestHistoryResponseSchema: Schema<SapiV1MarginInterestHistoryResponse> =
   s.object<SapiV1MarginInterestHistoryResponse>({
     rows: s.array(s.lazy(() => row3Schema)),
-    total: s.number(),
+    total: s.int(),
   });

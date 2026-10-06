@@ -10,6 +10,6 @@ export type SnapshotVo4 = {
 
 export const snapshotVo4Schema: Schema<SnapshotVo4> = s.object<SnapshotVo4>({
   type: s.string(),
-  updateTime: s.number(),
+  updateTime: s.int(),
   data: data6Schema,
 });

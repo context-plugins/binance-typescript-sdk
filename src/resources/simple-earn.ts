@@ -1,8 +1,9 @@
 import type { AuthSchemes } from "../auth-schemes.js";
+import { ApiError, type Declared, type ErrorDecoders, type ErrorPayload } from "../core/api-error.js";
 import type { ApiPromise } from "../core/api-promise.js";
 import type { RequestOptions } from "../core/api-request.js";
 import type { RawClient } from "../core/raw-client.js";
-import { ResponseError, type Declared, type ErrorDecoders } from "../core/response-error.js";
+import { uuid } from "../core/uuid.js";
 import * as s from "../core/validation/index.js";
 import { errorSchema, type Error } from "../models/error.js";
 import { redeemToSchema, type RedeemTo } from "../models/redeem-to.js";
@@ -104,6 +105,9 @@ import {
 } from "../models/sapi-v1-simple-earn-locked-subscription-preview-response.js";
 import type { Servers } from "../servers.js";
 
+/**
+ * Simple Earn Endpoints
+ */
 export class SimpleEarn {
   readonly #rawClient: RawClient;
   readonly #servers: Servers;
@@ -115,6 +119,21 @@ export class SimpleEarn {
     this.#auth = auth;
   }
 
+  /**
+   * Get Collateral Record (USER_DATA)
+   *
+   * @remarks
+   * Weight(IP): 150
+   *
+   * @returns Collateral Record
+   *
+   * @throws {@link SimpleEarn.GetCollateralRecordUserDataError} when the API answers with an error
+   * status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   getCollateralRecordUserData(
     request: SimpleEarn.GetCollateralRecordUserDataRequest,
     options?: RequestOptions,
@@ -125,18 +144,20 @@ export class SimpleEarn {
     return this.#rawClient.execute(
       {
         method: "GET",
-        url: this.#servers.default("/sapi/v1/simple-earn/flexible/history/collateralRecord"),
+        urlTemplate: this.#servers.default("/sapi/v1/simple-earn/flexible/history/collateralRecord"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
           { name: "productId", value: request.productId, schema: s.optional(s.string()) },
-          { name: "startTime", value: request.startTime, schema: s.optional(s.number()) },
-          { name: "endTime", value: request.endTime, schema: s.optional(s.number()) },
-          { name: "current", value: request.current, schema: s.optional(s.number()) },
-          { name: "size", value: request.size, schema: s.optional(s.number()) },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "startTime", value: request.startTime, schema: s.optional(s.int()) },
+          { name: "endTime", value: request.endTime, schema: s.optional(s.int()) },
+          { name: "current", value: request.current, schema: s.optional(s.int()) },
+          { name: "size", value: request.size, schema: s.optional(s.int()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [],
         body: { kind: "empty" },
       },
       {
@@ -147,6 +168,21 @@ export class SimpleEarn {
     );
   }
 
+  /**
+   * Get Flexible Personal Left Quota (USER_DATA)
+   *
+   * @remarks
+   * Weight(IP): 150
+   *
+   * @returns Flexible Personal Left Quota
+   *
+   * @throws {@link SimpleEarn.GetFlexiblePersonalLeftQuotaUserDataError} when the API answers with
+   * an error status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   getFlexiblePersonalLeftQuotaUserData(
     request: SimpleEarn.GetFlexiblePersonalLeftQuotaUserDataRequest,
     options?: RequestOptions,
@@ -157,14 +193,16 @@ export class SimpleEarn {
     return this.#rawClient.execute(
       {
         method: "GET",
-        url: this.#servers.default("/sapi/v1/simple-earn/flexible/personalLeftQuota"),
+        urlTemplate: this.#servers.default("/sapi/v1/simple-earn/flexible/personalLeftQuota"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
           { name: "productId", value: request.productId, schema: s.string() },
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [],
         body: { kind: "empty" },
       },
       {
@@ -175,6 +213,21 @@ export class SimpleEarn {
     );
   }
 
+  /**
+   * Get Flexible Product Position (USER_DATA)
+   *
+   * @remarks
+   * Weight(IP): 150
+   *
+   * @returns Flexible Product Position
+   *
+   * @throws {@link SimpleEarn.GetFlexibleProductPositionUserDataError} when the API answers with an
+   * error status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   getFlexibleProductPositionUserData(
     request: SimpleEarn.GetFlexibleProductPositionUserDataRequest,
     options?: RequestOptions,
@@ -185,17 +238,19 @@ export class SimpleEarn {
     return this.#rawClient.execute(
       {
         method: "GET",
-        url: this.#servers.default("/sapi/v1/simple-earn/flexible/position"),
+        urlTemplate: this.#servers.default("/sapi/v1/simple-earn/flexible/position"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
           { name: "asset", value: request.asset, schema: s.optional(s.string()) },
           { name: "productId", value: request.productId, schema: s.optional(s.string()) },
-          { name: "current", value: request.current, schema: s.optional(s.number()) },
-          { name: "size", value: request.size, schema: s.optional(s.number()) },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "current", value: request.current, schema: s.optional(s.int()) },
+          { name: "size", value: request.size, schema: s.optional(s.int()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [],
         body: { kind: "empty" },
       },
       {
@@ -206,6 +261,21 @@ export class SimpleEarn {
     );
   }
 
+  /**
+   * Get Flexible Redemption Record (USER_DATA)
+   *
+   * @remarks
+   * Weight(IP): 150
+   *
+   * @returns Flexible Redemption Record
+   *
+   * @throws {@link SimpleEarn.GetFlexibleRedemptionRecordUserDataError} when the API answers with
+   * an error status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   getFlexibleRedemptionRecordUserData(
     request: SimpleEarn.GetFlexibleRedemptionRecordUserDataRequest,
     options?: RequestOptions,
@@ -216,17 +286,19 @@ export class SimpleEarn {
     return this.#rawClient.execute(
       {
         method: "GET",
-        url: this.#servers.default("/sapi/v1/simple-earn/flexible/history/redemptionRecord"),
+        urlTemplate: this.#servers.default("/sapi/v1/simple-earn/flexible/history/redemptionRecord"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
           { name: "productId", value: request.productId, schema: s.optional(s.string()) },
           { name: "redeemId", value: request.redeemId, schema: s.optional(s.string()) },
           { name: "asset", value: request.asset, schema: s.optional(s.string()) },
-          { name: "startTime", value: request.startTime, schema: s.optional(s.number()) },
-          { name: "endTime", value: request.endTime, schema: s.optional(s.number()) },
-          { name: "current", value: request.current, schema: s.optional(s.number()) },
-          { name: "size", value: request.size, schema: s.optional(s.number()) },
+          { name: "startTime", value: request.startTime, schema: s.optional(s.int()) },
+          { name: "endTime", value: request.endTime, schema: s.optional(s.int()) },
+          { name: "current", value: request.current, schema: s.optional(s.int()) },
+          { name: "size", value: request.size, schema: s.optional(s.int()) },
         ],
+        headers: [],
         body: { kind: "empty" },
       },
       {
@@ -237,6 +309,21 @@ export class SimpleEarn {
     );
   }
 
+  /**
+   * Get Flexible Rewards History (USER_DATA)
+   *
+   * @remarks
+   * Weight(IP): 150
+   *
+   * @returns Flexible Rewards History
+   *
+   * @throws {@link SimpleEarn.GetFlexibleRewardsHistoryUserDataError} when the API answers with an
+   * error status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   getFlexibleRewardsHistoryUserData(
     request: SimpleEarn.GetFlexibleRewardsHistoryUserDataRequest,
     options?: RequestOptions,
@@ -247,15 +334,17 @@ export class SimpleEarn {
     return this.#rawClient.execute(
       {
         method: "GET",
-        url: this.#servers.default("/sapi/v1/simple-earn/flexible/history/rewardsRecord"),
+        urlTemplate: this.#servers.default("/sapi/v1/simple-earn/flexible/history/rewardsRecord"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
           { name: "type", value: request.type, schema: s.string() },
           { name: "productId", value: request.productId, schema: s.optional(s.string()) },
           { name: "asset", value: request.asset, schema: s.optional(s.string()) },
-          { name: "startTime", value: request.startTime, schema: s.optional(s.number()) },
-          { name: "endTime", value: request.endTime, schema: s.optional(s.number()) },
+          { name: "startTime", value: request.startTime, schema: s.optional(s.int()) },
+          { name: "endTime", value: request.endTime, schema: s.optional(s.int()) },
         ],
+        headers: [],
         body: { kind: "empty" },
       },
       {
@@ -266,6 +355,21 @@ export class SimpleEarn {
     );
   }
 
+  /**
+   * Get Flexible Subscription Preview (USER_DATA)
+   *
+   * @remarks
+   * Weight(IP): 150
+   *
+   * @returns Flexible Subscription Preview
+   *
+   * @throws {@link SimpleEarn.GetFlexibleSubscriptionPreviewUserDataError} when the API answers
+   * with an error status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   getFlexibleSubscriptionPreviewUserData(
     request: SimpleEarn.GetFlexibleSubscriptionPreviewUserDataRequest,
     options?: RequestOptions,
@@ -276,15 +380,17 @@ export class SimpleEarn {
     return this.#rawClient.execute(
       {
         method: "GET",
-        url: this.#servers.default("/sapi/v1/simple-earn/flexible/subscriptionPreview"),
+        urlTemplate: this.#servers.default("/sapi/v1/simple-earn/flexible/subscriptionPreview"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
           { name: "productId", value: request.productId, schema: s.string() },
-          { name: "amount", value: request.amount, schema: s.number() },
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "amount", value: request.amount, schema: s.float64() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [],
         body: { kind: "empty" },
       },
       {
@@ -295,6 +401,21 @@ export class SimpleEarn {
     );
   }
 
+  /**
+   * Get Flexible Subscription Record (USER_DATA)
+   *
+   * @remarks
+   * Weight(IP): 150
+   *
+   * @returns Flexible Product Position
+   *
+   * @throws {@link SimpleEarn.GetFlexibleSubscriptionRecordUserDataError} when the API answers with
+   * an error status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   getFlexibleSubscriptionRecordUserData(
     request: SimpleEarn.GetFlexibleSubscriptionRecordUserDataRequest,
     options?: RequestOptions,
@@ -305,20 +426,22 @@ export class SimpleEarn {
     return this.#rawClient.execute(
       {
         method: "GET",
-        url: this.#servers.default("/sapi/v1/simple-earn/flexible/history/subscriptionRecord"),
+        urlTemplate: this.#servers.default("/sapi/v1/simple-earn/flexible/history/subscriptionRecord"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
           { name: "productId", value: request.productId, schema: s.optional(s.string()) },
           { name: "purchaseId", value: request.purchaseId, schema: s.optional(s.string()) },
           { name: "asset", value: request.asset, schema: s.optional(s.string()) },
-          { name: "startTime", value: request.startTime, schema: s.optional(s.number()) },
-          { name: "endTime", value: request.endTime, schema: s.optional(s.number()) },
-          { name: "current", value: request.current, schema: s.optional(s.number()) },
-          { name: "size", value: request.size, schema: s.optional(s.number()) },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "startTime", value: request.startTime, schema: s.optional(s.int()) },
+          { name: "endTime", value: request.endTime, schema: s.optional(s.int()) },
+          { name: "current", value: request.current, schema: s.optional(s.int()) },
+          { name: "size", value: request.size, schema: s.optional(s.int()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [],
         body: { kind: "empty" },
       },
       {
@@ -329,6 +452,21 @@ export class SimpleEarn {
     );
   }
 
+  /**
+   * Get Locked Personal Left Quota (USER_DATA)
+   *
+   * @remarks
+   * Weight(IP): 150
+   *
+   * @returns Locked Personal Left Quota
+   *
+   * @throws {@link SimpleEarn.GetLockedPersonalLeftQuotaUserDataError} when the API answers with an
+   * error status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   getLockedPersonalLeftQuotaUserData(
     request: SimpleEarn.GetLockedPersonalLeftQuotaUserDataRequest,
     options?: RequestOptions,
@@ -339,14 +477,16 @@ export class SimpleEarn {
     return this.#rawClient.execute(
       {
         method: "GET",
-        url: this.#servers.default("/sapi/v1/simple-earn/locked/personalLeftQuota"),
+        urlTemplate: this.#servers.default("/sapi/v1/simple-earn/locked/personalLeftQuota"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
           { name: "projectId", value: request.projectId, schema: s.string() },
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [],
         body: { kind: "empty" },
       },
       {
@@ -357,6 +497,21 @@ export class SimpleEarn {
     );
   }
 
+  /**
+   * Get Locked Product Position (USER_DATA)
+   *
+   * @remarks
+   * Weight(IP): 150
+   *
+   * @returns Locked Product Position
+   *
+   * @throws {@link SimpleEarn.GetLockedProductPositionUserDataError} when the API answers with an
+   * error status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   getLockedProductPositionUserData(
     request: SimpleEarn.GetLockedProductPositionUserDataRequest,
     options?: RequestOptions,
@@ -364,18 +519,20 @@ export class SimpleEarn {
     return this.#rawClient.execute(
       {
         method: "GET",
-        url: this.#servers.default("/sapi/v1/simple-earn/locked/position"),
+        urlTemplate: this.#servers.default("/sapi/v1/simple-earn/locked/position"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
           { name: "asset", value: request.asset, schema: s.optional(s.string()) },
           { name: "positionId", value: request.positionId, schema: s.optional(s.string()) },
           { name: "projectId", value: request.projectId, schema: s.optional(s.string()) },
-          { name: "current", value: request.current, schema: s.optional(s.number()) },
-          { name: "size", value: request.size, schema: s.optional(s.number()) },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "current", value: request.current, schema: s.optional(s.int()) },
+          { name: "size", value: request.size, schema: s.optional(s.int()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [],
         body: { kind: "empty" },
       },
       {
@@ -386,6 +543,21 @@ export class SimpleEarn {
     );
   }
 
+  /**
+   * Get Locked Redemption Record (USER_DATA)
+   *
+   * @remarks
+   * Weight(IP): 150
+   *
+   * @returns Locked Redemption Record
+   *
+   * @throws {@link SimpleEarn.GetLockedRedemptionRecordUserDataError} when the API answers with an
+   * error status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   getLockedRedemptionRecordUserData(
     request: SimpleEarn.GetLockedRedemptionRecordUserDataRequest,
     options?: RequestOptions,
@@ -396,20 +568,22 @@ export class SimpleEarn {
     return this.#rawClient.execute(
       {
         method: "GET",
-        url: this.#servers.default("/sapi/v1/simple-earn/locked/history/redemptionRecord"),
+        urlTemplate: this.#servers.default("/sapi/v1/simple-earn/locked/history/redemptionRecord"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
           { name: "positionId", value: request.positionId, schema: s.optional(s.string()) },
           { name: "redeemId", value: request.redeemId, schema: s.optional(s.string()) },
           { name: "asset", value: request.asset, schema: s.optional(s.string()) },
-          { name: "startTime", value: request.startTime, schema: s.optional(s.number()) },
-          { name: "endTime", value: request.endTime, schema: s.optional(s.number()) },
-          { name: "current", value: request.current, schema: s.optional(s.number()) },
-          { name: "size", value: request.size, schema: s.optional(s.number()) },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "startTime", value: request.startTime, schema: s.optional(s.int()) },
+          { name: "endTime", value: request.endTime, schema: s.optional(s.int()) },
+          { name: "current", value: request.current, schema: s.optional(s.int()) },
+          { name: "size", value: request.size, schema: s.optional(s.int()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [],
         body: { kind: "empty" },
       },
       {
@@ -420,6 +594,21 @@ export class SimpleEarn {
     );
   }
 
+  /**
+   * Get Locked Rewards History (USER_DATA)
+   *
+   * @remarks
+   * Weight(IP): 150
+   *
+   * @returns Locked Rewards History
+   *
+   * @throws {@link SimpleEarn.GetLockedRewardsHistoryUserDataError} when the API answers with an
+   * error status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   getLockedRewardsHistoryUserData(
     request: SimpleEarn.GetLockedRewardsHistoryUserDataRequest,
     options?: RequestOptions,
@@ -430,18 +619,20 @@ export class SimpleEarn {
     return this.#rawClient.execute(
       {
         method: "GET",
-        url: this.#servers.default("/sapi/v1/simple-earn/locked/history/rewardsRecord"),
+        urlTemplate: this.#servers.default("/sapi/v1/simple-earn/locked/history/rewardsRecord"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
           { name: "positionId", value: request.positionId, schema: s.optional(s.string()) },
           { name: "asset", value: request.asset, schema: s.optional(s.string()) },
-          { name: "startTime", value: request.startTime, schema: s.optional(s.number()) },
-          { name: "endTime", value: request.endTime, schema: s.optional(s.number()) },
-          { name: "size", value: request.size, schema: s.optional(s.number()) },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "startTime", value: request.startTime, schema: s.optional(s.int()) },
+          { name: "endTime", value: request.endTime, schema: s.optional(s.int()) },
+          { name: "size", value: request.size, schema: s.optional(s.int()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [],
         body: { kind: "empty" },
       },
       {
@@ -452,6 +643,21 @@ export class SimpleEarn {
     );
   }
 
+  /**
+   * Get Locked Subscription Preview (USER_DATA)
+   *
+   * @remarks
+   * Weight(IP): 150
+   *
+   * @returns Locked Product Subscription Response
+   *
+   * @throws {@link SimpleEarn.GetLockedSubscriptionPreviewUserDataError} when the API answers with
+   * an error status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   getLockedSubscriptionPreviewUserData(
     request: SimpleEarn.GetLockedSubscriptionPreviewUserDataRequest,
     options?: RequestOptions,
@@ -462,16 +668,18 @@ export class SimpleEarn {
     return this.#rawClient.execute(
       {
         method: "GET",
-        url: this.#servers.default("/sapi/v1/simple-earn/locked/subscriptionPreview"),
+        urlTemplate: this.#servers.default("/sapi/v1/simple-earn/locked/subscriptionPreview"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
           { name: "projectId", value: request.projectId, schema: s.string() },
-          { name: "amount", value: request.amount, schema: s.number() },
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "amount", value: request.amount, schema: s.float64() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
           { name: "autoSubscribe", value: request.autoSubscribe, schema: s.optional(s.boolean()) },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [],
         body: { kind: "empty" },
       },
       {
@@ -485,6 +693,21 @@ export class SimpleEarn {
     );
   }
 
+  /**
+   * Get Locked Subscription Record (USER_DATA)
+   *
+   * @remarks
+   * Weight(IP): 150
+   *
+   * @returns Locked Subscription Record
+   *
+   * @throws {@link SimpleEarn.GetLockedSubscriptionRecordUserDataError} when the API answers with
+   * an error status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   getLockedSubscriptionRecordUserData(
     request: SimpleEarn.GetLockedSubscriptionRecordUserDataRequest,
     options?: RequestOptions,
@@ -495,19 +718,21 @@ export class SimpleEarn {
     return this.#rawClient.execute(
       {
         method: "GET",
-        url: this.#servers.default("/sapi/v1/simple-earn/locked/history/subscriptionRecord"),
+        urlTemplate: this.#servers.default("/sapi/v1/simple-earn/locked/history/subscriptionRecord"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
           { name: "purchaseId", value: request.purchaseId, schema: s.optional(s.string()) },
           { name: "asset", value: request.asset, schema: s.optional(s.string()) },
-          { name: "startTime", value: request.startTime, schema: s.optional(s.number()) },
-          { name: "endTime", value: request.endTime, schema: s.optional(s.number()) },
-          { name: "current", value: request.current, schema: s.optional(s.number()) },
-          { name: "size", value: request.size, schema: s.optional(s.number()) },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "startTime", value: request.startTime, schema: s.optional(s.int()) },
+          { name: "endTime", value: request.endTime, schema: s.optional(s.int()) },
+          { name: "current", value: request.current, schema: s.optional(s.int()) },
+          { name: "size", value: request.size, schema: s.optional(s.int()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [],
         body: { kind: "empty" },
       },
       {
@@ -518,6 +743,21 @@ export class SimpleEarn {
     );
   }
 
+  /**
+   * Get Rate History (USER_DATA)
+   *
+   * @remarks
+   * Weight(IP): 150
+   *
+   * @returns Rate History
+   *
+   * @throws {@link SimpleEarn.GetRateHistoryUserDataError} when the API answers with an error
+   * status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   getRateHistoryUserData(
     request: SimpleEarn.GetRateHistoryUserDataRequest,
     options?: RequestOptions,
@@ -525,18 +765,20 @@ export class SimpleEarn {
     return this.#rawClient.execute(
       {
         method: "GET",
-        url: this.#servers.default("/sapi/v1/simple-earn/flexible/history/rateHistory"),
+        urlTemplate: this.#servers.default("/sapi/v1/simple-earn/flexible/history/rateHistory"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
           { name: "productId", value: request.productId, schema: s.string() },
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
-          { name: "startTime", value: request.startTime, schema: s.optional(s.number()) },
-          { name: "endTime", value: request.endTime, schema: s.optional(s.number()) },
-          { name: "current", value: request.current, schema: s.optional(s.number()) },
-          { name: "size", value: request.size, schema: s.optional(s.number()) },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "startTime", value: request.startTime, schema: s.optional(s.int()) },
+          { name: "endTime", value: request.endTime, schema: s.optional(s.int()) },
+          { name: "current", value: request.current, schema: s.optional(s.int()) },
+          { name: "size", value: request.size, schema: s.optional(s.int()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [],
         body: { kind: "empty" },
       },
       {
@@ -547,6 +789,23 @@ export class SimpleEarn {
     );
   }
 
+  /**
+   * Get Simple Earn Flexible Product List (USER_DATA)
+   *
+   * @remarks
+   * Get available Simple Earn flexible product list
+   *
+   * Weight(IP): 150
+   *
+   * @returns Simple Earn Flexible Product List
+   *
+   * @throws {@link SimpleEarn.GetSimpleEarnFlexibleProductListUserDataError} when the API answers
+   * with an error status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   getSimpleEarnFlexibleProductListUserData(
     request: SimpleEarn.GetSimpleEarnFlexibleProductListUserDataRequest,
     options?: RequestOptions,
@@ -557,16 +816,18 @@ export class SimpleEarn {
     return this.#rawClient.execute(
       {
         method: "GET",
-        url: this.#servers.default("/sapi/v1/simple-earn/flexible/list"),
+        urlTemplate: this.#servers.default("/sapi/v1/simple-earn/flexible/list"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
           { name: "asset", value: request.asset, schema: s.optional(s.string()) },
-          { name: "current", value: request.current, schema: s.optional(s.number()) },
-          { name: "size", value: request.size, schema: s.optional(s.number()) },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "current", value: request.current, schema: s.optional(s.int()) },
+          { name: "size", value: request.size, schema: s.optional(s.int()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [],
         body: { kind: "empty" },
       },
       {
@@ -577,6 +838,21 @@ export class SimpleEarn {
     );
   }
 
+  /**
+   * Get Simple Earn Locked Product List (USER_DATA)
+   *
+   * @remarks
+   * Weight(IP): 150
+   *
+   * @returns Simple Earn Locked Product List
+   *
+   * @throws {@link SimpleEarn.GetSimpleEarnLockedProductListUserDataError} when the API answers
+   * with an error status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   getSimpleEarnLockedProductListUserData(
     request: SimpleEarn.GetSimpleEarnLockedProductListUserDataRequest,
     options?: RequestOptions,
@@ -584,16 +860,18 @@ export class SimpleEarn {
     return this.#rawClient.execute(
       {
         method: "GET",
-        url: this.#servers.default("/sapi/v1/simple-earn/locked/list"),
+        urlTemplate: this.#servers.default("/sapi/v1/simple-earn/locked/list"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
           { name: "asset", value: request.asset, schema: s.optional(s.string()) },
-          { name: "current", value: request.current, schema: s.optional(s.number()) },
-          { name: "size", value: request.size, schema: s.optional(s.number()) },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "current", value: request.current, schema: s.optional(s.int()) },
+          { name: "size", value: request.size, schema: s.optional(s.int()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [],
         body: { kind: "empty" },
       },
       {
@@ -604,6 +882,23 @@ export class SimpleEarn {
     );
   }
 
+  /**
+   * Redeem Flexible Product (TRADE)
+   *
+   * @remarks
+   * Weight(IP): 1
+   *
+   * Rate Limit: 1/3s per account
+   *
+   * @returns Redeem Flexible Product
+   *
+   * @throws {@link SimpleEarn.RedeemFlexibleProductTradeError} when the API answers with an error
+   * status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   redeemFlexibleProductTrade(
     request: SimpleEarn.RedeemFlexibleProductTradeRequest,
     options?: RequestOptions,
@@ -611,17 +906,19 @@ export class SimpleEarn {
     return this.#rawClient.execute(
       {
         method: "POST",
-        url: this.#servers.default("/sapi/v1/simple-earn/flexible/redeem"),
+        urlTemplate: this.#servers.default("/sapi/v1/simple-earn/flexible/redeem"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
           { name: "productId", value: request.productId, schema: s.string() },
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
           { name: "redeemAll", value: request.redeemAll, schema: s.optional(s.boolean()) },
-          { name: "amount", value: request.amount, schema: s.optional(s.number()) },
+          { name: "amount", value: request.amount, schema: s.optional(s.float64()) },
           { name: "destAccount", value: request.destAccount, schema: s.optional(s.string()) },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [{ name: "Idempotency-Key", value: uuid(), schema: s.string() }],
         body: { kind: "empty" },
       },
       {
@@ -632,6 +929,23 @@ export class SimpleEarn {
     );
   }
 
+  /**
+   * Redeem Locked Product (TRADE)
+   *
+   * @remarks
+   * Weight(IP): 1
+   *
+   * Rate Limit: 1/3s per account
+   *
+   * @returns Redeem Locked Product
+   *
+   * @throws {@link SimpleEarn.RedeemLockedProductTradeError} when the API answers with an error
+   * status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   redeemLockedProductTrade(
     request: SimpleEarn.RedeemLockedProductTradeRequest,
     options?: RequestOptions,
@@ -639,14 +953,16 @@ export class SimpleEarn {
     return this.#rawClient.execute(
       {
         method: "POST",
-        url: this.#servers.default("/sapi/v1/simple-earn/locked/redeem"),
+        urlTemplate: this.#servers.default("/sapi/v1/simple-earn/locked/redeem"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
           { name: "positionId", value: request.positionId, schema: s.string() },
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [{ name: "Idempotency-Key", value: uuid(), schema: s.string() }],
         body: { kind: "empty" },
       },
       {
@@ -657,6 +973,21 @@ export class SimpleEarn {
     );
   }
 
+  /**
+   * Set Flexible Auto Subscribe (USER_DATA)
+   *
+   * @remarks
+   * Weight(IP): 150
+   *
+   * @returns Flexible Product Subscription Response
+   *
+   * @throws {@link SimpleEarn.SetFlexibleAutoSubscribeUserDataError} when the API answers with an
+   * error status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   setFlexibleAutoSubscribeUserData(
     request: SimpleEarn.SetFlexibleAutoSubscribeUserDataRequest,
     options?: RequestOptions,
@@ -667,15 +998,17 @@ export class SimpleEarn {
     return this.#rawClient.execute(
       {
         method: "POST",
-        url: this.#servers.default("/sapi/v1/simple-earn/flexible/setAutoSubscribe"),
+        urlTemplate: this.#servers.default("/sapi/v1/simple-earn/flexible/setAutoSubscribe"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
           { name: "productId", value: request.productId, schema: s.string() },
           { name: "autoSubscribe", value: request.autoSubscribe, schema: s.boolean() },
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [{ name: "Idempotency-Key", value: uuid(), schema: s.string() }],
         body: { kind: "empty" },
       },
       {
@@ -686,6 +1019,21 @@ export class SimpleEarn {
     );
   }
 
+  /**
+   * Set Locked Auto Subscribe (USER_DATA)
+   *
+   * @remarks
+   * Weight(IP): 150
+   *
+   * @returns Locked Auto Subscribe
+   *
+   * @throws {@link SimpleEarn.SetLockedAutoSubscribeUserDataError} when the API answers with an
+   * error status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   setLockedAutoSubscribeUserData(
     request: SimpleEarn.SetLockedAutoSubscribeUserDataRequest,
     options?: RequestOptions,
@@ -696,15 +1044,17 @@ export class SimpleEarn {
     return this.#rawClient.execute(
       {
         method: "POST",
-        url: this.#servers.default("/sapi/v1/simple-earn/locked/setAutoSubscribe"),
+        urlTemplate: this.#servers.default("/sapi/v1/simple-earn/locked/setAutoSubscribe"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
           { name: "positionId", value: request.positionId, schema: s.string() },
           { name: "autoSubscribe", value: request.autoSubscribe, schema: s.boolean() },
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [{ name: "Idempotency-Key", value: uuid(), schema: s.string() }],
         body: { kind: "empty" },
       },
       {
@@ -715,6 +1065,23 @@ export class SimpleEarn {
     );
   }
 
+  /**
+   * Set Locked Product Redeem Option(USER_DATA)
+   *
+   * @remarks
+   * Set redeem option for Locked product
+   *
+   * Weight(IP): 50
+   *
+   * @returns Locked Product Redeem Option
+   *
+   * @throws {@link SimpleEarn.SetLockedProductRedeemOptionUserDataError} when the API answers with
+   * an error status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   setLockedProductRedeemOptionUserData(
     request: SimpleEarn.SetLockedProductRedeemOptionUserDataRequest,
     options?: RequestOptions,
@@ -725,15 +1092,17 @@ export class SimpleEarn {
     return this.#rawClient.execute(
       {
         method: "GET",
-        url: this.#servers.default("/sapi/v1/simple-earn/locked/setRedeemOption"),
+        urlTemplate: this.#servers.default("/sapi/v1/simple-earn/locked/setRedeemOption"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
           { name: "positionId", value: request.positionId, schema: s.string() },
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
           { name: "redeemTo", value: request.redeemTo, schema: s.optional(s.lazy(() => redeemToSchema)) },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [],
         body: { kind: "empty" },
       },
       {
@@ -744,6 +1113,21 @@ export class SimpleEarn {
     );
   }
 
+  /**
+   * Simple Account (USER_DATA)
+   *
+   * @remarks
+   * Weight(IP): 150
+   *
+   * @returns Account Information
+   *
+   * @throws {@link SimpleEarn.SimpleAccountUserDataError} when the API answers with an error status
+   * — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   simpleAccountUserData(
     request: SimpleEarn.SimpleAccountUserDataRequest,
     options?: RequestOptions,
@@ -751,13 +1135,15 @@ export class SimpleEarn {
     return this.#rawClient.execute(
       {
         method: "GET",
-        url: this.#servers.default("/sapi/v1/simple-earn/account"),
+        urlTemplate: this.#servers.default("/sapi/v1/simple-earn/account"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [],
         body: { kind: "empty" },
       },
       {
@@ -768,6 +1154,23 @@ export class SimpleEarn {
     );
   }
 
+  /**
+   * Subscribe Flexible Product (TRADE)
+   *
+   * @remarks
+   * Weight(IP): 1
+   *
+   * Rate Limit: 1/3s per account
+   *
+   * @returns Flexible Product Subscription Response
+   *
+   * @throws {@link SimpleEarn.SubscribeFlexibleProductTradeError} when the API answers with an
+   * error status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   subscribeFlexibleProductTrade(
     request: SimpleEarn.SubscribeFlexibleProductTradeRequest,
     options?: RequestOptions,
@@ -775,17 +1178,19 @@ export class SimpleEarn {
     return this.#rawClient.execute(
       {
         method: "POST",
-        url: this.#servers.default("/sapi/v1/simple-earn/flexible/subscribe"),
+        urlTemplate: this.#servers.default("/sapi/v1/simple-earn/flexible/subscribe"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
           { name: "productId", value: request.productId, schema: s.string() },
-          { name: "amount", value: request.amount, schema: s.number() },
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "amount", value: request.amount, schema: s.float64() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
           { name: "autoSubscribe", value: request.autoSubscribe, schema: s.optional(s.boolean()) },
           { name: "sourceAccount", value: request.sourceAccount, schema: s.optional(s.string()) },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [{ name: "Idempotency-Key", value: uuid(), schema: s.string() }],
         body: { kind: "empty" },
       },
       {
@@ -796,6 +1201,23 @@ export class SimpleEarn {
     );
   }
 
+  /**
+   * Subscribe Locked Product (TRADE)
+   *
+   * @remarks
+   * Weight(IP): 1
+   *
+   * Rate Limit: 1/3s per account
+   *
+   * @returns Locked Product Subscription Response
+   *
+   * @throws {@link SimpleEarn.SubscribeLockedProductTradeError} when the API answers with an error
+   * status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   subscribeLockedProductTrade(
     request: SimpleEarn.SubscribeLockedProductTradeRequest,
     options?: RequestOptions,
@@ -803,18 +1225,20 @@ export class SimpleEarn {
     return this.#rawClient.execute(
       {
         method: "POST",
-        url: this.#servers.default("/sapi/v1/simple-earn/locked/subscribe"),
+        urlTemplate: this.#servers.default("/sapi/v1/simple-earn/locked/subscribe"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
           { name: "projectId", value: request.projectId, schema: s.string() },
-          { name: "amount", value: request.amount, schema: s.number() },
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "amount", value: request.amount, schema: s.float64() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
           { name: "autoSubscribe", value: request.autoSubscribe, schema: s.optional(s.boolean()) },
           { name: "sourceAccount", value: request.sourceAccount, schema: s.optional(s.string()) },
           { name: "redeemTo", value: request.redeemTo, schema: s.optional(s.lazy(() => redeemToSchema)) },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [{ name: "Idempotency-Key", value: uuid(), schema: s.string() }],
         body: { kind: "empty" },
       },
       {
@@ -828,19 +1252,26 @@ export class SimpleEarn {
 
 export namespace SimpleEarn {
   export type GetCollateralRecordUserDataRequest = {
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
     productId?: string;
+    /** UTC timestamp in ms */
     startTime?: number;
+    /** UTC timestamp in ms */
     endTime?: number;
+    /** Current querying page. Start from 1. Default:1 */
     current?: number;
+    /** Default:10 Max:100 */
     size?: number;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class GetCollateralRecordUserDataError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class GetCollateralRecordUserDataError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<GetCollateralRecordUserDataError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -849,14 +1280,17 @@ export namespace SimpleEarn {
 
   export type GetFlexiblePersonalLeftQuotaUserDataRequest = {
     productId: string;
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class GetFlexiblePersonalLeftQuotaUserDataError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class GetFlexiblePersonalLeftQuotaUserDataError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<GetFlexiblePersonalLeftQuotaUserDataError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -864,18 +1298,23 @@ export namespace SimpleEarn {
   }
 
   export type GetFlexibleProductPositionUserDataRequest = {
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
     asset?: string;
     productId?: string;
+    /** Current querying page. Start from 1. Default:1 */
     current?: number;
+    /** Default:10 Max:100 */
     size?: number;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class GetFlexibleProductPositionUserDataError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class GetFlexibleProductPositionUserDataError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<GetFlexibleProductPositionUserDataError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -886,15 +1325,19 @@ export namespace SimpleEarn {
     productId?: string;
     redeemId?: string;
     asset?: string;
+    /** UTC timestamp in ms */
     startTime?: number;
+    /** UTC timestamp in ms */
     endTime?: number;
+    /** Current querying page. Start from 1. Default:1 */
     current?: number;
+    /** Default:10 Max:100 */
     size?: number;
   };
 
-  export class GetFlexibleRedemptionRecordUserDataError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class GetFlexibleRedemptionRecordUserDataError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<GetFlexibleRedemptionRecordUserDataError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -902,16 +1345,19 @@ export namespace SimpleEarn {
   }
 
   export type GetFlexibleRewardsHistoryUserDataRequest = {
+    /** "BONUS", "REALTIME", "REWARDS" */
     type: string;
     productId?: string;
     asset?: string;
+    /** UTC timestamp in ms */
     startTime?: number;
+    /** UTC timestamp in ms */
     endTime?: number;
   };
 
-  export class GetFlexibleRewardsHistoryUserDataError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class GetFlexibleRewardsHistoryUserDataError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<GetFlexibleRewardsHistoryUserDataError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -921,14 +1367,17 @@ export namespace SimpleEarn {
   export type GetFlexibleSubscriptionPreviewUserDataRequest = {
     productId: string;
     amount: number;
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class GetFlexibleSubscriptionPreviewUserDataError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class GetFlexibleSubscriptionPreviewUserDataError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<GetFlexibleSubscriptionPreviewUserDataError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -936,21 +1385,28 @@ export namespace SimpleEarn {
   }
 
   export type GetFlexibleSubscriptionRecordUserDataRequest = {
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
     productId?: string;
     purchaseId?: string;
     asset?: string;
+    /** UTC timestamp in ms */
     startTime?: number;
+    /** UTC timestamp in ms */
     endTime?: number;
+    /** Current querying page. Start from 1. Default:1 */
     current?: number;
+    /** Default:10 Max:100 */
     size?: number;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class GetFlexibleSubscriptionRecordUserDataError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class GetFlexibleSubscriptionRecordUserDataError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<GetFlexibleSubscriptionRecordUserDataError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -959,14 +1415,17 @@ export namespace SimpleEarn {
 
   export type GetLockedPersonalLeftQuotaUserDataRequest = {
     projectId: string;
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class GetLockedPersonalLeftQuotaUserDataError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class GetLockedPersonalLeftQuotaUserDataError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<GetLockedPersonalLeftQuotaUserDataError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -974,19 +1433,24 @@ export namespace SimpleEarn {
   }
 
   export type GetLockedProductPositionUserDataRequest = {
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
     asset?: string;
     positionId?: string;
     projectId?: string;
+    /** Current querying page. Start from 1. Default:1 */
     current?: number;
+    /** Default:10 Max:100 */
     size?: number;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class GetLockedProductPositionUserDataError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class GetLockedProductPositionUserDataError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<GetLockedProductPositionUserDataError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -994,21 +1458,28 @@ export namespace SimpleEarn {
   }
 
   export type GetLockedRedemptionRecordUserDataRequest = {
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
     positionId?: string;
     redeemId?: string;
     asset?: string;
+    /** UTC timestamp in ms */
     startTime?: number;
+    /** UTC timestamp in ms */
     endTime?: number;
+    /** Current querying page. Start from 1. Default:1 */
     current?: number;
+    /** Default:10 Max:100 */
     size?: number;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class GetLockedRedemptionRecordUserDataError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class GetLockedRedemptionRecordUserDataError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<GetLockedRedemptionRecordUserDataError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -1016,19 +1487,25 @@ export namespace SimpleEarn {
   }
 
   export type GetLockedRewardsHistoryUserDataRequest = {
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
     positionId?: string;
     asset?: string;
+    /** UTC timestamp in ms */
     startTime?: number;
+    /** UTC timestamp in ms */
     endTime?: number;
+    /** Default:10 Max:100 */
     size?: number;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class GetLockedRewardsHistoryUserDataError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class GetLockedRewardsHistoryUserDataError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<GetLockedRewardsHistoryUserDataError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -1038,15 +1515,19 @@ export namespace SimpleEarn {
   export type GetLockedSubscriptionPreviewUserDataRequest = {
     projectId: string;
     amount: number;
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
+    /** true or false, default true. */
     autoSubscribe?: boolean;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class GetLockedSubscriptionPreviewUserDataError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class GetLockedSubscriptionPreviewUserDataError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<GetLockedSubscriptionPreviewUserDataError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -1054,20 +1535,27 @@ export namespace SimpleEarn {
   }
 
   export type GetLockedSubscriptionRecordUserDataRequest = {
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
     purchaseId?: string;
     asset?: string;
+    /** UTC timestamp in ms */
     startTime?: number;
+    /** UTC timestamp in ms */
     endTime?: number;
+    /** Current querying page. Start from 1. Default:1 */
     current?: number;
+    /** Default:10 Max:100 */
     size?: number;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class GetLockedSubscriptionRecordUserDataError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class GetLockedSubscriptionRecordUserDataError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<GetLockedSubscriptionRecordUserDataError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -1076,18 +1564,25 @@ export namespace SimpleEarn {
 
   export type GetRateHistoryUserDataRequest = {
     productId: string;
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
+    /** UTC timestamp in ms */
     startTime?: number;
+    /** UTC timestamp in ms */
     endTime?: number;
+    /** Current querying page. Start from 1. Default:1 */
     current?: number;
+    /** Default:10 Max:100 */
     size?: number;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class GetRateHistoryUserDataError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class GetRateHistoryUserDataError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<GetRateHistoryUserDataError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -1095,17 +1590,22 @@ export namespace SimpleEarn {
   }
 
   export type GetSimpleEarnFlexibleProductListUserDataRequest = {
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
     asset?: string;
+    /** Current querying page. Start from 1. Default:1 */
     current?: number;
+    /** Default:10 Max:100 */
     size?: number;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class GetSimpleEarnFlexibleProductListUserDataError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class GetSimpleEarnFlexibleProductListUserDataError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<GetSimpleEarnFlexibleProductListUserDataError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -1113,17 +1613,22 @@ export namespace SimpleEarn {
   }
 
   export type GetSimpleEarnLockedProductListUserDataRequest = {
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
     asset?: string;
+    /** Current querying page. Start from 1. Default:1 */
     current?: number;
+    /** Default:10 Max:100 */
     size?: number;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class GetSimpleEarnLockedProductListUserDataError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class GetSimpleEarnLockedProductListUserDataError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<GetSimpleEarnLockedProductListUserDataError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -1132,17 +1637,23 @@ export namespace SimpleEarn {
 
   export type RedeemFlexibleProductTradeRequest = {
     productId: string;
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
+    /** true or false, default to false */
     redeemAll?: boolean;
+    /** if redeemAll is false, amount is mandatory */
     amount?: number;
+    /** SPOT,FUND,ALL, default SPOT */
     destAccount?: string;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class RedeemFlexibleProductTradeError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class RedeemFlexibleProductTradeError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<RedeemFlexibleProductTradeError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -1150,15 +1661,19 @@ export namespace SimpleEarn {
   }
 
   export type RedeemLockedProductTradeRequest = {
+    /** 1234 */
     positionId: string;
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class RedeemLockedProductTradeError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class RedeemLockedProductTradeError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<RedeemLockedProductTradeError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -1167,15 +1682,19 @@ export namespace SimpleEarn {
 
   export type SetFlexibleAutoSubscribeUserDataRequest = {
     productId: string;
+    /** true or false */
     autoSubscribe: boolean;
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class SetFlexibleAutoSubscribeUserDataError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class SetFlexibleAutoSubscribeUserDataError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<SetFlexibleAutoSubscribeUserDataError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -1184,15 +1703,19 @@ export namespace SimpleEarn {
 
   export type SetLockedAutoSubscribeUserDataRequest = {
     positionId: string;
+    /** true or false */
     autoSubscribe: boolean;
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class SetLockedAutoSubscribeUserDataError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class SetLockedAutoSubscribeUserDataError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<SetLockedAutoSubscribeUserDataError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -1201,15 +1724,19 @@ export namespace SimpleEarn {
 
   export type SetLockedProductRedeemOptionUserDataRequest = {
     positionId: string;
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
+    /** SPOT,FLEXIBLE, default FLEXIBLE */
     redeemTo?: RedeemTo;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class SetLockedProductRedeemOptionUserDataError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class SetLockedProductRedeemOptionUserDataError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<SetLockedProductRedeemOptionUserDataError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -1217,14 +1744,17 @@ export namespace SimpleEarn {
   }
 
   export type SimpleAccountUserDataRequest = {
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class SimpleAccountUserDataError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class SimpleAccountUserDataError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<SimpleAccountUserDataError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -1234,16 +1764,21 @@ export namespace SimpleEarn {
   export type SubscribeFlexibleProductTradeRequest = {
     productId: string;
     amount: number;
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
+    /** true or false, default true. */
     autoSubscribe?: boolean;
+    /** SPOT,FUND,ALL, default SPOT */
     sourceAccount?: string;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class SubscribeFlexibleProductTradeError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class SubscribeFlexibleProductTradeError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<SubscribeFlexibleProductTradeError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -1253,17 +1788,23 @@ export namespace SimpleEarn {
   export type SubscribeLockedProductTradeRequest = {
     projectId: string;
     amount: number;
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
+    /** true or false, default true. */
     autoSubscribe?: boolean;
+    /** SPOT,FUND,ALL, default SPOT */
     sourceAccount?: string;
+    /** SPOT,FLEXIBLE, default FLEXIBLE */
     redeemTo?: RedeemTo;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class SubscribeLockedProductTradeError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class SubscribeLockedProductTradeError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<SubscribeLockedProductTradeError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },

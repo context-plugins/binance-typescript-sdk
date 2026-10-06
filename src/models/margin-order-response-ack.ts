@@ -11,8 +11,8 @@ export type MarginOrderResponseAck = {
 
 export const marginOrderResponseAckSchema: Schema<MarginOrderResponseAck> = s.object<MarginOrderResponseAck>({
   symbol: s.string(),
-  orderId: s.number(),
+  orderId: s.int(),
   clientOrderId: s.string(),
   isIsolated: s.boolean(),
-  transactTime: s.number(),
+  transactTime: s.int(),
 });

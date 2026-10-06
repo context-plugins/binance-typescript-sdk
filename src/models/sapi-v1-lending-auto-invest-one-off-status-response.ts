@@ -8,6 +8,6 @@ export type SapiV1LendingAutoInvestOneOffStatusResponse = {
 
 export const sapiV1LendingAutoInvestOneOffStatusResponseSchema: Schema<SapiV1LendingAutoInvestOneOffStatusResponse> =
   s.object<SapiV1LendingAutoInvestOneOffStatusResponse>({
-    transactionId: s.number(),
+    transactionId: s.int(),
     status: s.string(),
   });

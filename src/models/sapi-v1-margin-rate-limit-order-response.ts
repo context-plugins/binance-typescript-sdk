@@ -13,7 +13,7 @@ export const sapiV1MarginRateLimitOrderResponseSchema: Schema<SapiV1MarginRateLi
   s.object<SapiV1MarginRateLimitOrderResponse>({
     rateLimitType: s.string(),
     interval: s.string(),
-    intervalNum: s.number(),
-    limit: s.number(),
-    count: s.number(),
+    intervalNum: s.int(),
+    limit: s.int(),
+    count: s.int(),
   });

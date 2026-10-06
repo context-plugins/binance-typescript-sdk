@@ -4,7 +4,7 @@
 
 Accessor: `client.c2C` · Source: `src/resources/c2-c.ts` · 1 operation · Request and error types: namespace `C2C`
 
-**Type sources**: every type an operation names, with the file that declares it and the schema value exported beside it. Import every name from `binance-public-spot-api`; the `Source` path is where to **read** the shape, never what to import. `ResponseError` and the runtime error family are excluded — see sdk-map.md.
+**Type sources**: every type an operation names, with the file that declares it and the schema value exported beside it. Import every name from `binance`; the `Source` path is where to **read** the shape, never what to import. `ApiError`, the runtime error family and the file vocabulary are excluded — see sdk-map.md.
 
 ### getC2CTradeHistoryUserData
 
@@ -13,7 +13,7 @@ Accessor: `client.c2C` · Source: `src/resources/c2-c.ts` · 1 operation · Requ
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1C2COrderMatchListUserOrderHistoryResponse`
-- **Error**: `C2C.GetC2CTradeHistoryUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `C2C.GetC2CTradeHistoryUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `C2C.GetC2CTradeHistoryUserDataRequest` (8):

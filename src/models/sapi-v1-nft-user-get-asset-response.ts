@@ -9,6 +9,6 @@ export type SapiV1NftUserGetAssetResponse = {
 
 export const sapiV1NftUserGetAssetResponseSchema: Schema<SapiV1NftUserGetAssetResponse> =
   s.object<SapiV1NftUserGetAssetResponse>({
-    total: s.number(),
+    total: s.int(),
     list: s.array(s.lazy(() => list6Schema)),
   });

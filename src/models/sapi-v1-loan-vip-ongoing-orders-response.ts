@@ -10,5 +10,5 @@ export type SapiV1LoanVipOngoingOrdersResponse = {
 export const sapiV1LoanVipOngoingOrdersResponseSchema: Schema<SapiV1LoanVipOngoingOrdersResponse> =
   s.object<SapiV1LoanVipOngoingOrdersResponse>({
     rows: s.array(s.lazy(() => row12Schema)),
-    total: s.number(),
+    total: s.int(),
   });

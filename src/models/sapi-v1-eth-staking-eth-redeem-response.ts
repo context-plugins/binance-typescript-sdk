@@ -11,7 +11,7 @@ export type SapiV1EthStakingEthRedeemResponse = {
 export const sapiV1EthStakingEthRedeemResponseSchema: Schema<SapiV1EthStakingEthRedeemResponse> =
   s.object<SapiV1EthStakingEthRedeemResponse>({
     success: s.boolean(),
-    arrivalTime: s.number(),
+    arrivalTime: s.int(),
     ethAmount: s.string(),
     conversionRatio: s.string(),
   });

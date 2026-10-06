@@ -15,5 +15,5 @@ export const sapiV1MarginManualLiquidationResponseSchema: Schema<SapiV1MarginMan
     interest: s.string(),
     principal: s.string(),
     liabilityAsset: s.string(),
-    liabilityQty: s.number(),
+    liabilityQty: s.float64(),
   });

@@ -9,6 +9,6 @@ export type SapiV1DciProductListResponse = {
 
 export const sapiV1DciProductListResponseSchema: Schema<SapiV1DciProductListResponse> =
   s.object<SapiV1DciProductListResponse>({
-    total: s.number(),
+    total: s.int(),
     list: s.array(s.lazy(() => list7Schema)),
   });

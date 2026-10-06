@@ -10,5 +10,5 @@ export type SapiV2LoanFlexibleLtvAdjustmentHistoryResponse = {
 export const sapiV2LoanFlexibleLtvAdjustmentHistoryResponseSchema: Schema<SapiV2LoanFlexibleLtvAdjustmentHistoryResponse> =
   s.object<SapiV2LoanFlexibleLtvAdjustmentHistoryResponse>({
     rows: s.array(s.lazy(() => row28Schema)),
-    total: s.number(),
+    total: s.int(),
   });

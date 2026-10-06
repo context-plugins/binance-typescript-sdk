@@ -6,6 +6,7 @@ export type Row32 = {
   arrivalTime: number;
   asset: string;
   amount: string;
+  /** PENDING, SUCCESS, FAILED */
   status: string;
   distributeAsset: string;
   distributeAmount: string;
@@ -13,8 +14,8 @@ export type Row32 = {
 };
 
 export const row32Schema: Schema<Row32> = s.object<Row32>({
-  time: s.number(),
-  arrivalTime: s.number(),
+  time: s.int(),
+  arrivalTime: s.int(),
   asset: s.string(),
   amount: s.string(),
   status: s.string(),

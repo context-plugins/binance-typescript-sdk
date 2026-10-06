@@ -4,7 +4,7 @@
 
 Accessor: `client.savings` · Source: `src/resources/savings.ts` · 4 operations · Request and error types: namespace `Savings`
 
-**Type sources**: every type an operation names, with the file that declares it and the schema value exported beside it. Import every name from `binance-public-spot-api`; the `Source` path is where to **read** the shape, never what to import. `ResponseError` and the runtime error family are excluded — see sdk-map.md.
+**Type sources**: every type an operation names, with the file that declares it and the schema value exported beside it. Import every name from `binance`; the `Source` path is where to **read** the shape, never what to import. `ApiError`, the runtime error family and the file vocabulary are excluded — see sdk-map.md.
 
 ### changeFixedActivityPositionToDailyPositionUserData
 
@@ -12,8 +12,9 @@ Accessor: `client.savings` · Source: `src/resources/savings.ts` · 4 operations
 - **Wire**: `POST /sapi/v1/lending/positionChanged`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `SapiV1LendingPositionChangedResponse`
-- **Error**: `Savings.ChangeFixedActivityPositionToDailyPositionUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Savings.ChangeFixedActivityPositionToDailyPositionUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Savings.ChangeFixedActivityPositionToDailyPositionUserDataRequest` (6):
@@ -39,7 +40,7 @@ Accessor: `client.savings` · Source: `src/resources/savings.ts` · 4 operations
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1LendingProjectListResponse[]` — a bare `application/json` array; the success type *is* the array, not a wrapper model
-- **Error**: `Savings.GetFixedActivityProjectListUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Savings.GetFixedActivityProjectListUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Savings.GetFixedActivityProjectListUserDataRequest` (10):
@@ -72,7 +73,7 @@ Accessor: `client.savings` · Source: `src/resources/savings.ts` · 4 operations
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1LendingProjectPositionListResponse[]` — a bare `application/json` array; the success type *is* the array, not a wrapper model
-- **Error**: `Savings.GetFixedActivityProjectPositionUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Savings.GetFixedActivityProjectPositionUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Savings.GetFixedActivityProjectPositionUserDataRequest` (6):
@@ -98,8 +99,9 @@ Accessor: `client.savings` · Source: `src/resources/savings.ts` · 4 operations
 - **Wire**: `POST /sapi/v1/lending/customizedFixed/purchase`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `SapiV1LendingCustomizedFixedPurchaseResponse`
-- **Error**: `Savings.PurchaseFixedActivityProjectUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Savings.PurchaseFixedActivityProjectUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Savings.PurchaseFixedActivityProjectUserDataRequest` (5):

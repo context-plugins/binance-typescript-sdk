@@ -8,6 +8,6 @@ export type SapiV1ConvertLimitCancelOrderResponse = {
 
 export const sapiV1ConvertLimitCancelOrderResponseSchema: Schema<SapiV1ConvertLimitCancelOrderResponse> =
   s.object<SapiV1ConvertLimitCancelOrderResponse>({
-    orderId: s.number(),
+    orderId: s.int(),
     status: s.string(),
   });

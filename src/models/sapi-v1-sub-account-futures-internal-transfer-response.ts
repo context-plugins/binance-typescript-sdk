@@ -11,6 +11,6 @@ export type SapiV1SubAccountFuturesInternalTransferResponse = {
 export const sapiV1SubAccountFuturesInternalTransferResponseSchema: Schema<SapiV1SubAccountFuturesInternalTransferResponse> =
   s.object<SapiV1SubAccountFuturesInternalTransferResponse>({
     success: s.boolean(),
-    futuresType: s.number(),
+    futuresType: s.int(),
     transfers: s.array(s.lazy(() => transferSchema)),
   });

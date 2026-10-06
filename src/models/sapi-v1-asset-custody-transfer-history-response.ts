@@ -9,6 +9,6 @@ export type SapiV1AssetCustodyTransferHistoryResponse = {
 
 export const sapiV1AssetCustodyTransferHistoryResponseSchema: Schema<SapiV1AssetCustodyTransferHistoryResponse> =
   s.object<SapiV1AssetCustodyTransferHistoryResponse>({
-    total: s.number(),
+    total: s.int(),
     rows: s.array(s.lazy(() => row10Schema)),
   });

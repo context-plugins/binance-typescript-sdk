@@ -14,6 +14,6 @@ export const sapiV1LoanIncomeResponseSchema: Schema<SapiV1LoanIncomeResponse> =
     asset: s.string(),
     type: s.string(),
     amount: s.string(),
-    timestamp: s.number(),
+    timestamp: s.int(),
     tranId: s.string(),
   });

@@ -9,14 +9,16 @@ export type List2 = {
   fromAmount: string;
   toAsset: string;
   toAmount: string;
+  /** price ratio */
   ratio: string;
+  /** inverse price */
   inverseRatio: string;
   createTime: number;
 };
 
 export const list2Schema: Schema<List2> = s.object<List2>({
   quoteId: s.string(),
-  orderId: s.number(),
+  orderId: s.int(),
   orderStatus: s.string(),
   fromAsset: s.string(),
   fromAmount: s.string(),
@@ -24,5 +26,5 @@ export const list2Schema: Schema<List2> = s.object<List2>({
   toAmount: s.string(),
   ratio: s.string(),
   inverseRatio: s.string(),
-  createTime: s.number(),
+  createTime: s.int(),
 });

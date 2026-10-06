@@ -9,5 +9,5 @@ export type SapiV1ConvertAssetInfoResponse = {
 export const sapiV1ConvertAssetInfoResponseSchema: Schema<SapiV1ConvertAssetInfoResponse> =
   s.object<SapiV1ConvertAssetInfoResponse>({
     asset: s.string(),
-    fraction: s.number(),
+    fraction: s.int(),
   });

@@ -4,7 +4,7 @@
 
 Accessor: `client.staking` · Source: `src/resources/staking.ts` · 12 operations · Request and error types: namespace `Staking`
 
-**Type sources**: every type an operation names, with the file that declares it and the schema value exported beside it. Import every name from `binance-public-spot-api`; the `Source` path is where to **read** the shape, never what to import. `ResponseError` and the runtime error family are excluded — see sdk-map.md.
+**Type sources**: every type an operation names, with the file that declares it and the schema value exported beside it. Import every name from `binance`; the `Source` path is where to **read** the shape, never what to import. `ApiError`, the runtime error family and the file vocabulary are excluded — see sdk-map.md.
 
 ### ethStakingAccountV2UserData
 
@@ -13,7 +13,7 @@ Accessor: `client.staking` · Source: `src/resources/staking.ts` · 12 operation
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV2EthStakingAccountResponse`
-- **Error**: `Staking.EthStakingAccountV2UserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Staking.EthStakingAccountV2UserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Staking.EthStakingAccountV2UserDataRequest` (3):
@@ -36,7 +36,7 @@ Accessor: `client.staking` · Source: `src/resources/staking.ts` · 12 operation
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1EthStakingEthHistoryRewardsHistoryResponse`
-- **Error**: `Staking.GetBethRewardsDistributionHistoryUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Staking.GetBethRewardsDistributionHistoryUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Staking.GetBethRewardsDistributionHistoryUserDataRequest` (7):
@@ -63,7 +63,7 @@ Accessor: `client.staking` · Source: `src/resources/staking.ts` · 12 operation
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1EthStakingEthHistoryRedemptionHistoryResponse`
-- **Error**: `Staking.GetEthRedemptionHistoryUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Staking.GetEthRedemptionHistoryUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Staking.GetEthRedemptionHistoryUserDataRequest` (7):
@@ -90,7 +90,7 @@ Accessor: `client.staking` · Source: `src/resources/staking.ts` · 12 operation
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1EthStakingEthHistoryStakingHistoryResponse`
-- **Error**: `Staking.GetEthStakingHistoryUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Staking.GetEthStakingHistoryUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Staking.GetEthStakingHistoryUserDataRequest` (7):
@@ -117,7 +117,7 @@ Accessor: `client.staking` · Source: `src/resources/staking.ts` · 12 operation
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1EthStakingEthHistoryRateHistoryResponse`
-- **Error**: `Staking.GetWbethRateHistoryUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Staking.GetWbethRateHistoryUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Staking.GetWbethRateHistoryUserDataRequest` (7):
@@ -144,7 +144,7 @@ Accessor: `client.staking` · Source: `src/resources/staking.ts` · 12 operation
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1EthStakingEthHistoryWbethRewardsHistoryResponse`
-- **Error**: `Staking.GetWbethRewardsHistoryUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Staking.GetWbethRewardsHistoryUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Staking.GetWbethRewardsHistoryUserDataRequest` (7):
@@ -171,7 +171,7 @@ Accessor: `client.staking` · Source: `src/resources/staking.ts` · 12 operation
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1EthStakingWbethHistoryUnwrapHistoryResponse`
-- **Error**: `Staking.GetWbethUnwrapHistoryUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Staking.GetWbethUnwrapHistoryUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Staking.GetWbethUnwrapHistoryUserDataRequest` (7):
@@ -198,7 +198,7 @@ Accessor: `client.staking` · Source: `src/resources/staking.ts` · 12 operation
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1EthStakingWbethHistoryWrapHistoryResponse`
-- **Error**: `Staking.GetWbethWrapHistoryUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Staking.GetWbethWrapHistoryUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Staking.GetWbethWrapHistoryUserDataRequest` (7):
@@ -225,7 +225,7 @@ Accessor: `client.staking` · Source: `src/resources/staking.ts` · 12 operation
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1EthStakingEthQuotaResponse`
-- **Error**: `Staking.GetCurrentEthStakingQuotaUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Staking.GetCurrentEthStakingQuotaUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Staking.GetCurrentEthStakingQuotaUserDataRequest` (3):
@@ -247,8 +247,9 @@ Accessor: `client.staking` · Source: `src/resources/staking.ts` · 12 operation
 - **Wire**: `POST /sapi/v1/eth-staking/eth/redeem`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `SapiV1EthStakingEthRedeemResponse`
-- **Error**: `Staking.RedeemEthTradeError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Staking.RedeemEthTradeError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Staking.RedeemEthTradeRequest` (5):
@@ -272,8 +273,9 @@ Accessor: `client.staking` · Source: `src/resources/staking.ts` · 12 operation
 - **Wire**: `POST /sapi/v2/eth-staking/eth/stake`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `SapiV2EthStakingEthStakeResponse`
-- **Error**: `Staking.SubscribeEthStakingV2TradeError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Staking.SubscribeEthStakingV2TradeError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Staking.SubscribeEthStakingV2TradeRequest` (4):
@@ -296,8 +298,9 @@ Accessor: `client.staking` · Source: `src/resources/staking.ts` · 12 operation
 - **Wire**: `POST /sapi/v1/eth-staking/wbeth/wrap`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `SapiV1EthStakingWbethWrapResponse`
-- **Error**: `Staking.WrapBethTradeError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Staking.WrapBethTradeError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Staking.WrapBethTradeRequest` (4):

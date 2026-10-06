@@ -10,7 +10,7 @@ export type SapiV1MiningPaymentListResponse = {
 
 export const sapiV1MiningPaymentListResponseSchema: Schema<SapiV1MiningPaymentListResponse> =
   s.object<SapiV1MiningPaymentListResponse>({
-    code: s.number(),
+    code: s.int(),
     msg: s.string(),
     data: data13Schema,
   });

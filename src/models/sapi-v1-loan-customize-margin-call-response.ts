@@ -10,5 +10,5 @@ export type SapiV1LoanCustomizeMarginCallResponse = {
 export const sapiV1LoanCustomizeMarginCallResponseSchema: Schema<SapiV1LoanCustomizeMarginCallResponse> =
   s.object<SapiV1LoanCustomizeMarginCallResponse>({
     rows: s.array(s.lazy(() => row24Schema)),
-    total: s.number(),
+    total: s.int(),
   });

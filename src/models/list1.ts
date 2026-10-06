@@ -17,7 +17,7 @@ export type List1 = {
 
 export const list1Schema: Schema<List1> = s.object<List1>({
   quoteId: s.string(),
-  orderId: s.number(),
+  orderId: s.int(),
   orderStatus: s.string(),
   fromAsset: s.string(),
   fromAmount: s.string(),
@@ -25,6 +25,6 @@ export const list1Schema: Schema<List1> = s.object<List1>({
   toAmount: s.string(),
   ratio: s.string(),
   inverseRatio: s.string(),
-  createTime: s.number(),
-  expiredTimestamp: s.number(),
+  createTime: s.int(),
+  expiredTimestamp: s.int(),
 });

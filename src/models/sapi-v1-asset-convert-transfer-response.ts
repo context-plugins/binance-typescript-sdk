@@ -8,6 +8,6 @@ export type SapiV1AssetConvertTransferResponse = {
 
 export const sapiV1AssetConvertTransferResponseSchema: Schema<SapiV1AssetConvertTransferResponse> =
   s.object<SapiV1AssetConvertTransferResponse>({
-    tranId: s.number(),
+    tranId: s.int(),
     status: s.string(),
   });

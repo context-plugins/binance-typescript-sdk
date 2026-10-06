@@ -7,12 +7,14 @@ export type Row35 = {
   fromAmount: string;
   toAsset: string;
   toAmount: string;
+  /** BETH amount per 1 WBETH */
   exchangeRate: string;
+  /** PENDING, SUCCESS, FAILED */
   status: string;
 };
 
 export const row35Schema: Schema<Row35> = s.object<Row35>({
-  time: s.number(),
+  time: s.int(),
   fromAsset: s.string(),
   fromAmount: s.string(),
   toAsset: s.string(),

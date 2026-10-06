@@ -11,8 +11,8 @@ export type OrderResponseAck = {
 
 export const orderResponseAckSchema: Schema<OrderResponseAck> = s.object<OrderResponseAck>({
   symbol: s.string(),
-  orderId: s.number(),
-  orderListId: s.number(),
+  orderId: s.int(),
+  orderListId: s.int(),
   clientOrderId: s.string(),
-  transactTime: s.number(),
+  transactTime: s.int(),
 });

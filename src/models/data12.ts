@@ -10,6 +10,6 @@ export type Data12 = {
 
 export const data12Schema: Schema<Data12> = s.object<Data12>({
   workerDatas: s.array(s.lazy(() => workerDataSchema)),
-  totalNum: s.number(),
-  pageSize: s.number(),
+  totalNum: s.int(),
+  pageSize: s.int(),
 });

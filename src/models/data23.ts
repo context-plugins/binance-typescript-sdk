@@ -10,8 +10,8 @@ export type Data23 = {
 };
 
 export const data23Schema: Schema<Data23> = s.object<Data23>({
-  page: s.number(),
-  totalRecords: s.number(),
-  totalPageNum: s.number(),
+  page: s.int(),
+  totalRecords: s.int(),
+  totalPageNum: s.int(),
   data: s.array(s.lazy(() => data24Schema)),
 });

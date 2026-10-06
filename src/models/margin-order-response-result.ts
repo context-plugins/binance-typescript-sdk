@@ -20,9 +20,9 @@ export type MarginOrderResponseResult = {
 export const marginOrderResponseResultSchema: Schema<MarginOrderResponseResult> =
   s.object<MarginOrderResponseResult>({
     symbol: s.string(),
-    orderId: s.number(),
+    orderId: s.int(),
     clientOrderId: s.string(),
-    transactTime: s.number(),
+    transactTime: s.int(),
     price: s.string(),
     origQty: s.string(),
     executedQty: s.string(),

@@ -3,6 +3,7 @@ import type { Schema } from "../core/validation/schema.js";
 import { tokenSchema, type Token } from "./token.js";
 
 export type List3 = {
+  /** 0: purchase order, 1: sell order, 2: royalty income, 3: primary market order, 4: mint fee */
   orderNo: string;
   tokens: Token[];
   tradeTime: number;
@@ -13,7 +14,7 @@ export type List3 = {
 export const list3Schema: Schema<List3> = s.object<List3>({
   orderNo: s.string(),
   tokens: s.array(s.lazy(() => tokenSchema)),
-  tradeTime: s.number(),
+  tradeTime: s.int(),
   tradeAmount: s.string(),
   tradeCurrency: s.string(),
 });

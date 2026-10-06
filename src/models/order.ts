@@ -5,6 +5,7 @@ export type Order = {
   symbol: string;
   origClientOrderId: string;
   orderId: number;
+  /** Unless OCO, value will be -1 */
   orderListId: number;
   clientOrderId: string;
   transactTime: number;
@@ -22,10 +23,10 @@ export type Order = {
 export const orderSchema: Schema<Order> = s.object<Order>({
   symbol: s.string(),
   origClientOrderId: s.string(),
-  orderId: s.number(),
-  orderListId: s.number(),
+  orderId: s.int(),
+  orderListId: s.int(),
   clientOrderId: s.string(),
-  transactTime: s.number(),
+  transactTime: s.int(),
   price: s.string(),
   origQty: s.string(),
   executedQty: s.string(),

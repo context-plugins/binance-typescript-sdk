@@ -9,6 +9,6 @@ export type SapiV1AssetLedgerTransferCloudMiningQueryByPageResponse = {
 
 export const sapiV1AssetLedgerTransferCloudMiningQueryByPageResponseSchema: Schema<SapiV1AssetLedgerTransferCloudMiningQueryByPageResponse> =
   s.object<SapiV1AssetLedgerTransferCloudMiningQueryByPageResponse>({
-    total: s.number(),
+    total: s.int(),
     rows: s.array(s.lazy(() => row9Schema)),
   });

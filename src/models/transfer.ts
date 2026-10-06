@@ -15,6 +15,6 @@ export const transferSchema: Schema<Transfer> = s.object<Transfer>({
   to: s.string(),
   asset: s.string(),
   qty: s.string(),
-  tranId: s.number(),
-  time: s.number(),
+  tranId: s.int(),
+  time: s.int(),
 });

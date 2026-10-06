@@ -13,12 +13,12 @@ export type TradeInfoVo = {
 };
 
 export const tradeInfoVoSchema: Schema<TradeInfoVo> = s.object<TradeInfoVo>({
-  userId: s.optional(s.number()),
-  btc: s.optional(s.number()),
-  btcFutures: s.optional(s.number()),
-  btcMargin: s.optional(s.number()),
-  busd: s.optional(s.number()),
-  busdFutures: s.optional(s.number()),
-  busdMargin: s.optional(s.number()),
-  date: s.optional(s.number()),
+  userId: s.optional(s.int()),
+  btc: s.optional(s.float64()),
+  btcFutures: s.optional(s.float64()),
+  btcMargin: s.optional(s.float64()),
+  busd: s.optional(s.float64()),
+  busdFutures: s.optional(s.float64()),
+  busdMargin: s.optional(s.float64()),
+  date: s.optional(s.int()),
 });

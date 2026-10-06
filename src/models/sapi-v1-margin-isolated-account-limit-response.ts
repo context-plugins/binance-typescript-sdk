@@ -8,6 +8,6 @@ export type SapiV1MarginIsolatedAccountLimitResponse = {
 
 export const sapiV1MarginIsolatedAccountLimitResponseSchema: Schema<SapiV1MarginIsolatedAccountLimitResponse> =
   s.object<SapiV1MarginIsolatedAccountLimitResponse>({
-    enabledAccount: s.number(),
-    maxAccount: s.number(),
+    enabledAccount: s.int(),
+    maxAccount: s.int(),
   });

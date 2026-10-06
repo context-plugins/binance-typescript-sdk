@@ -4,7 +4,7 @@
 
 Accessor: `client.margin` · Source: `src/resources/margin.ts` · 48 operations · Request and error types: namespace `Margin`
 
-**Type sources**: every type an operation names, with the file that declares it and the schema value exported beside it. Import every name from `binance-public-spot-api`; the `Source` path is where to **read** the shape, never what to import. `ResponseError` and the runtime error family are excluded — see sdk-map.md.
+**Type sources**: every type an operation names, with the file that declares it and the schema value exported beside it. Import every name from `binance`; the `Source` path is where to **read** the shape, never what to import. `ApiError`, the runtime error family and the file vocabulary are excluded — see sdk-map.md.
 
 ### adjustCrossMarginMaxLeverageUserData
 
@@ -12,8 +12,9 @@ Accessor: `client.margin` · Source: `src/resources/margin.ts` · 48 operations 
 - **Wire**: `POST /sapi/v1/margin/max-leverage`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `SapiV1MarginMaxLeverageResponse`
-- **Error**: `Margin.AdjustCrossMarginMaxLeverageUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Margin.AdjustCrossMarginMaxLeverageUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Margin.AdjustCrossMarginMaxLeverageUserDataRequest` (4):
@@ -37,7 +38,7 @@ Accessor: `client.margin` · Source: `src/resources/margin.ts` · 48 operations 
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1MarginCrossMarginCollateralRatioResponse[]` — a bare `application/json` array; the success type *is* the array, not a wrapper model
-- **Error**: `Margin.CrossMarginCollateralRatioMarketDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Margin.CrossMarginCollateralRatioMarketDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 | Type | Schema value | Source |
@@ -51,8 +52,9 @@ Accessor: `client.margin` · Source: `src/resources/margin.ts` · 48 operations 
 - **Wire**: `DELETE /sapi/v1/margin/isolated/account`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `SapiV1MarginIsolatedAccountResponse`
-- **Error**: `Margin.DisableIsolatedMarginAccountTradeError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Margin.DisableIsolatedMarginAccountTradeError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Margin.DisableIsolatedMarginAccountTradeRequest` (4):
@@ -75,8 +77,9 @@ Accessor: `client.margin` · Source: `src/resources/margin.ts` · 48 operations 
 - **Wire**: `POST /sapi/v1/margin/isolated/account`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `SapiV1MarginIsolatedAccountResponse`
-- **Error**: `Margin.EnableIsolatedMarginAccountTradeError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Margin.EnableIsolatedMarginAccountTradeError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Margin.EnableIsolatedMarginAccountTradeRequest` (4):
@@ -100,7 +103,7 @@ Accessor: `client.margin` · Source: `src/resources/margin.ts` · 48 operations 
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1MarginAllPairsResponse[]` — a bare `application/json` array; the success type *is* the array, not a wrapper model
-- **Error**: `Margin.GetAllCrossMarginPairsMarketDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Margin.GetAllCrossMarginPairsMarketDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Margin.GetAllCrossMarginPairsMarketDataRequest` (1):
@@ -121,7 +124,7 @@ Accessor: `client.margin` · Source: `src/resources/margin.ts` · 48 operations 
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1MarginIsolatedAllPairsResponse[]` — a bare `application/json` array; the success type *is* the array, not a wrapper model
-- **Error**: `Margin.GetAllIsolatedMarginSymbolUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Margin.GetAllIsolatedMarginSymbolUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Margin.GetAllIsolatedMarginSymbolUserDataRequest` (4):
@@ -145,7 +148,7 @@ Accessor: `client.margin` · Source: `src/resources/margin.ts` · 48 operations 
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1MarginAllAssetsResponse[]` — a bare `application/json` array; the success type *is* the array, not a wrapper model
-- **Error**: `Margin.GetAllMarginAssetsMarketDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Margin.GetAllMarginAssetsMarketDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Margin.GetAllMarginAssetsMarketDataRequest` (1):
@@ -166,7 +169,7 @@ Accessor: `client.margin` · Source: `src/resources/margin.ts` · 48 operations 
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `BnbBurnStatus`
-- **Error**: `Margin.GetBnbBurnStatusUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Margin.GetBnbBurnStatusUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Margin.GetBnbBurnStatusUserDataRequest` (3):
@@ -189,7 +192,7 @@ Accessor: `client.margin` · Source: `src/resources/margin.ts` · 48 operations 
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1MarginTransferResponse`
-- **Error**: `Margin.GetCrossMarginTransferHistoryUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Margin.GetCrossMarginTransferHistoryUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Margin.GetCrossMarginTransferHistoryUserDataRequest` (10):
@@ -220,7 +223,7 @@ Accessor: `client.margin` · Source: `src/resources/margin.ts` · 48 operations 
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1MarginForceLiquidationRecResponse`
-- **Error**: `Margin.GetForceLiquidationRecordUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Margin.GetForceLiquidationRecordUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Margin.GetForceLiquidationRecordUserDataRequest` (8):
@@ -248,7 +251,7 @@ Accessor: `client.margin` · Source: `src/resources/margin.ts` · 48 operations 
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1MarginInterestHistoryResponse`
-- **Error**: `Margin.GetInterestHistoryUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Margin.GetInterestHistoryUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Margin.GetInterestHistoryUserDataRequest` (10):
@@ -278,7 +281,7 @@ Accessor: `client.margin` · Source: `src/resources/margin.ts` · 48 operations 
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1MarginExchangeSmallLiabilityResponse[]` — a bare `application/json` array; the success type *is* the array, not a wrapper model
-- **Error**: `Margin.GetSmallLiabilityExchangeCoinListUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Margin.GetSmallLiabilityExchangeCoinListUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Margin.GetSmallLiabilityExchangeCoinListUserDataRequest` (3):
@@ -301,7 +304,7 @@ Accessor: `client.margin` · Source: `src/resources/margin.ts` · 48 operations 
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1MarginExchangeSmallLiabilityHistoryResponse`
-- **Error**: `Margin.GetSmallLiabilityExchangeHistoryUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Margin.GetSmallLiabilityExchangeHistoryUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Margin.GetSmallLiabilityExchangeHistoryUserDataRequest` (7):
@@ -328,7 +331,7 @@ Accessor: `client.margin` · Source: `src/resources/margin.ts` · 48 operations 
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1MarginTradeCoeffResponse`
-- **Error**: `Margin.GetSummaryOfMarginAccountUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Margin.GetSummaryOfMarginAccountUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Margin.GetSummaryOfMarginAccountUserDataRequest` (4):
@@ -352,7 +355,7 @@ Accessor: `client.margin` · Source: `src/resources/margin.ts` · 48 operations 
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1MarginNextHourlyInterestRateResponse[]` — a bare `application/json` array; the success type *is* the array, not a wrapper model
-- **Error**: `Margin.GetAFutureHourlyInterestRateUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Margin.GetAFutureHourlyInterestRateUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Margin.GetAFutureHourlyInterestRateUserDataRequest` (5):
@@ -378,7 +381,7 @@ Accessor: `client.margin` · Source: `src/resources/margin.ts` · 48 operations 
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1MarginCapitalFlowResponse[]` — a bare `application/json` array; the success type *is* the array, not a wrapper model
-- **Error**: `Margin.GetCrossOrIsolatedMarginCapitalFlowUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Margin.GetCrossOrIsolatedMarginCapitalFlowUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Margin.GetCrossOrIsolatedMarginCapitalFlowUserDataRequest` (10):
@@ -409,7 +412,7 @@ Accessor: `client.margin` · Source: `src/resources/margin.ts` · 48 operations 
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1MarginDelistScheduleResponse[]` — a bare `application/json` array; the success type *is* the array, not a wrapper model
-- **Error**: `Margin.GetTokensOrSymbolsDelistScheduleForCrossMarginAndIsolatedMarginMarketDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Margin.GetTokensOrSymbolsDelistScheduleForCrossMarginAndIsolatedMarginMarketDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Margin.GetTokensOrSymbolsDelistScheduleForCrossMarginAndIsolatedMarginMarketDataRequest` (3):
@@ -431,8 +434,9 @@ Accessor: `client.margin` · Source: `src/resources/margin.ts` · 48 operations 
 - **Wire**: `DELETE /sapi/v1/margin/orderList`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `MarginOcoOrder`
-- **Error**: `Margin.MarginAccountCancelOcoTradeError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Margin.MarginAccountCancelOcoTradeError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Margin.MarginAccountCancelOcoTradeRequest` (8):
@@ -460,8 +464,9 @@ Accessor: `client.margin` · Source: `src/resources/margin.ts` · 48 operations 
 - **Wire**: `DELETE /sapi/v1/margin/order`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `MarginOrder`
-- **Error**: `Margin.MarginAccountCancelOrderTradeError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Margin.MarginAccountCancelOrderTradeError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Margin.MarginAccountCancelOrderTradeRequest` (8):
@@ -489,8 +494,9 @@ Accessor: `client.margin` · Source: `src/resources/margin.ts` · 48 operations 
 - **Wire**: `DELETE /sapi/v1/margin/openOrders`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `SapiV1MarginOpenOrdersResponse[]` — a bare `application/json` array; the success type *is* the array, not a wrapper model
-- **Error**: `Margin.MarginAccountCancelAllOpenOrdersOnASymbolTradeError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Margin.MarginAccountCancelAllOpenOrdersOnASymbolTradeError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Margin.MarginAccountCancelAllOpenOrdersOnASymbolTradeRequest` (5):
@@ -515,8 +521,9 @@ Accessor: `client.margin` · Source: `src/resources/margin.ts` · 48 operations 
 - **Wire**: `POST /sapi/v1/margin/order/oco`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `SapiV1MarginOrderOcoResponse`
-- **Error**: `Margin.MarginAccountNewOcoTradeError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Margin.MarginAccountNewOcoTradeError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Margin.MarginAccountNewOcoTradeRequest` (19):
@@ -560,8 +567,9 @@ Accessor: `client.margin` · Source: `src/resources/margin.ts` · 48 operations 
 - **Wire**: `POST /sapi/v1/margin/order/oto`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `SapiV1MarginOrderOtoResponse`
-- **Error**: `Margin.MarginAccountNewOtoTradeError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Margin.MarginAccountNewOtoTradeError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Margin.MarginAccountNewOtoTradeRequest` (25):
@@ -615,8 +623,9 @@ Accessor: `client.margin` · Source: `src/resources/margin.ts` · 48 operations 
 - **Wire**: `POST /sapi/v1/margin/order/otoco`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `SapiV1MarginOrderOtocoResponse`
-- **Error**: `Margin.MarginAccountNewOtocoTradeError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Margin.MarginAccountNewOtocoTradeError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Margin.MarginAccountNewOtocoTradeRequest` (32):
@@ -679,8 +688,9 @@ Accessor: `client.margin` · Source: `src/resources/margin.ts` · 48 operations 
 - **Wire**: `POST /sapi/v1/margin/order`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `SapiV1MarginOrderResponse`
-- **Error**: `Margin.MarginAccountNewOrderTradeError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Margin.MarginAccountNewOrderTradeError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Margin.MarginAccountNewOrderTradeRequest` (18):
@@ -725,7 +735,7 @@ Accessor: `client.margin` · Source: `src/resources/margin.ts` · 48 operations 
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1MarginInterestRateHistoryResponse[]` — a bare `application/json` array; the success type *is* the array, not a wrapper model
-- **Error**: `Margin.MarginInterestRateHistoryUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Margin.MarginInterestRateHistoryUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Margin.MarginInterestRateHistoryUserDataRequest` (7):
@@ -751,8 +761,9 @@ Accessor: `client.margin` · Source: `src/resources/margin.ts` · 48 operations 
 - **Wire**: `POST /sapi/v1/margin/borrow-repay`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `SapiV1MarginBorrowRepayResponse`
-- **Error**: `Margin.MarginAccountBorrowRepayMarginError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Margin.MarginAccountBorrowRepayMarginError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Margin.MarginAccountBorrowRepayMarginRequest` (8):
@@ -779,8 +790,9 @@ Accessor: `client.margin` · Source: `src/resources/margin.ts` · 48 operations 
 - **Wire**: `POST /sapi/v1/margin/manual-liquidation`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `SapiV1MarginManualLiquidationResponse[]` — a bare `application/json` array; the success type *is* the array, not a wrapper model
-- **Error**: `Margin.MarginManualLiquidationMarginError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Margin.MarginManualLiquidationMarginError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Margin.MarginManualLiquidationMarginRequest` (4):
@@ -805,7 +817,7 @@ Accessor: `client.margin` · Source: `src/resources/margin.ts` · 48 operations 
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1MarginAccountResponse`
-- **Error**: `Margin.QueryCrossMarginAccountDetailsUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Margin.QueryCrossMarginAccountDetailsUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Margin.QueryCrossMarginAccountDetailsUserDataRequest` (3):
@@ -828,7 +840,7 @@ Accessor: `client.margin` · Source: `src/resources/margin.ts` · 48 operations 
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1MarginCrossMarginDataResponse[]` — a bare `application/json` array; the success type *is* the array, not a wrapper model
-- **Error**: `Margin.QueryCrossMarginFeeDataUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Margin.QueryCrossMarginFeeDataUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Margin.QueryCrossMarginFeeDataUserDataRequest` (5):
@@ -853,7 +865,7 @@ Accessor: `client.margin` · Source: `src/resources/margin.ts` · 48 operations 
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1MarginRateLimitOrderResponse[]` — a bare `application/json` array; the success type *is* the array, not a wrapper model
-- **Error**: `Margin.QueryCurrentMarginOrderCountUsageTradeError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Margin.QueryCurrentMarginOrderCountUsageTradeError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Margin.QueryCurrentMarginOrderCountUsageTradeRequest` (5):
@@ -878,7 +890,7 @@ Accessor: `client.margin` · Source: `src/resources/margin.ts` · 48 operations 
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1MarginIsolatedAccountLimitResponse`
-- **Error**: `Margin.QueryEnabledIsolatedMarginAccountLimitUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Margin.QueryEnabledIsolatedMarginAccountLimitUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Margin.QueryEnabledIsolatedMarginAccountLimitUserDataRequest` (3):
@@ -901,7 +913,7 @@ Accessor: `client.margin` · Source: `src/resources/margin.ts` · 48 operations 
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `IsolatedMarginAccountInfo`
-- **Error**: `Margin.QueryIsolatedMarginAccountInfoUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Margin.QueryIsolatedMarginAccountInfoUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Margin.QueryIsolatedMarginAccountInfoUserDataRequest` (4):
@@ -925,7 +937,7 @@ Accessor: `client.margin` · Source: `src/resources/margin.ts` · 48 operations 
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1MarginIsolatedMarginDataResponse[]` — a bare `application/json` array; the success type *is* the array, not a wrapper model
-- **Error**: `Margin.QueryIsolatedMarginFeeDataUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Margin.QueryIsolatedMarginFeeDataUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Margin.QueryIsolatedMarginFeeDataUserDataRequest` (5):
@@ -950,7 +962,7 @@ Accessor: `client.margin` · Source: `src/resources/margin.ts` · 48 operations 
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1MarginIsolatedMarginTierResponse[]` — a bare `application/json` array; the success type *is* the array, not a wrapper model
-- **Error**: `Margin.QueryIsolatedMarginTierDataUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Margin.QueryIsolatedMarginTierDataUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Margin.QueryIsolatedMarginTierDataUserDataRequest` (5):
@@ -975,7 +987,7 @@ Accessor: `client.margin` · Source: `src/resources/margin.ts` · 48 operations 
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1MarginLeverageBracketResponse[]` — a bare `application/json` array; the success type *is* the array, not a wrapper model
-- **Error**: `Margin.QueryLiabilityCoinLeverageBracketInCrossMarginProModeMarketDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Margin.QueryLiabilityCoinLeverageBracketInCrossMarginProModeMarketDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 | Type | Schema value | Source |
@@ -990,7 +1002,7 @@ Accessor: `client.margin` · Source: `src/resources/margin.ts` · 48 operations 
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `MarginOrderDetail[]` — a bare `application/json` array; the success type *is* the array, not a wrapper model
-- **Error**: `Margin.QueryMarginAccountSAllOrdersUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Margin.QueryMarginAccountSAllOrdersUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Margin.QueryMarginAccountSAllOrdersUserDataRequest` (9):
@@ -1020,7 +1032,7 @@ Accessor: `client.margin` · Source: `src/resources/margin.ts` · 48 operations 
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1MarginOrderListResponse`
-- **Error**: `Margin.QueryMarginAccountSOcoUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Margin.QueryMarginAccountSOcoUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Margin.QueryMarginAccountSOcoUserDataRequest` (7):
@@ -1048,7 +1060,7 @@ Accessor: `client.margin` · Source: `src/resources/margin.ts` · 48 operations 
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1MarginOpenOrderListResponse[]` — a bare `application/json` array; the success type *is* the array, not a wrapper model
-- **Error**: `Margin.QueryMarginAccountSOpenOcoUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Margin.QueryMarginAccountSOpenOcoUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Margin.QueryMarginAccountSOpenOcoUserDataRequest` (5):
@@ -1074,7 +1086,7 @@ Accessor: `client.margin` · Source: `src/resources/margin.ts` · 48 operations 
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `MarginOrderDetail[]` — a bare `application/json` array; the success type *is* the array, not a wrapper model
-- **Error**: `Margin.QueryMarginAccountSOpenOrdersUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Margin.QueryMarginAccountSOpenOrdersUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Margin.QueryMarginAccountSOpenOrdersUserDataRequest` (5):
@@ -1100,7 +1112,7 @@ Accessor: `client.margin` · Source: `src/resources/margin.ts` · 48 operations 
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `MarginOrderDetail`
-- **Error**: `Margin.QueryMarginAccountSOrderUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Margin.QueryMarginAccountSOrderUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Margin.QueryMarginAccountSOrderUserDataRequest` (7):
@@ -1128,7 +1140,7 @@ Accessor: `client.margin` · Source: `src/resources/margin.ts` · 48 operations 
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `MarginTrade[]` — a bare `application/json` array; the success type *is* the array, not a wrapper model
-- **Error**: `Margin.QueryMarginAccountSTradeListUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Margin.QueryMarginAccountSTradeListUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Margin.QueryMarginAccountSTradeListUserDataRequest` (9):
@@ -1158,7 +1170,7 @@ Accessor: `client.margin` · Source: `src/resources/margin.ts` · 48 operations 
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1MarginAllOrderListResponse[]` — a bare `application/json` array; the success type *is* the array, not a wrapper model
-- **Error**: `Margin.QueryMarginAccountSAllOcoUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Margin.QueryMarginAccountSAllOcoUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Margin.QueryMarginAccountSAllOcoUserDataRequest` (9):
@@ -1188,7 +1200,7 @@ Accessor: `client.margin` · Source: `src/resources/margin.ts` · 48 operations 
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1MarginAvailableInventoryResponse`
-- **Error**: `Margin.QueryMarginAvailableInventoryUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Margin.QueryMarginAvailableInventoryUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Margin.QueryMarginAvailableInventoryUserDataRequest` (3):
@@ -1212,7 +1224,7 @@ Accessor: `client.margin` · Source: `src/resources/margin.ts` · 48 operations 
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1MarginPriceIndexResponse`
-- **Error**: `Margin.QueryMarginPriceIndexMarketDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Margin.QueryMarginPriceIndexMarketDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Margin.QueryMarginPriceIndexMarketDataRequest` (1):
@@ -1233,7 +1245,7 @@ Accessor: `client.margin` · Source: `src/resources/margin.ts` · 48 operations 
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1MarginMaxBorrowableResponse`
-- **Error**: `Margin.QueryMaxBorrowUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Margin.QueryMaxBorrowUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Margin.QueryMaxBorrowUserDataRequest` (5):
@@ -1258,7 +1270,7 @@ Accessor: `client.margin` · Source: `src/resources/margin.ts` · 48 operations 
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1MarginMaxTransferableResponse`
-- **Error**: `Margin.QueryMaxTransferOutAmountUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Margin.QueryMaxTransferOutAmountUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Margin.QueryMaxTransferOutAmountUserDataRequest` (5):
@@ -1283,7 +1295,7 @@ Accessor: `client.margin` · Source: `src/resources/margin.ts` · 48 operations 
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1MarginBorrowRepayResponse1`
-- **Error**: `Margin.QueryBorrowRepayRecordsInMarginAccountUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Margin.QueryBorrowRepayRecordsInMarginAccountUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Margin.QueryBorrowRepayRecordsInMarginAccountUserDataRequest` (11):
@@ -1313,8 +1325,9 @@ Accessor: `client.margin` · Source: `src/resources/margin.ts` · 48 operations 
 - **Wire**: `POST /sapi/v1/bnbBurn`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `BnbBurnStatus`
-- **Error**: `Margin.ToggleBnbBurnOnSpotTradeAndMarginInterestUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Margin.ToggleBnbBurnOnSpotTradeAndMarginInterestUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Margin.ToggleBnbBurnOnSpotTradeAndMarginInterestUserDataRequest` (5):

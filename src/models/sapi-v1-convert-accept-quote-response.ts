@@ -10,6 +10,6 @@ export type SapiV1ConvertAcceptQuoteResponse = {
 export const sapiV1ConvertAcceptQuoteResponseSchema: Schema<SapiV1ConvertAcceptQuoteResponse> =
   s.object<SapiV1ConvertAcceptQuoteResponse>({
     orderId: s.string(),
-    createTime: s.number(),
+    createTime: s.int(),
     orderStatus: s.string(),
   });

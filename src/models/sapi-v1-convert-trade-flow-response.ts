@@ -13,8 +13,8 @@ export type SapiV1ConvertTradeFlowResponse = {
 export const sapiV1ConvertTradeFlowResponseSchema: Schema<SapiV1ConvertTradeFlowResponse> =
   s.object<SapiV1ConvertTradeFlowResponse>({
     list: s.array(s.lazy(() => list2Schema)),
-    startTime: s.number(),
-    endTime: s.number(),
-    limit: s.number(),
+    startTime: s.int(),
+    endTime: s.int(),
+    limit: s.int(),
     moreData: s.boolean(),
   });

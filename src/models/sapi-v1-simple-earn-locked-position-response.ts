@@ -10,5 +10,5 @@ export type SapiV1SimpleEarnLockedPositionResponse = {
 export const sapiV1SimpleEarnLockedPositionResponseSchema: Schema<SapiV1SimpleEarnLockedPositionResponse> =
   s.object<SapiV1SimpleEarnLockedPositionResponse>({
     rows: s.array(s.lazy(() => row41Schema)),
-    total: s.number(),
+    total: s.int(),
   });

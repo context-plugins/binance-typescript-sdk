@@ -9,6 +9,6 @@ export type SapiV1AssetConvertTransferQueryByPageResponse = {
 
 export const sapiV1AssetConvertTransferQueryByPageResponseSchema: Schema<SapiV1AssetConvertTransferQueryByPageResponse> =
   s.object<SapiV1AssetConvertTransferQueryByPageResponse>({
-    total: s.number(),
+    total: s.int(),
     rows: s.array(s.lazy(() => row8Schema)),
   });

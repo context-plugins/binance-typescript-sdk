@@ -18,7 +18,7 @@ export type MarginOrder = {
 
 export const marginOrderSchema: Schema<MarginOrder> = s.object<MarginOrder>({
   symbol: s.string(),
-  orderId: s.number(),
+  orderId: s.int(),
   origClientOrderId: s.string(),
   clientOrderId: s.string(),
   price: s.string(),

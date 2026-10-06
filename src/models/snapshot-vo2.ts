@@ -11,5 +11,5 @@ export type SnapshotVo2 = {
 export const snapshotVo2Schema: Schema<SnapshotVo2> = s.object<SnapshotVo2>({
   data: data2Schema,
   type: s.string(),
-  updateTime: s.number(),
+  updateTime: s.int(),
 });

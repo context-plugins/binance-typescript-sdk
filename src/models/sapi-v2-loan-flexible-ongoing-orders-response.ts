@@ -9,6 +9,6 @@ export type SapiV2LoanFlexibleOngoingOrdersResponse = {
 
 export const sapiV2LoanFlexibleOngoingOrdersResponseSchema: Schema<SapiV2LoanFlexibleOngoingOrdersResponse> =
   s.object<SapiV2LoanFlexibleOngoingOrdersResponse>({
-    total: s.number(),
+    total: s.int(),
     rows: s.array(s.lazy(() => row25Schema)),
   });

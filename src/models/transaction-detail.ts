@@ -10,7 +10,7 @@ export type TransactionDetail = {
 
 export const transactionDetailSchema: Schema<TransactionDetail> = s.object<TransactionDetail>({
   asset: s.string(),
-  transactionDateTime: s.number(),
+  transactionDateTime: s.int(),
   rebalanceDirection: s.string(),
   rebalanceAmount: s.string(),
 });

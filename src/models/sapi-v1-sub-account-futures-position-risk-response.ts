@@ -3,7 +3,9 @@ import type { Schema } from "../core/validation/schema.js";
 
 export type SapiV1SubAccountFuturesPositionRiskResponse = {
   entryPrice: string;
+  /** current initial leverage */
   leverage: string;
+  /** notional value limit of current initial leverage */
   maxNotional: string;
   liquidationPrice: string;
   markPrice: string;

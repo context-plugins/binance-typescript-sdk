@@ -4,7 +4,7 @@
 
 Accessor: `client.subAccountApi` · Source: `src/resources/sub-account-api.ts` · 45 operations · Request and error types: namespace `SubAccountApi`
 
-**Type sources**: every type an operation names, with the file that declares it and the schema value exported beside it. Import every name from `binance-public-spot-api`; the `Source` path is where to **read** the shape, never what to import. `ResponseError` and the runtime error family are excluded — see sdk-map.md.
+**Type sources**: every type an operation names, with the file that declares it and the schema value exported beside it. Import every name from `binance`; the `Source` path is where to **read** the shape, never what to import. `ApiError`, the runtime error family and the file vocabulary are excluded — see sdk-map.md.
 
 ### createAVirtualSubAccountForMasterAccount
 
@@ -12,8 +12,9 @@ Accessor: `client.subAccountApi` · Source: `src/resources/sub-account-api.ts` �
 - **Wire**: `POST /sapi/v1/sub-account/virtualSubAccount`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `SapiV1SubAccountVirtualSubAccountResponse`
-- **Error**: `SubAccountApi.CreateAVirtualSubAccountForMasterAccountError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `SubAccountApi.CreateAVirtualSubAccountForMasterAccountError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `SubAccountApi.CreateAVirtualSubAccountForMasterAccountRequest` (4):
@@ -36,8 +37,9 @@ Accessor: `client.subAccountApi` · Source: `src/resources/sub-account-api.ts` �
 - **Wire**: `DELETE /sapi/v1/sub-account/subAccountApi/ipRestriction/ipList`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `SapiV1SubAccountSubAccountApiIpRestrictionIpListResponse`
-- **Error**: `SubAccountApi.DeleteIpListForASubAccountApiKeyForMasterAccountError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `SubAccountApi.DeleteIpListForASubAccountApiKeyForMasterAccountError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `SubAccountApi.DeleteIpListForASubAccountApiKeyForMasterAccountRequest` (7):
@@ -63,8 +65,9 @@ Accessor: `client.subAccountApi` · Source: `src/resources/sub-account-api.ts` �
 - **Wire**: `POST /sapi/v1/managed-subaccount/deposit`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `SapiV1ManagedSubaccountDepositResponse`
-- **Error**: `SubAccountApi.DepositAssetsIntoTheManagedSubAccountForInvestorMasterAccountError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `SubAccountApi.DepositAssetsIntoTheManagedSubAccountForInvestorMasterAccountError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `SubAccountApi.DepositAssetsIntoTheManagedSubAccountForInvestorMasterAccountRequest` (6):
@@ -90,7 +93,7 @@ Accessor: `client.subAccountApi` · Source: `src/resources/sub-account-api.ts` �
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1SubAccountFuturesAccountResponse`
-- **Error**: `SubAccountApi.DetailOnSubAccountSFuturesAccountForMasterAccountError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `SubAccountApi.DetailOnSubAccountSFuturesAccountForMasterAccountError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `SubAccountApi.DetailOnSubAccountSFuturesAccountForMasterAccountRequest` (4):
@@ -114,7 +117,7 @@ Accessor: `client.subAccountApi` · Source: `src/resources/sub-account-api.ts` �
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV2SubAccountFuturesAccountResponse`
-- **Error**: `SubAccountApi.DetailOnSubAccountSFuturesAccountV2ForMasterAccountError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `SubAccountApi.DetailOnSubAccountSFuturesAccountV2ForMasterAccountError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `SubAccountApi.DetailOnSubAccountSFuturesAccountV2ForMasterAccountRequest` (5):
@@ -139,7 +142,7 @@ Accessor: `client.subAccountApi` · Source: `src/resources/sub-account-api.ts` �
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1SubAccountMarginAccountResponse`
-- **Error**: `SubAccountApi.DetailOnSubAccountSMarginAccountForMasterAccountError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `SubAccountApi.DetailOnSubAccountSMarginAccountForMasterAccountError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `SubAccountApi.DetailOnSubAccountSMarginAccountForMasterAccountRequest` (4):
@@ -162,8 +165,9 @@ Accessor: `client.subAccountApi` · Source: `src/resources/sub-account-api.ts` �
 - **Wire**: `POST /sapi/v1/sub-account/futures/enable`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `SapiV1SubAccountFuturesEnableResponse`
-- **Error**: `SubAccountApi.EnableFuturesForSubAccountForMasterAccountError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `SubAccountApi.EnableFuturesForSubAccountForMasterAccountError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `SubAccountApi.EnableFuturesForSubAccountForMasterAccountRequest` (4):
@@ -186,8 +190,9 @@ Accessor: `client.subAccountApi` · Source: `src/resources/sub-account-api.ts` �
 - **Wire**: `POST /sapi/v1/sub-account/blvt/enable`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `SapiV1SubAccountBlvtEnableResponse`
-- **Error**: `SubAccountApi.EnableLeverageTokenForSubAccountForMasterAccountError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `SubAccountApi.EnableLeverageTokenForSubAccountForMasterAccountError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `SubAccountApi.EnableLeverageTokenForSubAccountForMasterAccountRequest` (5):
@@ -211,8 +216,9 @@ Accessor: `client.subAccountApi` · Source: `src/resources/sub-account-api.ts` �
 - **Wire**: `POST /sapi/v1/sub-account/margin/enable`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `SapiV1SubAccountMarginEnableResponse`
-- **Error**: `SubAccountApi.EnableMarginForSubAccountForMasterAccountError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `SubAccountApi.EnableMarginForSubAccountForMasterAccountError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `SubAccountApi.EnableMarginForSubAccountForMasterAccountRequest` (4):
@@ -235,8 +241,9 @@ Accessor: `client.subAccountApi` · Source: `src/resources/sub-account-api.ts` �
 - **Wire**: `POST /sapi/v1/sub-account/eoptions/enable`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `SapiV1SubAccountEoptionsEnableResponse`
-- **Error**: `SubAccountApi.EnableOptionsForSubAccountForMasterAccountUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `SubAccountApi.EnableOptionsForSubAccountForMasterAccountUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `SubAccountApi.EnableOptionsForSubAccountForMasterAccountUserDataRequest` (4):
@@ -260,7 +267,7 @@ Accessor: `client.subAccountApi` · Source: `src/resources/sub-account-api.ts` �
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1SubAccountFuturesPositionRiskResponse[]` — a bare `application/json` array; the success type *is* the array, not a wrapper model
-- **Error**: `SubAccountApi.FuturesPositionRiskOfSubAccountForMasterAccountError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `SubAccountApi.FuturesPositionRiskOfSubAccountForMasterAccountError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `SubAccountApi.FuturesPositionRiskOfSubAccountForMasterAccountRequest` (4):
@@ -284,7 +291,7 @@ Accessor: `client.subAccountApi` · Source: `src/resources/sub-account-api.ts` �
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV2SubAccountFuturesPositionRiskResponse`
-- **Error**: `SubAccountApi.FuturesPositionRiskOfSubAccountV2ForMasterAccountError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `SubAccountApi.FuturesPositionRiskOfSubAccountV2ForMasterAccountError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `SubAccountApi.FuturesPositionRiskOfSubAccountV2ForMasterAccountRequest` (5):
@@ -309,7 +316,7 @@ Accessor: `client.subAccountApi` · Source: `src/resources/sub-account-api.ts` �
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1SubAccountSubAccountApiIpRestrictionResponse`
-- **Error**: `SubAccountApi.GetIpRestrictionForASubAccountApiKeyForMasterAccountError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `SubAccountApi.GetIpRestrictionForASubAccountApiKeyForMasterAccountError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `SubAccountApi.GetIpRestrictionForASubAccountApiKeyForMasterAccountRequest` (5):
@@ -334,7 +341,7 @@ Accessor: `client.subAccountApi` · Source: `src/resources/sub-account-api.ts` �
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1ManagedSubaccountDepositAddressResponse`
-- **Error**: `SubAccountApi.GetManagedSubAccountDepositAddressForInvestorMasterAccountError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `SubAccountApi.GetManagedSubAccountDepositAddressForInvestorMasterAccountError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `SubAccountApi.GetManagedSubAccountDepositAddressForInvestorMasterAccountRequest` (6):
@@ -360,7 +367,7 @@ Accessor: `client.subAccountApi` · Source: `src/resources/sub-account-api.ts` �
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1ManagedSubaccountAssetResponse[]` — a bare `application/json` array; the success type *is* the array, not a wrapper model
-- **Error**: `SubAccountApi.ManagedSubAccountAssetDetailsForInvestorMasterAccountError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `SubAccountApi.ManagedSubAccountAssetDetailsForInvestorMasterAccountError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `SubAccountApi.ManagedSubAccountAssetDetailsForInvestorMasterAccountRequest` (4):
@@ -384,7 +391,7 @@ Accessor: `client.subAccountApi` · Source: `src/resources/sub-account-api.ts` �
 - **Auth**: none — public; no credential is sent
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1ManagedSubaccountAccountSnapshotResponse`
-- **Error**: `SubAccountApi.ManagedSubAccountSnapshotForInvestorMasterAccountError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `SubAccountApi.ManagedSubAccountSnapshotForInvestorMasterAccountError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `SubAccountApi.ManagedSubAccountSnapshotForInvestorMasterAccountRequest` (8):
@@ -411,8 +418,9 @@ Accessor: `client.subAccountApi` · Source: `src/resources/sub-account-api.ts` �
 - **Wire**: `POST /sapi/v1/sub-account/margin/transfer`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `SapiV1SubAccountMarginTransferResponse`
-- **Error**: `SubAccountApi.MarginTransferForSubAccountForMasterAccountError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `SubAccountApi.MarginTransferForSubAccountForMasterAccountError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `SubAccountApi.MarginTransferForSubAccountForMasterAccountRequest` (7):
@@ -439,7 +447,7 @@ Accessor: `client.subAccountApi` · Source: `src/resources/sub-account-api.ts` �
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1ManagedSubaccountQueryTransLogForInvestorResponse`
-- **Error**: `SubAccountApi.QueryManagedSubAccountTransferLogForInvestorMasterAccountError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `SubAccountApi.QueryManagedSubAccountTransferLogForInvestorMasterAccountError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `SubAccountApi.QueryManagedSubAccountTransferLogForInvestorMasterAccountRequest` (10):
@@ -469,7 +477,7 @@ Accessor: `client.subAccountApi` · Source: `src/resources/sub-account-api.ts` �
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1ManagedSubaccountQueryTransLogForTradeParentResponse`
-- **Error**: `SubAccountApi.QueryManagedSubAccountTransferLogForTradingTeamMasterAccountError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `SubAccountApi.QueryManagedSubAccountTransferLogForTradingTeamMasterAccountError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `SubAccountApi.QueryManagedSubAccountTransferLogForTradingTeamMasterAccountRequest` (10):
@@ -499,7 +507,7 @@ Accessor: `client.subAccountApi` · Source: `src/resources/sub-account-api.ts` �
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1ManagedSubaccountQueryTransLogResponse`
-- **Error**: `SubAccountApi.QueryManagedSubAccountTransferLogForTradingTeamSubAccountUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `SubAccountApi.QueryManagedSubAccountTransferLogForTradingTeamSubAccountUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `SubAccountApi.QueryManagedSubAccountTransferLogForTradingTeamSubAccountUserDataRequest` (9):
@@ -530,7 +538,7 @@ Accessor: `client.subAccountApi` · Source: `src/resources/sub-account-api.ts` �
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1ManagedSubaccountFetchFutureAssetResponse`
-- **Error**: `SubAccountApi.QueryManagedSubAccountFuturesAssetDetailsForInvestorMasterAccountError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `SubAccountApi.QueryManagedSubAccountFuturesAssetDetailsForInvestorMasterAccountError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `SubAccountApi.QueryManagedSubAccountFuturesAssetDetailsForInvestorMasterAccountRequest` (4):
@@ -554,7 +562,7 @@ Accessor: `client.subAccountApi` · Source: `src/resources/sub-account-api.ts` �
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1ManagedSubaccountInfoResponse`
-- **Error**: `SubAccountApi.QueryManagedSubAccountListForInvestorError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `SubAccountApi.QueryManagedSubAccountListForInvestorError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `SubAccountApi.QueryManagedSubAccountListForInvestorRequest` (6):
@@ -580,7 +588,7 @@ Accessor: `client.subAccountApi` · Source: `src/resources/sub-account-api.ts` �
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1ManagedSubaccountMarginAssetResponse`
-- **Error**: `SubAccountApi.QueryManagedSubAccountMarginAssetDetailsForInvestorMasterAccountError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `SubAccountApi.QueryManagedSubAccountMarginAssetDetailsForInvestorMasterAccountError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `SubAccountApi.QueryManagedSubAccountMarginAssetDetailsForInvestorMasterAccountRequest` (4):
@@ -604,7 +612,7 @@ Accessor: `client.subAccountApi` · Source: `src/resources/sub-account-api.ts` �
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV4SubAccountAssetsResponse`
-- **Error**: `SubAccountApi.QuerySubAccountAssetsForMasterAccountError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `SubAccountApi.QuerySubAccountAssetsForMasterAccountError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `SubAccountApi.QuerySubAccountAssetsForMasterAccountRequest` (4):
@@ -628,7 +636,7 @@ Accessor: `client.subAccountApi` · Source: `src/resources/sub-account-api.ts` �
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1SubAccountListResponse`
-- **Error**: `SubAccountApi.QuerySubAccountListForMasterAccountError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `SubAccountApi.QuerySubAccountListForMasterAccountError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `SubAccountApi.QuerySubAccountListForMasterAccountRequest` (7):
@@ -656,7 +664,7 @@ Accessor: `client.subAccountApi` · Source: `src/resources/sub-account-api.ts` �
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1SubAccountTransactionStatisticsResponse`
-- **Error**: `SubAccountApi.QuerySubAccountTransactionStatisticsForMasterAccountError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `SubAccountApi.QuerySubAccountTransactionStatisticsForMasterAccountError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `SubAccountApi.QuerySubAccountTransactionStatisticsForMasterAccountRequest` (4):
@@ -680,7 +688,7 @@ Accessor: `client.subAccountApi` · Source: `src/resources/sub-account-api.ts` �
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV3SubAccountAssetsResponse`
-- **Error**: `SubAccountApi.SubAccountAssetsForMasterAccountError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `SubAccountApi.SubAccountAssetsForMasterAccountError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `SubAccountApi.SubAccountAssetsForMasterAccountRequest` (4):
@@ -704,7 +712,7 @@ Accessor: `client.subAccountApi` · Source: `src/resources/sub-account-api.ts` �
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1CapitalDepositSubHisrecResponse[]` — a bare `application/json` array; the success type *is* the array, not a wrapper model
-- **Error**: `SubAccountApi.SubAccountDepositHistoryForMasterAccountError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `SubAccountApi.SubAccountDepositHistoryForMasterAccountError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `SubAccountApi.SubAccountDepositHistoryForMasterAccountRequest` (10):
@@ -733,8 +741,9 @@ Accessor: `client.subAccountApi` · Source: `src/resources/sub-account-api.ts` �
 - **Wire**: `POST /sapi/v1/sub-account/futures/internalTransfer`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `SapiV1SubAccountFuturesInternalTransferResponse1`
-- **Error**: `SubAccountApi.SubAccountFuturesAssetTransferForMasterAccountError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `SubAccountApi.SubAccountFuturesAssetTransferForMasterAccountError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `SubAccountApi.SubAccountFuturesAssetTransferForMasterAccountRequest` (8):
@@ -762,7 +771,7 @@ Accessor: `client.subAccountApi` · Source: `src/resources/sub-account-api.ts` �
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1SubAccountFuturesInternalTransferResponse`
-- **Error**: `SubAccountApi.SubAccountFuturesAssetTransferHistoryForMasterAccountError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `SubAccountApi.SubAccountFuturesAssetTransferHistoryForMasterAccountError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `SubAccountApi.SubAccountFuturesAssetTransferHistoryForMasterAccountRequest` (9):
@@ -791,7 +800,7 @@ Accessor: `client.subAccountApi` · Source: `src/resources/sub-account-api.ts` �
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1SubAccountSubTransferHistoryResponse[]` — a bare `application/json` array; the success type *is* the array, not a wrapper model
-- **Error**: `SubAccountApi.SubAccountSpotAssetTransferHistoryForMasterAccountError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `SubAccountApi.SubAccountSpotAssetTransferHistoryForMasterAccountError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `SubAccountApi.SubAccountSpotAssetTransferHistoryForMasterAccountRequest` (9):
@@ -820,7 +829,7 @@ Accessor: `client.subAccountApi` · Source: `src/resources/sub-account-api.ts` �
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1SubAccountSpotSummaryResponse`
-- **Error**: `SubAccountApi.SubAccountSpotAssetsSummaryForMasterAccountError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `SubAccountApi.SubAccountSpotAssetsSummaryForMasterAccountError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `SubAccountApi.SubAccountSpotAssetsSummaryForMasterAccountRequest` (6):
@@ -846,7 +855,7 @@ Accessor: `client.subAccountApi` · Source: `src/resources/sub-account-api.ts` �
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1CapitalDepositSubAddressResponse`
-- **Error**: `SubAccountApi.SubAccountSpotAssetsSummaryForMasterAccount2Error` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `SubAccountApi.SubAccountSpotAssetsSummaryForMasterAccount2Error` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `SubAccountApi.SubAccountSpotAssetsSummaryForMasterAccount2Request` (6):
@@ -872,7 +881,7 @@ Accessor: `client.subAccountApi` · Source: `src/resources/sub-account-api.ts` �
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1SubAccountTransferSubUserHistoryResponse[]` — a bare `application/json` array; the success type *is* the array, not a wrapper model
-- **Error**: `SubAccountApi.SubAccountTransferHistoryForSubAccountError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `SubAccountApi.SubAccountTransferHistoryForSubAccountError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `SubAccountApi.SubAccountTransferHistoryForSubAccountRequest` (8):
@@ -900,7 +909,7 @@ Accessor: `client.subAccountApi` · Source: `src/resources/sub-account-api.ts` �
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1SubAccountStatusResponse[]` — a bare `application/json` array; the success type *is* the array, not a wrapper model
-- **Error**: `SubAccountApi.SubAccountSStatusOnMarginFuturesForMasterAccountError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `SubAccountApi.SubAccountSStatusOnMarginFuturesForMasterAccountError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `SubAccountApi.SubAccountSStatusOnMarginFuturesForMasterAccountRequest` (4):
@@ -924,7 +933,7 @@ Accessor: `client.subAccountApi` · Source: `src/resources/sub-account-api.ts` �
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1SubAccountFuturesAccountSummaryResponse`
-- **Error**: `SubAccountApi.SummaryOfSubAccountSFuturesAccountForMasterAccountError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `SubAccountApi.SummaryOfSubAccountSFuturesAccountForMasterAccountError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `SubAccountApi.SummaryOfSubAccountSFuturesAccountForMasterAccountRequest` (3):
@@ -947,7 +956,7 @@ Accessor: `client.subAccountApi` · Source: `src/resources/sub-account-api.ts` �
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV2SubAccountFuturesAccountSummaryResponse`
-- **Error**: `SubAccountApi.SummaryOfSubAccountSFuturesAccountV2ForMasterAccountError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `SubAccountApi.SummaryOfSubAccountSFuturesAccountV2ForMasterAccountError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `SubAccountApi.SummaryOfSubAccountSFuturesAccountV2ForMasterAccountRequest` (6):
@@ -973,7 +982,7 @@ Accessor: `client.subAccountApi` · Source: `src/resources/sub-account-api.ts` �
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1SubAccountMarginAccountSummaryResponse`
-- **Error**: `SubAccountApi.SummaryOfSubAccountSMarginAccountForMasterAccountError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `SubAccountApi.SummaryOfSubAccountSMarginAccountForMasterAccountError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `SubAccountApi.SummaryOfSubAccountSMarginAccountForMasterAccountRequest` (3):
@@ -995,8 +1004,9 @@ Accessor: `client.subAccountApi` · Source: `src/resources/sub-account-api.ts` �
 - **Wire**: `POST /sapi/v1/sub-account/futures/transfer`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `SapiV1SubAccountFuturesTransferResponse`
-- **Error**: `SubAccountApi.TransferForSubAccountForMasterAccountError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `SubAccountApi.TransferForSubAccountForMasterAccountError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `SubAccountApi.TransferForSubAccountForMasterAccountRequest` (7):
@@ -1022,8 +1032,9 @@ Accessor: `client.subAccountApi` · Source: `src/resources/sub-account-api.ts` �
 - **Wire**: `POST /sapi/v1/sub-account/transfer/subToMaster`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `SapiV1SubAccountTransferSubToMasterResponse`
-- **Error**: `SubAccountApi.TransferToMasterForSubAccountError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `SubAccountApi.TransferToMasterForSubAccountError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `SubAccountApi.TransferToMasterForSubAccountRequest` (5):
@@ -1047,8 +1058,9 @@ Accessor: `client.subAccountApi` · Source: `src/resources/sub-account-api.ts` �
 - **Wire**: `POST /sapi/v1/sub-account/transfer/subToSub`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `SapiV1SubAccountTransferSubToSubResponse`
-- **Error**: `SubAccountApi.TransferToSubAccountOfSameMasterForSubAccountError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `SubAccountApi.TransferToSubAccountOfSameMasterForSubAccountError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `SubAccountApi.TransferToSubAccountOfSameMasterForSubAccountRequest` (6):
@@ -1073,8 +1085,9 @@ Accessor: `client.subAccountApi` · Source: `src/resources/sub-account-api.ts` �
 - **Wire**: `POST /sapi/v1/sub-account/universalTransfer`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `SapiV1SubAccountUniversalTransferResponse1`
-- **Error**: `SubAccountApi.UniversalTransferForMasterAccountError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `SubAccountApi.UniversalTransferForMasterAccountError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `SubAccountApi.UniversalTransferForMasterAccountRequest` (11):
@@ -1107,7 +1120,7 @@ Accessor: `client.subAccountApi` · Source: `src/resources/sub-account-api.ts` �
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1SubAccountUniversalTransferResponse[]` — a bare `application/json` array; the success type *is* the array, not a wrapper model
-- **Error**: `SubAccountApi.UniversalTransferHistoryForMasterAccountError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `SubAccountApi.UniversalTransferHistoryForMasterAccountError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `SubAccountApi.UniversalTransferHistoryForMasterAccountRequest` (10):
@@ -1136,8 +1149,9 @@ Accessor: `client.subAccountApi` · Source: `src/resources/sub-account-api.ts` �
 - **Wire**: `POST /sapi/v2/sub-account/subAccountApi/ipRestriction`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `SapiV2SubAccountSubAccountApiIpRestrictionResponse`
-- **Error**: `SubAccountApi.UpdateIpRestrictionForSubAccountApiKeyForMasterAccountError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `SubAccountApi.UpdateIpRestrictionForSubAccountApiKeyForMasterAccountError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `SubAccountApi.UpdateIpRestrictionForSubAccountApiKeyForMasterAccountRequest` (7):
@@ -1163,8 +1177,9 @@ Accessor: `client.subAccountApi` · Source: `src/resources/sub-account-api.ts` �
 - **Wire**: `POST /sapi/v1/managed-subaccount/withdraw`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `SapiV1ManagedSubaccountWithdrawResponse`
-- **Error**: `SubAccountApi.WithdrawlAssetsFromTheManagedSubAccountForInvestorMasterAccountError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `SubAccountApi.WithdrawlAssetsFromTheManagedSubAccountForInvestorMasterAccountError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `SubAccountApi.WithdrawlAssetsFromTheManagedSubAccountForInvestorMasterAccountRequest` (7):

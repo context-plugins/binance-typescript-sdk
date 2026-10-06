@@ -4,7 +4,7 @@
 
 Accessor: `client.vipLoans` · Source: `src/resources/vip-loans.ts` · 10 operations · Request and error types: namespace `VipLoans`
 
-**Type sources**: every type an operation names, with the file that declares it and the schema value exported beside it. Import every name from `binance-public-spot-api`; the `Source` path is where to **read** the shape, never what to import. `ResponseError` and the runtime error family are excluded — see sdk-map.md.
+**Type sources**: every type an operation names, with the file that declares it and the schema value exported beside it. Import every name from `binance`; the `Source` path is where to **read** the shape, never what to import. `ApiError`, the runtime error family and the file vocabulary are excluded — see sdk-map.md.
 
 ### checkLockedValueOfVipCollateralAccountUserData
 
@@ -13,7 +13,7 @@ Accessor: `client.vipLoans` · Source: `src/resources/vip-loans.ts` · 10 operat
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1LoanVipCollateralAccountResponse`
-- **Error**: `VipLoans.CheckLockedValueOfVipCollateralAccountUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `VipLoans.CheckLockedValueOfVipCollateralAccountUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `VipLoans.CheckLockedValueOfVipCollateralAccountUserDataRequest` (5):
@@ -38,7 +38,7 @@ Accessor: `client.vipLoans` · Source: `src/resources/vip-loans.ts` · 10 operat
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1LoanVipRequestInterestRateResponse[]` — a bare `application/json` array; the success type *is* the array, not a wrapper model
-- **Error**: `VipLoans.GetBorrowInterestRateUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `VipLoans.GetBorrowInterestRateUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `VipLoans.GetBorrowInterestRateUserDataRequest` (4):
@@ -62,7 +62,7 @@ Accessor: `client.vipLoans` · Source: `src/resources/vip-loans.ts` · 10 operat
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1LoanVipCollateralDataResponse`
-- **Error**: `VipLoans.GetCollateralAssetDataUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `VipLoans.GetCollateralAssetDataUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `VipLoans.GetCollateralAssetDataUserDataRequest` (4):
@@ -86,7 +86,7 @@ Accessor: `client.vipLoans` · Source: `src/resources/vip-loans.ts` · 10 operat
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1LoanVipLoanableDataResponse`
-- **Error**: `VipLoans.GetLoanableAssetsDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `VipLoans.GetLoanableAssetsDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `VipLoans.GetLoanableAssetsDataRequest` (5):
@@ -111,7 +111,7 @@ Accessor: `client.vipLoans` · Source: `src/resources/vip-loans.ts` · 10 operat
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1LoanVipOngoingOrdersResponse`
-- **Error**: `VipLoans.GetVipLoanOngoingOrdersUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `VipLoans.GetVipLoanOngoingOrdersUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `VipLoans.GetVipLoanOngoingOrdersUserDataRequest` (9):
@@ -140,7 +140,7 @@ Accessor: `client.vipLoans` · Source: `src/resources/vip-loans.ts` · 10 operat
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1LoanVipRepayHistoryResponse`
-- **Error**: `VipLoans.GetVipLoanRepaymentHistoryUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `VipLoans.GetVipLoanRepaymentHistoryUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `VipLoans.GetVipLoanRepaymentHistoryUserDataRequest` (9):
@@ -169,7 +169,7 @@ Accessor: `client.vipLoans` · Source: `src/resources/vip-loans.ts` · 10 operat
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1LoanVipRequestDataResponse`
-- **Error**: `VipLoans.QueryApplicationStatusUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `VipLoans.QueryApplicationStatusUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `VipLoans.QueryApplicationStatusUserDataRequest` (5):
@@ -193,8 +193,9 @@ Accessor: `client.vipLoans` · Source: `src/resources/vip-loans.ts` · 10 operat
 - **Wire**: `POST /sapi/v1/loan/vip/borrow`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `SapiV1LoanVipBorrowResponse`
-- **Error**: `VipLoans.VipLoanBorrowError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `VipLoans.VipLoanBorrowError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `VipLoans.VipLoanBorrowRequest` (10):
@@ -224,8 +225,9 @@ Accessor: `client.vipLoans` · Source: `src/resources/vip-loans.ts` · 10 operat
 - **Wire**: `POST /sapi/v1/loan/vip/renew`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `SapiV1LoanVipRenewResponse`
-- **Error**: `VipLoans.VipLoanRenewError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `VipLoans.VipLoanRenewError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `VipLoans.VipLoanRenewRequest` (5):
@@ -249,8 +251,9 @@ Accessor: `client.vipLoans` · Source: `src/resources/vip-loans.ts` · 10 operat
 - **Wire**: `POST /sapi/v1/loan/vip/repay`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `SapiV1LoanVipRepayResponse`
-- **Error**: `VipLoans.VipLoanRepayTradeError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `VipLoans.VipLoanRepayTradeError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `VipLoans.VipLoanRepayTradeRequest` (5):

@@ -2,11 +2,20 @@ import * as s from "../core/validation/index.js";
 import type { Schema } from "../core/validation/schema.js";
 
 export type SapiV1PortfolioAccountResponse = {
+  /** Classic Portfolio margin account maintenance margin rate */
   uniMmr: string;
+  /** Account equity, unit is USD */
   accountEquity: string;
+  /** Actual equity, unit is USD */
   actualEquity: string;
+  /** Classic Portfolio margin account maintenance margin, unit is USD */
   accountMaintMargin: string;
+  /**
+   * Classic Portfolio margin account status:"NORMAL", "MARGIN_CALL", "SUPPLY_MARGIN",
+   * "REDUCE_ONLY", "ACTIVE_LIQUIDATION", "FORCE_LIQUIDATION", "BANKRUPTED"
+   */
   accountStatus: string;
+  /** PM_1 for classic PM, PM_2 for PM */
   accountType: string;
 };
 

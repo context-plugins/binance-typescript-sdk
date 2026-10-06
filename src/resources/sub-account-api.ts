@@ -1,9 +1,10 @@
 import type { AuthSchemes } from "../auth-schemes.js";
+import { ApiError, type Declared, type ErrorDecoders, type ErrorPayload } from "../core/api-error.js";
 import type { ApiPromise } from "../core/api-promise.js";
 import type { RequestOptions } from "../core/api-request.js";
 import { noneAuth } from "../core/auth/schemes.js";
 import type { RawClient } from "../core/raw-client.js";
-import { ResponseError, type Declared, type ErrorDecoders } from "../core/response-error.js";
+import { uuid } from "../core/uuid.js";
 import * as s from "../core/validation/index.js";
 import { errorSchema, type Error } from "../models/error.js";
 import { fromAccountTypeSchema, type FromAccountType } from "../models/from-account-type.js";
@@ -196,6 +197,9 @@ import {
 } from "../models/unions/sapi-v2-sub-account-futures-position-risk-response.js";
 import type { Servers } from "../servers.js";
 
+/**
+ * Sub-account Endpoints
+ */
 export class SubAccountApi {
   readonly #rawClient: RawClient;
   readonly #servers: Servers;
@@ -207,6 +211,24 @@ export class SubAccountApi {
     this.#auth = auth;
   }
 
+  /**
+   * Create a Virtual Sub-account(For Master Account)
+   *
+   * @remarks
+   * - This request will generate a virtual sub account under your master account.
+   * - You need to enable "trade" option for the api key which requests this endpoint.
+   *
+   * Weight(IP): 1
+   *
+   * @returns Return the created virtual email
+   *
+   * @throws {@link SubAccountApi.CreateAVirtualSubAccountForMasterAccountError} when the API
+   * answers with an error status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   createAVirtualSubAccountForMasterAccount(
     request: SubAccountApi.CreateAVirtualSubAccountForMasterAccountRequest,
     options?: RequestOptions,
@@ -217,14 +239,16 @@ export class SubAccountApi {
     return this.#rawClient.execute(
       {
         method: "POST",
-        url: this.#servers.default("/sapi/v1/sub-account/virtualSubAccount"),
+        urlTemplate: this.#servers.default("/sapi/v1/sub-account/virtualSubAccount"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
           { name: "subAccountString", value: request.subAccountString, schema: s.string() },
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [{ name: "Idempotency-Key", value: uuid(), schema: s.string() }],
         body: { kind: "empty" },
       },
       {
@@ -235,6 +259,21 @@ export class SubAccountApi {
     );
   }
 
+  /**
+   * Delete IP List for a Sub-account API Key (For Master Account)
+   *
+   * @remarks
+   * Weight(UID): 3000
+   *
+   * @returns Delete IP information
+   *
+   * @throws {@link SubAccountApi.DeleteIpListForASubAccountApiKeyForMasterAccountError} when the
+   * API answers with an error status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   deleteIpListForASubAccountApiKeyForMasterAccount(
     request: SubAccountApi.DeleteIpListForASubAccountApiKeyForMasterAccountRequest,
     options?: RequestOptions,
@@ -245,17 +284,19 @@ export class SubAccountApi {
     return this.#rawClient.execute(
       {
         method: "DELETE",
-        url: this.#servers.default("/sapi/v1/sub-account/subAccountApi/ipRestriction/ipList"),
+        urlTemplate: this.#servers.default("/sapi/v1/sub-account/subAccountApi/ipRestriction/ipList"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
           { name: "email", value: request.email, schema: s.string() },
           { name: "subAccountApiKey", value: request.subAccountApiKey, schema: s.string() },
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
           { name: "ipAddress", value: request.ipAddress, schema: s.optional(s.string()) },
           { name: "thirdPartyName", value: request.thirdPartyName, schema: s.optional(s.string()) },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [{ name: "Idempotency-Key", value: uuid(), schema: s.string() }],
         body: { kind: "empty" },
       },
       {
@@ -266,6 +307,22 @@ export class SubAccountApi {
     );
   }
 
+  /**
+   * Deposit assets into the managed sub-account(For Investor Master Account)
+   *
+   * @remarks
+   * Weight(IP): 1
+   *
+   * @returns Transfer id
+   *
+   * @throws {@link
+   * SubAccountApi.DepositAssetsIntoTheManagedSubAccountForInvestorMasterAccountError} when the API
+   * answers with an error status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   depositAssetsIntoTheManagedSubAccountForInvestorMasterAccount(
     request: SubAccountApi.DepositAssetsIntoTheManagedSubAccountForInvestorMasterAccountRequest,
     options?: RequestOptions,
@@ -276,16 +333,18 @@ export class SubAccountApi {
     return this.#rawClient.execute(
       {
         method: "POST",
-        url: this.#servers.default("/sapi/v1/managed-subaccount/deposit"),
+        urlTemplate: this.#servers.default("/sapi/v1/managed-subaccount/deposit"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
           { name: "toEmail", value: request.toEmail, schema: s.string() },
           { name: "asset", value: request.asset, schema: s.string() },
-          { name: "amount", value: request.amount, schema: s.number() },
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "amount", value: request.amount, schema: s.float64() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [{ name: "Idempotency-Key", value: uuid(), schema: s.string() }],
         body: { kind: "empty" },
       },
       {
@@ -296,6 +355,21 @@ export class SubAccountApi {
     );
   }
 
+  /**
+   * Detail on Sub-account's Futures Account (For Master Account)
+   *
+   * @remarks
+   * Weight(IP): 10
+   *
+   * @returns Futures account details
+   *
+   * @throws {@link SubAccountApi.DetailOnSubAccountSFuturesAccountForMasterAccountError} when the
+   * API answers with an error status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   detailOnSubAccountSFuturesAccountForMasterAccount(
     request: SubAccountApi.DetailOnSubAccountSFuturesAccountForMasterAccountRequest,
     options?: RequestOptions,
@@ -306,14 +380,16 @@ export class SubAccountApi {
     return this.#rawClient.execute(
       {
         method: "GET",
-        url: this.#servers.default("/sapi/v1/sub-account/futures/account"),
+        urlTemplate: this.#servers.default("/sapi/v1/sub-account/futures/account"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
           { name: "email", value: request.email, schema: s.string() },
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [],
         body: { kind: "empty" },
       },
       {
@@ -324,6 +400,21 @@ export class SubAccountApi {
     );
   }
 
+  /**
+   * Detail on Sub-account's Futures Account V2 (For Master Account)
+   *
+   * @remarks
+   * Weight(IP): 1
+   *
+   * @returns USDT or COIN Margined Futures Details
+   *
+   * @throws {@link SubAccountApi.DetailOnSubAccountSFuturesAccountV2ForMasterAccountError} when the
+   * API answers with an error status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   detailOnSubAccountSFuturesAccountV2ForMasterAccount(
     request: SubAccountApi.DetailOnSubAccountSFuturesAccountV2ForMasterAccountRequest,
     options?: RequestOptions,
@@ -334,15 +425,17 @@ export class SubAccountApi {
     return this.#rawClient.execute(
       {
         method: "GET",
-        url: this.#servers.default("/sapi/v2/sub-account/futures/account"),
+        urlTemplate: this.#servers.default("/sapi/v2/sub-account/futures/account"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
           { name: "email", value: request.email, schema: s.string() },
-          { name: "futuresType", value: request.futuresType, schema: s.number() },
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "futuresType", value: request.futuresType, schema: s.int() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [],
         body: { kind: "empty" },
       },
       {
@@ -353,6 +446,21 @@ export class SubAccountApi {
     );
   }
 
+  /**
+   * Detail on Sub-account's Margin Account (For Master Account)
+   *
+   * @remarks
+   * Weight(IP): 10
+   *
+   * @returns Margin sub-account details
+   *
+   * @throws {@link SubAccountApi.DetailOnSubAccountSMarginAccountForMasterAccountError} when the
+   * API answers with an error status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   detailOnSubAccountSMarginAccountForMasterAccount(
     request: SubAccountApi.DetailOnSubAccountSMarginAccountForMasterAccountRequest,
     options?: RequestOptions,
@@ -363,14 +471,16 @@ export class SubAccountApi {
     return this.#rawClient.execute(
       {
         method: "GET",
-        url: this.#servers.default("/sapi/v1/sub-account/margin/account"),
+        urlTemplate: this.#servers.default("/sapi/v1/sub-account/margin/account"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
           { name: "email", value: request.email, schema: s.string() },
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [],
         body: { kind: "empty" },
       },
       {
@@ -381,6 +491,21 @@ export class SubAccountApi {
     );
   }
 
+  /**
+   * Enable Futures for Sub-account (For Master Account)
+   *
+   * @remarks
+   * Weight(IP): 1
+   *
+   * @returns Futures status
+   *
+   * @throws {@link SubAccountApi.EnableFuturesForSubAccountForMasterAccountError} when the API
+   * answers with an error status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   enableFuturesForSubAccountForMasterAccount(
     request: SubAccountApi.EnableFuturesForSubAccountForMasterAccountRequest,
     options?: RequestOptions,
@@ -391,14 +516,16 @@ export class SubAccountApi {
     return this.#rawClient.execute(
       {
         method: "POST",
-        url: this.#servers.default("/sapi/v1/sub-account/futures/enable"),
+        urlTemplate: this.#servers.default("/sapi/v1/sub-account/futures/enable"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
           { name: "email", value: request.email, schema: s.string() },
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [{ name: "Idempotency-Key", value: uuid(), schema: s.string() }],
         body: { kind: "empty" },
       },
       {
@@ -409,6 +536,21 @@ export class SubAccountApi {
     );
   }
 
+  /**
+   * Enable Leverage Token for Sub-account (For Master Account)
+   *
+   * @remarks
+   * Weight(IP): 1
+   *
+   * @returns BLVT status
+   *
+   * @throws {@link SubAccountApi.EnableLeverageTokenForSubAccountForMasterAccountError} when the
+   * API answers with an error status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   enableLeverageTokenForSubAccountForMasterAccount(
     request: SubAccountApi.EnableLeverageTokenForSubAccountForMasterAccountRequest,
     options?: RequestOptions,
@@ -419,15 +561,17 @@ export class SubAccountApi {
     return this.#rawClient.execute(
       {
         method: "POST",
-        url: this.#servers.default("/sapi/v1/sub-account/blvt/enable"),
+        urlTemplate: this.#servers.default("/sapi/v1/sub-account/blvt/enable"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
           { name: "email", value: request.email, schema: s.string() },
           { name: "enableBlvt", value: request.enableBlvt, schema: s.boolean() },
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [{ name: "Idempotency-Key", value: uuid(), schema: s.string() }],
         body: { kind: "empty" },
       },
       {
@@ -438,6 +582,21 @@ export class SubAccountApi {
     );
   }
 
+  /**
+   * Enable Margin for Sub-account (For Master Account)
+   *
+   * @remarks
+   * Weight(IP): 1
+   *
+   * @returns Margin status
+   *
+   * @throws {@link SubAccountApi.EnableMarginForSubAccountForMasterAccountError} when the API
+   * answers with an error status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   enableMarginForSubAccountForMasterAccount(
     request: SubAccountApi.EnableMarginForSubAccountForMasterAccountRequest,
     options?: RequestOptions,
@@ -448,14 +607,16 @@ export class SubAccountApi {
     return this.#rawClient.execute(
       {
         method: "POST",
-        url: this.#servers.default("/sapi/v1/sub-account/margin/enable"),
+        urlTemplate: this.#servers.default("/sapi/v1/sub-account/margin/enable"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
           { name: "email", value: request.email, schema: s.string() },
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [{ name: "Idempotency-Key", value: uuid(), schema: s.string() }],
         body: { kind: "empty" },
       },
       {
@@ -466,6 +627,23 @@ export class SubAccountApi {
     );
   }
 
+  /**
+   * Enable Options for Sub-account (For Master Account)(USER_DATA)
+   *
+   * @remarks
+   * Enable Options for Sub-account (For Master Account).
+   *
+   * Weight(IP): 1
+   *
+   * @returns Sub account EOptions status
+   *
+   * @throws {@link SubAccountApi.EnableOptionsForSubAccountForMasterAccountUserDataError} when the
+   * API answers with an error status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   enableOptionsForSubAccountForMasterAccountUserData(
     request: SubAccountApi.EnableOptionsForSubAccountForMasterAccountUserDataRequest,
     options?: RequestOptions,
@@ -476,14 +654,16 @@ export class SubAccountApi {
     return this.#rawClient.execute(
       {
         method: "POST",
-        url: this.#servers.default("/sapi/v1/sub-account/eoptions/enable"),
+        urlTemplate: this.#servers.default("/sapi/v1/sub-account/eoptions/enable"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
           { name: "email", value: request.email, schema: s.string() },
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [{ name: "Idempotency-Key", value: uuid(), schema: s.string() }],
         body: { kind: "empty" },
       },
       {
@@ -494,6 +674,21 @@ export class SubAccountApi {
     );
   }
 
+  /**
+   * Futures Position-Risk of Sub-account (For Master Account)
+   *
+   * @remarks
+   * Weight(IP): 10
+   *
+   * @returns Futures account summary
+   *
+   * @throws {@link SubAccountApi.FuturesPositionRiskOfSubAccountForMasterAccountError} when the API
+   * answers with an error status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   futuresPositionRiskOfSubAccountForMasterAccount(
     request: SubAccountApi.FuturesPositionRiskOfSubAccountForMasterAccountRequest,
     options?: RequestOptions,
@@ -504,14 +699,16 @@ export class SubAccountApi {
     return this.#rawClient.execute(
       {
         method: "GET",
-        url: this.#servers.default("/sapi/v1/sub-account/futures/positionRisk"),
+        urlTemplate: this.#servers.default("/sapi/v1/sub-account/futures/positionRisk"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
           { name: "email", value: request.email, schema: s.string() },
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [],
         body: { kind: "empty" },
       },
       {
@@ -525,6 +722,21 @@ export class SubAccountApi {
     );
   }
 
+  /**
+   * Futures Position-Risk of Sub-account V2 (For Master Account)
+   *
+   * @remarks
+   * Weight(IP): 1
+   *
+   * @returns USDT or COIN Margined Futures Position Risk
+   *
+   * @throws {@link SubAccountApi.FuturesPositionRiskOfSubAccountV2ForMasterAccountError} when the
+   * API answers with an error status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   futuresPositionRiskOfSubAccountV2ForMasterAccount(
     request: SubAccountApi.FuturesPositionRiskOfSubAccountV2ForMasterAccountRequest,
     options?: RequestOptions,
@@ -535,15 +747,17 @@ export class SubAccountApi {
     return this.#rawClient.execute(
       {
         method: "GET",
-        url: this.#servers.default("/sapi/v2/sub-account/futures/positionRisk"),
+        urlTemplate: this.#servers.default("/sapi/v2/sub-account/futures/positionRisk"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
           { name: "email", value: request.email, schema: s.string() },
-          { name: "futuresType", value: request.futuresType, schema: s.number() },
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "futuresType", value: request.futuresType, schema: s.int() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [],
         body: { kind: "empty" },
       },
       {
@@ -554,6 +768,21 @@ export class SubAccountApi {
     );
   }
 
+  /**
+   * Get IP Restriction for a Sub-account API Key (For Master Account)
+   *
+   * @remarks
+   * Weight(UID): 3000
+   *
+   * @returns IP Restriction information
+   *
+   * @throws {@link SubAccountApi.GetIpRestrictionForASubAccountApiKeyForMasterAccountError} when
+   * the API answers with an error status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   getIpRestrictionForASubAccountApiKeyForMasterAccount(
     request: SubAccountApi.GetIpRestrictionForASubAccountApiKeyForMasterAccountRequest,
     options?: RequestOptions,
@@ -564,15 +793,17 @@ export class SubAccountApi {
     return this.#rawClient.execute(
       {
         method: "GET",
-        url: this.#servers.default("/sapi/v1/sub-account/subAccountApi/ipRestriction"),
+        urlTemplate: this.#servers.default("/sapi/v1/sub-account/subAccountApi/ipRestriction"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
           { name: "email", value: request.email, schema: s.string() },
           { name: "subAccountApiKey", value: request.subAccountApiKey, schema: s.string() },
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [],
         body: { kind: "empty" },
       },
       {
@@ -583,6 +814,23 @@ export class SubAccountApi {
     );
   }
 
+  /**
+   * Get Managed Sub-account Deposit Address (For Investor Master Account)
+   *
+   * @remarks
+   * Get investor's managed sub-account deposit address
+   *
+   * Weight(UID): 1
+   *
+   * @returns Managed sub deposit address
+   *
+   * @throws {@link SubAccountApi.GetManagedSubAccountDepositAddressForInvestorMasterAccountError}
+   * when the API answers with an error status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   getManagedSubAccountDepositAddressForInvestorMasterAccount(
     request: SubAccountApi.GetManagedSubAccountDepositAddressForInvestorMasterAccountRequest,
     options?: RequestOptions,
@@ -593,16 +841,18 @@ export class SubAccountApi {
     return this.#rawClient.execute(
       {
         method: "GET",
-        url: this.#servers.default("/sapi/v1/managed-subaccount/deposit/address"),
+        urlTemplate: this.#servers.default("/sapi/v1/managed-subaccount/deposit/address"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
           { name: "email", value: request.email, schema: s.string() },
           { name: "coin", value: request.coin, schema: s.string() },
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
           { name: "network", value: request.network, schema: s.optional(s.string()) },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [],
         body: { kind: "empty" },
       },
       {
@@ -613,6 +863,21 @@ export class SubAccountApi {
     );
   }
 
+  /**
+   * Managed sub-account asset details(For Investor Master Account)
+   *
+   * @remarks
+   * Weight(IP): 1
+   *
+   * @returns List of asset details
+   *
+   * @throws {@link SubAccountApi.ManagedSubAccountAssetDetailsForInvestorMasterAccountError} when
+   * the API answers with an error status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   managedSubAccountAssetDetailsForInvestorMasterAccount(
     request: SubAccountApi.ManagedSubAccountAssetDetailsForInvestorMasterAccountRequest,
     options?: RequestOptions,
@@ -623,14 +888,16 @@ export class SubAccountApi {
     return this.#rawClient.execute(
       {
         method: "GET",
-        url: this.#servers.default("/sapi/v1/managed-subaccount/asset"),
+        urlTemplate: this.#servers.default("/sapi/v1/managed-subaccount/asset"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
           { name: "email", value: request.email, schema: s.string() },
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [],
         body: { kind: "empty" },
       },
       {
@@ -641,6 +908,25 @@ export class SubAccountApi {
     );
   }
 
+  /**
+   * Managed sub-account snapshot (For Investor Master Account)
+   *
+   * @remarks
+   * - The query time period must be less then 30 days
+   * - Support query within the last one month only
+   * - If `startTime` and `endTime` not sent, return records of the last 7 days by default
+   *
+   * Weight(IP): 2400
+   *
+   * @returns Sub-account spot snapshot
+   *
+   * @throws {@link SubAccountApi.ManagedSubAccountSnapshotForInvestorMasterAccountError} when the
+   * API answers with an error status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   managedSubAccountSnapshotForInvestorMasterAccount(
     request: SubAccountApi.ManagedSubAccountSnapshotForInvestorMasterAccountRequest,
     options?: RequestOptions,
@@ -651,18 +937,20 @@ export class SubAccountApi {
     return this.#rawClient.execute(
       {
         method: "GET",
-        url: this.#servers.default("/sapi/v1/managed-subaccount/accountSnapshot"),
+        urlTemplate: this.#servers.default("/sapi/v1/managed-subaccount/accountSnapshot"),
         auth: noneAuth,
+        pathParams: [],
         query: [
           { name: "email", value: request.email, schema: s.string() },
           { name: "type", value: request.type, schema: s.string() },
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
-          { name: "startTime", value: request.startTime, schema: s.optional(s.number()) },
-          { name: "endTime", value: request.endTime, schema: s.optional(s.number()) },
-          { name: "limit", value: request.limit, schema: s.optional(s.number()) },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "startTime", value: request.startTime, schema: s.optional(s.int()) },
+          { name: "endTime", value: request.endTime, schema: s.optional(s.int()) },
+          { name: "limit", value: request.limit, schema: s.optional(s.int()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [],
         body: { kind: "empty" },
       },
       {
@@ -673,6 +961,21 @@ export class SubAccountApi {
     );
   }
 
+  /**
+   * Margin Transfer for Sub-account (For Master Account)
+   *
+   * @remarks
+   * Weight(IP): 1
+   *
+   * @returns Transfer id
+   *
+   * @throws {@link SubAccountApi.MarginTransferForSubAccountForMasterAccountError} when the API
+   * answers with an error status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   marginTransferForSubAccountForMasterAccount(
     request: SubAccountApi.MarginTransferForSubAccountForMasterAccountRequest,
     options?: RequestOptions,
@@ -683,17 +986,19 @@ export class SubAccountApi {
     return this.#rawClient.execute(
       {
         method: "POST",
-        url: this.#servers.default("/sapi/v1/sub-account/margin/transfer"),
+        urlTemplate: this.#servers.default("/sapi/v1/sub-account/margin/transfer"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
           { name: "email", value: request.email, schema: s.string() },
           { name: "asset", value: request.asset, schema: s.string() },
-          { name: "amount", value: request.amount, schema: s.number() },
-          { name: "type", value: request.type, schema: s.number() },
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "amount", value: request.amount, schema: s.float64() },
+          { name: "type", value: request.type, schema: s.int() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [{ name: "Idempotency-Key", value: uuid(), schema: s.string() }],
         body: { kind: "empty" },
       },
       {
@@ -704,6 +1009,26 @@ export class SubAccountApi {
     );
   }
 
+  /**
+   * Query Managed Sub Account Transfer Log (For Investor Master Account)
+   *
+   * @remarks
+   * Investor can use this api to query managed sub account transfer log. This endpoint is available
+   * for investor of Managed Sub-Account. A Managed Sub-Account is an account type for investors who
+   * value flexibility in asset allocation and account application, while delegating trades to a
+   * professional trading team.
+   *
+   * Weight(IP): 1
+   *
+   * @returns Managed sub account transfer logs (for invest account)
+   *
+   * @throws {@link SubAccountApi.QueryManagedSubAccountTransferLogForInvestorMasterAccountError}
+   * when the API answers with an error status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   queryManagedSubAccountTransferLogForInvestorMasterAccount(
     request: SubAccountApi.QueryManagedSubAccountTransferLogForInvestorMasterAccountRequest,
     options?: RequestOptions,
@@ -714,24 +1039,26 @@ export class SubAccountApi {
     return this.#rawClient.execute(
       {
         method: "GET",
-        url: this.#servers.default("/sapi/v1/managed-subaccount/queryTransLogForInvestor"),
+        urlTemplate: this.#servers.default("/sapi/v1/managed-subaccount/queryTransLogForInvestor"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
           { name: "email", value: request.email, schema: s.string() },
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
-          { name: "startTime", value: request.startTime, schema: s.optional(s.number()) },
-          { name: "endTime", value: request.endTime, schema: s.optional(s.number()) },
-          { name: "page", value: request.page, schema: s.optional(s.number()) },
-          { name: "limit", value: request.limit, schema: s.optional(s.number()) },
+          { name: "startTime", value: request.startTime, schema: s.optional(s.int()) },
+          { name: "endTime", value: request.endTime, schema: s.optional(s.int()) },
+          { name: "page", value: request.page, schema: s.optional(s.int()) },
+          { name: "limit", value: request.limit, schema: s.optional(s.int()) },
           { name: "transfers", value: request.transfers, schema: s.optional(s.string()) },
           {
             name: "transferFunctionAccountType",
             value: request.transferFunctionAccountType,
             schema: s.optional(s.string()),
           },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [],
         body: { kind: "empty" },
       },
       {
@@ -742,6 +1069,26 @@ export class SubAccountApi {
     );
   }
 
+  /**
+   * Query Managed Sub Account Transfer Log (For Trading Team Master Account)
+   *
+   * @remarks
+   * Trading team can use this api to query managed sub account transfer log. This endpoint is
+   * available for trading team of Managed Sub-Account. A Managed Sub-Account is an account type for
+   * investors who value flexibility in asset allocation and account application, while delegating
+   * trades to a professional trading team
+   *
+   * Weight(IP): 60
+   *
+   * @returns Managed sub account transfer logs (for trading team)
+   *
+   * @throws {@link SubAccountApi.QueryManagedSubAccountTransferLogForTradingTeamMasterAccountError}
+   * when the API answers with an error status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   queryManagedSubAccountTransferLogForTradingTeamMasterAccount(
     request: SubAccountApi.QueryManagedSubAccountTransferLogForTradingTeamMasterAccountRequest,
     options?: RequestOptions,
@@ -752,24 +1099,26 @@ export class SubAccountApi {
     return this.#rawClient.execute(
       {
         method: "GET",
-        url: this.#servers.default("/sapi/v1/managed-subaccount/queryTransLogForTradeParent"),
+        urlTemplate: this.#servers.default("/sapi/v1/managed-subaccount/queryTransLogForTradeParent"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
           { name: "email", value: request.email, schema: s.string() },
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
-          { name: "startTime", value: request.startTime, schema: s.optional(s.number()) },
-          { name: "endTime", value: request.endTime, schema: s.optional(s.number()) },
-          { name: "page", value: request.page, schema: s.optional(s.number()) },
-          { name: "limit", value: request.limit, schema: s.optional(s.number()) },
+          { name: "startTime", value: request.startTime, schema: s.optional(s.int()) },
+          { name: "endTime", value: request.endTime, schema: s.optional(s.int()) },
+          { name: "page", value: request.page, schema: s.optional(s.int()) },
+          { name: "limit", value: request.limit, schema: s.optional(s.int()) },
           { name: "transfers", value: request.transfers, schema: s.optional(s.string()) },
           {
             name: "transferFunctionAccountType",
             value: request.transferFunctionAccountType,
             schema: s.optional(s.string()),
           },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [],
         body: { kind: "empty" },
       },
       {
@@ -780,6 +1129,24 @@ export class SubAccountApi {
     );
   }
 
+  /**
+   * Query Managed Sub Account Transfer Log (For Trading Team Sub Account)(USER_DATA)
+   *
+   * @remarks
+   * Query Managed Sub Account Transfer Log (For Trading Team Sub Account)
+   *
+   * Weight(UID): 60
+   *
+   * @returns Managed sub deposit address
+   *
+   * @throws {@link
+   * SubAccountApi.QueryManagedSubAccountTransferLogForTradingTeamSubAccountUserDataError} when the
+   * API answers with an error status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   queryManagedSubAccountTransferLogForTradingTeamSubAccountUserData(
     request: SubAccountApi.QueryManagedSubAccountTransferLogForTradingTeamSubAccountUserDataRequest,
     options?: RequestOptions,
@@ -790,8 +1157,9 @@ export class SubAccountApi {
     return this.#rawClient.execute(
       {
         method: "GET",
-        url: this.#servers.default("/sapi/v1/managed-subaccount/query-trans-log"),
+        urlTemplate: this.#servers.default("/sapi/v1/managed-subaccount/query-trans-log"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
           { name: "transfers", value: request.transfers, schema: transfersSchema },
           {
@@ -799,14 +1167,15 @@ export class SubAccountApi {
             value: request.transferFunctionAccountType,
             schema: transferFunctionAccountTypeSchema,
           },
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
-          { name: "startTime", value: request.startTime, schema: s.optional(s.number()) },
-          { name: "endTime", value: request.endTime, schema: s.optional(s.number()) },
-          { name: "page", value: request.page, schema: s.optional(s.number()) },
-          { name: "limit", value: request.limit, schema: s.optional(s.number()) },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "startTime", value: request.startTime, schema: s.optional(s.int()) },
+          { name: "endTime", value: request.endTime, schema: s.optional(s.int()) },
+          { name: "page", value: request.page, schema: s.optional(s.int()) },
+          { name: "limit", value: request.limit, schema: s.optional(s.int()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [],
         body: { kind: "empty" },
       },
       {
@@ -817,6 +1186,22 @@ export class SubAccountApi {
     );
   }
 
+  /**
+   * Query Managed Sub-account Futures Asset Details (For Investor Master Account)
+   *
+   * @remarks
+   * Investor can use this api to query managed sub account futures asset details
+   *
+   * @returns Sub account futures assset details
+   *
+   * @throws {@link
+   * SubAccountApi.QueryManagedSubAccountFuturesAssetDetailsForInvestorMasterAccountError} when the
+   * API answers with an error status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   queryManagedSubAccountFuturesAssetDetailsForInvestorMasterAccount(
     request: SubAccountApi.QueryManagedSubAccountFuturesAssetDetailsForInvestorMasterAccountRequest,
     options?: RequestOptions,
@@ -827,14 +1212,16 @@ export class SubAccountApi {
     return this.#rawClient.execute(
       {
         method: "GET",
-        url: this.#servers.default("/sapi/v1/managed-subaccount/fetch-future-asset"),
+        urlTemplate: this.#servers.default("/sapi/v1/managed-subaccount/fetch-future-asset"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
           { name: "email", value: request.email, schema: s.string() },
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [],
         body: { kind: "empty" },
       },
       {
@@ -845,6 +1232,23 @@ export class SubAccountApi {
     );
   }
 
+  /**
+   * Query Managed Sub-account List (For Investor)
+   *
+   * @remarks
+   * Get investor's managed sub-account list.
+   *
+   * Weight(UID): 60
+   *
+   * @returns Managed sub account list
+   *
+   * @throws {@link SubAccountApi.QueryManagedSubAccountListForInvestorError} when the API answers
+   * with an error status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   queryManagedSubAccountListForInvestor(
     request: SubAccountApi.QueryManagedSubAccountListForInvestorRequest,
     options?: RequestOptions,
@@ -855,16 +1259,18 @@ export class SubAccountApi {
     return this.#rawClient.execute(
       {
         method: "GET",
-        url: this.#servers.default("/sapi/v1/managed-subaccount/info"),
+        urlTemplate: this.#servers.default("/sapi/v1/managed-subaccount/info"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
           { name: "email", value: request.email, schema: s.string() },
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
-          { name: "page", value: request.page, schema: s.optional(s.number()) },
-          { name: "limit", value: request.limit, schema: s.optional(s.number()) },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "page", value: request.page, schema: s.optional(s.int()) },
+          { name: "limit", value: request.limit, schema: s.optional(s.int()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [],
         body: { kind: "empty" },
       },
       {
@@ -875,6 +1281,22 @@ export class SubAccountApi {
     );
   }
 
+  /**
+   * Query Managed Sub-account Margin Asset Details (For Investor Master Account)
+   *
+   * @remarks
+   * Investor can use this api to query managed sub account margin asset details
+   *
+   * @returns Sub account margin assset details
+   *
+   * @throws {@link
+   * SubAccountApi.QueryManagedSubAccountMarginAssetDetailsForInvestorMasterAccountError} when the
+   * API answers with an error status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   queryManagedSubAccountMarginAssetDetailsForInvestorMasterAccount(
     request: SubAccountApi.QueryManagedSubAccountMarginAssetDetailsForInvestorMasterAccountRequest,
     options?: RequestOptions,
@@ -885,14 +1307,16 @@ export class SubAccountApi {
     return this.#rawClient.execute(
       {
         method: "GET",
-        url: this.#servers.default("/sapi/v1/managed-subaccount/marginAsset"),
+        urlTemplate: this.#servers.default("/sapi/v1/managed-subaccount/marginAsset"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
           { name: "email", value: request.email, schema: s.string() },
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [],
         body: { kind: "empty" },
       },
       {
@@ -903,6 +1327,23 @@ export class SubAccountApi {
     );
   }
 
+  /**
+   * Query Sub-account Assets (For Master Account)
+   *
+   * @remarks
+   * Fetch sub-account assets
+   *
+   * Weight(UID): 60
+   *
+   * @returns Sub account balances
+   *
+   * @throws {@link SubAccountApi.QuerySubAccountAssetsForMasterAccountError} when the API answers
+   * with an error status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   querySubAccountAssetsForMasterAccount(
     request: SubAccountApi.QuerySubAccountAssetsForMasterAccountRequest,
     options?: RequestOptions,
@@ -910,14 +1351,16 @@ export class SubAccountApi {
     return this.#rawClient.execute(
       {
         method: "GET",
-        url: this.#servers.default("/sapi/v4/sub-account/assets"),
+        urlTemplate: this.#servers.default("/sapi/v4/sub-account/assets"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
           { name: "email", value: request.email, schema: s.string() },
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [],
         body: { kind: "empty" },
       },
       {
@@ -928,6 +1371,21 @@ export class SubAccountApi {
     );
   }
 
+  /**
+   * Query Sub-account List (For Master Account)
+   *
+   * @remarks
+   * Weight(IP): 1
+   *
+   * @returns List of sub-accounts
+   *
+   * @throws {@link SubAccountApi.QuerySubAccountListForMasterAccountError} when the API answers
+   * with an error status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   querySubAccountListForMasterAccount(
     request: SubAccountApi.QuerySubAccountListForMasterAccountRequest,
     options?: RequestOptions,
@@ -935,17 +1393,19 @@ export class SubAccountApi {
     return this.#rawClient.execute(
       {
         method: "GET",
-        url: this.#servers.default("/sapi/v1/sub-account/list"),
+        urlTemplate: this.#servers.default("/sapi/v1/sub-account/list"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
           { name: "email", value: request.email, schema: s.optional(s.string()) },
           { name: "isFreeze", value: request.isFreeze, schema: s.optional(s.lazy(() => isFreezeSchema)) },
-          { name: "page", value: request.page, schema: s.optional(s.number()) },
-          { name: "limit", value: request.limit, schema: s.optional(s.number()) },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "page", value: request.page, schema: s.optional(s.int()) },
+          { name: "limit", value: request.limit, schema: s.optional(s.int()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [],
         body: { kind: "empty" },
       },
       {
@@ -956,6 +1416,23 @@ export class SubAccountApi {
     );
   }
 
+  /**
+   * Query Sub-account Transaction Statistics (For Master Account)
+   *
+   * @remarks
+   * Query Sub-account Transaction statistics (For Master Account).
+   *
+   * Weight(UID): 60
+   *
+   * @returns Sub account transaction statistics
+   *
+   * @throws {@link SubAccountApi.QuerySubAccountTransactionStatisticsForMasterAccountError} when
+   * the API answers with an error status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   querySubAccountTransactionStatisticsForMasterAccount(
     request: SubAccountApi.QuerySubAccountTransactionStatisticsForMasterAccountRequest,
     options?: RequestOptions,
@@ -966,14 +1443,16 @@ export class SubAccountApi {
     return this.#rawClient.execute(
       {
         method: "GET",
-        url: this.#servers.default("/sapi/v1/sub-account/transaction-statistics"),
+        urlTemplate: this.#servers.default("/sapi/v1/sub-account/transaction-statistics"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
           { name: "email", value: request.email, schema: s.string() },
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [],
         body: { kind: "empty" },
       },
       {
@@ -984,6 +1463,23 @@ export class SubAccountApi {
     );
   }
 
+  /**
+   * Sub-account Assets (For Master Account)
+   *
+   * @remarks
+   * Fetch sub-account assets
+   *
+   * Weight(IP): 1
+   *
+   * @returns List of assets balances
+   *
+   * @throws {@link SubAccountApi.SubAccountAssetsForMasterAccountError} when the API answers with
+   * an error status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   subAccountAssetsForMasterAccount(
     request: SubAccountApi.SubAccountAssetsForMasterAccountRequest,
     options?: RequestOptions,
@@ -991,14 +1487,16 @@ export class SubAccountApi {
     return this.#rawClient.execute(
       {
         method: "GET",
-        url: this.#servers.default("/sapi/v3/sub-account/assets"),
+        urlTemplate: this.#servers.default("/sapi/v3/sub-account/assets"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
           { name: "email", value: request.email, schema: s.string() },
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [],
         body: { kind: "empty" },
       },
       {
@@ -1009,6 +1507,23 @@ export class SubAccountApi {
     );
   }
 
+  /**
+   * Sub-account Deposit History (For Master Account)
+   *
+   * @remarks
+   * Fetch sub-account deposit history
+   *
+   * Weight(IP): 1
+   *
+   * @returns Sub-account deposit history
+   *
+   * @throws {@link SubAccountApi.SubAccountDepositHistoryForMasterAccountError} when the API
+   * answers with an error status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   subAccountDepositHistoryForMasterAccount(
     request: SubAccountApi.SubAccountDepositHistoryForMasterAccountRequest,
     options?: RequestOptions,
@@ -1019,20 +1534,22 @@ export class SubAccountApi {
     return this.#rawClient.execute(
       {
         method: "GET",
-        url: this.#servers.default("/sapi/v1/capital/deposit/subHisrec"),
+        urlTemplate: this.#servers.default("/sapi/v1/capital/deposit/subHisrec"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
           { name: "email", value: request.email, schema: s.string() },
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
           { name: "coin", value: request.coin, schema: s.optional(s.string()) },
-          { name: "status", value: request.status, schema: s.optional(s.number()) },
-          { name: "startTime", value: request.startTime, schema: s.optional(s.number()) },
-          { name: "endTime", value: request.endTime, schema: s.optional(s.number()) },
-          { name: "limit", value: request.limit, schema: s.optional(s.number()) },
-          { name: "offset", value: request.offset, schema: s.optional(s.number()) },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "status", value: request.status, schema: s.optional(s.int()) },
+          { name: "startTime", value: request.startTime, schema: s.optional(s.int()) },
+          { name: "endTime", value: request.endTime, schema: s.optional(s.int()) },
+          { name: "limit", value: request.limit, schema: s.optional(s.int()) },
+          { name: "offset", value: request.offset, schema: s.optional(s.int()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [],
         body: { kind: "empty" },
       },
       {
@@ -1043,6 +1560,23 @@ export class SubAccountApi {
     );
   }
 
+  /**
+   * Sub-account Futures Asset Transfer (For Master Account)
+   *
+   * @remarks
+   * - Master account can transfer max 2000 times a minute
+   *
+   * Weight(IP): 1
+   *
+   * @returns Futures Asset Transfer Info
+   *
+   * @throws {@link SubAccountApi.SubAccountFuturesAssetTransferForMasterAccountError} when the API
+   * answers with an error status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   subAccountFuturesAssetTransferForMasterAccount(
     request: SubAccountApi.SubAccountFuturesAssetTransferForMasterAccountRequest,
     options?: RequestOptions,
@@ -1053,18 +1587,20 @@ export class SubAccountApi {
     return this.#rawClient.execute(
       {
         method: "POST",
-        url: this.#servers.default("/sapi/v1/sub-account/futures/internalTransfer"),
+        urlTemplate: this.#servers.default("/sapi/v1/sub-account/futures/internalTransfer"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
           { name: "fromEmail", value: request.fromEmail, schema: s.string() },
           { name: "toEmail", value: request.toEmail, schema: s.string() },
-          { name: "futuresType", value: request.futuresType, schema: s.number() },
+          { name: "futuresType", value: request.futuresType, schema: s.int() },
           { name: "asset", value: request.asset, schema: s.string() },
-          { name: "amount", value: request.amount, schema: s.number() },
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "amount", value: request.amount, schema: s.float64() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [{ name: "Idempotency-Key", value: uuid(), schema: s.string() }],
         body: { kind: "empty" },
       },
       {
@@ -1075,6 +1611,21 @@ export class SubAccountApi {
     );
   }
 
+  /**
+   * Sub-account Futures Asset Transfer History (For Master Account)
+   *
+   * @remarks
+   * Weight(IP): 1
+   *
+   * @returns Sub-account Futures Asset Transfer History
+   *
+   * @throws {@link SubAccountApi.SubAccountFuturesAssetTransferHistoryForMasterAccountError} when
+   * the API answers with an error status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   subAccountFuturesAssetTransferHistoryForMasterAccount(
     request: SubAccountApi.SubAccountFuturesAssetTransferHistoryForMasterAccountRequest,
     options?: RequestOptions,
@@ -1085,19 +1636,21 @@ export class SubAccountApi {
     return this.#rawClient.execute(
       {
         method: "GET",
-        url: this.#servers.default("/sapi/v1/sub-account/futures/internalTransfer"),
+        urlTemplate: this.#servers.default("/sapi/v1/sub-account/futures/internalTransfer"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
           { name: "email", value: request.email, schema: s.string() },
-          { name: "futuresType", value: request.futuresType, schema: s.number() },
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "futuresType", value: request.futuresType, schema: s.int() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
-          { name: "startTime", value: request.startTime, schema: s.optional(s.number()) },
-          { name: "endTime", value: request.endTime, schema: s.optional(s.number()) },
-          { name: "page", value: request.page, schema: s.optional(s.number()) },
-          { name: "limit", value: request.limit, schema: s.optional(s.number()) },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "startTime", value: request.startTime, schema: s.optional(s.int()) },
+          { name: "endTime", value: request.endTime, schema: s.optional(s.int()) },
+          { name: "page", value: request.page, schema: s.optional(s.int()) },
+          { name: "limit", value: request.limit, schema: s.optional(s.int()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [],
         body: { kind: "empty" },
       },
       {
@@ -1108,6 +1661,24 @@ export class SubAccountApi {
     );
   }
 
+  /**
+   * Sub-account Spot Asset Transfer History (For Master Account)
+   *
+   * @remarks
+   * - fromEmail and toEmail cannot be sent at the same time.
+   * - Return fromEmail equal master account email by default.
+   *
+   * Weight(IP): 1
+   *
+   * @returns Sub-account Spot Asset Transfer History
+   *
+   * @throws {@link SubAccountApi.SubAccountSpotAssetTransferHistoryForMasterAccountError} when the
+   * API answers with an error status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   subAccountSpotAssetTransferHistoryForMasterAccount(
     request: SubAccountApi.SubAccountSpotAssetTransferHistoryForMasterAccountRequest,
     options?: RequestOptions,
@@ -1118,19 +1689,21 @@ export class SubAccountApi {
     return this.#rawClient.execute(
       {
         method: "GET",
-        url: this.#servers.default("/sapi/v1/sub-account/sub/transfer/history"),
+        urlTemplate: this.#servers.default("/sapi/v1/sub-account/sub/transfer/history"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
           { name: "fromEmail", value: request.fromEmail, schema: s.optional(s.string()) },
           { name: "toEmail", value: request.toEmail, schema: s.optional(s.string()) },
-          { name: "startTime", value: request.startTime, schema: s.optional(s.number()) },
-          { name: "endTime", value: request.endTime, schema: s.optional(s.number()) },
-          { name: "page", value: request.page, schema: s.optional(s.number()) },
-          { name: "limit", value: request.limit, schema: s.optional(s.number()) },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "startTime", value: request.startTime, schema: s.optional(s.int()) },
+          { name: "endTime", value: request.endTime, schema: s.optional(s.int()) },
+          { name: "page", value: request.page, schema: s.optional(s.int()) },
+          { name: "limit", value: request.limit, schema: s.optional(s.int()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [],
         body: { kind: "empty" },
       },
       {
@@ -1144,6 +1717,23 @@ export class SubAccountApi {
     );
   }
 
+  /**
+   * Sub-account Spot Assets Summary (For Master Account)
+   *
+   * @remarks
+   * Get BTC valued asset summary of subaccounts.
+   *
+   * Weight(IP): 1
+   *
+   * @returns Summary of Sub-account Spot Assets
+   *
+   * @throws {@link SubAccountApi.SubAccountSpotAssetsSummaryForMasterAccountError} when the API
+   * answers with an error status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   subAccountSpotAssetsSummaryForMasterAccount(
     request: SubAccountApi.SubAccountSpotAssetsSummaryForMasterAccountRequest,
     options?: RequestOptions,
@@ -1154,16 +1744,18 @@ export class SubAccountApi {
     return this.#rawClient.execute(
       {
         method: "GET",
-        url: this.#servers.default("/sapi/v1/sub-account/spotSummary"),
+        urlTemplate: this.#servers.default("/sapi/v1/sub-account/spotSummary"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
           { name: "email", value: request.email, schema: s.optional(s.string()) },
-          { name: "page", value: request.page, schema: s.optional(s.number()) },
-          { name: "size", value: request.size, schema: s.optional(s.number()) },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "page", value: request.page, schema: s.optional(s.int()) },
+          { name: "size", value: request.size, schema: s.optional(s.int()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [],
         body: { kind: "empty" },
       },
       {
@@ -1174,6 +1766,23 @@ export class SubAccountApi {
     );
   }
 
+  /**
+   * Sub-account Spot Assets Summary (For Master Account)
+   *
+   * @remarks
+   * Fetch sub-account deposit address
+   *
+   * Weight(IP): 1
+   *
+   * @returns Deposit address info
+   *
+   * @throws {@link SubAccountApi.SubAccountSpotAssetsSummaryForMasterAccount2Error} when the API
+   * answers with an error status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   subAccountSpotAssetsSummaryForMasterAccount2(
     request: SubAccountApi.SubAccountSpotAssetsSummaryForMasterAccount2Request,
     options?: RequestOptions,
@@ -1184,16 +1793,18 @@ export class SubAccountApi {
     return this.#rawClient.execute(
       {
         method: "GET",
-        url: this.#servers.default("/sapi/v1/capital/deposit/subAddress"),
+        urlTemplate: this.#servers.default("/sapi/v1/capital/deposit/subAddress"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
           { name: "email", value: request.email, schema: s.string() },
           { name: "coin", value: request.coin, schema: s.string() },
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
           { name: "network", value: request.network, schema: s.optional(s.string()) },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [],
         body: { kind: "empty" },
       },
       {
@@ -1204,6 +1815,24 @@ export class SubAccountApi {
     );
   }
 
+  /**
+   * Sub-account Transfer History (For Sub-account)
+   *
+   * @remarks
+   * - If `type` is not sent, the records of type 2: transfer out will be returned by default.
+   * - If `startTime` and `endTime` are not sent, the recent 30-day data will be returned.
+   *
+   * Weight(IP): 1
+   *
+   * @returns Transfer id
+   *
+   * @throws {@link SubAccountApi.SubAccountTransferHistoryForSubAccountError} when the API answers
+   * with an error status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   subAccountTransferHistoryForSubAccount(
     request: SubAccountApi.SubAccountTransferHistoryForSubAccountRequest,
     options?: RequestOptions,
@@ -1214,18 +1843,20 @@ export class SubAccountApi {
     return this.#rawClient.execute(
       {
         method: "GET",
-        url: this.#servers.default("/sapi/v1/sub-account/transfer/subUserHistory"),
+        urlTemplate: this.#servers.default("/sapi/v1/sub-account/transfer/subUserHistory"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
           { name: "asset", value: request.asset, schema: s.optional(s.string()) },
-          { name: "type", value: request.type, schema: s.optional(s.number()) },
-          { name: "startTime", value: request.startTime, schema: s.optional(s.number()) },
-          { name: "endTime", value: request.endTime, schema: s.optional(s.number()) },
-          { name: "limit", value: request.limit, schema: s.optional(s.number()) },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "type", value: request.type, schema: s.optional(s.int()) },
+          { name: "startTime", value: request.startTime, schema: s.optional(s.int()) },
+          { name: "endTime", value: request.endTime, schema: s.optional(s.int()) },
+          { name: "limit", value: request.limit, schema: s.optional(s.int()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [],
         body: { kind: "empty" },
       },
       {
@@ -1239,6 +1870,23 @@ export class SubAccountApi {
     );
   }
 
+  /**
+   * Sub-account's Status on Margin/Futures (For Master Account)
+   *
+   * @remarks
+   * - If no `email` sent, all sub-accounts' information will be returned.
+   *
+   * Weight(IP): 10
+   *
+   * @returns Status on Margin/Futures
+   *
+   * @throws {@link SubAccountApi.SubAccountSStatusOnMarginFuturesForMasterAccountError} when the
+   * API answers with an error status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   subAccountSStatusOnMarginFuturesForMasterAccount(
     request: SubAccountApi.SubAccountSStatusOnMarginFuturesForMasterAccountRequest,
     options?: RequestOptions,
@@ -1249,14 +1897,16 @@ export class SubAccountApi {
     return this.#rawClient.execute(
       {
         method: "GET",
-        url: this.#servers.default("/sapi/v1/sub-account/status"),
+        urlTemplate: this.#servers.default("/sapi/v1/sub-account/status"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
           { name: "email", value: request.email, schema: s.optional(s.string()) },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [],
         body: { kind: "empty" },
       },
       {
@@ -1267,6 +1917,21 @@ export class SubAccountApi {
     );
   }
 
+  /**
+   * Summary of Sub-account's Futures Account (For Master Account)
+   *
+   * @remarks
+   * Weight(IP): 1
+   *
+   * @returns Futures account summary
+   *
+   * @throws {@link SubAccountApi.SummaryOfSubAccountSFuturesAccountForMasterAccountError} when the
+   * API answers with an error status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   summaryOfSubAccountSFuturesAccountForMasterAccount(
     request: SubAccountApi.SummaryOfSubAccountSFuturesAccountForMasterAccountRequest,
     options?: RequestOptions,
@@ -1277,13 +1942,15 @@ export class SubAccountApi {
     return this.#rawClient.execute(
       {
         method: "GET",
-        url: this.#servers.default("/sapi/v1/sub-account/futures/accountSummary"),
+        urlTemplate: this.#servers.default("/sapi/v1/sub-account/futures/accountSummary"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [],
         body: { kind: "empty" },
       },
       {
@@ -1294,6 +1961,21 @@ export class SubAccountApi {
     );
   }
 
+  /**
+   * Summary of Sub-account's Futures Account V2 (For Master Account)
+   *
+   * @remarks
+   * Weight(IP): 10
+   *
+   * @returns USDT or COIN Margined Futures Summary
+   *
+   * @throws {@link SubAccountApi.SummaryOfSubAccountSFuturesAccountV2ForMasterAccountError} when
+   * the API answers with an error status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   summaryOfSubAccountSFuturesAccountV2ForMasterAccount(
     request: SubAccountApi.SummaryOfSubAccountSFuturesAccountV2ForMasterAccountRequest,
     options?: RequestOptions,
@@ -1304,16 +1986,18 @@ export class SubAccountApi {
     return this.#rawClient.execute(
       {
         method: "GET",
-        url: this.#servers.default("/sapi/v2/sub-account/futures/accountSummary"),
+        urlTemplate: this.#servers.default("/sapi/v2/sub-account/futures/accountSummary"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
-          { name: "futuresType", value: request.futuresType, schema: s.number() },
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "futuresType", value: request.futuresType, schema: s.int() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
-          { name: "page", value: request.page, schema: s.optional(s.number()) },
-          { name: "limit", value: request.limit, schema: s.optional(s.number()) },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "page", value: request.page, schema: s.optional(s.int()) },
+          { name: "limit", value: request.limit, schema: s.optional(s.int()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [],
         body: { kind: "empty" },
       },
       {
@@ -1324,6 +2008,21 @@ export class SubAccountApi {
     );
   }
 
+  /**
+   * Summary of Sub-account's Margin Account (For Master Account)
+   *
+   * @remarks
+   * Weight(IP): 10
+   *
+   * @returns Margin sub-account details
+   *
+   * @throws {@link SubAccountApi.SummaryOfSubAccountSMarginAccountForMasterAccountError} when the
+   * API answers with an error status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   summaryOfSubAccountSMarginAccountForMasterAccount(
     request: SubAccountApi.SummaryOfSubAccountSMarginAccountForMasterAccountRequest,
     options?: RequestOptions,
@@ -1334,13 +2033,15 @@ export class SubAccountApi {
     return this.#rawClient.execute(
       {
         method: "GET",
-        url: this.#servers.default("/sapi/v1/sub-account/margin/accountSummary"),
+        urlTemplate: this.#servers.default("/sapi/v1/sub-account/margin/accountSummary"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [],
         body: { kind: "empty" },
       },
       {
@@ -1351,6 +2052,21 @@ export class SubAccountApi {
     );
   }
 
+  /**
+   * Transfer for Sub-account (For Master Account)
+   *
+   * @remarks
+   * Weight(IP): 1
+   *
+   * @returns Transfer id
+   *
+   * @throws {@link SubAccountApi.TransferForSubAccountForMasterAccountError} when the API answers
+   * with an error status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   transferForSubAccountForMasterAccount(
     request: SubAccountApi.TransferForSubAccountForMasterAccountRequest,
     options?: RequestOptions,
@@ -1361,17 +2077,19 @@ export class SubAccountApi {
     return this.#rawClient.execute(
       {
         method: "POST",
-        url: this.#servers.default("/sapi/v1/sub-account/futures/transfer"),
+        urlTemplate: this.#servers.default("/sapi/v1/sub-account/futures/transfer"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
           { name: "email", value: request.email, schema: s.string() },
           { name: "asset", value: request.asset, schema: s.string() },
-          { name: "amount", value: request.amount, schema: s.number() },
-          { name: "type", value: request.type, schema: s.number() },
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "amount", value: request.amount, schema: s.float64() },
+          { name: "type", value: request.type, schema: s.int() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [{ name: "Idempotency-Key", value: uuid(), schema: s.string() }],
         body: { kind: "empty" },
       },
       {
@@ -1382,6 +2100,21 @@ export class SubAccountApi {
     );
   }
 
+  /**
+   * Transfer to Master (For Sub-account)
+   *
+   * @remarks
+   * Weight(IP): 1
+   *
+   * @returns Transfer id
+   *
+   * @throws {@link SubAccountApi.TransferToMasterForSubAccountError} when the API answers with an
+   * error status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   transferToMasterForSubAccount(
     request: SubAccountApi.TransferToMasterForSubAccountRequest,
     options?: RequestOptions,
@@ -1392,15 +2125,17 @@ export class SubAccountApi {
     return this.#rawClient.execute(
       {
         method: "POST",
-        url: this.#servers.default("/sapi/v1/sub-account/transfer/subToMaster"),
+        urlTemplate: this.#servers.default("/sapi/v1/sub-account/transfer/subToMaster"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
           { name: "asset", value: request.asset, schema: s.string() },
-          { name: "amount", value: request.amount, schema: s.number() },
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "amount", value: request.amount, schema: s.float64() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [{ name: "Idempotency-Key", value: uuid(), schema: s.string() }],
         body: { kind: "empty" },
       },
       {
@@ -1411,6 +2146,21 @@ export class SubAccountApi {
     );
   }
 
+  /**
+   * Transfer to Sub-account of Same Master (For Sub-account)
+   *
+   * @remarks
+   * Weight(IP): 1
+   *
+   * @returns Transfer id
+   *
+   * @throws {@link SubAccountApi.TransferToSubAccountOfSameMasterForSubAccountError} when the API
+   * answers with an error status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   transferToSubAccountOfSameMasterForSubAccount(
     request: SubAccountApi.TransferToSubAccountOfSameMasterForSubAccountRequest,
     options?: RequestOptions,
@@ -1421,16 +2171,18 @@ export class SubAccountApi {
     return this.#rawClient.execute(
       {
         method: "POST",
-        url: this.#servers.default("/sapi/v1/sub-account/transfer/subToSub"),
+        urlTemplate: this.#servers.default("/sapi/v1/sub-account/transfer/subToSub"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
           { name: "toEmail", value: request.toEmail, schema: s.string() },
           { name: "asset", value: request.asset, schema: s.string() },
-          { name: "amount", value: request.amount, schema: s.number() },
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "amount", value: request.amount, schema: s.float64() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [{ name: "Idempotency-Key", value: uuid(), schema: s.string() }],
         body: { kind: "empty" },
       },
       {
@@ -1441,6 +2193,31 @@ export class SubAccountApi {
     );
   }
 
+  /**
+   * Universal Transfer (For Master Account)
+   *
+   * @remarks
+   * - You need to enable "internal transfer" option for the api key which requests this endpoint.
+   * - Transfer from master account by default if fromEmail is not sent.
+   * - Transfer to master account by default if toEmail is not sent.
+   * - Supported transfer scenarios:
+   *   - Master account SPOT transfer to sub-account
+   *     SPOT,USDT_FUTURE,COIN_FUTURE,MARGIN(Cross),ISOLATED_MARGIN
+   *   - Sub-account SPOT,USDT_FUTURE,COIN_FUTURE,MARGIN(Cross),ISOLATED_MARGIN transfer to master
+   *     account SPOT
+   *   - Transfer between two sub-account SPOT accounts
+   *
+   * Weight(IP): 1
+   *
+   * @returns Transfer id
+   *
+   * @throws {@link SubAccountApi.UniversalTransferForMasterAccountError} when the API answers with
+   * an error status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   universalTransferForMasterAccount(
     request: SubAccountApi.UniversalTransferForMasterAccountRequest,
     options?: RequestOptions,
@@ -1451,21 +2228,23 @@ export class SubAccountApi {
     return this.#rawClient.execute(
       {
         method: "POST",
-        url: this.#servers.default("/sapi/v1/sub-account/universalTransfer"),
+        urlTemplate: this.#servers.default("/sapi/v1/sub-account/universalTransfer"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
           { name: "fromAccountType", value: request.fromAccountType, schema: fromAccountTypeSchema },
           { name: "toAccountType", value: request.toAccountType, schema: toAccountTypeSchema },
           { name: "asset", value: request.asset, schema: s.string() },
-          { name: "amount", value: request.amount, schema: s.number() },
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "amount", value: request.amount, schema: s.float64() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
           { name: "fromEmail", value: request.fromEmail, schema: s.optional(s.string()) },
           { name: "toEmail", value: request.toEmail, schema: s.optional(s.string()) },
           { name: "clientTranId", value: request.clientTranId, schema: s.optional(s.string()) },
           { name: "symbol", value: request.symbol, schema: s.optional(s.string()) },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [{ name: "Idempotency-Key", value: uuid(), schema: s.string() }],
         body: { kind: "empty" },
       },
       {
@@ -1476,6 +2255,26 @@ export class SubAccountApi {
     );
   }
 
+  /**
+   * Universal Transfer History (For Master Account)
+   *
+   * @remarks
+   * - `fromEmail` and `toEmail` cannot be sent at the same time.
+   * - Return `fromEmail` equal master account email by default.
+   * - The query time period must be less then 30 days.
+   * - If startTime and endTime not sent, return records of the last 30 days by default.
+   *
+   * Weight(IP): 1
+   *
+   * @returns Transfer History
+   *
+   * @throws {@link SubAccountApi.UniversalTransferHistoryForMasterAccountError} when the API
+   * answers with an error status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   universalTransferHistoryForMasterAccount(
     request: SubAccountApi.UniversalTransferHistoryForMasterAccountRequest,
     options?: RequestOptions,
@@ -1486,20 +2285,22 @@ export class SubAccountApi {
     return this.#rawClient.execute(
       {
         method: "GET",
-        url: this.#servers.default("/sapi/v1/sub-account/universalTransfer"),
+        urlTemplate: this.#servers.default("/sapi/v1/sub-account/universalTransfer"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
           { name: "fromEmail", value: request.fromEmail, schema: s.optional(s.string()) },
           { name: "toEmail", value: request.toEmail, schema: s.optional(s.string()) },
           { name: "clientTranId", value: request.clientTranId, schema: s.optional(s.string()) },
-          { name: "startTime", value: request.startTime, schema: s.optional(s.number()) },
-          { name: "endTime", value: request.endTime, schema: s.optional(s.number()) },
-          { name: "page", value: request.page, schema: s.optional(s.number()) },
-          { name: "limit", value: request.limit, schema: s.optional(s.number()) },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "startTime", value: request.startTime, schema: s.optional(s.int()) },
+          { name: "endTime", value: request.endTime, schema: s.optional(s.int()) },
+          { name: "page", value: request.page, schema: s.optional(s.int()) },
+          { name: "limit", value: request.limit, schema: s.optional(s.int()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [],
         body: { kind: "empty" },
       },
       {
@@ -1513,6 +2314,23 @@ export class SubAccountApi {
     );
   }
 
+  /**
+   * Update IP Restriction for Sub-Account API key (For Master Account)
+   *
+   * @remarks
+   * Update IP Restriction for Sub-Account API key
+   *
+   * Weight(UID): 3000
+   *
+   * @returns Update IP Restriction
+   *
+   * @throws {@link SubAccountApi.UpdateIpRestrictionForSubAccountApiKeyForMasterAccountError} when
+   * the API answers with an error status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   updateIpRestrictionForSubAccountApiKeyForMasterAccount(
     request: SubAccountApi.UpdateIpRestrictionForSubAccountApiKeyForMasterAccountRequest,
     options?: RequestOptions,
@@ -1523,17 +2341,19 @@ export class SubAccountApi {
     return this.#rawClient.execute(
       {
         method: "POST",
-        url: this.#servers.default("/sapi/v2/sub-account/subAccountApi/ipRestriction"),
+        urlTemplate: this.#servers.default("/sapi/v2/sub-account/subAccountApi/ipRestriction"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
           { name: "email", value: request.email, schema: s.string() },
           { name: "subAccountApiKey", value: request.subAccountApiKey, schema: s.string() },
           { name: "status", value: request.status, schema: s.string() },
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
           { name: "thirdPartyName", value: request.thirdPartyName, schema: s.optional(s.string()) },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [{ name: "Idempotency-Key", value: uuid(), schema: s.string() }],
         body: { kind: "empty" },
       },
       {
@@ -1544,6 +2364,22 @@ export class SubAccountApi {
     );
   }
 
+  /**
+   * Withdrawl assets from the managed sub-account(For Investor Master Account)
+   *
+   * @remarks
+   * Weight(IP): 1
+   *
+   * @returns Transfer id
+   *
+   * @throws {@link
+   * SubAccountApi.WithdrawlAssetsFromTheManagedSubAccountForInvestorMasterAccountError} when the
+   * API answers with an error status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   withdrawlAssetsFromTheManagedSubAccountForInvestorMasterAccount(
     request: SubAccountApi.WithdrawlAssetsFromTheManagedSubAccountForInvestorMasterAccountRequest,
     options?: RequestOptions,
@@ -1554,17 +2390,19 @@ export class SubAccountApi {
     return this.#rawClient.execute(
       {
         method: "POST",
-        url: this.#servers.default("/sapi/v1/managed-subaccount/withdraw"),
+        urlTemplate: this.#servers.default("/sapi/v1/managed-subaccount/withdraw"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
           { name: "fromEmail", value: request.fromEmail, schema: s.string() },
           { name: "asset", value: request.asset, schema: s.string() },
-          { name: "amount", value: request.amount, schema: s.number() },
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "amount", value: request.amount, schema: s.float64() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
-          { name: "transferDate", value: request.transferDate, schema: s.optional(s.number()) },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "transferDate", value: request.transferDate, schema: s.optional(s.int()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [{ name: "Idempotency-Key", value: uuid(), schema: s.string() }],
         body: { kind: "empty" },
       },
       {
@@ -1578,15 +2416,21 @@ export class SubAccountApi {
 
 export namespace SubAccountApi {
   export type CreateAVirtualSubAccountForMasterAccountRequest = {
+    /**
+     * Please input a string. We will create a virtual email using that string for you to register
+     */
     subAccountString: string;
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class CreateAVirtualSubAccountForMasterAccountError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class CreateAVirtualSubAccountForMasterAccountError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<CreateAVirtualSubAccountForMasterAccountError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -1594,18 +2438,24 @@ export namespace SubAccountApi {
   }
 
   export type DeleteIpListForASubAccountApiKeyForMasterAccountRequest = {
+    /** Sub-account email */
     email: string;
     subAccountApiKey: string;
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
+    /** Can be added in batches, separated by commas */
     ipAddress?: string;
+    /** third party IP list name */
     thirdPartyName?: string;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class DeleteIpListForASubAccountApiKeyForMasterAccountError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class DeleteIpListForASubAccountApiKeyForMasterAccountError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<DeleteIpListForASubAccountApiKeyForMasterAccountError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -1613,33 +2463,41 @@ export namespace SubAccountApi {
   }
 
   export type DepositAssetsIntoTheManagedSubAccountForInvestorMasterAccountRequest = {
+    /** Recipient email */
     toEmail: string;
     asset: string;
     amount: number;
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class DepositAssetsIntoTheManagedSubAccountForInvestorMasterAccountError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
-    static readonly errors: ErrorDecoders<DepositAssetsIntoTheManagedSubAccountForInvestorMasterAccountError> = [
-      { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
-      { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
-    ];
+  export class DepositAssetsIntoTheManagedSubAccountForInvestorMasterAccountError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
+    static readonly errors: ErrorDecoders<DepositAssetsIntoTheManagedSubAccountForInvestorMasterAccountError> =
+      [
+        { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
+        { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
+      ];
   }
 
   export type DetailOnSubAccountSFuturesAccountForMasterAccountRequest = {
     email: string;
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class DetailOnSubAccountSFuturesAccountForMasterAccountError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class DetailOnSubAccountSFuturesAccountForMasterAccountError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<DetailOnSubAccountSFuturesAccountForMasterAccountError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -1647,16 +2505,24 @@ export namespace SubAccountApi {
   }
 
   export type DetailOnSubAccountSFuturesAccountV2ForMasterAccountRequest = {
+    /** Sub-account email */
     email: string;
+    /**
+     * * `1` - USDT Margined Futures
+     * * `2` - COIN Margined Futures
+     */
     futuresType: number;
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class DetailOnSubAccountSFuturesAccountV2ForMasterAccountError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class DetailOnSubAccountSFuturesAccountV2ForMasterAccountError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<DetailOnSubAccountSFuturesAccountV2ForMasterAccountError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -1664,15 +2530,19 @@ export namespace SubAccountApi {
   }
 
   export type DetailOnSubAccountSMarginAccountForMasterAccountRequest = {
+    /** Sub-account email */
     email: string;
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class DetailOnSubAccountSMarginAccountForMasterAccountError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class DetailOnSubAccountSMarginAccountForMasterAccountError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<DetailOnSubAccountSMarginAccountForMasterAccountError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -1680,15 +2550,19 @@ export namespace SubAccountApi {
   }
 
   export type EnableFuturesForSubAccountForMasterAccountRequest = {
+    /** Sub-account email */
     email: string;
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class EnableFuturesForSubAccountForMasterAccountError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class EnableFuturesForSubAccountForMasterAccountError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<EnableFuturesForSubAccountForMasterAccountError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -1696,16 +2570,21 @@ export namespace SubAccountApi {
   }
 
   export type EnableLeverageTokenForSubAccountForMasterAccountRequest = {
+    /** Sub-account email */
     email: string;
+    /** Only true for now */
     enableBlvt: boolean;
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class EnableLeverageTokenForSubAccountForMasterAccountError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class EnableLeverageTokenForSubAccountForMasterAccountError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<EnableLeverageTokenForSubAccountForMasterAccountError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -1713,15 +2592,19 @@ export namespace SubAccountApi {
   }
 
   export type EnableMarginForSubAccountForMasterAccountRequest = {
+    /** Sub-account email */
     email: string;
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class EnableMarginForSubAccountForMasterAccountError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class EnableMarginForSubAccountForMasterAccountError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<EnableMarginForSubAccountForMasterAccountError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -1730,14 +2613,17 @@ export namespace SubAccountApi {
 
   export type EnableOptionsForSubAccountForMasterAccountUserDataRequest = {
     email: string;
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class EnableOptionsForSubAccountForMasterAccountUserDataError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class EnableOptionsForSubAccountForMasterAccountUserDataError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<EnableOptionsForSubAccountForMasterAccountUserDataError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -1745,15 +2631,19 @@ export namespace SubAccountApi {
   }
 
   export type FuturesPositionRiskOfSubAccountForMasterAccountRequest = {
+    /** Sub-account email */
     email: string;
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class FuturesPositionRiskOfSubAccountForMasterAccountError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class FuturesPositionRiskOfSubAccountForMasterAccountError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<FuturesPositionRiskOfSubAccountForMasterAccountError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -1761,16 +2651,24 @@ export namespace SubAccountApi {
   }
 
   export type FuturesPositionRiskOfSubAccountV2ForMasterAccountRequest = {
+    /** Sub-account email */
     email: string;
+    /**
+     * * `1` - USDT Margined Futures
+     * * `2` - COIN Margined Futures
+     */
     futuresType: number;
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class FuturesPositionRiskOfSubAccountV2ForMasterAccountError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class FuturesPositionRiskOfSubAccountV2ForMasterAccountError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<FuturesPositionRiskOfSubAccountV2ForMasterAccountError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -1778,16 +2676,20 @@ export namespace SubAccountApi {
   }
 
   export type GetIpRestrictionForASubAccountApiKeyForMasterAccountRequest = {
+    /** Sub-account email */
     email: string;
     subAccountApiKey: string;
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class GetIpRestrictionForASubAccountApiKeyForMasterAccountError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class GetIpRestrictionForASubAccountApiKeyForMasterAccountError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<GetIpRestrictionForASubAccountApiKeyForMasterAccountError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -1796,16 +2698,20 @@ export namespace SubAccountApi {
 
   export type GetManagedSubAccountDepositAddressForInvestorMasterAccountRequest = {
     email: string;
+    /** Coin name */
     coin: string;
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
     network?: string;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class GetManagedSubAccountDepositAddressForInvestorMasterAccountError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class GetManagedSubAccountDepositAddressForInvestorMasterAccountError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<GetManagedSubAccountDepositAddressForInvestorMasterAccountError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -1813,15 +2719,19 @@ export namespace SubAccountApi {
   }
 
   export type ManagedSubAccountAssetDetailsForInvestorMasterAccountRequest = {
+    /** Sub-account email */
     email: string;
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class ManagedSubAccountAssetDetailsForInvestorMasterAccountError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class ManagedSubAccountAssetDetailsForInvestorMasterAccountError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<ManagedSubAccountAssetDetailsForInvestorMasterAccountError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -1829,19 +2739,27 @@ export namespace SubAccountApi {
   }
 
   export type ManagedSubAccountSnapshotForInvestorMasterAccountRequest = {
+    /** Sub-account email */
     email: string;
+    /** "SPOT", "MARGIN"(cross), "FUTURES"(UM) */
     type: string;
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
+    /** UTC timestamp in ms */
     startTime?: number;
+    /** UTC timestamp in ms */
     endTime?: number;
+    /** min 7, max 30, default 7 */
     limit?: number;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class ManagedSubAccountSnapshotForInvestorMasterAccountError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class ManagedSubAccountSnapshotForInvestorMasterAccountError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<ManagedSubAccountSnapshotForInvestorMasterAccountError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -1849,18 +2767,26 @@ export namespace SubAccountApi {
   }
 
   export type MarginTransferForSubAccountForMasterAccountRequest = {
+    /** Sub-account email */
     email: string;
     asset: string;
     amount: number;
+    /**
+     * * `1` - transfer from subaccount's spot account to margin account
+     * * `2` - transfer from subaccount's margin account to its spot account
+     */
     type: number;
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class MarginTransferForSubAccountForMasterAccountError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class MarginTransferForSubAccountForMasterAccountError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<MarginTransferForSubAccountForMasterAccountError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -1869,20 +2795,29 @@ export namespace SubAccountApi {
 
   export type QueryManagedSubAccountTransferLogForInvestorMasterAccountRequest = {
     email: string;
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
+    /** UTC timestamp in ms */
     startTime?: number;
+    /** UTC timestamp in ms */
     endTime?: number;
+    /** Default 1 */
     page?: number;
+    /** Default 500; max 1000. */
     limit?: number;
+    /** Transfer Direction (FROM/TO) */
     transfers?: string;
+    /** Transfer function account type (SPOT/MARGIN/ISOLATED_MARGIN/USDT_FUTURE/COIN_FUTURE) */
     transferFunctionAccountType?: string;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class QueryManagedSubAccountTransferLogForInvestorMasterAccountError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class QueryManagedSubAccountTransferLogForInvestorMasterAccountError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<QueryManagedSubAccountTransferLogForInvestorMasterAccountError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -1891,75 +2826,104 @@ export namespace SubAccountApi {
 
   export type QueryManagedSubAccountTransferLogForTradingTeamMasterAccountRequest = {
     email: string;
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
+    /** UTC timestamp in ms */
     startTime?: number;
+    /** UTC timestamp in ms */
     endTime?: number;
+    /** Default 1 */
     page?: number;
+    /** Default 500; max 1000. */
     limit?: number;
+    /** Transfer Direction (FROM/TO) */
     transfers?: string;
+    /** Transfer function account type (SPOT/MARGIN/ISOLATED_MARGIN/USDT_FUTURE/COIN_FUTURE) */
     transferFunctionAccountType?: string;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class QueryManagedSubAccountTransferLogForTradingTeamMasterAccountError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
-    static readonly errors: ErrorDecoders<QueryManagedSubAccountTransferLogForTradingTeamMasterAccountError> = [
-      { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
-      { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
-    ];
+  export class QueryManagedSubAccountTransferLogForTradingTeamMasterAccountError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
+    static readonly errors: ErrorDecoders<QueryManagedSubAccountTransferLogForTradingTeamMasterAccountError> =
+      [
+        { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
+        { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
+      ];
   }
 
   export type QueryManagedSubAccountTransferLogForTradingTeamSubAccountUserDataRequest = {
+    /** Transfer Direction */
     transfers: Transfers;
+    /** Transfer function account type */
     transferFunctionAccountType: TransferFunctionAccountType;
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
+    /** UTC timestamp in ms */
     startTime?: number;
+    /** UTC timestamp in ms */
     endTime?: number;
+    /** Default 1 */
     page?: number;
+    /** Default 500; max 1000. */
     limit?: number;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class QueryManagedSubAccountTransferLogForTradingTeamSubAccountUserDataError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
-    static readonly errors: ErrorDecoders<QueryManagedSubAccountTransferLogForTradingTeamSubAccountUserDataError> = [
-      { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
-      { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
-    ];
+  export class QueryManagedSubAccountTransferLogForTradingTeamSubAccountUserDataError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
+    static readonly errors: ErrorDecoders<QueryManagedSubAccountTransferLogForTradingTeamSubAccountUserDataError> =
+      [
+        { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
+        { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
+      ];
   }
 
   export type QueryManagedSubAccountFuturesAssetDetailsForInvestorMasterAccountRequest = {
     email: string;
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class QueryManagedSubAccountFuturesAssetDetailsForInvestorMasterAccountError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
-    static readonly errors: ErrorDecoders<QueryManagedSubAccountFuturesAssetDetailsForInvestorMasterAccountError> = [
-      { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
-      { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
-    ];
+  export class QueryManagedSubAccountFuturesAssetDetailsForInvestorMasterAccountError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
+    static readonly errors: ErrorDecoders<QueryManagedSubAccountFuturesAssetDetailsForInvestorMasterAccountError> =
+      [
+        { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
+        { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
+      ];
   }
 
   export type QueryManagedSubAccountListForInvestorRequest = {
     email: string;
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
+    /** Default 1 */
     page?: number;
+    /** Default 500; max 1000. */
     limit?: number;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class QueryManagedSubAccountListForInvestorError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class QueryManagedSubAccountListForInvestorError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<QueryManagedSubAccountListForInvestorError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -1968,30 +2932,37 @@ export namespace SubAccountApi {
 
   export type QueryManagedSubAccountMarginAssetDetailsForInvestorMasterAccountRequest = {
     email: string;
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class QueryManagedSubAccountMarginAssetDetailsForInvestorMasterAccountError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
-    static readonly errors: ErrorDecoders<QueryManagedSubAccountMarginAssetDetailsForInvestorMasterAccountError> = [
-      { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
-      { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
-    ];
+  export class QueryManagedSubAccountMarginAssetDetailsForInvestorMasterAccountError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
+    static readonly errors: ErrorDecoders<QueryManagedSubAccountMarginAssetDetailsForInvestorMasterAccountError> =
+      [
+        { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
+        { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
+      ];
   }
 
   export type QuerySubAccountAssetsForMasterAccountRequest = {
     email: string;
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class QuerySubAccountAssetsForMasterAccountError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class QuerySubAccountAssetsForMasterAccountError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<QuerySubAccountAssetsForMasterAccountError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -1999,18 +2970,24 @@ export namespace SubAccountApi {
   }
 
   export type QuerySubAccountListForMasterAccountRequest = {
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
+    /** Sub-account email */
     email?: string;
     isFreeze?: IsFreeze;
+    /** Default 1 */
     page?: number;
+    /** Default 1; max 200 */
     limit?: number;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class QuerySubAccountListForMasterAccountError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class QuerySubAccountListForMasterAccountError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<QuerySubAccountListForMasterAccountError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -2019,14 +2996,17 @@ export namespace SubAccountApi {
 
   export type QuerySubAccountTransactionStatisticsForMasterAccountRequest = {
     email: string;
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class QuerySubAccountTransactionStatisticsForMasterAccountError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class QuerySubAccountTransactionStatisticsForMasterAccountError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<QuerySubAccountTransactionStatisticsForMasterAccountError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -2034,15 +3014,19 @@ export namespace SubAccountApi {
   }
 
   export type SubAccountAssetsForMasterAccountRequest = {
+    /** Sub-account email */
     email: string;
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class SubAccountAssetsForMasterAccountError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class SubAccountAssetsForMasterAccountError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<SubAccountAssetsForMasterAccountError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -2050,21 +3034,29 @@ export namespace SubAccountApi {
   }
 
   export type SubAccountDepositHistoryForMasterAccountRequest = {
+    /** Sub-account email */
     email: string;
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
+    /** Coin name */
     coin?: string;
+    /** 0(0:pending,6: credited but cannot withdraw, 1:success) */
     status?: number;
+    /** UTC timestamp in ms */
     startTime?: number;
+    /** UTC timestamp in ms */
     endTime?: number;
     limit?: number;
     offset?: number;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class SubAccountDepositHistoryForMasterAccountError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class SubAccountDepositHistoryForMasterAccountError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<SubAccountDepositHistoryForMasterAccountError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -2072,19 +3064,25 @@ export namespace SubAccountApi {
   }
 
   export type SubAccountFuturesAssetTransferForMasterAccountRequest = {
+    /** Sender email */
     fromEmail: string;
+    /** Recipient email */
     toEmail: string;
+    /** 1:USDT-margined Futures,2: Coin-margined Futures */
     futuresType: number;
     asset: string;
     amount: number;
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class SubAccountFuturesAssetTransferForMasterAccountError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class SubAccountFuturesAssetTransferForMasterAccountError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<SubAccountFuturesAssetTransferForMasterAccountError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -2092,20 +3090,29 @@ export namespace SubAccountApi {
   }
 
   export type SubAccountFuturesAssetTransferHistoryForMasterAccountRequest = {
+    /** Sub-account email */
     email: string;
+    /** 1:USDT-margined Futures, 2: Coin-margined Futures */
     futuresType: number;
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
+    /** UTC timestamp in ms */
     startTime?: number;
+    /** UTC timestamp in ms */
     endTime?: number;
+    /** Default 1 */
     page?: number;
+    /** Default value: 50, Max value: 500 */
     limit?: number;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class SubAccountFuturesAssetTransferHistoryForMasterAccountError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class SubAccountFuturesAssetTransferHistoryForMasterAccountError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<SubAccountFuturesAssetTransferHistoryForMasterAccountError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -2113,20 +3120,29 @@ export namespace SubAccountApi {
   }
 
   export type SubAccountSpotAssetTransferHistoryForMasterAccountRequest = {
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
+    /** Sub-account email */
     fromEmail?: string;
+    /** Sub-account email */
     toEmail?: string;
+    /** UTC timestamp in ms */
     startTime?: number;
+    /** UTC timestamp in ms */
     endTime?: number;
+    /** Default 1 */
     page?: number;
+    /** Default 1 */
     limit?: number;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class SubAccountSpotAssetTransferHistoryForMasterAccountError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class SubAccountSpotAssetTransferHistoryForMasterAccountError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<SubAccountSpotAssetTransferHistoryForMasterAccountError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -2134,17 +3150,23 @@ export namespace SubAccountApi {
   }
 
   export type SubAccountSpotAssetsSummaryForMasterAccountRequest = {
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
+    /** Sub-account email */
     email?: string;
+    /** Default 1 */
     page?: number;
+    /** Default:10 Max:20 */
     size?: number;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class SubAccountSpotAssetsSummaryForMasterAccountError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class SubAccountSpotAssetsSummaryForMasterAccountError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<SubAccountSpotAssetsSummaryForMasterAccountError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -2152,17 +3174,22 @@ export namespace SubAccountApi {
   }
 
   export type SubAccountSpotAssetsSummaryForMasterAccount2Request = {
+    /** Sub-account email */
     email: string;
+    /** Coin name */
     coin: string;
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
     network?: string;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class SubAccountSpotAssetsSummaryForMasterAccount2Error extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class SubAccountSpotAssetsSummaryForMasterAccount2Error extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<SubAccountSpotAssetsSummaryForMasterAccount2Error> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -2170,19 +3197,29 @@ export namespace SubAccountApi {
   }
 
   export type SubAccountTransferHistoryForSubAccountRequest = {
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
     asset?: string;
+    /**
+     * * `1` - transfer in
+     * * `2` - transfer out
+     */
     type?: number;
+    /** UTC timestamp in ms */
     startTime?: number;
+    /** UTC timestamp in ms */
     endTime?: number;
+    /** Default 500; max 1000. */
     limit?: number;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class SubAccountTransferHistoryForSubAccountError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class SubAccountTransferHistoryForSubAccountError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<SubAccountTransferHistoryForSubAccountError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -2190,15 +3227,19 @@ export namespace SubAccountApi {
   }
 
   export type SubAccountSStatusOnMarginFuturesForMasterAccountRequest = {
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
+    /** Sub-account email */
     email?: string;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class SubAccountSStatusOnMarginFuturesForMasterAccountError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class SubAccountSStatusOnMarginFuturesForMasterAccountError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<SubAccountSStatusOnMarginFuturesForMasterAccountError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -2206,14 +3247,17 @@ export namespace SubAccountApi {
   }
 
   export type SummaryOfSubAccountSFuturesAccountForMasterAccountRequest = {
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class SummaryOfSubAccountSFuturesAccountForMasterAccountError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class SummaryOfSubAccountSFuturesAccountForMasterAccountError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<SummaryOfSubAccountSFuturesAccountForMasterAccountError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -2221,17 +3265,26 @@ export namespace SubAccountApi {
   }
 
   export type SummaryOfSubAccountSFuturesAccountV2ForMasterAccountRequest = {
+    /**
+     * * `1` - USDT Margined Futures
+     * * `2` - COIN Margined Futures
+     */
     futuresType: number;
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
+    /** Default 1 */
     page?: number;
+    /** Default 10, Max 20 */
     limit?: number;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class SummaryOfSubAccountSFuturesAccountV2ForMasterAccountError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class SummaryOfSubAccountSFuturesAccountV2ForMasterAccountError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<SummaryOfSubAccountSFuturesAccountV2ForMasterAccountError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -2239,14 +3292,17 @@ export namespace SubAccountApi {
   }
 
   export type SummaryOfSubAccountSMarginAccountForMasterAccountRequest = {
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class SummaryOfSubAccountSMarginAccountForMasterAccountError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class SummaryOfSubAccountSMarginAccountForMasterAccountError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<SummaryOfSubAccountSMarginAccountForMasterAccountError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -2254,18 +3310,28 @@ export namespace SubAccountApi {
   }
 
   export type TransferForSubAccountForMasterAccountRequest = {
+    /** Sub-account email */
     email: string;
     asset: string;
     amount: number;
+    /**
+     * * `1` - transfer from subaccount's spot account to its USDT-margined futures account
+     * * `2` - transfer from subaccount's USDT-margined futures account to its spot account
+     * * `3` - transfer from subaccount's spot account to its COIN-margined futures account
+     * * `4` - transfer from subaccount's COIN-margined futures account to its spot account
+     */
     type: number;
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class TransferForSubAccountForMasterAccountError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class TransferForSubAccountForMasterAccountError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<TransferForSubAccountForMasterAccountError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -2275,14 +3341,17 @@ export namespace SubAccountApi {
   export type TransferToMasterForSubAccountRequest = {
     asset: string;
     amount: number;
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class TransferToMasterForSubAccountError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class TransferToMasterForSubAccountError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<TransferToMasterForSubAccountError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -2290,17 +3359,21 @@ export namespace SubAccountApi {
   }
 
   export type TransferToSubAccountOfSameMasterForSubAccountRequest = {
+    /** Recipient email */
     toEmail: string;
     asset: string;
     amount: number;
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class TransferToSubAccountOfSameMasterForSubAccountError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class TransferToSubAccountOfSameMasterForSubAccountError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<TransferToSubAccountOfSameMasterForSubAccountError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -2312,18 +3385,24 @@ export namespace SubAccountApi {
     toAccountType: ToAccountType;
     asset: string;
     amount: number;
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
+    /** Sub-account email */
     fromEmail?: string;
+    /** Sub-account email */
     toEmail?: string;
     clientTranId?: string;
+    /** Only supported under ISOLATED_MARGIN type */
     symbol?: string;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class UniversalTransferForMasterAccountError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class UniversalTransferForMasterAccountError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<UniversalTransferForMasterAccountError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -2331,21 +3410,30 @@ export namespace SubAccountApi {
   }
 
   export type UniversalTransferHistoryForMasterAccountRequest = {
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
+    /** Sub-account email */
     fromEmail?: string;
+    /** Sub-account email */
     toEmail?: string;
     clientTranId?: string;
+    /** UTC timestamp in ms */
     startTime?: number;
+    /** UTC timestamp in ms */
     endTime?: number;
+    /** Default 1 */
     page?: number;
+    /** Default 500, Max 500 */
     limit?: number;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class UniversalTransferHistoryForMasterAccountError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class UniversalTransferHistoryForMasterAccountError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<UniversalTransferHistoryForMasterAccountError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -2353,18 +3441,27 @@ export namespace SubAccountApi {
   }
 
   export type UpdateIpRestrictionForSubAccountApiKeyForMasterAccountRequest = {
+    /** Sub-account email */
     email: string;
     subAccountApiKey: string;
+    /**
+     * IP Restriction status. 1 = IP Unrestricted. 2 = Restrict access to trusted IPs only. 3 =
+     * Restrict access to users' trusted third party IPs only
+     */
     status: string;
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
+    /** third party IP list name */
     thirdPartyName?: string;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class UpdateIpRestrictionForSubAccountApiKeyForMasterAccountError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class UpdateIpRestrictionForSubAccountApiKeyForMasterAccountError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<UpdateIpRestrictionForSubAccountApiKeyForMasterAccountError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -2372,21 +3469,30 @@ export namespace SubAccountApi {
   }
 
   export type WithdrawlAssetsFromTheManagedSubAccountForInvestorMasterAccountRequest = {
+    /** Sender email */
     fromEmail: string;
     asset: string;
     amount: number;
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
+    /**
+     * Withdrawals is automatically occur on the transfer date(UTC0). If a date is not selected, the
+     * withdrawal occurs right now
+     */
     transferDate?: number;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class WithdrawlAssetsFromTheManagedSubAccountForInvestorMasterAccountError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
-    static readonly errors: ErrorDecoders<WithdrawlAssetsFromTheManagedSubAccountForInvestorMasterAccountError> = [
-      { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
-      { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
-    ];
+  export class WithdrawlAssetsFromTheManagedSubAccountForInvestorMasterAccountError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
+    static readonly errors: ErrorDecoders<WithdrawlAssetsFromTheManagedSubAccountForInvestorMasterAccountError> =
+      [
+        { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
+        { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
+      ];
   }
 }

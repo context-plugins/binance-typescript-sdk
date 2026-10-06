@@ -14,7 +14,7 @@ export type SapiV1MarginAllPairsResponse = {
 export const sapiV1MarginAllPairsResponseSchema: Schema<SapiV1MarginAllPairsResponse> =
   s.object<SapiV1MarginAllPairsResponse>({
     base: s.string(),
-    id: s.number(),
+    id: s.int(),
     isBuyAllowed: s.boolean(),
     isMarginTrade: s.boolean(),
     isSellAllowed: s.boolean(),

@@ -15,7 +15,9 @@ export type MarginOrderResponseFull = {
   timeInForce: string;
   type: string;
   side: string;
+  /** will not return if no margin trade happens */
   marginBuyBorrowAmount: number;
+  /** will not return if no margin trade happens */
   marginBuyBorrowAsset: string;
   isIsolated: boolean;
   fills: Fill[];
@@ -24,9 +26,9 @@ export type MarginOrderResponseFull = {
 export const marginOrderResponseFullSchema: Schema<MarginOrderResponseFull> =
   s.object<MarginOrderResponseFull>({
     symbol: s.string(),
-    orderId: s.number(),
+    orderId: s.int(),
     clientOrderId: s.string(),
-    transactTime: s.number(),
+    transactTime: s.int(),
     price: s.string(),
     origQty: s.string(),
     executedQty: s.string(),
@@ -35,7 +37,7 @@ export const marginOrderResponseFullSchema: Schema<MarginOrderResponseFull> =
     timeInForce: s.string(),
     type: s.string(),
     side: s.string(),
-    marginBuyBorrowAmount: s.number(),
+    marginBuyBorrowAmount: s.float64(),
     marginBuyBorrowAsset: s.string(),
     isIsolated: s.boolean(),
     fills: s.array(s.lazy(() => fillSchema)),

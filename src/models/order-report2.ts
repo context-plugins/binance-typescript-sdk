@@ -22,10 +22,10 @@ export type OrderReport2 = {
 
 export const orderReport2Schema: Schema<OrderReport2> = s.object<OrderReport2>({
   symbol: s.string(),
-  orderId: s.number(),
-  orderListId: s.number(),
+  orderId: s.int(),
+  orderListId: s.int(),
   clientOrderId: s.string(),
-  transactTime: s.number(),
+  transactTime: s.int(),
   price: s.string(),
   origQty: s.string(),
   executedQty: s.string(),
@@ -35,6 +35,6 @@ export const orderReport2Schema: Schema<OrderReport2> = s.object<OrderReport2>({
   type: s.string(),
   side: s.string(),
   stopPrice: s.string(),
-  workingTime: s.number(),
+  workingTime: s.int(),
   selfTradePreventionMode: s.string(),
 });

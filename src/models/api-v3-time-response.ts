@@ -6,5 +6,5 @@ export type ApiV3TimeResponse = {
 };
 
 export const apiV3TimeResponseSchema: Schema<ApiV3TimeResponse> = s.object<ApiV3TimeResponse>({
-  serverTime: s.number(),
+  serverTime: s.int(),
 });

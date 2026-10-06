@@ -7,5 +7,5 @@ export type SapiV1AssetTransferResponse1 = {
 
 export const sapiV1AssetTransferResponse1Schema: Schema<SapiV1AssetTransferResponse1> =
   s.object<SapiV1AssetTransferResponse1>({
-    tranId: s.number(),
+    tranId: s.int(),
   });

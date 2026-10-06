@@ -8,8 +8,8 @@ export type TierAnnualPercentageRate = {
 
 export const tierAnnualPercentageRateSchema: Schema<TierAnnualPercentageRate> =
   s.object<TierAnnualPercentageRate>({
-    Btc05: s.number(),
-    Btc510: s.number(),
+    Btc05: s.float64(),
+    Btc510: s.float64(),
     _keysMap: {
       Btc05: "0-5BTC",
       Btc510: "5-10BTC",

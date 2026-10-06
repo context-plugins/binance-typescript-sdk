@@ -10,5 +10,5 @@ export type SapiV1LoanLtvAdjustmentHistoryResponse = {
 export const sapiV1LoanLtvAdjustmentHistoryResponseSchema: Schema<SapiV1LoanLtvAdjustmentHistoryResponse> =
   s.object<SapiV1LoanLtvAdjustmentHistoryResponse>({
     rows: s.array(s.lazy(() => row21Schema)),
-    total: s.number(),
+    total: s.int(),
   });

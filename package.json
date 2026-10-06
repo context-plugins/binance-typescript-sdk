@@ -1,6 +1,6 @@
 {
-  "name": "binance-public-spot-api",
-  "version": "1.0",
+  "name": "binance",
+  "version": "1.0.0",
   "description": "OpenAPI Specifications for the Binance Public Spot API\n\nAPI documents:\n  - [https://github.com/binance/binance-spot-api-docs](https://github.com/binance/binance-spot-api-docs)\n  - [https://binance-docs.github.io/apidocs/spot/en](https://binance-docs.github.io/apidocs/spot/en)",
   "type": "module",
   "exports": {
@@ -43,12 +43,12 @@
   ],
   "sideEffects": false,
   "engines": {
-    "node": ">=20"
+    "node": ">=20.3"
   },
   "scripts": {
     "prepare": "tshy",
     "build": "tshy",
-    "smoke": "node -e \"require('binance-public-spot-api')\" && node --input-type=module -e \"import('binance-public-spot-api')\"",
+    "smoke": "node -e \"require('binance')\" && node --input-type=module -e \"import('binance')\"",
     "typecheck": "tsc --noEmit",
     "typecheck:dom": "tsc --noEmit -p tsconfig.dom.json",
     "lint": "oxlint --type-aware --max-warnings=0 src",

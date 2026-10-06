@@ -7,14 +7,18 @@ export type Row11 = {
   amount: string;
   type: string;
   timestamp: number;
+  /**
+   * one of PENDING (pending to execution), CONFIRMED (successfully transfered), FAILED (execution
+   * failed, nothing happened to your account);
+   */
   status: string;
 };
 
 export const row11Schema: Schema<Row11> = s.object<Row11>({
   asset: s.string(),
-  tranId: s.number(),
+  tranId: s.int(),
   amount: s.string(),
   type: s.string(),
-  timestamp: s.number(),
+  timestamp: s.int(),
   status: s.string(),
 });

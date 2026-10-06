@@ -8,6 +8,6 @@ export type SapiV1SubAccountUniversalTransferResponse1 = {
 
 export const sapiV1SubAccountUniversalTransferResponse1Schema: Schema<SapiV1SubAccountUniversalTransferResponse1> =
   s.object<SapiV1SubAccountUniversalTransferResponse1>({
-    tranId: s.number(),
+    tranId: s.int(),
     clientTranId: s.string(),
   });

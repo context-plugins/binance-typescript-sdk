@@ -21,13 +21,13 @@ export type Plan1 = {
 };
 
 export const plan1Schema: Schema<Plan1> = s.object<Plan1>({
-  planId: s.number(),
+  planId: s.int(),
   planType: s.string(),
   editAllowed: s.string(),
   flexibleAllowedToUse: s.string(),
-  creationDateTime: s.number(),
-  firstExecutionDateTime: s.number(),
-  nextExecutionDateTime: s.number(),
+  creationDateTime: s.int(),
+  firstExecutionDateTime: s.int(),
+  nextExecutionDateTime: s.int(),
   status: s.string(),
   targetAsset: s.string(),
   sourceAsset: s.string(),

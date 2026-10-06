@@ -4,7 +4,7 @@
 
 Accessor: `client.stream` · Source: `src/resources/stream.ts` · 3 operations · Request and error types: namespace `Stream`
 
-**Type sources**: every type an operation names, with the file that declares it and the schema value exported beside it. Import every name from `binance-public-spot-api`; the `Source` path is where to **read** the shape, never what to import. `ResponseError` and the runtime error family are excluded — see sdk-map.md.
+**Type sources**: every type an operation names, with the file that declares it and the schema value exported beside it. Import every name from `binance`; the `Source` path is where to **read** the shape, never what to import. `ApiError`, the runtime error family and the file vocabulary are excluded — see sdk-map.md.
 
 ### closeAListenKeyUserStream
 
@@ -12,8 +12,9 @@ Accessor: `client.stream` · Source: `src/resources/stream.ts` · 3 operations �
 - **Wire**: `DELETE /api/v3/userDataStream`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `Record<string, unknown>` — a bare `application/json` map; the success type *is* the map
-- **Error**: `Stream.CloseAListenKeyUserStreamError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Stream.CloseAListenKeyUserStreamError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Stream.CloseAListenKeyUserStreamRequest` (1):
@@ -28,12 +29,13 @@ Accessor: `client.stream` · Source: `src/resources/stream.ts` · 3 operations �
 
 ### createAListenKeyUserStream
 
-- **Signature**: `createAListenKeyUserStream(options?: RequestOptions): ApiPromise<ApiV3UserDataStreamResponse, ResponseError>`
+- **Signature**: `createAListenKeyUserStream(options?: RequestOptions): ApiPromise<ApiV3UserDataStreamResponse, ApiError>`
 - **Wire**: `POST /api/v3/userDataStream`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `ApiV3UserDataStreamResponse`
-- **Error**: `ResponseError` — untyped, `payload.kind` always `"undeclared"`
+- **Error**: `BinanceError` with `kind: "api"` — untyped, `payload.kind` always `"undeclared"`
 
 | Type | Schema value | Source |
 | --- | --- | --- |
@@ -45,8 +47,9 @@ Accessor: `client.stream` · Source: `src/resources/stream.ts` · 3 operations �
 - **Wire**: `PUT /api/v3/userDataStream`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `Record<string, unknown>` — a bare `application/json` map; the success type *is* the map
-- **Error**: `Stream.PingKeepAliveAListenKeyUserStreamError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Stream.PingKeepAliveAListenKeyUserStreamError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Stream.PingKeepAliveAListenKeyUserStreamRequest` (1):

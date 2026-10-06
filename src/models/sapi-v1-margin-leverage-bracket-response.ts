@@ -11,6 +11,6 @@ export type SapiV1MarginLeverageBracketResponse = {
 export const sapiV1MarginLeverageBracketResponseSchema: Schema<SapiV1MarginLeverageBracketResponse> =
   s.object<SapiV1MarginLeverageBracketResponse>({
     assetNames: s.array(s.string()),
-    rank: s.number(),
+    rank: s.int(),
     brackets: s.array(s.lazy(() => bracketSchema)),
   });

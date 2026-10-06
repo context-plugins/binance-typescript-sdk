@@ -21,6 +21,6 @@ export const row17Schema: Schema<Row17> = s.object<Row17>({
   loanAmount: s.string(),
   collateralAccountId: s.string(),
   collateralCoin: s.string(),
-  loanTerm: s.number(),
-  status: s.number(),
+  loanTerm: s.int(),
+  status: s.int(),
 });

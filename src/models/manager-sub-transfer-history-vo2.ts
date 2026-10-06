@@ -22,8 +22,8 @@ export const managerSubTransferHistoryVo2Schema: Schema<ManagerSubTransferHistor
     toAccountType: s.string(),
     asset: s.string(),
     amount: s.string(),
-    scheduledData: s.number(),
-    createTime: s.number(),
+    scheduledData: s.int(),
+    createTime: s.int(),
     status: s.string(),
-    tranId: s.number(),
+    tranId: s.int(),
   });

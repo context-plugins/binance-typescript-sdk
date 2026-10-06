@@ -10,5 +10,5 @@ export type SapiV1LoanLoanableDataResponse = {
 export const sapiV1LoanLoanableDataResponseSchema: Schema<SapiV1LoanLoanableDataResponse> =
   s.object<SapiV1LoanLoanableDataResponse>({
     rows: s.array(s.lazy(() => row22Schema)),
-    total: s.number(),
+    total: s.int(),
   });

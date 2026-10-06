@@ -14,7 +14,7 @@ export type SapiV1MarginCrossMarginDataResponse = {
 
 export const sapiV1MarginCrossMarginDataResponseSchema: Schema<SapiV1MarginCrossMarginDataResponse> =
   s.object<SapiV1MarginCrossMarginDataResponse>({
-    vipLevel: s.number(),
+    vipLevel: s.int(),
     coin: s.string(),
     transferIn: s.boolean(),
     borrowable: s.boolean(),

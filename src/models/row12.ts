@@ -8,6 +8,7 @@ export type Row12 = {
   residualInterest: string;
   collateralAccountId: string;
   collateralCoin: string;
+  /** locked collateral value shown in USD value */
   collateralValue: string;
   totalCollateralValueAfterHaircut?: string;
   lockedCollateralValue?: string;
@@ -19,7 +20,7 @@ export type Row12 = {
 };
 
 export const row12Schema: Schema<Row12> = s.object<Row12>({
-  orderId: s.number(),
+  orderId: s.int(),
   loanCoin: s.string(),
   totalDebt: s.string(),
   residualInterest: s.string(),
@@ -29,7 +30,7 @@ export const row12Schema: Schema<Row12> = s.object<Row12>({
   totalCollateralValueAfterHaircut: s.optional(s.string()),
   lockedCollateralValue: s.optional(s.string()),
   currentLtv: s.string(),
-  expirationTime: s.number(),
+  expirationTime: s.int(),
   loanDate: s.string(),
   loanRate: s.string(),
   loanTerm: s.string(),

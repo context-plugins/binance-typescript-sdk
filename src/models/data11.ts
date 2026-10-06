@@ -3,7 +3,9 @@ import type { Schema } from "../core/validation/schema.js";
 import { hashrateDataSchema, type HashrateData } from "./hashrate-data.js";
 
 export type Data11 = {
+  /** Mining Account name */
   workerName: string;
+  /** Type of hourly hashrate */
   type: string;
   hashrateDatas: HashrateData[];
 };

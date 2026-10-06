@@ -7,5 +7,5 @@ export type SapiV1LendingAutoInvestRedeemResponse = {
 
 export const sapiV1LendingAutoInvestRedeemResponseSchema: Schema<SapiV1LendingAutoInvestRedeemResponse> =
   s.object<SapiV1LendingAutoInvestRedeemResponse>({
-    redemptionId: s.number(),
+    redemptionId: s.int(),
   });

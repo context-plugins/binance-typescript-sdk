@@ -4,6 +4,7 @@ import type { Schema } from "../core/validation/schema.js";
 export type OrderDetails = {
   symbol: string;
   orderId: number;
+  /** Unless OCO, value will be -1 */
   orderListId: number;
   clientOrderId: string;
   price: string;
@@ -28,8 +29,8 @@ export type OrderDetails = {
 
 export const orderDetailsSchema: Schema<OrderDetails> = s.object<OrderDetails>({
   symbol: s.string(),
-  orderId: s.number(),
-  orderListId: s.number(),
+  orderId: s.int(),
+  orderListId: s.int(),
   clientOrderId: s.string(),
   price: s.string(),
   origQty: s.string(),
@@ -41,12 +42,12 @@ export const orderDetailsSchema: Schema<OrderDetails> = s.object<OrderDetails>({
   side: s.string(),
   stopPrice: s.string(),
   icebergQty: s.string(),
-  time: s.number(),
-  updateTime: s.number(),
+  time: s.int(),
+  updateTime: s.int(),
   isWorking: s.boolean(),
-  workingTime: s.number(),
+  workingTime: s.int(),
   origQuoteOrderQty: s.string(),
   selfTradePreventionMode: s.string(),
-  preventedMatchId: s.optional(s.number()),
+  preventedMatchId: s.optional(s.int()),
   preventedQuantity: s.optional(s.string()),
 });

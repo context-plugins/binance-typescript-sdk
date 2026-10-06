@@ -10,5 +10,5 @@ export type SapiV1FuturesTransferResponse1 = {
 export const sapiV1FuturesTransferResponse1Schema: Schema<SapiV1FuturesTransferResponse1> =
   s.object<SapiV1FuturesTransferResponse1>({
     rows: s.array(s.lazy(() => row11Schema)),
-    total: s.number(),
+    total: s.int(),
   });

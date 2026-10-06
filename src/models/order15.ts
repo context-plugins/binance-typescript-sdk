@@ -19,7 +19,7 @@ export type Order15 = {
 };
 
 export const order15Schema: Schema<Order15> = s.object<Order15>({
-  algoId: s.number(),
+  algoId: s.int(),
   symbol: s.string(),
   side: s.string(),
   positionSide: s.string(),
@@ -28,8 +28,8 @@ export const order15Schema: Schema<Order15> = s.object<Order15>({
   executedAmt: s.string(),
   avgPrice: s.string(),
   clientAlgoId: s.string(),
-  bookTime: s.number(),
-  endTime: s.number(),
+  bookTime: s.int(),
+  endTime: s.int(),
   algoStatus: s.string(),
   algoType: s.string(),
   urgency: s.string(),

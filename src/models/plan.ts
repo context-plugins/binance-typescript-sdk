@@ -27,14 +27,14 @@ export type Plan = {
 };
 
 export const planSchema: Schema<Plan> = s.object<Plan>({
-  planId: s.number(),
+  planId: s.int(),
   planType: s.string(),
   editAllowed: s.string(),
-  creationDateTime: s.number(),
-  firstExecutionDateTime: s.number(),
-  nextExecutionDateTime: s.number(),
+  creationDateTime: s.int(),
+  firstExecutionDateTime: s.int(),
+  nextExecutionDateTime: s.int(),
   status: s.string(),
-  lastUpdatedDateTime: s.number(),
+  lastUpdatedDateTime: s.int(),
   targetAsset: s.string(),
   totalTargetAmount: s.string(),
   sourceAsset: s.string(),

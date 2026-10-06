@@ -36,5 +36,5 @@ export const sapiV1BlvtTokenInfoResponseSchema: Schema<SapiV1BlvtTokenInfoRespon
     dailyPurchaseLimit: s.string(),
     redeemFeePct: s.string(),
     dailyRedeemLimit: s.string(),
-    timestamp: s.number(),
+    timestamp: s.int(),
   });

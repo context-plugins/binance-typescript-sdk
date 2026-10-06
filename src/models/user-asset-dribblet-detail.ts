@@ -12,10 +12,10 @@ export type UserAssetDribbletDetail = {
 
 export const userAssetDribbletDetailSchema: Schema<UserAssetDribbletDetail> =
   s.object<UserAssetDribbletDetail>({
-    transId: s.number(),
+    transId: s.int(),
     serviceChargeAmount: s.string(),
     amount: s.string(),
-    operateTime: s.number(),
+    operateTime: s.int(),
     transferedAmount: s.string(),
     fromAsset: s.string(),
   });

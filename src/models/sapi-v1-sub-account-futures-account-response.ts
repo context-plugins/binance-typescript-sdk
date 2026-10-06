@@ -29,7 +29,7 @@ export const sapiV1SubAccountFuturesAccountResponseSchema: Schema<SapiV1SubAccou
     canDeposit: s.boolean(),
     canTrade: s.boolean(),
     canWithdraw: s.boolean(),
-    feeTier: s.number(),
+    feeTier: s.int(),
     maxWithdrawAmount: s.string(),
     totalInitialMargin: s.string(),
     totalMaintenanceMargin: s.string(),
@@ -38,5 +38,5 @@ export const sapiV1SubAccountFuturesAccountResponseSchema: Schema<SapiV1SubAccou
     totalPositionInitialMargin: s.string(),
     totalUnrealizedProfit: s.string(),
     totalWalletBalance: s.string(),
-    updateTime: s.number(),
+    updateTime: s.int(),
   });

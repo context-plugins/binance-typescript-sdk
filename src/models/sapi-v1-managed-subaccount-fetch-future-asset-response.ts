@@ -10,7 +10,7 @@ export type SapiV1ManagedSubaccountFetchFutureAssetResponse = {
 
 export const sapiV1ManagedSubaccountFetchFutureAssetResponseSchema: Schema<SapiV1ManagedSubaccountFetchFutureAssetResponse> =
   s.object<SapiV1ManagedSubaccountFetchFutureAssetResponse>({
-    code: s.number(),
+    code: s.int(),
     message: s.string(),
     snapshotVos: s.array(s.lazy(() => snapshotVo4Schema)),
   });

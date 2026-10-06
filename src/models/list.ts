@@ -8,7 +8,7 @@ export type List = {
 };
 
 export const listSchema: Schema<List> = s.object<List>({
-  time: s.number(),
+  time: s.int(),
   hashrate: s.string(),
   reject: s.string(),
 });

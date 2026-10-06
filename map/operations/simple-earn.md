@@ -4,7 +4,7 @@
 
 Accessor: `client.simpleEarn` · Source: `src/resources/simple-earn.ts` · 24 operations · Request and error types: namespace `SimpleEarn`
 
-**Type sources**: every type an operation names, with the file that declares it and the schema value exported beside it. Import every name from `binance-public-spot-api`; the `Source` path is where to **read** the shape, never what to import. `ResponseError` and the runtime error family are excluded — see sdk-map.md.
+**Type sources**: every type an operation names, with the file that declares it and the schema value exported beside it. Import every name from `binance`; the `Source` path is where to **read** the shape, never what to import. `ApiError`, the runtime error family and the file vocabulary are excluded — see sdk-map.md.
 
 ### getCollateralRecordUserData
 
@@ -13,7 +13,7 @@ Accessor: `client.simpleEarn` · Source: `src/resources/simple-earn.ts` · 24 op
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1SimpleEarnFlexibleHistoryCollateralRecordResponse`
-- **Error**: `SimpleEarn.GetCollateralRecordUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `SimpleEarn.GetCollateralRecordUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `SimpleEarn.GetCollateralRecordUserDataRequest` (8):
@@ -41,7 +41,7 @@ Accessor: `client.simpleEarn` · Source: `src/resources/simple-earn.ts` · 24 op
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1SimpleEarnFlexiblePersonalLeftQuotaResponse`
-- **Error**: `SimpleEarn.GetFlexiblePersonalLeftQuotaUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `SimpleEarn.GetFlexiblePersonalLeftQuotaUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `SimpleEarn.GetFlexiblePersonalLeftQuotaUserDataRequest` (4):
@@ -65,7 +65,7 @@ Accessor: `client.simpleEarn` · Source: `src/resources/simple-earn.ts` · 24 op
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1SimpleEarnFlexiblePositionResponse`
-- **Error**: `SimpleEarn.GetFlexibleProductPositionUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `SimpleEarn.GetFlexibleProductPositionUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `SimpleEarn.GetFlexibleProductPositionUserDataRequest` (7):
@@ -92,7 +92,7 @@ Accessor: `client.simpleEarn` · Source: `src/resources/simple-earn.ts` · 24 op
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1SimpleEarnFlexibleHistoryRedemptionRecordResponse`
-- **Error**: `SimpleEarn.GetFlexibleRedemptionRecordUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `SimpleEarn.GetFlexibleRedemptionRecordUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `SimpleEarn.GetFlexibleRedemptionRecordUserDataRequest` (7):
@@ -119,7 +119,7 @@ Accessor: `client.simpleEarn` · Source: `src/resources/simple-earn.ts` · 24 op
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1SimpleEarnFlexibleHistoryRewardsRecordResponse`
-- **Error**: `SimpleEarn.GetFlexibleRewardsHistoryUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `SimpleEarn.GetFlexibleRewardsHistoryUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `SimpleEarn.GetFlexibleRewardsHistoryUserDataRequest` (5):
@@ -144,7 +144,7 @@ Accessor: `client.simpleEarn` · Source: `src/resources/simple-earn.ts` · 24 op
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1SimpleEarnFlexibleSubscriptionPreviewResponse`
-- **Error**: `SimpleEarn.GetFlexibleSubscriptionPreviewUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `SimpleEarn.GetFlexibleSubscriptionPreviewUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `SimpleEarn.GetFlexibleSubscriptionPreviewUserDataRequest` (5):
@@ -169,7 +169,7 @@ Accessor: `client.simpleEarn` · Source: `src/resources/simple-earn.ts` · 24 op
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1SimpleEarnFlexibleHistorySubscriptionRecordResponse`
-- **Error**: `SimpleEarn.GetFlexibleSubscriptionRecordUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `SimpleEarn.GetFlexibleSubscriptionRecordUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `SimpleEarn.GetFlexibleSubscriptionRecordUserDataRequest` (10):
@@ -199,7 +199,7 @@ Accessor: `client.simpleEarn` · Source: `src/resources/simple-earn.ts` · 24 op
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1SimpleEarnLockedPersonalLeftQuotaResponse`
-- **Error**: `SimpleEarn.GetLockedPersonalLeftQuotaUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `SimpleEarn.GetLockedPersonalLeftQuotaUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `SimpleEarn.GetLockedPersonalLeftQuotaUserDataRequest` (4):
@@ -223,7 +223,7 @@ Accessor: `client.simpleEarn` · Source: `src/resources/simple-earn.ts` · 24 op
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1SimpleEarnLockedPositionResponse`
-- **Error**: `SimpleEarn.GetLockedProductPositionUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `SimpleEarn.GetLockedProductPositionUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `SimpleEarn.GetLockedProductPositionUserDataRequest` (8):
@@ -251,7 +251,7 @@ Accessor: `client.simpleEarn` · Source: `src/resources/simple-earn.ts` · 24 op
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1SimpleEarnLockedHistoryRedemptionRecordResponse`
-- **Error**: `SimpleEarn.GetLockedRedemptionRecordUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `SimpleEarn.GetLockedRedemptionRecordUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `SimpleEarn.GetLockedRedemptionRecordUserDataRequest` (10):
@@ -281,7 +281,7 @@ Accessor: `client.simpleEarn` · Source: `src/resources/simple-earn.ts` · 24 op
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1SimpleEarnLockedHistoryRewardsRecordResponse`
-- **Error**: `SimpleEarn.GetLockedRewardsHistoryUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `SimpleEarn.GetLockedRewardsHistoryUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `SimpleEarn.GetLockedRewardsHistoryUserDataRequest` (8):
@@ -309,7 +309,7 @@ Accessor: `client.simpleEarn` · Source: `src/resources/simple-earn.ts` · 24 op
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1SimpleEarnLockedSubscriptionPreviewResponse[]` — a bare `application/json` array; the success type *is* the array, not a wrapper model
-- **Error**: `SimpleEarn.GetLockedSubscriptionPreviewUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `SimpleEarn.GetLockedSubscriptionPreviewUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `SimpleEarn.GetLockedSubscriptionPreviewUserDataRequest` (6):
@@ -335,7 +335,7 @@ Accessor: `client.simpleEarn` · Source: `src/resources/simple-earn.ts` · 24 op
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1SimpleEarnLockedHistorySubscriptionRecordResponse`
-- **Error**: `SimpleEarn.GetLockedSubscriptionRecordUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `SimpleEarn.GetLockedSubscriptionRecordUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `SimpleEarn.GetLockedSubscriptionRecordUserDataRequest` (9):
@@ -364,7 +364,7 @@ Accessor: `client.simpleEarn` · Source: `src/resources/simple-earn.ts` · 24 op
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1SimpleEarnFlexibleHistoryRateHistoryResponse`
-- **Error**: `SimpleEarn.GetRateHistoryUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `SimpleEarn.GetRateHistoryUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `SimpleEarn.GetRateHistoryUserDataRequest` (8):
@@ -392,7 +392,7 @@ Accessor: `client.simpleEarn` · Source: `src/resources/simple-earn.ts` · 24 op
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1SimpleEarnFlexibleListResponse`
-- **Error**: `SimpleEarn.GetSimpleEarnFlexibleProductListUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `SimpleEarn.GetSimpleEarnFlexibleProductListUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `SimpleEarn.GetSimpleEarnFlexibleProductListUserDataRequest` (6):
@@ -418,7 +418,7 @@ Accessor: `client.simpleEarn` · Source: `src/resources/simple-earn.ts` · 24 op
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1SimpleEarnLockedListResponse`
-- **Error**: `SimpleEarn.GetSimpleEarnLockedProductListUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `SimpleEarn.GetSimpleEarnLockedProductListUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `SimpleEarn.GetSimpleEarnLockedProductListUserDataRequest` (6):
@@ -443,8 +443,9 @@ Accessor: `client.simpleEarn` · Source: `src/resources/simple-earn.ts` · 24 op
 - **Wire**: `POST /sapi/v1/simple-earn/flexible/redeem`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `SapiV1SimpleEarnFlexibleRedeemResponse`
-- **Error**: `SimpleEarn.RedeemFlexibleProductTradeError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `SimpleEarn.RedeemFlexibleProductTradeError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `SimpleEarn.RedeemFlexibleProductTradeRequest` (7):
@@ -470,8 +471,9 @@ Accessor: `client.simpleEarn` · Source: `src/resources/simple-earn.ts` · 24 op
 - **Wire**: `POST /sapi/v1/simple-earn/locked/redeem`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `SapiV1SimpleEarnLockedRedeemResponse`
-- **Error**: `SimpleEarn.RedeemLockedProductTradeError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `SimpleEarn.RedeemLockedProductTradeError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `SimpleEarn.RedeemLockedProductTradeRequest` (4):
@@ -494,8 +496,9 @@ Accessor: `client.simpleEarn` · Source: `src/resources/simple-earn.ts` · 24 op
 - **Wire**: `POST /sapi/v1/simple-earn/flexible/setAutoSubscribe`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `SapiV1SimpleEarnFlexibleSetAutoSubscribeResponse`
-- **Error**: `SimpleEarn.SetFlexibleAutoSubscribeUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `SimpleEarn.SetFlexibleAutoSubscribeUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `SimpleEarn.SetFlexibleAutoSubscribeUserDataRequest` (5):
@@ -519,8 +522,9 @@ Accessor: `client.simpleEarn` · Source: `src/resources/simple-earn.ts` · 24 op
 - **Wire**: `POST /sapi/v1/simple-earn/locked/setAutoSubscribe`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `SapiV1SimpleEarnLockedSetAutoSubscribeResponse`
-- **Error**: `SimpleEarn.SetLockedAutoSubscribeUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `SimpleEarn.SetLockedAutoSubscribeUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `SimpleEarn.SetLockedAutoSubscribeUserDataRequest` (5):
@@ -545,7 +549,7 @@ Accessor: `client.simpleEarn` · Source: `src/resources/simple-earn.ts` · 24 op
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1SimpleEarnLockedSetRedeemOptionResponse`
-- **Error**: `SimpleEarn.SetLockedProductRedeemOptionUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `SimpleEarn.SetLockedProductRedeemOptionUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `SimpleEarn.SetLockedProductRedeemOptionUserDataRequest` (5):
@@ -571,7 +575,7 @@ Accessor: `client.simpleEarn` · Source: `src/resources/simple-earn.ts` · 24 op
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1SimpleEarnAccountResponse`
-- **Error**: `SimpleEarn.SimpleAccountUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `SimpleEarn.SimpleAccountUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `SimpleEarn.SimpleAccountUserDataRequest` (3):
@@ -593,8 +597,9 @@ Accessor: `client.simpleEarn` · Source: `src/resources/simple-earn.ts` · 24 op
 - **Wire**: `POST /sapi/v1/simple-earn/flexible/subscribe`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `SapiV1SimpleEarnFlexibleSubscribeResponse`
-- **Error**: `SimpleEarn.SubscribeFlexibleProductTradeError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `SimpleEarn.SubscribeFlexibleProductTradeError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `SimpleEarn.SubscribeFlexibleProductTradeRequest` (7):
@@ -620,8 +625,9 @@ Accessor: `client.simpleEarn` · Source: `src/resources/simple-earn.ts` · 24 op
 - **Wire**: `POST /sapi/v1/simple-earn/locked/subscribe`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `SapiV1SimpleEarnLockedSubscribeResponse`
-- **Error**: `SimpleEarn.SubscribeLockedProductTradeError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `SimpleEarn.SubscribeLockedProductTradeError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `SimpleEarn.SubscribeLockedProductTradeRequest` (8):

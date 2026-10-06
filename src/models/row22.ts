@@ -32,7 +32,7 @@ export const row22Schema: Schema<Row22> = s.object<Row22>({
   DDailyInterestRate180: s.string(),
   minLimit: s.string(),
   maxLimit: s.string(),
-  vipLevel: s.number(),
+  vipLevel: s.int(),
   _keysMap: {
     DHourlyInterestRate7: "_7dHourlyInterestRate",
     DDailyInterestRate7: "_7dDailyInterestRate",

@@ -10,5 +10,5 @@ export type SapiV1SimpleEarnLockedHistoryRedemptionRecordResponse = {
 export const sapiV1SimpleEarnLockedHistoryRedemptionRecordResponseSchema: Schema<SapiV1SimpleEarnLockedHistoryRedemptionRecordResponse> =
   s.object<SapiV1SimpleEarnLockedHistoryRedemptionRecordResponse>({
     rows: s.array(s.lazy(() => row45Schema)),
-    total: s.number(),
+    total: s.int(),
   });

@@ -13,9 +13,9 @@ export type SapiV1MarginCapitalFlowResponse = {
 
 export const sapiV1MarginCapitalFlowResponseSchema: Schema<SapiV1MarginCapitalFlowResponse> =
   s.object<SapiV1MarginCapitalFlowResponse>({
-    id: s.number(),
-    tranId: s.number(),
-    timestamp: s.number(),
+    id: s.int(),
+    tranId: s.int(),
+    timestamp: s.int(),
     asset: s.string(),
     symbol: s.string(),
     type: s.string(),

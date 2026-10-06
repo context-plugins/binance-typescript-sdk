@@ -12,6 +12,6 @@ export type SapiV1ManagedSubaccountQueryTransLogForInvestorResponse = {
 
 export const sapiV1ManagedSubaccountQueryTransLogForInvestorResponseSchema: Schema<SapiV1ManagedSubaccountQueryTransLogForInvestorResponse> =
   s.object<SapiV1ManagedSubaccountQueryTransLogForInvestorResponse>({
-    count: s.number(),
+    count: s.int(),
     managerSubTransferHistoryVos: s.array(s.lazy(() => managerSubTransferHistoryVoSchema)),
   });

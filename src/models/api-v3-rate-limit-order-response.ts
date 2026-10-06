@@ -13,7 +13,7 @@ export const apiV3RateLimitOrderResponseSchema: Schema<ApiV3RateLimitOrderRespon
   s.object<ApiV3RateLimitOrderResponse>({
     rateLimitType: s.string(),
     interval: s.string(),
-    intervalNum: s.number(),
-    limit: s.number(),
-    count: s.optional(s.number()),
+    intervalNum: s.int(),
+    limit: s.int(),
+    count: s.optional(s.int()),
   });

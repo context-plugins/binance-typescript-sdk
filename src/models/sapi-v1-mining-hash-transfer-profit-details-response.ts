@@ -10,7 +10,7 @@ export type SapiV1MiningHashTransferProfitDetailsResponse = {
 
 export const sapiV1MiningHashTransferProfitDetailsResponseSchema: Schema<SapiV1MiningHashTransferProfitDetailsResponse> =
   s.object<SapiV1MiningHashTransferProfitDetailsResponse>({
-    code: s.number(),
+    code: s.int(),
     msg: s.string(),
     data: data16Schema,
   });

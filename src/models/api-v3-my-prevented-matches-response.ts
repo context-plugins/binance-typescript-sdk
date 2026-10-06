@@ -16,12 +16,12 @@ export type ApiV3MyPreventedMatchesResponse = {
 export const apiV3MyPreventedMatchesResponseSchema: Schema<ApiV3MyPreventedMatchesResponse> =
   s.object<ApiV3MyPreventedMatchesResponse>({
     symbol: s.string(),
-    preventedMatchId: s.number(),
-    takerOrderId: s.number(),
-    makerOrderId: s.number(),
-    tradeGroupId: s.number(),
+    preventedMatchId: s.int(),
+    takerOrderId: s.int(),
+    makerOrderId: s.int(),
+    tradeGroupId: s.int(),
     selfTradePreventionMode: s.string(),
     price: s.string(),
     makerPreventedQuantity: s.string(),
-    transactTime: s.number(),
+    transactTime: s.int(),
   });

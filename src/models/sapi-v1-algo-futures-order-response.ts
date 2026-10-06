@@ -10,8 +10,8 @@ export type SapiV1AlgoFuturesOrderResponse = {
 
 export const sapiV1AlgoFuturesOrderResponseSchema: Schema<SapiV1AlgoFuturesOrderResponse> =
   s.object<SapiV1AlgoFuturesOrderResponse>({
-    algoId: s.number(),
+    algoId: s.int(),
     success: s.boolean(),
-    code: s.number(),
+    code: s.int(),
     msg: s.string(),
   });

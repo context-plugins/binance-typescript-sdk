@@ -10,5 +10,5 @@ export type SapiV1MarginTransferResponse = {
 export const sapiV1MarginTransferResponseSchema: Schema<SapiV1MarginTransferResponse> =
   s.object<SapiV1MarginTransferResponse>({
     rows: s.array(s.lazy(() => row2Schema)),
-    total: s.number(),
+    total: s.int(),
   });

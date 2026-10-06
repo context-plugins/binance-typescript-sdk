@@ -13,7 +13,7 @@ export type SapiV1SubAccountSpotSummaryResponse = {
 
 export const sapiV1SubAccountSpotSummaryResponseSchema: Schema<SapiV1SubAccountSpotSummaryResponse> =
   s.object<SapiV1SubAccountSpotSummaryResponse>({
-    totalCount: s.number(),
+    totalCount: s.int(),
     masterAccountTotalAsset: s.string(),
     spotSubUserAssetBtcVoList: s.array(s.lazy(() => spotSubUserAssetBtcVoListSchema)),
   });

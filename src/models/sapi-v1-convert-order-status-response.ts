@@ -15,7 +15,7 @@ export type SapiV1ConvertOrderStatusResponse = {
 
 export const sapiV1ConvertOrderStatusResponseSchema: Schema<SapiV1ConvertOrderStatusResponse> =
   s.object<SapiV1ConvertOrderStatusResponse>({
-    orderId: s.number(),
+    orderId: s.int(),
     orderStatus: s.string(),
     fromAsset: s.string(),
     fromAmount: s.string(),
@@ -23,5 +23,5 @@ export const sapiV1ConvertOrderStatusResponseSchema: Schema<SapiV1ConvertOrderSt
     toAmount: s.string(),
     ratio: s.string(),
     inverseRatio: s.string(),
-    createTime: s.number(),
+    createTime: s.int(),
   });

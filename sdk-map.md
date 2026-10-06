@@ -1,123 +1,204 @@
 <!-- Generated file — do not edit; regenerated with the SDK. -->
 
-# SDK map — Binance Public Spot API (TypeScript)
+# SDK map — Binance (TypeScript)
 
-> A generated table of contents for this SDK. Consult this map and its sub-pages to learn signatures, request-field placement, error types and server wiring **by lookup**. Model shapes are *not* duplicated here — the map names the file declaring each type and the schema value exported beside it; read the shape there. The compiler is the backstop: a wrong name fails to build.
+> A generated table of contents for this SDK. Consult this map and its sub-pages to learn signatures, request-field placement, error types and server wiring **by lookup**. Model shapes and enum values are *not* duplicated here — the map names the file declaring each type and the schema value exported beside it; read the shape there. The compiler is the backstop: a wrong name fails to build.
 
 |  |  |
 | --- | --- |
-| SDK display name | Binance Public Spot API |
-| Package | `binance-public-spot-api` |
-| Package version | `1.0` |
+| SDK display name | Binance |
+| Package | `binance` |
+| Package version | `1.0.0` |
 | API spec version | `1.0` |
-| Import specifier | `binance-public-spot-api` — the package root is the **only** entry. Deep imports (`binance-public-spot-api/models/...`) do not resolve; the `exports` map exposes `.` and `./package.json` and nothing else |
+| Import specifier | `binance` — the package root is the **only** entry. Deep imports (`binance/models/...`) do not resolve; the `exports` map exposes `.` and `./package.json` and nothing else |
 | Module format | dual ESM + CommonJS, as folder dialects (`dist/esm`, `dist/commonjs`), each with its own `package.json` marker. No `.mjs`, `.cjs`, `.d.mts` or `.d.cts` files exist |
-| Node floor | `>=20` (`engines.node`) |
+| Node floor | `>=20.3` (`engines.node`) |
 | TypeScript floor | a resolver that reads `exports` (4.7+), plus whatever the pinned `zod` requires — `zod@4` needs 5.5 or later. The public `.d.ts` chain reaches `zod/v4-mini`, so this is a real constraint rather than a build-tool version |
 | Runtime dependency | `zod` (`^3.25.0 \|\| ^4.0.0`), imported as `zod/v4-mini`. The only runtime dependency |
 | Generator | APIMatic |
 
 Staleness check: the API spec version above changes when the SDK is regenerated from a new spec. If a lookup here fails to compile, trust the compiler and re-read the source file named in the row.
 
-All `Source` paths on this map and its sub-pages are relative to the **SDK root** — the directory holding this file and `package.json` — never to the page that carries them: a page two directories deep writes exactly what a page at the root would. The package ships its `src/` tree, so the same paths resolve inside `node_modules/binance-public-spot-api/` too. An import specifier ending `.js` inside that source is the NodeNext spelling of the sibling `.ts` file.
+All `Source` paths on this map and its sub-pages are relative to the **SDK root** — the directory holding this file and `package.json` — never to the page that carries them: a page two directories deep writes exactly what a page at the root would. The package ships its `src/` tree, so the same paths resolve inside `node_modules/binance/` too. An import specifier ending `.js` inside that source is the NodeNext spelling of the sibling `.ts` file.
 
 ---
 
 ## Getting a client
 
 ```ts
-import { BinancePublicSpotApiClient, ServerEnvironment } from "binance-public-spot-api";
+import { BinanceClient, ServerEnvironment } from "binance";
 
-const client = new BinancePublicSpotApiClient({
+const client = new BinanceClient({
   serverEnvironment: ServerEnvironment.Production,
   apiKeyAuth: "YOUR_API_KEY",
 });
 ```
 
-The only constructor is `new BinancePublicSpotApiClient(clientOptions: Partial<ClientOptions> = {})`, so `new BinancePublicSpotApiClient()` is valid. Resources are memoized lazy getters on the client — `client.market`, `client.tradeApi`, `client.margin`, `client.wallet`, `client.subAccountApi`, `client.stream`, `client.marginStream`, `client.isolatedMarginStream`, `client.savings`, `client.mining`, `client.futures`, `client.futuresAlgo`, `client.spotAlgo`, `client.portfolioMargin`, `client.blvt`, `client.fiat`, `client.c2C`, `client.vipLoans`, `client.cryptoLoans`, `client.pay`, `client.convert`, `client.rebate`, `client.nft`, `client.giftCard`, `client.autoInvest`, `client.copyTrading`, `client.simpleEarn`, `client.staking`, `client.dualInvestment` — and their classes are exported only for their merged namespaces and for `instanceof`; their constructors take engine internals that are not exported, so reach a resource only through its getter.
+The only constructor is `new BinanceClient(options: ClientOptions = {})`, so `new BinanceClient()` is the minimum. Resources are memoized lazy getters on the client — `client.market`, `client.tradeApi`, `client.margin`, `client.wallet`, `client.subAccountApi`, `client.stream`, `client.marginStream`, `client.isolatedMarginStream`, `client.savings`, `client.mining`, `client.futures`, `client.futuresAlgo`, `client.spotAlgo`, `client.portfolioMargin`, `client.blvt`, `client.fiat`, `client.c2C`, `client.vipLoans`, `client.cryptoLoans`, `client.pay`, `client.convert`, `client.rebate`, `client.nft`, `client.giftCard`, `client.autoInvest`, `client.copyTrading`, `client.simpleEarn`, `client.staking`, `client.dualInvestment` — and their classes are exported only for their merged namespaces and for `instanceof`; their constructors take engine internals that are not exported, so reach a resource only through its getter.
 
 All `ClientOptions` fields (source: `src/client-options.ts`; every field is `readonly`):
 
 | Field | Type | Default |
 | --- | --- | --- |
-| `serverEnvironment` | `ServerEnvironment` | `ServerEnvironment.Production` |
-| `serverOptions` | `ServerOptions` | `{}` — each resolver merges its own per-environment defaults in |
-| `timeout` | `number` (ms) | `60_000` |
+| `serverEnvironment` | `typeof ServerEnvironment.<member>`, one per union arm | `ServerEnvironment.Production` |
+| `serverOptions` | the selected environment's server overrides | `{}` — each resolver merges its own per-environment defaults in |
+| `retry` | `RetryOptions` | the `RetryOptions` defaults below |
 | `fetch` | `FetchLike \| undefined` | the global `fetch`, resolved by the transport |
 | `apiKeyAuth` | `TokenProvider \| undefined` | unset |
 
 The 1 auth field is optional, and an unset one is not an error — the operation that wanted it simply sends no credential. What each one puts on the wire, and which operations require it, are under Servers & auth.
 
-Two engine behaviours the table cannot show. A non-finite or non-positive `timeout` is **not** "no timeout" — the transport (`src/core/raw-client.ts`) falls back to its own ceiling and clamps anything above it. And when no `fetch` is reachable the **constructor** throws `SdkError`, not the first call.
+When no `fetch` is reachable the **constructor** throws `ConfigurationError`, not the first call.
 
-**`ClientOptions.fetch` is the one extension point** — there are no hooks, no middleware and no interceptors, so a proxy, a custom agent, extra headers, retries or request logging all go here. A replacement **must forward `init.signal`** to whatever actually performs the request; spreading `...init` does it. Drop it and both the per-call signal and `timeout` go inert — the call neither aborts nor times out.
+`RetryOptions` fields (source: `src/core/retry.ts`; exported from `binance` as a type). Every field is optional, so pass only the fields you change — each one left out takes its default:
 
-**Cancellation.** The `signal` on `RequestOptions` is the whole per-request surface. An already-aborted signal rejects immediately, `err.cause` is whatever was passed to `abort()`, and the client-level `timeout` surfaces through the same branch with `err.kind === "timeout"`. There is no per-request timeout.
+| Field | Type | Default |
+| --- | --- | --- |
+| `timeout` | `number` (ms) | `60_000` |
+| `statusCodesToRetry` | `readonly number[]` | `[408, 429, 500, 502, 503, 504]` |
+| `httpMethodsToRetry` | `readonly HttpMethod[]` | `["GET", "HEAD", "PUT", "OPTIONS"]` |
+| `maxRetries` | `number` | `3` |
+| `delay` | `number` (ms) | `1000` |
+| `backoffFactor` | `number` | `2` |
+| `useExponentialBackoff` | `boolean` | `true` |
+| `maxJitter` | `number` (a fraction, `0` to `1`) | `0.25` |
+| `onRetry` | `((attempt: RetryAttempt) => void) \| undefined` | unset |
+
+`retry: { maxRetries: 0 }` turns retries off.
+
+A call may override three of these through `RequestOptions.retry`, typed `RequestRetryOptions`: `maxRetries`, `timeout` and `statusCodesToRetry`.
+
+Retry types named by the fields above — public members with their **declared types**, verbatim from source; every member is `readonly`, and both are exported as types:
+
+| Type | Public members | Source |
+| --- | --- | --- |
+| `RetryAttempt` — the `onRetry` callback argument | `attemptNumber: number` · `delay: number` · `reason: RetryReason` | `src/core/retry.ts` |
+| `RetryReason` — narrow on `kind` | `{ kind: "status"; status: number; headers: Headers }` or `{ kind: "fault"; error: ConnectionError \| TimeoutError }`, the two retryable leaves of `BinanceError` | `src/core/retry.ts` |
+
+**`ClientOptions.fetch` is the one extension point** — there are no hooks, no middleware and no interceptors, so a proxy, a custom agent, extra headers and request logging all go here. A replacement **must forward `init.signal`** to whatever actually performs the request; spreading `...init` does it. Drop it and both the per-call signal and `retry.timeout` go inert — the call neither aborts nor times out.
+
+**Cancellation.** The `signal` on `RequestOptions` is the per-request cancellation surface. Aborting rejects with the signal's **own `reason`** — whatever you passed to `abort()`, or the platform `DOMException` a bare `abort()` supplies — unwrapped, so it is **not** an `BinanceError` and a `catch` that tests the family must rethrow it. An already-aborted signal rejects immediately. The `retry.timeout` that bounded the attempt is the SDK's own and does stay in the family, as `err.kind === "timeout"`. It starts once the credential is in hand and covers the request up to its response headers — not obtaining the credential and not reading the body, which only the signal bounds, so a body that stalls after its headers holds a call with no signal until the transport gives up.
 
 The entire per-request surface is the optional second argument of every operation:
 
 | Type | Members | Source |
 | --- | --- | --- |
-| `RequestOptions` | `signal?: AbortSignal` | `src/core/api-request.ts` |
+| `RequestOptions` | `signal?: AbortSignal \| undefined` · `retry?: RequestRetryOptions` | `src/core/api-request.ts` |
+| `RequestRetryOptions` — `Pick<RetryOptions, "maxRetries" \| "timeout" \| "statusCodesToRetry">` | `maxRetries?: number` · `timeout?: number` · `statusCodesToRetry?: readonly number[]` | `src/core/retry.ts` |
+
+**A per-call `retry` is merged field by field over the client's resolved policy**, so `{ retry: { maxRetries: 0 } }` changes that one field for that one call and leaves every other call alone.
 
 **Not on this SDK.** These are absent by design, not undocumented. This table ships with `src/core/` and is versioned with it.
 
 | You might reach for | Reality |
 | --- | --- |
-| `maxRetries`, backoff, `Retry-After` handling | no retries. A failed call rejects once |
 | a logger, `logLevel`, request/response logging | none. `src/core/` contains no `console` call |
 | hooks, middleware, interceptors, `onRequest`/`onResponse` | none. `fetch` is the one extension point |
 | pagination, `for await`, auto-paging helpers | no operation is paginated and nothing is async-iterable |
-| SSE, `text/event-stream`, `ReadableStream` | no streaming. Every decoder reads the body to completion |
-| `FormData`, `Blob`, `File`, multipart, binary bodies | none. The only body kinds are empty, JSON, form-urlencoded and text |
-| per-request `headers`, `timeout`, `baseUrl`, idempotency key | none. `RequestOptions` is `{ signal }` |
+| SSE, `text/event-stream` | no event streams. Every decoder reads the body to completion, bar a binary success, which hands its stream over unread |
+| multipart <em>responses</em>, XML bodies | none. A multipart reply is not decoded and an XML body is not sent — an operation declaring either is still emitted, with no body to supply or read |
+| per-request `headers`, `baseUrl`, idempotency key | none. `RequestOptions` is `{ signal, retry }`; a header, a base URL and a caller-supplied idempotency key are not on it |
 | the raw `fetch` `Response` | deliberately unreachable. `status` and `headers` are on `asApiResult()` and on a thrown `ResponseError` |
 
 ---
 
 ## Error-handling model (read once — applies to every operation)
 
-Operations are **throw-based**, and failures fall into **two disjoint families**. Neither is `instanceof` the other, so the two branches can never overlap and a complete `catch` needs both. `instanceof` is reliable **within one dialect**: a process that loads both — `import` in one file, `require` in another — gets two independent copies of every error class, and `instanceof` across that boundary is `false`. Narrow on `err.kind` or on `err.payload.kind` there, or on `err.name`, which is stable across copies.
-
-- **Family A — the API answered with an error status.** The call rejects with `ResponseError`, or with a subclass of it where the spec declared error bodies for that operation. `err.payload` is a discriminated union whose `kind` names the **response schema the spec declared**, *not* the status code — so two statuses sharing one schema share one arm, and `"undeclared"` is an always-present arm carrying the raw bytes.
-- **Family B — no usable response was produced.** The call rejects with a member of the `BinancePublicSpotApiError` set. `BinancePublicSpotApiError` is **abstract**: use it for `instanceof`, never construct it.
+Operations are **throw-based**, and every **operational** failure belongs to **one family**: `BinanceError`, a union over six leaves, so one `instanceof BinanceError` sees all of them. It is not the whole escape set — four throwables sit outside it, enumerated below. Every leaf names the call it raised — `err.method` and `err.uri` — and `message` opens with that name. `instanceof` is reliable **within one dialect**: a process that loads both — `import` in one file, `require` in another — gets two independent copies of every error class, and `instanceof` across that boundary is `false`. Narrow on `err.kind` there, or on `err.name`, which is stable across copies.
 
 Core types (public members with their declared types; all are `readonly`):
 
 | Type | Public members | Source |
 | --- | --- | --- |
-| `ResponseError<P>` | `status: number` · `headers: Headers` · `payload: ErrorPayload<P>`, and a `message` of the form `<status> <statusText>` | `src/core/response-error.ts` |
-| `Declared<K, B>` | `kind: K` · `body: B` | `src/core/response-error.ts` |
-| `ErrorPayload<P>` | `P` or `{ kind: "undeclared"; rawBody: ArrayBuffer }` | `src/core/response-error.ts` |
-| `BinancePublicSpotApiError` (abstract; declared as `CoreError`) | `kind: ErrorKind` · `message` · `cause` | `src/core/errors.ts` |
-| `SchemaError` | `kind: "schema"` · `rawBody: unknown` | `src/core/validation/schema-error.ts` |
-| `AuthError` | `kind: "auth"` · `failures: readonly unknown[]` | `src/core/errors.ts` |
-| `ApiResult<T, E>` | on success `{ ok: true; status; headers; value: T }`, on failure `{ ok: false; status; headers; errorMessage: string; error }` — `error` carries the **payload**, not the error object | `src/core/api-promise.ts` |
+| `BinanceError` (declared as `CoreError`) | `kind: ErrorKind` · `method: HttpMethod` · `uri: string` · `message` · `cause` — the union every failure below belongs to | `src/core/errors.ts` |
+| `ResponseError` | the rung the server answered on, `ApiError \| DecodeError`; adds `status: number` · `headers: Headers` | `src/core/errors.ts` |
+| `ApiError` | `kind: "api"` · `payload` — the open arm, whose `kind` is `string`. **Not generic**: a typed operation's subclass redeclares `payload` with its own literal arms | `src/core/api-error.ts` |
+| `TimeoutError` | `kind: "timeout"` · `timeout: number` | `src/core/errors.ts` |
+| `DecodeError`, `EncodeError`, `ConnectionError`, `AuthError` | their `kind`, and nothing beyond the two rows above | `src/core/errors.ts` |
+| `Declared<K, B>` | `kind: K` · `body: B` | `src/core/api-error.ts` |
+| `ErrorPayload<P>` | `P` or `{ kind: "undeclared"; rawBody: ArrayBuffer }` | `src/core/api-error.ts` |
+| `Undeclared` | `kind: "undeclared"` · `rawBody: ArrayBuffer` — the always-present arm, carrying the untouched bytes of a status the spec does not describe | `src/core/api-error.ts` |
+| `ApiResult<T, E>` | on success `{ ok: true; status; headers; value: T }`, on failure `{ ok: false; status; headers; message: string; method: HttpMethod; uri: string; payload: ErrorPayload<P> }` — the failure branch carries the error's own members, never the error object | `src/core/api-promise.ts` |
 
-`ErrorKind` is one value per Family B class: `connection` (the `fetch` call rejected, or the body read failed mid-stream), `timeout` (the client-level timeout elapsed), `abort` (the per-call signal aborted, including one that was already aborted), `sdk` (a defect on the SDK side), `schema` (a value failed its schema in **either** direction — inbound the response body was malformed, outbound nothing was sent at all), and `auth` (a credential could not be **obtained**).
+`BinanceError` and `ResponseError` are each a **type and a value**: the type is the union, the value is the abstract class every leaf extends, so `instanceof` and `err.kind` select the same set. Neither can be constructed or extended. `uri` is the absolute URL the call dialled, with the server variables expanded and the path parameters filled. It carries no query, fragment or userinfo, so no query parameter reaches it. One failure names an unresolved URI: a path parameter rejected by its schema arrives as an `EncodeError` whose `uri` still shows the unfilled `{braces}` — an `undefined` one included, since a path parameter is always required, so its schema rejects it first.
 
-**`AuthError` is about obtaining a credential, never about being refused one.** A 401 *from the API* is a Family A `ResponseError` like any other status, so the two are disjoint and one `catch` arm cannot absorb the other. A 401 does have one auth consequence: it invalidates whatever that operation's scheme had cached, so the **next** call re-acquires. The current request is not retried — see Servers & auth.
+`ErrorKind` is closed, so a `switch` over `err.kind` is exhaustive:
+
+| `err.kind` | What happened | Adds |
+| --- | --- | --- |
+| `"api"` | the API answered with an error status | `status` · `headers` · `payload` |
+| `"decode"` | the answer could not be turned into the declared value — the body was not JSON, failed its schema, arrived where none is declared, or died mid-read after the response line; `cause` carries the underlying failure | `status` · `headers` |
+| `"encode"` | a request value did not match its declared type, so **nothing was sent**. `cause` is the `SchemaError` that rejected it | — |
+| `"connection"` | `fetch` rejected before a response line arrived | — |
+| `"timeout"` | `ClientOptions.retry.timeout` elapsed. `timeout` is the budget that ran out | `timeout` |
+| `"auth"` | a credential could not be **obtained**, per the paragraph below | — |
+
+**Four throwables sit outside the family**, so `instanceof BinanceError` is `false` on each and a `catch` that tests it has to rethrow what is left. `ConfigurationError` comes out of the **`BinanceClient` constructor**, synchronously and before any `ApiPromise` exists: no reachable `fetch` or an unknown `ClientOptions.serverEnvironment`. One call can reject with it too: a `RequestOptions.retry` whose reads throw, with that failure on `cause`. `SchemaError` is what a codec throws when called directly — `accountProfitSchema.decode(json)` — so it names no call; through an operation the same failure arrives one level down, on `DecodeError.cause` or `EncodeError.cause`, and a `serverOptions` override whose value is not a string raises it from the constructor too. Bugs stay outside the family and reach you raw — an unparseable `baseUrl` is a `TypeError`. And a caller abort arrives as the signal's own `reason`, unwrapped. The first two are exported from the package root; the other two are not ours to export.
+
+**`AuthError` is about obtaining a credential, never about being refused one.** A 401 *from the API* is an `ApiError` like any other status. A 401 does have one auth consequence: it invalidates whatever that operation's scheme had cached, so the **next** call re-acquires.
 
 ```ts
 try {
-  const response = await client.market.hrTickerPriceChangeStatistics24();
+  const response = await client.market.hrTickerPriceChangeStatistics24({
+    symbol: "BNBUSDT",
+    symbols: '["BTCUSDT","BNBBTC"]',
+    type: Type.Full,
+  });
 } catch (err) {
-  if (err instanceof ResponseError) {
-    // TODO: the API answered with an error status — read err.status and err.payload
-  }
-  if (err instanceof BinancePublicSpotApiError) {
-    // TODO: no usable response was produced — err.kind says which
+  if (err instanceof BinanceError) {
+    switch (err.kind) {
+      case "api":
+        // TODO: the API answered with an error status — read err.status and err.payload
+        break;
+      case "decode":
+        // TODO: the answer did not fit the spec — read err.status and err.cause
+        break;
+      case "encode":
+        // TODO: nothing was sent — err.cause is the SchemaError that rejected the value
+        break;
+      case "connection":
+      case "timeout":
+      case "auth":
+        // TODO: no response was produced — err.kind says which
+        break;
+    }
+  } else {
+    throw err;
   }
 }
 ```
 
-A typed subclass narrows further, on `err.payload.kind`. Which arms an operation declares, with the status each covers, is the **Error arms** bullet on its page below.
+**Narrowing the payload.** A typed subclass declares its arms as literals, so `switch (err.payload.kind)` narrows `payload.body` to exactly one model. The `kind` is named after the arm's **body**, *not* its status code: a body that references a model takes that model's name in lower camel, any other body `error{Status}`, and a second arm that would land on the same name takes a numeric suffix. On the base `ApiError` — what an operation with no declared error bodies rejects with — `payload.kind` is `string`, so comparing it to `"undeclared"` narrows **nothing**: use `"rawBody" in err.payload`. Which arms an operation declares, with the status each covers, is the **Error arms** bullet on its page below.
 
-**Matcher precedence** for a subclass with several arms: an exact numeric status is looked up across the whole table **first**; only then does the first covering wildcard or range win.
+**Matcher precedence** for a subclass with several arms, in three passes: an exact numeric status is looked up across the whole table **first**, then the first covering `[lo, hi]` range, and last a `"default"` arm where the spec declared one. A body that does not fit the arm it matched is a `DecodeError` — except on `"default"`, which describes no status in particular and so **degrades to the `"undeclared"` arm** rather than throwing.
 
-**The non-throwing form exists on every operation.** `.asApiResult()` returns `ApiResult<T, E>` and does **not** reject for an HTTP error status — it still rejects for Family B. It must be called on the value the operation returned: `ApiPromise` overrides `Symbol.species`, so `.then()`, `.catch()` and `.finally()` hand back a plain `Promise` and the method is gone.
+**The non-throwing form exists on every operation.** `.asApiResult()` returns `ApiResult<T, E>` and does **not** reject for an HTTP error status — every other failure still rejects, `DecodeError` included, so the `catch` stays. It must be called on the value the operation returned: `ApiPromise` overrides `Symbol.species`, so `.then()`, `.catch()` and `.finally()` hand back a plain `Promise` and the method is gone.
 
-Of **340 operations**, **333** declare typed error bodies and **7** reject with the base `ResponseError`, whose payload is always the `"undeclared"` arm.
+```ts
+try {
+  const result = await client.market.hrTickerPriceChangeStatistics24({
+    symbol: "BNBUSDT",
+    symbols: '["BTCUSDT","BNBBTC"]',
+    type: Type.Full,
+  }).asApiResult();
+  // TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+  if (result.ok) {
+    // TODO: Use 'result.value' — what this operation resolves to
+  } else {
+    // TODO: Use 'result.message', 'result.method' and 'result.uri', and narrow 'result.payload'
+  }
+} catch (err) {
+  if (err instanceof BinanceError) {
+    // TODO: no error status was produced — err.kind says which failure this is
+  } else {
+    throw err;
+  }
+}
+```
+
+`result.payload` is the same `ErrorPayload<P>` a thrown `ApiError` carries on `err.payload`, and `result.message`, `result.method` and `result.uri` are that error's own members — so the **Error arms** bullet on an operation's page enumerates the payload either way, and the `catch` above it is for the rest of the family. `result.method` and `result.uri` are named on this map alone.
+
+Of **340 operations**, **333** declare typed error bodies and **7** reject with the base `ApiError`, whose payload is always the `"undeclared"` arm.
 
 ---
 
@@ -129,21 +210,23 @@ Each page below carries one block per operation, with bullets in the fixed order
 
 | Applies to every operation | Stated where | A block departs from it only by |
 | --- | --- | --- |
-| **Call shape `op(request, options?)`** — one flat request object first, the per-call options second. There is no positional overload, and no per-call base URL, header, timeout, retry or auth override | here, Getting a client | never — it always holds |
+| **Call shape `op(request, options?)`** — one flat request object first, the per-call options second. There is no positional overload. What the second argument carries is a `signal` and a `retry` override; a per-call base URL, header or auth override does not exist | here, Getting a client | never — it always holds |
 | **The request object is flat and channel-blind.** A field named `body` *is* the whole request body; every other field is fanned out to path, query, header or form by the SDK. Nothing in the object is nested by channel | here | never — the **Fields** table `Channel` column always resolves it |
 | **Throw-based, returning `ApiPromise<T, E>`.** `await` it for `T`; call `.asApiResult()` on the returned value for the non-throwing `ApiResult<T, E>`. No operation is result-only | here, Error-handling model | never |
-| **`E` is the base `ResponseError`** and the payload is always the `"undeclared"` arm | Error-handling model | the spec declared error bodies — the **Error** bullet names a subclass and an **Error arms** bullet gives each arm's tag, status and body |
-| **The request body and its media type are stated on every block**, by a **Request body** bullet that is never omitted. `none` means no body **and no `Content-Type` header** | here | never — the bullet is always present |
-| **Resolves once, to one whole value.** No pagination, no streaming, no SSE, no async iterables, no partial results, no multipart and no binary anywhere | here, Not on this SDK | never at this SDK version |
+| **`E` is the base `ApiError`** and the payload is always the `"undeclared"` arm | Error-handling model | the spec declared error bodies — the **Error** bullet names a subclass and an **Error arms** bullet gives each arm's tag, status and body |
+| **The request body and its media type are stated on every block**, by a **Request body** bullet that is never omitted. `none` means no body **and no `Content-Type` header**, and a named media type means the body is **required** — the request type's field is not optional | here | the spec declared the body optional — the bullet adds **Optional**, the field is `field?:`, and omitting it sends no body and no `Content-Type` header at all |
+| **Resolves once, to one whole value** — except a binary body, which resolves to a stream the caller reads. No pagination, no SSE, no async iterables and no partial results | here, Not on this SDK | never at this SDK version |
+| **Six identity headers ride every request** — `User-Agent`, `X-APIMatic-Lang`, `X-APIMatic-Package-Version`, `X-APIMatic-Gen-Version`, `X-APIMatic-OS` and `X-APIMatic-Runtime`. They identify the generated SDK, so **no option configures them** | here | the operation declared a header of the same name — the operation's layer is folded after the client's, so its value wins |
+| **A fresh `Idempotency-Key` rides every non-GET call that does not declare that header itself**, minted per call in the operation's own header layer. It makes a *replayed* request safe, not a repeated one — a value that changes per call deduplicates nothing, so it is no substitute for a key the API documents. **No option sets it**, and once minted it is always sent — a runtime with no `crypto` global mints it from `Math.random` mixed with the clock and a per-process counter | here | the operation is a GET, or declared that header itself — then its own value stands and nothing is minted |
 | **Server group `default`** | here, Servers & auth | the operation is on another group — its block carries a **Server** bullet |
 | **Every operation states its auth requirement**, by an **Auth** bullet that is never omitted — one scheme, a composition over schemes, or `none` for a public operation | here, Servers & auth | never — the bullet is always present |
-| **Every value is schema-encoded before the request is built** — a wrong type or format rejects and nothing is sent. **An omitted field that has a default is still sent, with that default**, filled by the SDK rather than by the server | here, Models | the field has a default — it appears in the **Fields** table `Default` column |
+| **Every value is schema-encoded before the request is built** — a wrong type or format rejects and nothing is sent. **An omitted field that has a default is still sent, with that default**, filled by the SDK rather than by the server | here | the field has a default — it appears in the **Fields** table `Default` column |
 | **Field names are TypeScript camelCase and the wire name is the same** | here | some field differs — the **Fields** table gains a `Wire` column, where an em dash means "same as the field name" |
 | **Arrays repeat their key and objects bracket-expand** | the serialization block below | never — this SDK declares no per-field serialization style, so every array takes this one |
 
 **Wire serialization, once, for every channel** (source: `src/core/param-value.ts`, `src/core/url.ts`, `src/core/headers.ts`, `src/core/params.ts`). This block ships with `src/core/` and is versioned with it:
 
-- **`path`** takes no style. An array is comma-joined with each element percent-encoded **separately**; an object becomes one percent-encoded JSON document inside the segment. A field whose encoded value is `undefined` throws `SdkError` naming the unfilled placeholder; `null` collapses the segment.
+- **`path`** takes no style. An array is comma-joined with each element percent-encoded **separately**; an object becomes one percent-encoded JSON document inside the segment. A field whose encoded value is `undefined` throws `TypeError` naming the unfilled placeholder — a guard no operation reaches, since a path parameter is always required and its schema rejects `undefined` first, as an `EncodeError`; `null` collapses the segment.
 - **`header`** takes no style. An array is comma-joined un-encoded (OpenAPI `simple`). `undefined` says nothing, while `null` and an empty array are tombstones that remove the header. Later layers win by **lowercased** name, in the order body content type, then client defaults, then operation.
 - **`query`** and **`form`** repeat an array's key and bracket-expand an object at any depth (`filter[status]=open`, `ranges[amount][min]=10`). An array of *objects* bracket-expands per element with **no index**, so element boundaries collapse.
 - Nullish **fields** are dropped from every channel except `path`, where `null` collapses the segment. A nullish array **element** is dropped, so an all-nullish array emits no key at all.
@@ -189,236 +272,22 @@ Each page below carries one block per operation, with bullets in the fixed order
 
 ## Models — where they live, how to build them
 
-**Shapes live only in the source.** Every module under `src/models/` declares exactly one model type and the schema value beside it, and both are re-exported from the package root. So there are two facts per type, and the map gives both: the **names you import** and the **file you read**.
-
-```ts
-import { type AccountProfit, accountProfitSchema } from "binance-public-spot-api";
-```
-
-Take the pair from an operation's **Type sources** table. **Do not derive the path from the type name** — the transform is not reversible in general, and the table is the authority. There is no default export.
+**Shapes live only in the source.** Every module under `src/models/` declares exactly one model type and the schema value beside it, and both are re-exported from the package root. Take the pair from an operation's **Type sources** table, or build the directory from the kind below. **Do not derive the path from the type name** — the transform is not reversible in general, and the table is the authority. Never grep for a type.
 
 | Group | Count | Directory |
 | --- | --- | --- |
-| Objects | 522 | `src/models/` |
+| Objects (plain `type`, no class) | 522 | `src/models/` |
 | Enums (open; const companion plus schema) | 62 | `src/models/` |
-| Unions without a discriminant | 15 | `src/models/unions/` |
+| Unions | 15 | `src/models/unions/` |
+| Typed error classes (`ApiError` subclass, one per typed operation) | 333 | `src/resources/`, in the declaring module's namespace |
 
-**Conventions.** Every model is a plain `type`, not a class — build one with an object literal; there is no constructor and no builder. `f: T` is required, `f?: T` is optional (omit the key), and `f: T | null` is a **required, nullable** field where `null` is a value distinct from an omitted key. Optional properties are declared `f?: T`, not `f?: T | undefined`, so under `exactOptionalPropertyTypes` you must **omit or spread** an absent field rather than assign `undefined` to it.
+Conventions: every model is a plain `type`, not a class — build one with an object literal; there is no constructor and no builder. `f: T` is required, `f?: T` is optional (omit the key), and `f: T | null` is a **required, nullable** field where `null` is a value distinct from an omitted key. Optional properties are declared `f?: T`, not `f?: T | undefined`, so under `exactOptionalPropertyTypes` you must **omit or spread** an absent field rather than assign `undefined` to it. A schema value is directly usable both ways: `Schema<T, W = Encoded<T>>` is `{ decode(v: unknown): T; encode(v: unknown): W }`, and `Encoded<T>` is the wire projection — a `Date` becomes `string | number`, a `Uint8Array` becomes a base64 `string`, recursing through arrays and objects. `EnumSchema<T>` adds `readonly values: readonly T[]`, so an enum's known set is testable at run time. Enums are **not** TypeScript `enum`s and are open: a `const` companion plus a union that includes `(string & {})` or `(number & {})`, so **any** value of the base type is assignable and the schema validates the base type only, never membership — read the member names and the values they send off the companion, and use `.values` to test membership yourself. A discriminated union is narrowed with an exhaustive `switch` on its tag, with no fallback arm and no type guard to import; one without a discriminant is narrowed on the shape of its arms, which its declaration spells out. A property default is filled by the SDK on **encode as well as decode**, so omitting one still sends it — read it off the `defaulted(…)` entry in the schema, or off the property's `@default`. A numeric property is a `number` whatever its format, and its schema follows the type. `type: integer` with no format, `int32` or `int64` rejects a fraction and any value outside the safe-integer range; `type: number` with no format, `float`, `double` or `bigdecimal` rejects a non-finite value. A property's wire name is its `_keysMap` entry in the schema and may differ from the TypeScript name — read it there rather than deriving it. A named spec schema whose resolved form is a bare container, or which is used only as a form-encoded body, gets no model file and no exported name: the first is written inline at each use site, the second is flattened onto the operation's request type, one field per property, so read that field list from the request type.
 
-**Schema companions.** `Schema<T, W = Encoded<T>>` is `{ decode(v: unknown): T; encode(v: unknown): W }`, so a schema value is directly usable both ways. `Encoded<T>` is the wire projection — a `Date` becomes `string | number`, a `Uint8Array` becomes a base64 `string`, recursing through arrays and objects. `EnumSchema<T>` adds `readonly values: readonly T[]`, so an enum's known set is testable at run time.
+Every name comes from the package root — there is no default export, and no deep imports:
 
-**Enums are open, and are not TypeScript `enum`s.** Each is a `const` companion object plus a union that includes `(string & {})` or `(number & {})`, so **any** value of the right base type is assignable and the schema validates the base type only, never membership. That is deliberate: an unrecognized server value round-trips instead of throwing. Use `.values` to test membership yourself.
-
-| Enum | Members (member to wire value) | Schema value |
-| --- | --- | --- |
-| `AboveTimeInForce` | `Gtc` to `"GTC"` · `Ioc` to `"IOC"` · `Fok` to `"FOK"` | `aboveTimeInForceSchema` |
-| `AccountType` | `Spot` to `"SPOT"` · `Margin` to `"MARGIN"` | `accountTypeSchema` |
-| `AccountType3` | `Main` to `"MAIN"` · `Card` to `"CARD"` | `accountType3Schema` |
-| `AutoCompoundPlan` | `None` to `"NONE"` · `Standard` to `"STANDARD"` · `Advance` to `"ADVANCE"` | `autoCompoundPlanSchema` |
-| `BelowTimeInForce` | `Gtc` to `"GTC"` · `Ioc` to `"IOC"` · `Fok` to `"FOK"` | `belowTimeInForceSchema` |
-| `CancelRestrictions` | `OnlyNew` to `"ONLY_NEW"` · `OnlyPartiallyFilled` to `"ONLY_PARTIALLY_FILLED"` | `cancelRestrictionsSchema` |
-| `DataType` | `TDepth` to `"T_DEPTH"` · `SDepth` to `"S_DEPTH"` | `dataTypeSchema` |
-| `Direction` | `Additional` to `"ADDITIONAL"` · `Reduced` to `"REDUCED"` | `directionSchema` |
-| `ExpiredType` | `_1D` to `"1_D"` · `_3D` to `"3_D"` · `_7D` to `"7_D"` · `_30D` to `"30_D"` | `expiredTypeSchema` |
-| `FromAccountType` | `Spot` to `"SPOT"` · `UsdtFuture` to `"USDT_FUTURE"` · `CoinFuture` to `"COIN_FUTURE"` · `Margin` to `"MARGIN"` · `IsolatedMargin` to `"ISOLATED_MARGIN"` | `fromAccountTypeSchema` |
-| `InterestBnbBurn` | `True` to `"true"` · `False` to `"false"` | `interestBnbBurnSchema` |
-| `Interval` | `_1S` to `"1s"` · `_1M` to `"1m"` · `_3M` to `"3m"` · `_5M` to `"5m"` · `_15M` to `"15m"` · `_30M` to `"30m"` · `_1H` to `"1h"` · `_2H` to `"2h"` · `_4H` to `"4h"` · `_6H` to `"6h"` · `_8H` to `"8h"` · `_12H` to `"12h"` · `_1D` to `"1d"` · `_3D` to `"3d"` · `_1W` to `"1w"` · `_1M2` to `"1M"` | `intervalSchema` |
-| `IsFlexibleRate` | `True` to `"TRUE"` · `False` to `"FALSE"` | `isFlexibleRateSchema` |
-| `IsFreeze` | `True` to `"true"` · `False` to `"false"` | `isFreezeSchema` |
-| `IsIsolated` | `True` to `"TRUE"` · `False` to `"FALSE"` | `isIsolatedSchema` |
-| `NeedBtcValuation` | `True` to `"true"` · `False` to `"false"` | `needBtcValuationSchema` |
-| `NewOrderRespType` | `Ack` to `"ACK"` · `Result` to `"RESULT"` · `Full` to `"FULL"` | `newOrderRespTypeSchema` |
-| `OptionType` | `Call` to `"CALL"` · `Put` to `"PUT"` | `optionTypeSchema` |
-| `PendingAboveTimeInForce` | `Gtc` to `"GTC"` · `Ioc` to `"IOC"` · `Fok` to `"FOK"` | `pendingAboveTimeInForceSchema` |
-| `PendingAboveType` | `LimitMaker` to `"LIMIT_MAKER"` · `StopLoss` to `"STOP_LOSS"` · `StopLossLimit` to `"STOP_LOSS_LIMIT"` | `pendingAboveTypeSchema` |
-| `PendingBelowTimeInForce` | `Gtc` to `"GTC"` · `Ioc` to `"IOC"` · `Fok` to `"FOK"` | `pendingBelowTimeInForceSchema` |
-| `PendingBelowType` | `LimitMaker` to `"LIMIT_MAKER"` · `StopLoss` to `"STOP_LOSS"` · `StopLossLimit` to `"STOP_LOSS_LIMIT"` | `pendingBelowTypeSchema` |
-| `PendingSide` | `Buy` to `"BUY"` · `Sell` to `"SELL"` | `pendingSideSchema` |
-| `PendingTimeInForce` | `Gtc` to `"GTC"` · `Ioc` to `"IOC"` · `Fok` to `"FOK"` | `pendingTimeInForceSchema` |
-| `PendingType` | `Limit` to `"LIMIT"` · `Market` to `"MARKET"` · `StopLoss` to `"STOP_LOSS"` · `StopLossLimit` to `"STOP_LOSS_LIMIT"` · `TakeProfit` to `"TAKE_PROFIT"` · `TakeProfitLimit` to `"TAKE_PROFIT_LIMIT"` · `LimitMaker` to `"LIMIT_MAKER"` | `pendingTypeSchema` |
-| `PlanType` | `Single` to `"SINGLE"` · `Portfolio` to `"PORTFOLIO"` · `Index` to `"INDEX"` | `planTypeSchema` |
-| `PlanType1` | `Single` to `"SINGLE"` · `Portfolio` to `"PORTFOLIO"` · `Index` to `"INDEX"` · `All` to `"ALL"` | `planType1Schema` |
-| `PositionSide` | `Both` to `"BOTH"` · `Long` to `"LONG"` · `Short` to `"SHORT"` | `positionSideSchema` |
-| `RedeemTo` | `Spot` to `"SPOT"` · `Flexible` to `"FLEXIBLE"` | `redeemToSchema` |
-| `SelfTradePreventionMode` | `ExpireTaker` to `"EXPIRE_TAKER"` · `ExpireMaker` to `"EXPIRE_MAKER"` · `ExpireBoth` to `"EXPIRE_BOTH"` · `None` to `"NONE"` | `selfTradePreventionModeSchema` |
-| `Side` | `Sell` to `"SELL"` · `Buy` to `"BUY"` | `sideSchema` |
-| `SideEffectType` | `NoSideEffect` to `"NO_SIDE_EFFECT"` · `MarginBuy` to `"MARGIN_BUY"` · `AutoRepay` to `"AUTO_REPAY"` | `sideEffectTypeSchema` |
-| `SideEffectType1` | `NoSideEffect` to `"NO_SIDE_EFFECT"` · `MarginBuy` to `"MARGIN_BUY"` | `sideEffectType1Schema` |
-| `SortBy` | `StartTime` to `"START_TIME"` · `LotSize` to `"LOT_SIZE"` · `InterestRate` to `"INTEREST_RATE"` · `Duration` to `"DURATION"` | `sortBySchema` |
-| `SourceType` | `MainSite` to `"MAIN_SITE"` · `Tr` to `"TR"` | `sourceTypeSchema` |
-| `SpotBnbBurn` | `True` to `"true"` · `False` to `"false"` | `spotBnbBurnSchema` |
-| `Status` | `All` to `"ALL"` · `Subscribable` to `"SUBSCRIBABLE"` · `Unsubscribable` to `"UNSUBSCRIBABLE"` | `statusSchema` |
-| `Status1` | `Ongoing` to `"ONGOING"` · `Paused` to `"PAUSED"` · `Removed` to `"REMOVED"` | `status1Schema` |
-| `Status2` | `Pending` to `"PENDING"` · `PurchaseSuccess` to `"PURCHASE_SUCCESS"` · `Settled` to `"SETTLED"` · `PurchaseFail` to `"PURCHASE_FAIL"` · `Refunding` to `"REFUNDING"` · `RefundSuccess` to `"REFUND_SUCCESS"` · `Settling` to `"SETTLING"` | `status2Schema` |
-| `StopLimitTimeInForce` | `Gtc` to `"GTC"` · `Fok` to `"FOK"` · `Ioc` to `"IOC"` | `stopLimitTimeInForceSchema` |
-| `SubscriptionCycle` | `H1` to `"H1"` · `H4` to `"H4"` · `H8` to `"H8"` · `H12` to `"H12"` · `Weekly` to `"WEEKLY"` · `Daily` to `"DAILY"` · `Monthly` to `"MONTHLY"` · `BiWeekly` to `"BI_WEEKLY"` | `subscriptionCycleSchema` |
-| `SubscriptionStartWeekday` | `Mon` to `"MON"` · `Tue` to `"TUE"` · `Wed` to `"WED"` · `Thu` to `"THU"` · `Fri` to `"FRI"` · `Sat` to `"SAT"` · `Sun` to `"SUN"` | `subscriptionStartWeekdaySchema` |
-| `TimeInForce` | `Gtc` to `"GTC"` · `Ioc` to `"IOC"` · `Fok` to `"FOK"` | `timeInForceSchema` |
-| `ToAccountType` | `Spot` to `"SPOT"` · `UsdtFuture` to `"USDT_FUTURE"` · `CoinFuture` to `"COIN_FUTURE"` · `Margin` to `"MARGIN"` · `IsolatedMargin` to `"ISOLATED_MARGIN"` | `toAccountTypeSchema` |
-| `TradeType` | `Buy` to `"BUY"` · `Sell` to `"SELL"` | `tradeTypeSchema` |
-| `TransferFunctionAccountType` | `Spot` to `"SPOT"` · `Margin` to `"MARGIN"` · `IsolatedMargin` to `"ISOLATED_MARGIN"` · `UsdtFuture` to `"USDT_FUTURE"` · `CoinFuture` to `"COIN_FUTURE"` | `transferFunctionAccountTypeSchema` |
-| `TransferSide` | `ToUm` to `"TO_UM"` · `FromUm` to `"FROM_UM"` | `transferSideSchema` |
-| `Transfers` | `From` to `"FROM"` · `To` to `"TO"` | `transfersSchema` |
-| `Type` | `Full` to `"FULL"` · `Mini` to `"MINI"` | `typeSchema` |
-| `Type1` | `Limit` to `"LIMIT"` · `Market` to `"MARKET"` · `StopLoss` to `"STOP_LOSS"` · `StopLossLimit` to `"STOP_LOSS_LIMIT"` · `TakeProfit` to `"TAKE_PROFIT"` · `TakeProfitLimit` to `"TAKE_PROFIT_LIMIT"` · `LimitMaker` to `"LIMIT_MAKER"` | `type1Schema` |
-| `Type2` | `RollIn` to `"ROLL_IN"` · `RollOut` to `"ROLL_OUT"` | `type2Schema` |
-| `Type3` | `Transfer` to `"TRANSFER"` · `Borrow` to `"BORROW"` · `Repay` to `"REPAY"` · `BuyIncome` to `"BUY_INCOME"` · `BuyExpense` to `"BUY_EXPENSE"` · `SellIncome` to `"SELL_INCOME"` · `SellExpense` to `"SELL_EXPENSE"` · `TradingCommission` to `"TRADING_COMMISSION"` · `BuyLiquidation` to `"BUY_LIQUIDATION"` · `SellLiquidation` to `"SELL_LIQUIDATION"` · `RepayLiquidation` to `"REPAY_LIQUIDATION"` · `OtherLiquidation` to `"OTHER_LIQUIDATION"` · `LiquidationFee` to `"LIQUIDATION_FEE"` · `SmallBalanceConvert` to `"SMALL_BALANCE_CONVERT"` · `CommissionReturn` to `"COMMISSION_RETURN"` · `SmallConvert` to `"SMALL_CONVERT"` | `type3Schema` |
-| `Type4` | `Margin` to `"MARGIN"` · `Isolated` to `"ISOLATED"` | `type4Schema` |
-| `Type6` | `Spot` to `"SPOT"` · `Margin` to `"MARGIN"` · `Futures` to `"FUTURES"` | `type6Schema` |
-| `Type7` | `MainC2C` to `"MAIN_C2C"` · `MainUmfuture` to `"MAIN_UMFUTURE"` · `MainCmfuture` to `"MAIN_CMFUTURE"` · `MainMargin` to `"MAIN_MARGIN"` · `MainMining` to `"MAIN_MINING"` · `C2CMain` to `"C2C_MAIN"` · `C2CUmfuture` to `"C2C_UMFUTURE"` · `C2CMining` to `"C2C_MINING"` · `C2CMargin` to `"C2C_MARGIN"` · `UmfutureMain` to `"UMFUTURE_MAIN"` · `UmfutureC2C` to `"UMFUTURE_C2C"` · `UmfutureMargin` to `"UMFUTURE_MARGIN"` · `CmfutureMain` to `"CMFUTURE_MAIN"` · `CmfutureMargin` to `"CMFUTURE_MARGIN"` · `MarginMain` to `"MARGIN_MAIN"` · `MarginUmfuture` to `"MARGIN_UMFUTURE"` · `MarginCmfuture` to `"MARGIN_CMFUTURE"` · `MarginMining` to `"MARGIN_MINING"` · `MarginC2C` to `"MARGIN_C2C"` · `MiningMain` to `"MINING_MAIN"` · `MiningUmfuture` to `"MINING_UMFUTURE"` · `MiningC2C` to `"MINING_C2C"` · `MiningMargin` to `"MINING_MARGIN"` · `MainPay` to `"MAIN_PAY"` · `PayMain` to `"PAY_MAIN"` · `IsolatedmarginMargin` to `"ISOLATEDMARGIN_MARGIN"` · `MarginIsolatedmargin` to `"MARGIN_ISOLATEDMARGIN"` · `IsolatedmarginIsolatedmargin` to `"ISOLATEDMARGIN_ISOLATEDMARGIN"` | `type7Schema` |
-| `Type8` | `Activity` to `"ACTIVITY"` · `CustomizedFixed` to `"CUSTOMIZED_FIXED"` | `type8Schema` |
-| `Type9` | `BorrowIn` to `"borrowIn"` · `CollateralSpent` to `"collateralSpent"` · `RepayAmount` to `"repayAmount"` · `CollateralReturn` to `"collateralReturn"` · `AddCollateral` to `"addCollateral"` · `RemoveCollateral` to `"removeCollateral"` · `CollateralReturnAfterLiquidation` to `"collateralReturnAfterLiquidation"` | `type9Schema` |
-| `Urgency` | `Low` to `"LOW"` · `Medium` to `"MEDIUM"` · `High` to `"HIGH"` | `urgencySchema` |
-| `WalletType` | `Spot` to `"SPOT"` · `Funding` to `"FUNDING"` · `SpotFunding` to `"SPOT_FUNDING"` | `walletTypeSchema` |
-| `WorkingSide` | `Buy` to `"BUY"` · `Sell` to `"SELL"` | `workingSideSchema` |
-| `WorkingTimeInForce` | `Gtc` to `"GTC"` · `Ioc` to `"IOC"` · `Fok` to `"FOK"` | `workingTimeInForceSchema` |
-| `WorkingType` | `Limit` to `"LIMIT"` · `LimitMaker` to `"LIMIT_MAKER"` | `workingTypeSchema` |
-
-**Unions.** A discriminated union is narrowed with an exhaustive `switch` on its tag, with no fallback arm and no type guard to import. One without a discriminant is narrowed on the shape of its arms.
-
-| Union | Variants | Narrow with | Source |
-| --- | --- | --- | --- |
-| `ApiV3KlinesResponse` | no discriminant | `typeof`, or an `in` check | `src/models/unions/api-v3-klines-response.ts` |
-| `ApiV3OpenOrdersResponse` | no discriminant | `typeof`, or an `in` check | `src/models/unions/api-v3-open-orders-response.ts` |
-| `ApiV3OrderResponse` | no discriminant | `typeof`, or an `in` check | `src/models/unions/api-v3-order-response.ts` |
-| `ApiV3Ticker24HrResponse` | no discriminant | `typeof`, or an `in` check | `src/models/unions/api-v3-ticker24-hr-response.ts` |
-| `ApiV3TickerBookTickerResponse` | no discriminant | `typeof`, or an `in` check | `src/models/unions/api-v3-ticker-book-ticker-response.ts` |
-| `ApiV3TickerPriceResponse` | no discriminant | `typeof`, or an `in` check | `src/models/unions/api-v3-ticker-price-response.ts` |
-| `ApiV3TickerTradingDayResponse` | no discriminant | `typeof`, or an `in` check | `src/models/unions/api-v3-ticker-trading-day-response.ts` |
-| `ApiV3UiKlinesResponse` | no discriminant | `typeof`, or an `in` check | `src/models/unions/api-v3-ui-klines-response.ts` |
-| `SapiV1AccountSnapshotResponse` | no discriminant | `typeof`, or an `in` check | `src/models/unions/sapi-v1-account-snapshot-response.ts` |
-| `SapiV1LoanRepayResponse` | no discriminant | `typeof`, or an `in` check | `src/models/unions/sapi-v1-loan-repay-response.ts` |
-| `SapiV1MarginOpenOrdersResponse` | no discriminant | `typeof`, or an `in` check | `src/models/unions/sapi-v1-margin-open-orders-response.ts` |
-| `SapiV1MarginOrderResponse` | no discriminant | `typeof`, or an `in` check | `src/models/unions/sapi-v1-margin-order-response.ts` |
-| `SapiV2SubAccountFuturesAccountResponse` | no discriminant | `typeof`, or an `in` check | `src/models/unions/sapi-v2-sub-account-futures-account-response.ts` |
-| `SapiV2SubAccountFuturesAccountSummaryResponse` | no discriminant | `typeof`, or an `in` check | `src/models/unions/sapi-v2-sub-account-futures-account-summary-response.ts` |
-| `SapiV2SubAccountFuturesPositionRiskResponse` | no discriminant | `typeof`, or an `in` check | `src/models/unions/sapi-v2-sub-account-futures-position-risk-response.ts` |
-
-**Wire-name divergences.** Only these model properties are sent and received under a different name; every other property uses its TypeScript name verbatim.
-
-| Type | Property | Wire key |
-| --- | --- | --- |
-| `Assets` | `matic` | `MATIC` |
-| `Assets` | `stpt` | `STPT` |
-| `Assets` | `tvk` | `TVK` |
-| `Assets` | `shib` | `SHIB` |
-| `DeliveryAccountSummaryResp` | `totalMarginBalanceOfBtc` | `totalMarginBalanceOfBTC` |
-| `DeliveryAccountSummaryResp` | `totalUnrealizedProfitOfBtc` | `totalUnrealizedProfitOfBTC` |
-| `DeliveryAccountSummaryResp` | `totalWalletBalanceOfBtc` | `totalWalletBalanceOfBTC` |
-| `Detail` | `toBtc` | `toBTC` |
-| `Detail` | `toBnb` | `toBNB` |
-| `Detail` | `toBnbOffExchange` | `toBNBOffExchange` |
-| `Detail3` | `averagePriceInUsd` | `averagePriceInUSD` |
-| `Detail3` | `totalInvestedInUsd` | `totalInvestedInUSD` |
-| `Detail3` | `pnlInUsd` | `pnlInUSD` |
-| `Detail3` | `assetValueInUsd` | `assetValueInUSD` |
-| `Detail4` | `averagePriceInUsd` | `averagePriceInUSD` |
-| `Detail4` | `totalInvestedInUsd` | `totalInvestedInUSD` |
-| `Detail4` | `currentInvestedInUsd` | `currentInvestedInUSD` |
-| `Detail4` | `pnlInUsd` | `pnlInUSD` |
-| `Detail4` | `assetValueInUsd` | `assetValueInUSD` |
-| `Detail6` | `extraRewardApr` | `extraRewardAPR` |
-| `ExchangeRates` | `usdc` | `USDC` |
-| `ExchangeRates` | `tusd` | `TUSD` |
-| `ExchangeRates` | `usdp` | `USDP` |
-| `Indicators` | `btcusdt` | `BTCUSDT` |
-| `List4` | `txId` | `txID` |
-| `List5` | `txId` | `txID` |
-| `ManagerSubUserInfoVoList` | `isSignedLvtRiskAgreement` | `isSignedLVTRiskAgreement` |
-| `Plan` | `totalInvestedInUsd` | `totalInvestedInUSD` |
-| `Plan` | `planValueInUsd` | `planValueInUSD` |
-| `Plan` | `pnlInUsd` | `pnlInUSD` |
-| `Plan1` | `totalInvestedInUsd` | `totalInvestedInUSD` |
-| `Plan1` | `planValueInUsd` | `planValueInUSD` |
-| `Plan1` | `pnlInUsd` | `pnlInUSD` |
-| `Profit` | `amountFromWbeth` | `amountFromWBETH` |
-| `Profit` | `amountFromBeth` | `amountFromBETH` |
-| `ProfitToday` | `btc` | `BTC` |
-| `ProfitToday` | `bsv` | `BSV` |
-| `ProfitToday` | `bch` | `BCH` |
-| `ProfitYesterday` | `btc` | `BTC` |
-| `ProfitYesterday` | `bsv` | `BSV` |
-| `ProfitYesterday` | `bch` | `BCH` |
-| `Row12` | `currentLtv` | `currentLTV` |
-| `Row15` | `flexibleDailyInterestRate` | `_flexibleDailyInterestRate` |
-| `Row15` | `flexibleYearlyInterestRate` | `_flexibleYearlyInterestRate` |
-| `Row15` | `DDailyInterestRate30` | `_30dDailyInterestRate` |
-| `Row15` | `DYearlyInterestRate30` | `_30dYearlyInterestRate` |
-| `Row15` | `DDailyInterestRate60` | `_60dDailyInterestRate` |
-| `Row15` | `DYearlyInterestRate60` | `_60dYearlyInterestRate` |
-| `Row16` | `StCollateralRatio1` | `_1stCollateralRatio` |
-| `Row16` | `StCollateralRange1` | `_1stCollateralRange` |
-| `Row16` | `NdCollateralRatio2` | `_2ndCollateralRatio` |
-| `Row16` | `NdCollateralRange2` | `_2ndCollateralRange` |
-| `Row16` | `RdCollateralRatio3` | `_3rdCollateralRatio` |
-| `Row16` | `RdCollateralRange3` | `_3rdCollateralRange` |
-| `Row16` | `ThCollateralRatio4` | `_4thCollateralRatio` |
-| `Row16` | `ThCollateralRange4` | `_4thCollateralRange` |
-| `Row19` | `currentLtv` | `currentLTV` |
-| `Row21` | `preLtv` | `preLTV` |
-| `Row21` | `afterLtv` | `afterLTV` |
-| `Row22` | `DHourlyInterestRate7` | `_7dHourlyInterestRate` |
-| `Row22` | `DDailyInterestRate7` | `_7dDailyInterestRate` |
-| `Row22` | `DHourlyInterestRate14` | `_14dHourlyInterestRate` |
-| `Row22` | `DDailyInterestRate14` | `_14dDailyInterestRate` |
-| `Row22` | `DHourlyInterestRate30` | `_30dHourlyInterestRate` |
-| `Row22` | `DDailyInterestRate30` | `_30dDailyInterestRate` |
-| `Row22` | `DHourlyInterestRate90` | `_90dHourlyInterestRate` |
-| `Row22` | `DDailyInterestRate90` | `_90dDailyInterestRate` |
-| `Row22` | `DHourlyInterestRate180` | `_180dHourlyInterestRate` |
-| `Row22` | `DDailyInterestRate180` | `_180dDailyInterestRate` |
-| `Row23` | `initialLtv` | `initialLTV` |
-| `Row23` | `marginCallLtv` | `marginCallLTV` |
-| `Row23` | `liquidationLtv` | `liquidationLTV` |
-| `Row25` | `currentLtv` | `currentLTV` |
-| `Row28` | `preLtv` | `preLTV` |
-| `Row28` | `afterLtv` | `afterLTV` |
-| `Row30` | `initialLtv` | `initialLTV` |
-| `Row30` | `marginCallLtv` | `marginCallLTV` |
-| `Row30` | `liquidationLtv` | `liquidationLTV` |
-| `Row37` | `amountInEth` | `amountInETH` |
-| `Row37` | `holdingInEth` | `holdingInETH` |
-| `Row41` | `apy` | `APY` |
-| `Row41` | `extraRewardApr` | `extraRewardAPR` |
-| `SapiV1AssetAssetDetailResponse` | `ctr` | `CTR` |
-| `SapiV1AssetDustBtcResponse` | `totalTransferBnb` | `totalTransferBNB` |
-| `SapiV1DciProductAccountsResponse` | `totalAmountInBtc` | `totalAmountInBTC` |
-| `SapiV1DciProductAccountsResponse` | `totalAmountInUsdt` | `totalAmountInUSDT` |
-| `SapiV1DciProductSubscribeResponse` | `optionType` | `optionType"` |
-| `SapiV1EthStakingEthHistoryWbethRewardsHistoryResponse` | `estRewardsInEth` | `estRewardsInETH` |
-| `SapiV1LendingAutoInvestIndexUserSummaryResponse` | `totalInvestedInUsd` | `totalInvestedInUSD` |
-| `SapiV1LendingAutoInvestIndexUserSummaryResponse` | `currentInvestedInUsd` | `currentInvestedInUSD` |
-| `SapiV1LendingAutoInvestIndexUserSummaryResponse` | `pnlInUsd` | `pnlInUSD` |
-| `SapiV1LendingAutoInvestPlanIdResponse` | `planValueInUsd` | `planValueInUSD` |
-| `SapiV1LendingAutoInvestPlanIdResponse` | `planValueInBtc` | `planValueInBTC` |
-| `SapiV1LendingAutoInvestPlanIdResponse` | `pnlInUsd` | `pnlInUSD` |
-| `SapiV1LendingAutoInvestPlanListResponse` | `planValueInUsd` | `planValueInUSD` |
-| `SapiV1LendingAutoInvestPlanListResponse` | `planValueInBtc` | `planValueInBTC` |
-| `SapiV1LendingAutoInvestPlanListResponse` | `pnlInUsd` | `pnlInUSD` |
-| `SapiV1LoanAdjustLtvResponse` | `currentLtv` | `currentLTV` |
-| `SapiV1LoanVipRepayResponse` | `currentLtv` | `currentLTV` |
-| `SapiV1MarginAccountResponse` | `totalCollateralValueInUsdt` | `TotalCollateralValueInUSDT` |
-| `SapiV1PortfolioAccountResponse` | `uniMmr` | `uniMMR` |
-| `SapiV1SimpleEarnAccountResponse` | `totalAmountInBtc` | `totalAmountInBTC` |
-| `SapiV1SimpleEarnAccountResponse` | `totalAmountInUsdt` | `totalAmountInUSDT` |
-| `SapiV1SimpleEarnAccountResponse` | `totalFlexibleAmountInBtc` | `totalFlexibleAmountInBTC` |
-| `SapiV1SimpleEarnAccountResponse` | `totalFlexibleAmountInUsdt` | `totalFlexibleAmountInUSDT` |
-| `SapiV1SimpleEarnAccountResponse` | `totalLockedInBtc` | `totalLockedInBTC` |
-| `SapiV1SimpleEarnAccountResponse` | `totalLockedInUsdt` | `totalLockedInUSDT` |
-| `SapiV2EthStakingAccountResponse` | `holdingInEth` | `holdingInETH` |
-| `SapiV2EthStakingAccountResponse` | `thirtyDaysProfitInEth` | `thirtyDaysProfitInETH` |
-| `SapiV2LoanFlexibleAdjustLtvResponse` | `currentLtv` | `currentLTV` |
-| `SapiV2LoanFlexibleRepayResponse` | `currentLtv` | `currentLTV` |
-| `TierAnnualPercentageRate` | `Btc05` | `0-5BTC` |
-| `TierAnnualPercentageRate` | `Btc510` | `5-10BTC` |
-| `TriggerCondition` | `gcr` | `GCR` |
-| `TriggerCondition` | `ifer` | `IFER` |
-| `TriggerCondition` | `ufr` | `UFR` |
-| `AggTrade` | `t` | `T` |
-| `AggTrade` | `m2` | `M` |
-| `BnbBurnStatus` | `spotBnbBurn` | `spotBNBBurn` |
-| `BnbBurnStatus` | `interestBnbBurn` | `interestBNBBurn` |
-| `RepaymentInfo` | `currentLtv` | `currentLTV` |
+```ts
+import { type AccountProfit, accountProfitSchema } from "binance";
+```
 
 ---
 
@@ -434,11 +303,11 @@ A scheme **contributes** headers, query parameters and cookies rather than mutat
 
 **Composition is emitted, not configured.** Where the spec puts two schemes in one requirement the SDK sends **both**; where it lists alternatives the SDK sends the **first configured** one, in the order the **Auth** bullet prints them. The combinators that express this (`allAuth`, `anyAuth`, `noneAuth`) live in the generated resource modules and are **not exported**.
 
-**A credential may be a function.** Every field typed `TokenProvider` is re-read on **every** request with no caching, so a key can rotate without rebuilding the client. An empty string counts as absent, and a function is treated as present without being invoked.
+**A credential may be a function.** Every field typed `TokenProvider` is re-read on **every** request with no caching, so a key can rotate without rebuilding the client. An empty string counts as absent, and a function is treated as present without being invoked. The function is handed the call's `signal`, or one that never aborts when the call was given none, and the SDK waits for it to settle — so a function that fetches its credential should pass that signal on, or a cancelled call waits for the fetch to finish.
 
 **An unconfigured scheme does not throw.** The request goes out without that credential and the server decides. So a 401 on a call you believed was authenticated is usually an unset credential field rather than an SDK failure — check the operation's **Auth** bullet against what the client was given.
 
-**A 401 invalidates, it does not retry.** On a **401** — 401 only, not 403 — the SDK clears whatever that operation's scheme had cached, so the *next* call re-acquires. The current request still rejects with the operation's `ResponseError`. There is no retry loop on this SDK, and the credential fields are on `ClientOptions`.
+**A 401 invalidates the cached credential.** On a **401** — 401 only, not 403 — the SDK clears whatever that operation's scheme had cached, so the *next* call re-acquires. The current request still rejects with the operation's `ApiError`. The credential fields are on `ClientOptions`.
 
 **Environments.** `ClientOptions.serverEnvironment` selects one for the whole client (source: `src/servers.ts`). `ServerEnvironment` is a `const` object with a derived union type, not a TypeScript `enum` — and unlike the model enums it is **closed**, so only the values below are assignable.
 
@@ -447,20 +316,18 @@ A scheme **contributes** headers, query parameters and cookies rather than mutat
 | `ServerEnvironment.Production` *(default)* | `production` |
 | `ServerEnvironment.Environment2` | `environment2` |
 
-**Server groups.** 1 logical server; each operation is bound to one at generation time, and a block carries a **Server** bullet only when its group is not `default`.
+**serverOptions.** 1 logical server; each operation is bound to one at generation time, and a block carries a **Server** bullet only when its group is not `default`. Override `serverOptions`.
 
-| Group | Options type |
-| --- | --- |
-| `default` | `DefaultServerOptions` |
-
-**Base URLs and overrides.** One row per group-and-environment pair, so the table stays four columns wide however many environments a spec declares. Every cell is overridden at `serverOptions.<group>.<environment>.<name>`, where `<name>` is `baseUrl` for the whole template or the variable name for one substitution. An override merges with the built-in defaults **per pair, key by key**.
+**Base URLs and overrides.** One row per group-and-environment pair, and every cell is overridden at `serverOptions.<name>`, where `<name>` is `baseUrl` for the whole template or the variable name for one substitution. Which environment a cell belongs to is selected by `serverEnvironment`, not written into the path — the options type only admits the keys legal under the environment named there. An override merges with the built-in defaults **per pair, key by key**.
 
 | Group | Environment | Base URL template | Template variables (default) |
 | --- | --- | --- | --- |
 | `default` | `production` | `https://api.binance.com` | — |
 | `default` | `environment2` | `https://testnet.binance.vision` | — |
 
-A `baseUrl` override replaces the template verbatim; variable values are percent-encoded into it, and templates are expanded per request rather than once at construction. An environment value the SDK does not know throws `SdkError` when a server is resolved — at the first call, not at construction. It is the one failure on this surface that throws **synchronously** out of the operation method, so a `try`/`await` catches it but `.asApiResult()` and `.catch()` never see it.
+A `baseUrl` override replaces the template verbatim; variable values are percent-encoded into it. Server variables are filled in once, as the client is built; only the path parameters are expanded per request. An environment value the SDK does not know throws `ConfigurationError`, and it is the **constructor** that throws it: every server group is resolved once, by `buildServers`, as the client is built, and an accessor afterwards only attaches the operation's sub-path. No operation method throws synchronously.
+
+Retries are configurable via `ClientOptions.retry` (`RetryOptions`, source `src/core/retry.ts`) — the field table is under Getting a client.
 
 ---
 
@@ -470,20 +337,20 @@ The facts that change what you type, and the floors that decide whether the pack
 
 |  |  |
 | --- | --- |
-| One entry, two dialects | `import` resolves `dist/esm`, `require` resolves `dist/commonjs`, both through the single `.` export. In a TypeScript CommonJS file the typed spelling is `import sdk = require("binance-public-spot-api")`; a plain `require` destructure works at run time but yields no types. `instanceof` is reliable **within** one dialect — if your app loads both, the two copies declare separate error classes |
+| One entry, two dialects | `import` resolves `dist/esm`, `require` resolves `dist/commonjs`, both through the single `.` export. In a TypeScript CommonJS file the typed spelling is `import sdk = require("binance")`; a plain `require` destructure works at run time but yields no types. `instanceof` is reliable **within** one dialect — if your app loads both, the two copies declare separate error classes |
 | Consumer compiler settings | Under `exactOptionalPropertyTypes`, **omit or spread** an absent optional rather than assigning `undefined` to it. Under `verbatimModuleSyntax`, names that carry no runtime value (the options types, every model type) must be imported with `import type` |
-| Required globals, and only these | Always: `fetch` (or a replacement passed as the `fetch` option), `AbortController`, `Headers`, `URL`, `setTimeout` and `clearTimeout`, `JSON`, `BigInt`. Nothing else — no credential this SDK sends reaches for a further global. |
+| Required globals, and only these | Always: `fetch` (or a replacement passed as the `fetch` option), `AbortController`, `Headers`, `URL`, `setTimeout` and `clearTimeout`, `JSON`, `BigInt`. `crypto.randomUUID` or `crypto.getRandomValues` mints the `Idempotency-Key` a non-GET call carries — **read and never required**, since a runtime offering neither fills the bytes from `Math.random` mixed with the clock and a per-process counter, so the header is always sent. Three more are **read and never required** — `process`, `navigator` and `EdgeRuntime`, which name the host in `X-APIMatic-OS` and `X-APIMatic-Runtime`. A runtime offering none of them sends neither header and works unchanged. |
 | Values that cross the boundary | `Date` for `date-time`, `string` for `date`, `ArrayBuffer` for an undeclared error body, `Headers` on a result and on a thrown `ResponseError`. The engine also carries a `bigint` int64 path and a base64 `bytes()` codec, reached only where a model uses them |
 | Browser distribution | The package ships `dist/esm` and `dist/commonjs` and nothing else — **no bundle, no UMD file, no CDN artifact**. Use it through a bundler, which resolves `zod/v4-mini`, deduplicates it against your own copy and tree-shakes the rest |
 | Other runtimes | Deno, Bun, Cloudflare Workers and Vercel Edge are all likely to work — the SDK needs only the globals above and imports no Node built-in — but **none of them is tested for this package**, so nothing here claims support for them |
 
-The browser floor comes from the emitted output rather than the sources: `tshy` builds at `target: ES2022`, so native `#private` fields and methods survive into `dist/`.
+The browser floor is set by `AbortSignal.any`, which every call uses to combine `RequestOptions.signal`, or a signal that never aborts when there is none, with the attempt's timer. The emitted output needs less: `tshy` builds at `target: ES2022`, so native `#private` fields and methods survive into `dist/`, and those load from Chrome 85, Firefox 90 and Safari 15.
 
-| Browser | Minimum | Set by |
-| --- | --- | --- |
-| Chrome / Edge | **85** | `String.prototype.replaceAll`, logical assignment (`??=`) |
-| Firefox | **90** | private class fields and methods |
-| Safari / iOS Safari | **15** | private class **methods** |
+| Browser | Minimum |
+| --- | --- |
+| Chrome / Edge | **116** |
+| Firefox | **124** |
+| Safari / iOS Safari | **17.4** |
 
-That table is the **module-load** floor: below it the SDK fails while the module is evaluating, not at the first call. Two things degrade quietly above it. `{ cause }` on the `Error` constructor needs Chrome 93, Firefox 91 or Safari 15, so below that `err.cause` is `undefined`. More consequentially, **cancellation needs `AbortController.abort(reason)` and `AbortSignal.reason`**, which arrived in Chrome 98, Firefox 97 and Safari 15.4 — between the module-load floor and those versions the engine still aborts the request but produces no typed error at all.
+Below that table the module still loads, down to the emitted-output floor, but every call rejects with a `TypeError`.
 

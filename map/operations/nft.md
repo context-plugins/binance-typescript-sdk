@@ -4,7 +4,7 @@
 
 Accessor: `client.nft` · Source: `src/resources/nft.ts` · 4 operations · Request and error types: namespace `Nft`
 
-**Type sources**: every type an operation names, with the file that declares it and the schema value exported beside it. Import every name from `binance-public-spot-api`; the `Source` path is where to **read** the shape, never what to import. `ResponseError` and the runtime error family are excluded — see sdk-map.md.
+**Type sources**: every type an operation names, with the file that declares it and the schema value exported beside it. Import every name from `binance`; the `Source` path is where to **read** the shape, never what to import. `ApiError`, the runtime error family and the file vocabulary are excluded — see sdk-map.md.
 
 ### getNftAssetUserData
 
@@ -13,7 +13,7 @@ Accessor: `client.nft` · Source: `src/resources/nft.ts` · 4 operations · Requ
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1NftUserGetAssetResponse`
-- **Error**: `Nft.GetNftAssetUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Nft.GetNftAssetUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Nft.GetNftAssetUserDataRequest` (5):
@@ -38,7 +38,7 @@ Accessor: `client.nft` · Source: `src/resources/nft.ts` · 4 operations · Requ
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1NftHistoryDepositResponse`
-- **Error**: `Nft.GetNftDepositHistoryUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Nft.GetNftDepositHistoryUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Nft.GetNftDepositHistoryUserDataRequest` (7):
@@ -65,7 +65,7 @@ Accessor: `client.nft` · Source: `src/resources/nft.ts` · 4 operations · Requ
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1NftHistoryTransactionsResponse`
-- **Error**: `Nft.GetNftTransactionHistoryUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Nft.GetNftTransactionHistoryUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Nft.GetNftTransactionHistoryUserDataRequest` (8):
@@ -93,7 +93,7 @@ Accessor: `client.nft` · Source: `src/resources/nft.ts` · 4 operations · Requ
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1NftHistoryWithdrawResponse`
-- **Error**: `Nft.GetNftWithdrawHistoryUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Nft.GetNftWithdrawHistoryUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Nft.GetNftWithdrawHistoryUserDataRequest` (7):

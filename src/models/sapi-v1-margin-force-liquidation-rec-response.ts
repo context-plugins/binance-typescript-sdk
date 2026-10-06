@@ -10,5 +10,5 @@ export type SapiV1MarginForceLiquidationRecResponse = {
 export const sapiV1MarginForceLiquidationRecResponseSchema: Schema<SapiV1MarginForceLiquidationRecResponse> =
   s.object<SapiV1MarginForceLiquidationRecResponse>({
     rows: s.array(s.lazy(() => row4Schema)),
-    total: s.number(),
+    total: s.int(),
   });

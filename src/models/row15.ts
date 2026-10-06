@@ -24,7 +24,7 @@ export const row15Schema: Schema<Row15> = s.object<Row15>({
   DYearlyInterestRate60: s.string(),
   minLimit: s.string(),
   maxLimit: s.string(),
-  vipLevel: s.number(),
+  vipLevel: s.int(),
   _keysMap: {
     flexibleDailyInterestRate: "_flexibleDailyInterestRate",
     flexibleYearlyInterestRate: "_flexibleYearlyInterestRate",

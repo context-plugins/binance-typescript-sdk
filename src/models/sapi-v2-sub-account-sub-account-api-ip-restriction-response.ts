@@ -12,6 +12,6 @@ export const sapiV2SubAccountSubAccountApiIpRestrictionResponseSchema: Schema<Sa
   s.object<SapiV2SubAccountSubAccountApiIpRestrictionResponse>({
     status: s.string(),
     ipList: s.array(s.string()),
-    updateTime: s.number(),
+    updateTime: s.int(),
     apiKey: s.string(),
   });

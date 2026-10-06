@@ -14,9 +14,9 @@ export type SapiV1LendingAutoInvestRebalanceHistoryResponse = {
 
 export const sapiV1LendingAutoInvestRebalanceHistoryResponseSchema: Schema<SapiV1LendingAutoInvestRebalanceHistoryResponse> =
   s.object<SapiV1LendingAutoInvestRebalanceHistoryResponse>({
-    indexId: s.number(),
+    indexId: s.int(),
     indexName: s.string(),
-    rebalanceId: s.number(),
+    rebalanceId: s.int(),
     status: s.string(),
     rebalanceFee: s.string(),
     rebalanceFeeUnit: s.string(),

@@ -1,8 +1,8 @@
 import type { AuthSchemes } from "../auth-schemes.js";
+import { ApiError, type Declared, type ErrorDecoders, type ErrorPayload } from "../core/api-error.js";
 import type { ApiPromise } from "../core/api-promise.js";
 import type { RequestOptions } from "../core/api-request.js";
 import type { RawClient } from "../core/raw-client.js";
-import { ResponseError, type Declared, type ErrorDecoders } from "../core/response-error.js";
 import * as s from "../core/validation/index.js";
 import { errorSchema, type Error } from "../models/error.js";
 import {
@@ -15,6 +15,9 @@ import {
 } from "../models/sapi-v1-copy-trading-futures-user-status-response.js";
 import type { Servers } from "../servers.js";
 
+/**
+ * Copy Trading Endpoints
+ */
 export class CopyTrading {
   readonly #rawClient: RawClient;
   readonly #servers: Servers;
@@ -26,6 +29,23 @@ export class CopyTrading {
     this.#auth = auth;
   }
 
+  /**
+   * Get Futures Lead Trader Status(TRADE)
+   *
+   * @remarks
+   * Get Futures Lead Trader Status
+   *
+   * Weight(UID): 20
+   *
+   * @returns Futures Lead Trader Status
+   *
+   * @throws {@link CopyTrading.GetFuturesLeadTraderStatusTradeError} when the API answers with an
+   * error status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   getFuturesLeadTraderStatusTrade(
     request: CopyTrading.GetFuturesLeadTraderStatusTradeRequest,
     options?: RequestOptions,
@@ -36,13 +56,15 @@ export class CopyTrading {
     return this.#rawClient.execute(
       {
         method: "GET",
-        url: this.#servers.default("/sapi/v1/copyTrading/futures/userStatus"),
+        urlTemplate: this.#servers.default("/sapi/v1/copyTrading/futures/userStatus"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [],
         body: { kind: "empty" },
       },
       {
@@ -53,6 +75,23 @@ export class CopyTrading {
     );
   }
 
+  /**
+   * Get Futures Lead Trading Symbol Whitelist(USER_DATA)
+   *
+   * @remarks
+   * Get Futures Lead Trading Symbol Whitelist
+   *
+   * Weight(IP): 20
+   *
+   * @returns Futures Lead Trading Symbol Whitelist
+   *
+   * @throws {@link CopyTrading.GetFuturesLeadTradingSymbolWhitelistUserDataError} when the API
+   * answers with an error status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   getFuturesLeadTradingSymbolWhitelistUserData(
     request: CopyTrading.GetFuturesLeadTradingSymbolWhitelistUserDataRequest,
     options?: RequestOptions,
@@ -63,13 +102,15 @@ export class CopyTrading {
     return this.#rawClient.execute(
       {
         method: "GET",
-        url: this.#servers.default("/sapi/v1/copyTrading/futures/leadSymbol"),
+        urlTemplate: this.#servers.default("/sapi/v1/copyTrading/futures/leadSymbol"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [],
         body: { kind: "empty" },
       },
       {
@@ -83,14 +124,17 @@ export class CopyTrading {
 
 export namespace CopyTrading {
   export type GetFuturesLeadTraderStatusTradeRequest = {
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class GetFuturesLeadTraderStatusTradeError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class GetFuturesLeadTraderStatusTradeError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<GetFuturesLeadTraderStatusTradeError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -98,14 +142,17 @@ export namespace CopyTrading {
   }
 
   export type GetFuturesLeadTradingSymbolWhitelistUserDataRequest = {
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class GetFuturesLeadTradingSymbolWhitelistUserDataError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class GetFuturesLeadTradingSymbolWhitelistUserDataError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<GetFuturesLeadTradingSymbolWhitelistUserDataError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },

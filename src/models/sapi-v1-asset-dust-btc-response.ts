@@ -6,6 +6,7 @@ export type SapiV1AssetDustBtcResponse = {
   details: Detail[];
   totalTransferBtc: string;
   totalTransferBnb: string;
+  /** Commission fee */
   dribbletPercentage: string;
 };
 

@@ -4,7 +4,7 @@
 
 Accessor: `client.portfolioMargin` · Source: `src/resources/portfolio-margin.ts` · 14 operations · Request and error types: namespace `PortfolioMargin`
 
-**Type sources**: every type an operation names, with the file that declares it and the schema value exported beside it. Import every name from `binance-public-spot-api`; the `Source` path is where to **read** the shape, never what to import. `ResponseError` and the runtime error family are excluded — see sdk-map.md.
+**Type sources**: every type an operation names, with the file that declares it and the schema value exported beside it. Import every name from `binance`; the `Source` path is where to **read** the shape, never what to import. `ApiError`, the runtime error family and the file vocabulary are excluded — see sdk-map.md.
 
 ### bnbTransferUserData
 
@@ -12,8 +12,9 @@ Accessor: `client.portfolioMargin` · Source: `src/resources/portfolio-margin.ts
 - **Wire**: `POST /sapi/v1/portfolio/bnb-transfer`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `SapiV1PortfolioBnbTransferResponse`
-- **Error**: `PortfolioMargin.BnbTransferUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `PortfolioMargin.BnbTransferUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `PortfolioMargin.BnbTransferUserDataRequest` (5):
@@ -38,8 +39,9 @@ Accessor: `client.portfolioMargin` · Source: `src/resources/portfolio-margin.ts
 - **Wire**: `POST /sapi/v1/portfolio/repay-futures-switch`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `SapiV1PortfolioRepayFuturesSwitchResponse`
-- **Error**: `PortfolioMargin.ChangeAutoRepayFuturesStatusUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `PortfolioMargin.ChangeAutoRepayFuturesStatusUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `PortfolioMargin.ChangeAutoRepayFuturesStatusUserDataRequest` (4):
@@ -62,8 +64,9 @@ Accessor: `client.portfolioMargin` · Source: `src/resources/portfolio-margin.ts
 - **Wire**: `POST /sapi/v1/portfolio/auto-collection`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `SapiV1PortfolioAutoCollectionResponse`
-- **Error**: `PortfolioMargin.FundAutoCollectionUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `PortfolioMargin.FundAutoCollectionUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `PortfolioMargin.FundAutoCollectionUserDataRequest` (3):
@@ -85,8 +88,9 @@ Accessor: `client.portfolioMargin` · Source: `src/resources/portfolio-margin.ts
 - **Wire**: `POST /sapi/v1/portfolio/asset-collection`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `SapiV1PortfolioAssetCollectionResponse`
-- **Error**: `PortfolioMargin.FundCollectionByAssetUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `PortfolioMargin.FundCollectionByAssetUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `PortfolioMargin.FundCollectionByAssetUserDataRequest` (4):
@@ -110,7 +114,7 @@ Accessor: `client.portfolioMargin` · Source: `src/resources/portfolio-margin.ts
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1PortfolioRepayFuturesSwitchResponse1`
-- **Error**: `PortfolioMargin.GetAutoRepayFuturesStatusUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `PortfolioMargin.GetAutoRepayFuturesStatusUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `PortfolioMargin.GetAutoRepayFuturesStatusUserDataRequest` (3):
@@ -133,7 +137,7 @@ Accessor: `client.portfolioMargin` · Source: `src/resources/portfolio-margin.ts
 - **Auth**: none — public; no credential is sent
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1PortfolioMarginAssetLeverageResponse[]` — a bare `application/json` array; the success type *is* the array, not a wrapper model
-- **Error**: `PortfolioMargin.GetPortfolioMarginAssetLeverageUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `PortfolioMargin.GetPortfolioMarginAssetLeverageUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 | Type | Schema value | Source |
@@ -148,7 +152,7 @@ Accessor: `client.portfolioMargin` · Source: `src/resources/portfolio-margin.ts
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1PortfolioAccountResponse`
-- **Error**: `PortfolioMargin.PortfolioMarginAccountUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `PortfolioMargin.PortfolioMarginAccountUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `PortfolioMargin.PortfolioMarginAccountUserDataRequest` (3):
@@ -171,7 +175,7 @@ Accessor: `client.portfolioMargin` · Source: `src/resources/portfolio-margin.ts
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1PortfolioPmLoanResponse`
-- **Error**: `PortfolioMargin.PortfolioMarginBankruptcyLoanAmountUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `PortfolioMargin.PortfolioMarginBankruptcyLoanAmountUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `PortfolioMargin.PortfolioMarginBankruptcyLoanAmountUserDataRequest` (3):
@@ -193,8 +197,9 @@ Accessor: `client.portfolioMargin` · Source: `src/resources/portfolio-margin.ts
 - **Wire**: `POST /sapi/v1/portfolio/repay`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `SapiV1PortfolioRepayResponse`
-- **Error**: `PortfolioMargin.PortfolioMarginBankruptcyLoanRepayUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `PortfolioMargin.PortfolioMarginBankruptcyLoanRepayUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `PortfolioMargin.PortfolioMarginBankruptcyLoanRepayUserDataRequest` (4):
@@ -218,7 +223,7 @@ Accessor: `client.portfolioMargin` · Source: `src/resources/portfolio-margin.ts
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1PortfolioCollateralRateResponse[]` — a bare `application/json` array; the success type *is* the array, not a wrapper model
-- **Error**: `PortfolioMargin.PortfolioMarginCollateralRateMarketDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `PortfolioMargin.PortfolioMarginCollateralRateMarketDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 | Type | Schema value | Source |
@@ -233,7 +238,7 @@ Accessor: `client.portfolioMargin` · Source: `src/resources/portfolio-margin.ts
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV2PortfolioCollateralRateResponse[]` — a bare `application/json` array; the success type *is* the array, not a wrapper model
-- **Error**: `PortfolioMargin.PortfolioMarginProTieredCollateralRateUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `PortfolioMargin.PortfolioMarginProTieredCollateralRateUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `PortfolioMargin.PortfolioMarginProTieredCollateralRateUserDataRequest` (3):
@@ -256,7 +261,7 @@ Accessor: `client.portfolioMargin` · Source: `src/resources/portfolio-margin.ts
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1PortfolioInterestHistoryResponse[]` — a bare `application/json` array; the success type *is* the array, not a wrapper model
-- **Error**: `PortfolioMargin.QueryClassicPortfolioMarginNegativeBalanceInterestHistoryUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `PortfolioMargin.QueryClassicPortfolioMarginNegativeBalanceInterestHistoryUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `PortfolioMargin.QueryClassicPortfolioMarginNegativeBalanceInterestHistoryUserDataRequest` (7):
@@ -283,7 +288,7 @@ Accessor: `client.portfolioMargin` · Source: `src/resources/portfolio-margin.ts
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1PortfolioAssetIndexPriceResponse[]` — a bare `application/json` array; the success type *is* the array, not a wrapper model
-- **Error**: `PortfolioMargin.QueryPortfolioMarginAssetIndexPriceMarketDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `PortfolioMargin.QueryPortfolioMarginAssetIndexPriceMarketDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `PortfolioMargin.QueryPortfolioMarginAssetIndexPriceMarketDataRequest` (1):
@@ -303,8 +308,9 @@ Accessor: `client.portfolioMargin` · Source: `src/resources/portfolio-margin.ts
 - **Wire**: `POST /sapi/v1/portfolio/repay-futures-negative-balance`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `SapiV1PortfolioRepayFuturesNegativeBalanceResponse`
-- **Error**: `PortfolioMargin.RepayFuturesNegativeBalanceUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `PortfolioMargin.RepayFuturesNegativeBalanceUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `PortfolioMargin.RepayFuturesNegativeBalanceUserDataRequest` (3):

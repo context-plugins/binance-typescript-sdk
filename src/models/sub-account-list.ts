@@ -10,6 +10,7 @@ export type SubAccountList = {
   totalPositionInitialMargin: string;
   totalUnrealizedProfit: string;
   totalWalletBalance: string;
+  /** The sum of BUSD and USDT */
   asset: string;
 };
 

@@ -10,7 +10,7 @@ export type Position1 = {
 
 export const position1Schema: Schema<Position1> = s.object<Position1>({
   symbol: s.string(),
-  entryPrice: s.number(),
-  markPrice: s.number(),
-  positionAmt: s.number(),
+  entryPrice: s.float64(),
+  markPrice: s.float64(),
+  positionAmt: s.float64(),
 });

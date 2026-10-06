@@ -10,5 +10,5 @@ export type SapiV1SimpleEarnFlexiblePositionResponse = {
 export const sapiV1SimpleEarnFlexiblePositionResponseSchema: Schema<SapiV1SimpleEarnFlexiblePositionResponse> =
   s.object<SapiV1SimpleEarnFlexiblePositionResponse>({
     rows: s.array(s.lazy(() => row40Schema)),
-    total: s.number(),
+    total: s.int(),
   });

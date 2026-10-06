@@ -11,6 +11,6 @@ export type RateLimit = {
 export const rateLimitSchema: Schema<RateLimit> = s.object<RateLimit>({
   rateLimitType: s.string(),
   interval: s.string(),
-  intervalNum: s.number(),
-  limit: s.number(),
+  intervalNum: s.int(),
+  limit: s.int(),
 });

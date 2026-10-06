@@ -16,7 +16,7 @@ export const row23Schema: Schema<Row23> = s.object<Row23>({
   marginCallLtv: s.string(),
   liquidationLtv: s.string(),
   maxLimit: s.string(),
-  vipLevel: s.number(),
+  vipLevel: s.int(),
   _keysMap: {
     initialLtv: "initialLTV",
     marginCallLtv: "marginCallLTV",

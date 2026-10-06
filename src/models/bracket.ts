@@ -10,9 +10,9 @@ export type Bracket = {
 };
 
 export const bracketSchema: Schema<Bracket> = s.object<Bracket>({
-  leverage: s.optional(s.number()),
-  maxDebt: s.optional(s.number()),
-  maintenanceMarginRate: s.optional(s.number()),
-  initialMarginRate: s.optional(s.number()),
-  fastNum: s.optional(s.number()),
+  leverage: s.optional(s.int()),
+  maxDebt: s.optional(s.float64()),
+  maintenanceMarginRate: s.optional(s.float64()),
+  initialMarginRate: s.optional(s.float64()),
+  fastNum: s.optional(s.float64()),
 });

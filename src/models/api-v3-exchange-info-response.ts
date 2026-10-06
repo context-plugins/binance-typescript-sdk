@@ -14,7 +14,7 @@ export type ApiV3ExchangeInfoResponse = {
 export const apiV3ExchangeInfoResponseSchema: Schema<ApiV3ExchangeInfoResponse> =
   s.object<ApiV3ExchangeInfoResponse>({
     timezone: s.string(),
-    serverTime: s.number(),
+    serverTime: s.int(),
     rateLimits: s.array(s.lazy(() => rateLimitSchema)),
     exchangeFilters: s.array(s.record(s.string(), s.unknown())),
     symbols: s.array(s.lazy(() => symbolSchema)),

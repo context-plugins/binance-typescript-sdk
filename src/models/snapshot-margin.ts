@@ -9,7 +9,7 @@ export type SnapshotMargin = {
 };
 
 export const snapshotMarginSchema: Schema<SnapshotMargin> = s.object<SnapshotMargin>({
-  code: s.number(),
+  code: s.int(),
   msg: s.string(),
   snapshotVos: s.array(s.lazy(() => snapshotVo1Schema)),
 });

@@ -9,6 +9,6 @@ export type SapiV1NftHistoryDepositResponse = {
 
 export const sapiV1NftHistoryDepositResponseSchema: Schema<SapiV1NftHistoryDepositResponse> =
   s.object<SapiV1NftHistoryDepositResponse>({
-    total: s.number(),
+    total: s.int(),
     list: s.array(s.lazy(() => list4Schema)),
   });

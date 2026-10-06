@@ -8,6 +8,7 @@ export type SapiV2LoanFlexibleRepayResponse = {
   remainingCollateral: string;
   fullRepayment: boolean;
   currentLtv: string;
+  /** Repaid, Repaying, Failed */
   repayStatus: string;
 };
 

@@ -4,7 +4,7 @@
 
 Accessor: `client.fiat` · Source: `src/resources/fiat.ts` · 2 operations · Request and error types: namespace `Fiat`
 
-**Type sources**: every type an operation names, with the file that declares it and the schema value exported beside it. Import every name from `binance-public-spot-api`; the `Source` path is where to **read** the shape, never what to import. `ResponseError` and the runtime error family are excluded — see sdk-map.md.
+**Type sources**: every type an operation names, with the file that declares it and the schema value exported beside it. Import every name from `binance`; the `Source` path is where to **read** the shape, never what to import. `ApiError`, the runtime error family and the file vocabulary are excluded — see sdk-map.md.
 
 ### fiatDepositWithdrawHistoryUserData
 
@@ -13,7 +13,7 @@ Accessor: `client.fiat` · Source: `src/resources/fiat.ts` · 2 operations · Re
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1FiatOrdersResponse`
-- **Error**: `Fiat.FiatDepositWithdrawHistoryUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Fiat.FiatDepositWithdrawHistoryUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Fiat.FiatDepositWithdrawHistoryUserDataRequest` (8):
@@ -41,7 +41,7 @@ Accessor: `client.fiat` · Source: `src/resources/fiat.ts` · 2 operations · Re
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1FiatPaymentsResponse`
-- **Error**: `Fiat.FiatPaymentsHistoryUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Fiat.FiatPaymentsHistoryUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Fiat.FiatPaymentsHistoryUserDataRequest` (8):

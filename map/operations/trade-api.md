@@ -4,7 +4,7 @@
 
 Accessor: `client.tradeApi` · Source: `src/resources/trade-api.ts` · 23 operations · Request and error types: namespace `TradeApi`
 
-**Type sources**: every type an operation names, with the file that declares it and the schema value exported beside it. Import every name from `binance-public-spot-api`; the `Source` path is where to **read** the shape, never what to import. `ResponseError` and the runtime error family are excluded — see sdk-map.md.
+**Type sources**: every type an operation names, with the file that declares it and the schema value exported beside it. Import every name from `binance`; the `Source` path is where to **read** the shape, never what to import. `ApiError`, the runtime error family and the file vocabulary are excluded — see sdk-map.md.
 
 ### accountInformationUserData
 
@@ -13,7 +13,7 @@ Accessor: `client.tradeApi` · Source: `src/resources/trade-api.ts` · 23 operat
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `Account`
-- **Error**: `TradeApi.AccountInformationUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `TradeApi.AccountInformationUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `TradeApi.AccountInformationUserDataRequest` (3):
@@ -36,7 +36,7 @@ Accessor: `client.tradeApi` · Source: `src/resources/trade-api.ts` · 23 operat
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `MyTrade[]` — a bare `application/json` array; the success type *is* the array, not a wrapper model
-- **Error**: `TradeApi.AccountTradeListUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `TradeApi.AccountTradeListUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `TradeApi.AccountTradeListUserDataRequest` (9):
@@ -65,7 +65,7 @@ Accessor: `client.tradeApi` · Source: `src/resources/trade-api.ts` · 23 operat
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `OrderDetails[]` — a bare `application/json` array; the success type *is* the array, not a wrapper model
-- **Error**: `TradeApi.AllOrdersUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `TradeApi.AllOrdersUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `TradeApi.AllOrdersUserDataRequest` (8):
@@ -92,8 +92,9 @@ Accessor: `client.tradeApi` · Source: `src/resources/trade-api.ts` · 23 operat
 - **Wire**: `DELETE /api/v3/orderList`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `OcoOrder`
-- **Error**: `TradeApi.CancelOcoTradeError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `TradeApi.CancelOcoTradeError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `TradeApi.CancelOcoTradeRequest` (7):
@@ -119,8 +120,9 @@ Accessor: `client.tradeApi` · Source: `src/resources/trade-api.ts` · 23 operat
 - **Wire**: `DELETE /api/v3/order`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `Order`
-- **Error**: `TradeApi.CancelOrderTradeError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `TradeApi.CancelOrderTradeError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `TradeApi.CancelOrderTradeRequest` (8):
@@ -148,8 +150,9 @@ Accessor: `client.tradeApi` · Source: `src/resources/trade-api.ts` · 23 operat
 - **Wire**: `DELETE /api/v3/openOrders`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `ApiV3OpenOrdersResponse[]` — a bare `application/json` array; the success type *is* the array, not a wrapper model
-- **Error**: `TradeApi.CancelAllOpenOrdersOnASymbolTradeError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `TradeApi.CancelAllOpenOrdersOnASymbolTradeError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `TradeApi.CancelAllOpenOrdersOnASymbolTradeRequest` (4):
@@ -172,8 +175,9 @@ Accessor: `client.tradeApi` · Source: `src/resources/trade-api.ts` · 23 operat
 - **Wire**: `POST /api/v3/order/cancelReplace`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `ApiV3OrderCancelReplaceResponse`
-- **Error**: `TradeApi.CancelAnExistingOrderAndSendANewOrderTradeError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `TradeApi.CancelAnExistingOrderAndSendANewOrderTradeError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `TradeApi.CancelAnExistingOrderAndSendANewOrderTradeRequest` (23):
@@ -222,7 +226,7 @@ Accessor: `client.tradeApi` · Source: `src/resources/trade-api.ts` · 23 operat
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `OrderDetails[]` — a bare `application/json` array; the success type *is* the array, not a wrapper model
-- **Error**: `TradeApi.CurrentOpenOrdersUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `TradeApi.CurrentOpenOrdersUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `TradeApi.CurrentOpenOrdersUserDataRequest` (4):
@@ -245,8 +249,9 @@ Accessor: `client.tradeApi` · Source: `src/resources/trade-api.ts` · 23 operat
 - **Wire**: `POST /api/v3/order`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `ApiV3OrderResponse`
-- **Error**: `TradeApi.NewOrderTradeError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `TradeApi.NewOrderTradeError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `TradeApi.NewOrderTradeRequest` (18):
@@ -288,8 +293,9 @@ Accessor: `client.tradeApi` · Source: `src/resources/trade-api.ts` · 23 operat
 - **Wire**: `POST /api/v3/orderList/oto`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `ApiV3OrderListOtoResponse`
-- **Error**: `TradeApi.NewOrderListOtoTradeError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `TradeApi.NewOrderListOtoTradeError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `TradeApi.NewOrderListOtoTradeRequest` (26):
@@ -342,8 +348,9 @@ Accessor: `client.tradeApi` · Source: `src/resources/trade-api.ts` · 23 operat
 - **Wire**: `POST /api/v3/orderList/otoco`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `ApiV3OrderListOtocoResponse`
-- **Error**: `TradeApi.NewOrderListOtocoTradeError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `TradeApi.NewOrderListOtocoTradeError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `TradeApi.NewOrderListOtocoTradeRequest` (36):
@@ -408,8 +415,9 @@ Accessor: `client.tradeApi` · Source: `src/resources/trade-api.ts` · 23 operat
 - **Wire**: `POST /api/v3/orderList/oco`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `ApiV3OrderListOcoResponse`
-- **Error**: `TradeApi.NewOrderListOcoTradeError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `TradeApi.NewOrderListOcoTradeError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `TradeApi.NewOrderListOcoTradeRequest` (27):
@@ -460,8 +468,9 @@ Accessor: `client.tradeApi` · Source: `src/resources/trade-api.ts` · 23 operat
 - **Wire**: `POST /api/v3/sor/order`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `ApiV3SorOrderResponse`
-- **Error**: `TradeApi.NewOrderUsingSorTradeError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `TradeApi.NewOrderUsingSorTradeError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `TradeApi.NewOrderUsingSorTradeRequest` (15):
@@ -501,7 +510,7 @@ Accessor: `client.tradeApi` · Source: `src/resources/trade-api.ts` · 23 operat
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `ApiV3MyAllocationsResponse[]` — a bare `application/json` array; the success type *is* the array, not a wrapper model
-- **Error**: `TradeApi.QueryAllocationsUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `TradeApi.QueryAllocationsUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `TradeApi.QueryAllocationsUserDataRequest` (9):
@@ -530,7 +539,7 @@ Accessor: `client.tradeApi` · Source: `src/resources/trade-api.ts` · 23 operat
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `ApiV3AccountCommissionResponse`
-- **Error**: `TradeApi.QueryCommissionRatesUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `TradeApi.QueryCommissionRatesUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `TradeApi.QueryCommissionRatesUserDataRequest` (3):
@@ -553,7 +562,7 @@ Accessor: `client.tradeApi` · Source: `src/resources/trade-api.ts` · 23 operat
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `ApiV3RateLimitOrderResponse[]` — a bare `application/json` array; the success type *is* the array, not a wrapper model
-- **Error**: `TradeApi.QueryCurrentOrderCountUsageTradeError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `TradeApi.QueryCurrentOrderCountUsageTradeError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `TradeApi.QueryCurrentOrderCountUsageTradeRequest` (3):
@@ -576,7 +585,7 @@ Accessor: `client.tradeApi` · Source: `src/resources/trade-api.ts` · 23 operat
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `ApiV3OrderListResponse`
-- **Error**: `TradeApi.QueryOcoUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `TradeApi.QueryOcoUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `TradeApi.QueryOcoUserDataRequest` (5):
@@ -601,7 +610,7 @@ Accessor: `client.tradeApi` · Source: `src/resources/trade-api.ts` · 23 operat
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `ApiV3OpenOrderListResponse[]` — a bare `application/json` array; the success type *is* the array, not a wrapper model
-- **Error**: `TradeApi.QueryOpenOcoUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `TradeApi.QueryOpenOcoUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `TradeApi.QueryOpenOcoUserDataRequest` (3):
@@ -624,7 +633,7 @@ Accessor: `client.tradeApi` · Source: `src/resources/trade-api.ts` · 23 operat
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `OrderDetails`
-- **Error**: `TradeApi.QueryOrderUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `TradeApi.QueryOrderUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `TradeApi.QueryOrderUserDataRequest` (6):
@@ -650,7 +659,7 @@ Accessor: `client.tradeApi` · Source: `src/resources/trade-api.ts` · 23 operat
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `ApiV3MyPreventedMatchesResponse[]` — a bare `application/json` array; the success type *is* the array, not a wrapper model
-- **Error**: `TradeApi.QueryPreventedMatchesError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `TradeApi.QueryPreventedMatchesError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `TradeApi.QueryPreventedMatchesRequest` (8):
@@ -678,7 +687,7 @@ Accessor: `client.tradeApi` · Source: `src/resources/trade-api.ts` · 23 operat
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `ApiV3AllOrderListResponse[]` — a bare `application/json` array; the success type *is* the array, not a wrapper model
-- **Error**: `TradeApi.QueryAllOcoUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `TradeApi.QueryAllOcoUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `TradeApi.QueryAllOcoUserDataRequest` (7):
@@ -704,8 +713,9 @@ Accessor: `client.tradeApi` · Source: `src/resources/trade-api.ts` · 23 operat
 - **Wire**: `POST /api/v3/order/test`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `Record<string, unknown>` — a bare `application/json` map; the success type *is* the map
-- **Error**: `TradeApi.TestNewOrderTradeError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `TradeApi.TestNewOrderTradeError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `TradeApi.TestNewOrderTradeRequest` (18):
@@ -745,8 +755,9 @@ Accessor: `client.tradeApi` · Source: `src/resources/trade-api.ts` · 23 operat
 - **Wire**: `POST /api/v3/sor/order/test`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `Record<string, unknown>` — a bare `application/json` map; the success type *is* the map
-- **Error**: `TradeApi.TestNewOrderUsingSorTradeError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `TradeApi.TestNewOrderUsingSorTradeError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `TradeApi.TestNewOrderUsingSorTradeRequest` (16):

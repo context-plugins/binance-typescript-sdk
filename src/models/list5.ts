@@ -16,8 +16,8 @@ export const list5Schema: Schema<List5> = s.object<List5>({
   txId: s.string(),
   contractAdrress: s.string(),
   tokenId: s.string(),
-  timestamp: s.number(),
-  fee: s.number(),
+  timestamp: s.int(),
+  fee: s.float64(),
   feeAsset: s.string(),
   _keysMap: {
     txId: "txID",

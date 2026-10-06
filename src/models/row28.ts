@@ -18,7 +18,7 @@ export const row28Schema: Schema<Row28> = s.object<Row28>({
   collateralAmount: s.string(),
   preLtv: s.string(),
   afterLtv: s.string(),
-  adjustTime: s.number(),
+  adjustTime: s.int(),
   _keysMap: {
     preLtv: "preLTV",
     afterLtv: "afterLTV",

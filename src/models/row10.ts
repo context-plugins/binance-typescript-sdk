@@ -14,5 +14,5 @@ export const row10Schema: Schema<Row10> = s.object<Row10>({
   transferType: s.string(),
   asset: s.string(),
   amount: s.string(),
-  time: s.number(),
+  time: s.int(),
 });

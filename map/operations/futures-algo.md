@@ -4,7 +4,7 @@
 
 Accessor: `client.futuresAlgo` · Source: `src/resources/futures-algo.ts` · 6 operations · Request and error types: namespace `FuturesAlgo`
 
-**Type sources**: every type an operation names, with the file that declares it and the schema value exported beside it. Import every name from `binance-public-spot-api`; the `Source` path is where to **read** the shape, never what to import. `ResponseError` and the runtime error family are excluded — see sdk-map.md.
+**Type sources**: every type an operation names, with the file that declares it and the schema value exported beside it. Import every name from `binance`; the `Source` path is where to **read** the shape, never what to import. `ApiError`, the runtime error family and the file vocabulary are excluded — see sdk-map.md.
 
 ### cancelAlgoOrderTrade
 
@@ -12,8 +12,9 @@ Accessor: `client.futuresAlgo` · Source: `src/resources/futures-algo.ts` · 6 o
 - **Wire**: `DELETE /sapi/v1/algo/futures/order`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `SapiV1AlgoFuturesOrderResponse`
-- **Error**: `FuturesAlgo.CancelAlgoOrderTradeError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `FuturesAlgo.CancelAlgoOrderTradeError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `FuturesAlgo.CancelAlgoOrderTradeRequest` (4):
@@ -37,7 +38,7 @@ Accessor: `client.futuresAlgo` · Source: `src/resources/futures-algo.ts` · 6 o
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1AlgoFuturesOpenOrdersResponse`
-- **Error**: `FuturesAlgo.QueryCurrentAlgoOpenOrdersUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `FuturesAlgo.QueryCurrentAlgoOpenOrdersUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `FuturesAlgo.QueryCurrentAlgoOpenOrdersUserDataRequest` (3):
@@ -60,7 +61,7 @@ Accessor: `client.futuresAlgo` · Source: `src/resources/futures-algo.ts` · 6 o
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1AlgoFuturesHistoricalOrdersResponse`
-- **Error**: `FuturesAlgo.QueryHistoricalAlgoOrdersUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `FuturesAlgo.QueryHistoricalAlgoOrdersUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `FuturesAlgo.QueryHistoricalAlgoOrdersUserDataRequest` (9):
@@ -90,7 +91,7 @@ Accessor: `client.futuresAlgo` · Source: `src/resources/futures-algo.ts` · 6 o
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1AlgoFuturesSubOrdersResponse`
-- **Error**: `FuturesAlgo.QuerySubOrdersUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `FuturesAlgo.QuerySubOrdersUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `FuturesAlgo.QuerySubOrdersUserDataRequest` (6):
@@ -115,8 +116,9 @@ Accessor: `client.futuresAlgo` · Source: `src/resources/futures-algo.ts` · 6 o
 - **Wire**: `POST /sapi/v1/algo/futures/newOrderTwap`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `SapiV1AlgoFuturesNewOrderTwapResponse`
-- **Error**: `FuturesAlgo.TimeWeightedAveragePriceTwapNewOrderTradeError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `FuturesAlgo.TimeWeightedAveragePriceTwapNewOrderTradeError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `FuturesAlgo.TimeWeightedAveragePriceTwapNewOrderTradeRequest` (11):
@@ -148,8 +150,9 @@ Accessor: `client.futuresAlgo` · Source: `src/resources/futures-algo.ts` · 6 o
 - **Wire**: `POST /sapi/v1/algo/futures/newOrderVp`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `SapiV1AlgoFuturesNewOrderVpResponse`
-- **Error**: `FuturesAlgo.VolumeParticipationVpNewOrderTradeError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `FuturesAlgo.VolumeParticipationVpNewOrderTradeError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `FuturesAlgo.VolumeParticipationVpNewOrderTradeRequest` (11):

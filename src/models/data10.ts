@@ -11,8 +11,8 @@ export type Data10 = {
 
 export const data10Schema: Schema<Data10> = s.object<Data10>({
   coinName: s.string(),
-  coinId: s.number(),
-  poolIndex: s.number(),
-  algoId: s.number(),
+  coinId: s.int(),
+  poolIndex: s.int(),
+  algoId: s.int(),
   algoName: s.string(),
 });

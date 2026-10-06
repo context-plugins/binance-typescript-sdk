@@ -9,6 +9,6 @@ export type Order1 = {
 
 export const order1Schema: Schema<Order1> = s.object<Order1>({
   symbol: s.string(),
-  orderId: s.number(),
+  orderId: s.int(),
   clientOrderId: s.string(),
 });

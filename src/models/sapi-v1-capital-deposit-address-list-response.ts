@@ -11,5 +11,5 @@ export const sapiV1CapitalDepositAddressListResponseSchema: Schema<SapiV1Capital
   s.object<SapiV1CapitalDepositAddressListResponse>({
     coin: s.string(),
     address: s.string(),
-    isDefault: s.number(),
+    isDefault: s.int(),
   });

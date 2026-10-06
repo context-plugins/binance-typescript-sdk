@@ -11,10 +11,10 @@ export type List4 = {
 
 export const list4Schema: Schema<List4> = s.object<List4>({
   network: s.string(),
-  txId: s.nullable(s.number()),
+  txId: s.nullable(s.int()),
   contractAdrress: s.string(),
   tokenId: s.string(),
-  timestamp: s.number(),
+  timestamp: s.int(),
   _keysMap: {
     txId: "txID",
   },

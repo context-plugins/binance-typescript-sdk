@@ -12,6 +12,6 @@ export const sapiV1MarginInterestRateHistoryResponseSchema: Schema<SapiV1MarginI
   s.object<SapiV1MarginInterestRateHistoryResponse>({
     asset: s.string(),
     dailyInterestRate: s.string(),
-    timestamp: s.number(),
-    vipLevel: s.number(),
+    timestamp: s.int(),
+    vipLevel: s.int(),
   });

@@ -19,14 +19,14 @@ export type MarginTrade = {
 export const marginTradeSchema: Schema<MarginTrade> = s.object<MarginTrade>({
   commission: s.string(),
   commissionAsset: s.string(),
-  id: s.number(),
+  id: s.int(),
   isBestMatch: s.boolean(),
   isBuyer: s.boolean(),
   isMaker: s.boolean(),
-  orderId: s.number(),
+  orderId: s.int(),
   price: s.string(),
   qty: s.string(),
   symbol: s.string(),
   isIsolated: s.boolean(),
-  time: s.number(),
+  time: s.int(),
 });

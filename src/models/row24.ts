@@ -14,5 +14,5 @@ export const row24Schema: Schema<Row24> = s.object<Row24>({
   collateralCoin: s.string(),
   preMarginCall: s.string(),
   afterMarginCall: s.string(),
-  customizeTime: s.number(),
+  customizeTime: s.int(),
 });

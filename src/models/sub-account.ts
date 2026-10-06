@@ -12,7 +12,7 @@ export type SubAccount = {
 export const subAccountSchema: Schema<SubAccount> = s.object<SubAccount>({
   email: s.string(),
   isFreeze: s.boolean(),
-  createTime: s.number(),
+  createTime: s.int(),
   isManagedSubAccount: s.boolean(),
   isAssetManagementSubAccount: s.boolean(),
 });

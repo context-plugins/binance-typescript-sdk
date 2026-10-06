@@ -15,6 +15,6 @@ export const row7Schema: Schema<Row7> = s.object<Row7>({
   amount: s.string(),
   type: s.string(),
   status: s.string(),
-  tranId: s.number(),
-  timestamp: s.number(),
+  tranId: s.int(),
+  timestamp: s.int(),
 });

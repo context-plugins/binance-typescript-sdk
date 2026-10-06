@@ -19,18 +19,18 @@ export type SubOrder1 = {
 };
 
 export const subOrder1Schema: Schema<SubOrder1> = s.object<SubOrder1>({
-  algoId: s.number(),
-  orderId: s.number(),
+  algoId: s.int(),
+  orderId: s.int(),
   orderStatus: s.string(),
   executedQty: s.string(),
   executedAmt: s.string(),
   feeAmt: s.string(),
   feeAsset: s.string(),
-  bookTime: s.number(),
+  bookTime: s.int(),
   avgPrice: s.string(),
   side: s.string(),
   symbol: s.string(),
-  subId: s.number(),
+  subId: s.int(),
   timeInForce: s.string(),
   origQty: s.string(),
 });

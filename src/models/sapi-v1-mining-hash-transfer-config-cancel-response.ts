@@ -9,7 +9,7 @@ export type SapiV1MiningHashTransferConfigCancelResponse = {
 
 export const sapiV1MiningHashTransferConfigCancelResponseSchema: Schema<SapiV1MiningHashTransferConfigCancelResponse> =
   s.object<SapiV1MiningHashTransferConfigCancelResponse>({
-    code: s.number(),
+    code: s.int(),
     msg: s.string(),
     data: s.boolean(),
   });

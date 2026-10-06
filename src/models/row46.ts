@@ -14,5 +14,5 @@ export const row46Schema: Schema<Row46> = s.object<Row46>({
   rewards: s.string(),
   projectId: s.string(),
   type: s.string(),
-  time: s.number(),
+  time: s.int(),
 });

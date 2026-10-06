@@ -15,6 +15,6 @@ export const sapiV1FiatOrdersResponseSchema: Schema<SapiV1FiatOrdersResponse> =
     code: s.string(),
     message: s.string(),
     data: s.array(s.lazy(() => data7Schema)),
-    total: s.number(),
+    total: s.int(),
     success: s.boolean(),
   });

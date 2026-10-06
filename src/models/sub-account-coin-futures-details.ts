@@ -19,6 +19,6 @@ export const subAccountCoinFuturesDetailsSchema: Schema<SubAccountCoinFuturesDet
     canDeposit: s.boolean(),
     canTrade: s.boolean(),
     canWithdraw: s.boolean(),
-    feeTier: s.number(),
-    updateTime: s.number(),
+    feeTier: s.int(),
+    updateTime: s.int(),
   });

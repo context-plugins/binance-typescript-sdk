@@ -7,5 +7,5 @@ export type SapiV1ManagedSubaccountDepositResponse = {
 
 export const sapiV1ManagedSubaccountDepositResponseSchema: Schema<SapiV1ManagedSubaccountDepositResponse> =
   s.object<SapiV1ManagedSubaccountDepositResponse>({
-    tranId: s.number(),
+    tranId: s.int(),
   });

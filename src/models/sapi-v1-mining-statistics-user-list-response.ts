@@ -10,7 +10,7 @@ export type SapiV1MiningStatisticsUserListResponse = {
 
 export const sapiV1MiningStatisticsUserListResponseSchema: Schema<SapiV1MiningStatisticsUserListResponse> =
   s.object<SapiV1MiningStatisticsUserListResponse>({
-    code: s.number(),
+    code: s.int(),
     msg: s.string(),
     data: s.array(s.lazy(() => data18Schema)),
   });

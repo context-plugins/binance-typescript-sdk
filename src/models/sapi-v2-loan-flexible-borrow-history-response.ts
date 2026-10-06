@@ -9,6 +9,6 @@ export type SapiV2LoanFlexibleBorrowHistoryResponse = {
 
 export const sapiV2LoanFlexibleBorrowHistoryResponseSchema: Schema<SapiV2LoanFlexibleBorrowHistoryResponse> =
   s.object<SapiV2LoanFlexibleBorrowHistoryResponse>({
-    total: s.number(),
+    total: s.int(),
     rows: s.array(s.lazy(() => row26Schema)),
   });

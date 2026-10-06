@@ -4,7 +4,7 @@
 
 Accessor: `client.cryptoLoans` · Source: `src/resources/crypto-loans.ts` · 21 operations · Request and error types: namespace `CryptoLoans`
 
-**Type sources**: every type an operation names, with the file that declares it and the schema value exported beside it. Import every name from `binance-public-spot-api`; the `Source` path is where to **read** the shape, never what to import. `ResponseError` and the runtime error family are excluded — see sdk-map.md.
+**Type sources**: every type an operation names, with the file that declares it and the schema value exported beside it. Import every name from `binance`; the `Source` path is where to **read** the shape, never what to import. `ApiError`, the runtime error family and the file vocabulary are excluded — see sdk-map.md.
 
 ### adjustLtvFlexibleLoanAdjustLtvTrade
 
@@ -12,8 +12,9 @@ Accessor: `client.cryptoLoans` · Source: `src/resources/crypto-loans.ts` · 21 
 - **Wire**: `POST /sapi/v2/loan/flexible/adjust/ltv`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `SapiV2LoanFlexibleAdjustLtvResponse`
-- **Error**: `CryptoLoans.AdjustLtvFlexibleLoanAdjustLtvTradeError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `CryptoLoans.AdjustLtvFlexibleLoanAdjustLtvTradeError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `CryptoLoans.AdjustLtvFlexibleLoanAdjustLtvTradeRequest` (7):
@@ -41,7 +42,7 @@ Accessor: `client.cryptoLoans` · Source: `src/resources/crypto-loans.ts` · 21 
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV2LoanFlexibleLtvAdjustmentHistoryResponse`
-- **Error**: `CryptoLoans.AdjustLtvGetFlexibleLoanLtvAdjustmentHistoryUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `CryptoLoans.AdjustLtvGetFlexibleLoanLtvAdjustmentHistoryUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `CryptoLoans.AdjustLtvGetFlexibleLoanLtvAdjustmentHistoryUserDataRequest` (9):
@@ -69,8 +70,9 @@ Accessor: `client.cryptoLoans` · Source: `src/resources/crypto-loans.ts` · 21 
 - **Wire**: `POST /sapi/v2/loan/flexible/borrow`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `SapiV2LoanFlexibleBorrowResponse`
-- **Error**: `CryptoLoans.BorrowFlexibleLoanBorrowTradeError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `CryptoLoans.BorrowFlexibleLoanBorrowTradeError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `CryptoLoans.BorrowFlexibleLoanBorrowTradeRequest` (7):
@@ -97,7 +99,7 @@ Accessor: `client.cryptoLoans` · Source: `src/resources/crypto-loans.ts` · 21 
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV2LoanFlexibleBorrowHistoryResponse`
-- **Error**: `CryptoLoans.BorrowGetFlexibleLoanBorrowHistoryUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `CryptoLoans.BorrowGetFlexibleLoanBorrowHistoryUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `CryptoLoans.BorrowGetFlexibleLoanBorrowHistoryUserDataRequest` (9):
@@ -126,7 +128,7 @@ Accessor: `client.cryptoLoans` · Source: `src/resources/crypto-loans.ts` · 21 
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV2LoanFlexibleOngoingOrdersResponse`
-- **Error**: `CryptoLoans.BorrowGetFlexibleLoanOngoingOrdersUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `CryptoLoans.BorrowGetFlexibleLoanOngoingOrdersUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `CryptoLoans.BorrowGetFlexibleLoanOngoingOrdersUserDataRequest` (7):
@@ -153,7 +155,7 @@ Accessor: `client.cryptoLoans` · Source: `src/resources/crypto-loans.ts` · 21 
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1LoanRepayCollateralRateResponse`
-- **Error**: `CryptoLoans.CheckCollateralRepayRateUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `CryptoLoans.CheckCollateralRepayRateUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `CryptoLoans.CheckCollateralRepayRateUserDataRequest` (6):
@@ -178,8 +180,9 @@ Accessor: `client.cryptoLoans` · Source: `src/resources/crypto-loans.ts` · 21 
 - **Wire**: `POST /sapi/v1/loan/adjust/ltv`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `SapiV1LoanAdjustLtvResponse`
-- **Error**: `CryptoLoans.CryptoLoanAdjustLtvTradeError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `CryptoLoans.CryptoLoanAdjustLtvTradeError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `CryptoLoans.CryptoLoanAdjustLtvTradeRequest` (6):
@@ -205,8 +208,9 @@ Accessor: `client.cryptoLoans` · Source: `src/resources/crypto-loans.ts` · 21 
 - **Wire**: `POST /sapi/v1/loan/borrow`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `SapiV1LoanBorrowResponse`
-- **Error**: `CryptoLoans.CryptoLoanBorrowTradeError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `CryptoLoans.CryptoLoanBorrowTradeError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `CryptoLoans.CryptoLoanBorrowTradeRequest` (8):
@@ -233,8 +237,9 @@ Accessor: `client.cryptoLoans` · Source: `src/resources/crypto-loans.ts` · 21 
 - **Wire**: `POST /sapi/v1/loan/customize/margin_call`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `SapiV1LoanCustomizeMarginCallResponse`
-- **Error**: `CryptoLoans.CryptoLoanCustomizeMarginCallTradeError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `CryptoLoans.CryptoLoanCustomizeMarginCallTradeError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `CryptoLoans.CryptoLoanCustomizeMarginCallTradeRequest` (6):
@@ -259,8 +264,9 @@ Accessor: `client.cryptoLoans` · Source: `src/resources/crypto-loans.ts` · 21 
 - **Wire**: `POST /sapi/v1/loan/repay`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `SapiV1LoanRepayResponse`
-- **Error**: `CryptoLoans.CryptoLoanRepayTradeError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `CryptoLoans.CryptoLoanRepayTradeError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `CryptoLoans.CryptoLoanRepayTradeRequest` (7):
@@ -287,7 +293,7 @@ Accessor: `client.cryptoLoans` · Source: `src/resources/crypto-loans.ts` · 21 
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1LoanCollateralDataResponse`
-- **Error**: `CryptoLoans.GetCollateralAssetsDataUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `CryptoLoans.GetCollateralAssetsDataUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `CryptoLoans.GetCollateralAssetsDataUserDataRequest` (5):
@@ -312,7 +318,7 @@ Accessor: `client.cryptoLoans` · Source: `src/resources/crypto-loans.ts` · 21 
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1LoanBorrowHistoryResponse`
-- **Error**: `CryptoLoans.GetCryptoLoansBorrowHistoryUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `CryptoLoans.GetCryptoLoansBorrowHistoryUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `CryptoLoans.GetCryptoLoansBorrowHistoryUserDataRequest` (10):
@@ -342,7 +348,7 @@ Accessor: `client.cryptoLoans` · Source: `src/resources/crypto-loans.ts` · 21 
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1LoanIncomeResponse[]` — a bare `application/json` array; the success type *is* the array, not a wrapper model
-- **Error**: `CryptoLoans.GetCryptoLoansIncomeHistoryUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `CryptoLoans.GetCryptoLoansIncomeHistoryUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `CryptoLoans.GetCryptoLoansIncomeHistoryUserDataRequest` (8):
@@ -371,7 +377,7 @@ Accessor: `client.cryptoLoans` · Source: `src/resources/crypto-loans.ts` · 21 
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV2LoanFlexibleLoanableDataResponse`
-- **Error**: `CryptoLoans.GetFlexibleLoanAssetsDataUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `CryptoLoans.GetFlexibleLoanAssetsDataUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `CryptoLoans.GetFlexibleLoanAssetsDataUserDataRequest` (4):
@@ -395,7 +401,7 @@ Accessor: `client.cryptoLoans` · Source: `src/resources/crypto-loans.ts` · 21 
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV2LoanFlexibleCollateralDataResponse`
-- **Error**: `CryptoLoans.GetFlexibleLoanCollateralAssetsDataUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `CryptoLoans.GetFlexibleLoanCollateralAssetsDataUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `CryptoLoans.GetFlexibleLoanCollateralAssetsDataUserDataRequest` (4):
@@ -419,7 +425,7 @@ Accessor: `client.cryptoLoans` · Source: `src/resources/crypto-loans.ts` · 21 
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1LoanLtvAdjustmentHistoryResponse`
-- **Error**: `CryptoLoans.GetLoanLtvAdjustmentHistoryUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `CryptoLoans.GetLoanLtvAdjustmentHistoryUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `CryptoLoans.GetLoanLtvAdjustmentHistoryUserDataRequest` (10):
@@ -449,7 +455,7 @@ Accessor: `client.cryptoLoans` · Source: `src/resources/crypto-loans.ts` · 21 
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1LoanOngoingOrdersResponse`
-- **Error**: `CryptoLoans.GetLoanOngoingOrdersUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `CryptoLoans.GetLoanOngoingOrdersUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `CryptoLoans.GetLoanOngoingOrdersUserDataRequest` (8):
@@ -477,7 +483,7 @@ Accessor: `client.cryptoLoans` · Source: `src/resources/crypto-loans.ts` · 21 
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1LoanRepayHistoryResponse`
-- **Error**: `CryptoLoans.GetLoanRepaymentHistoryUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `CryptoLoans.GetLoanRepaymentHistoryUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `CryptoLoans.GetLoanRepaymentHistoryUserDataRequest` (10):
@@ -507,7 +513,7 @@ Accessor: `client.cryptoLoans` · Source: `src/resources/crypto-loans.ts` · 21 
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1LoanLoanableDataResponse`
-- **Error**: `CryptoLoans.GetLoanableAssetsDataUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `CryptoLoans.GetLoanableAssetsDataUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `CryptoLoans.GetLoanableAssetsDataUserDataRequest` (5):
@@ -531,8 +537,9 @@ Accessor: `client.cryptoLoans` · Source: `src/resources/crypto-loans.ts` · 21 
 - **Wire**: `POST /sapi/v2/loan/flexible/repay`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `SapiV2LoanFlexibleRepayResponse`
-- **Error**: `CryptoLoans.RepayFlexibleLoanRepayTradeError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `CryptoLoans.RepayFlexibleLoanRepayTradeError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `CryptoLoans.RepayFlexibleLoanRepayTradeRequest` (8):
@@ -560,7 +567,7 @@ Accessor: `client.cryptoLoans` · Source: `src/resources/crypto-loans.ts` · 21 
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV2LoanFlexibleRepayHistoryResponse`
-- **Error**: `CryptoLoans.RepayGetFlexibleLoanRepaymentHistoryUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `CryptoLoans.RepayGetFlexibleLoanRepaymentHistoryUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `CryptoLoans.RepayGetFlexibleLoanRepaymentHistoryUserDataRequest` (9):

@@ -18,8 +18,8 @@ export type Data17 = {
 export const data17Schema: Schema<Data17> = s.object<Data17>({
   fifteenMinHashRate: s.string(),
   dayHashRate: s.string(),
-  validNum: s.number(),
-  invalidNum: s.number(),
+  validNum: s.int(),
+  invalidNum: s.int(),
   profitToday: profitTodaySchema,
   profitYesterday: profitYesterdaySchema,
   userName: s.string(),

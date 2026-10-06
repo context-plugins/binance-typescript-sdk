@@ -20,10 +20,10 @@ export type OrderReport5 = {
 
 export const orderReport5Schema: Schema<OrderReport5> = s.object<OrderReport5>({
   symbol: s.string(),
-  orderId: s.number(),
-  orderListId: s.number(),
+  orderId: s.int(),
+  orderListId: s.int(),
   clientOrderId: s.string(),
-  transactTime: s.number(),
+  transactTime: s.int(),
   price: s.string(),
   origQty: s.string(),
   executedQty: s.string(),

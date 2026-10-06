@@ -11,7 +11,7 @@ export type SapiV1LendingAutoInvestIndexInfoResponse = {
 
 export const sapiV1LendingAutoInvestIndexInfoResponseSchema: Schema<SapiV1LendingAutoInvestIndexInfoResponse> =
   s.object<SapiV1LendingAutoInvestIndexInfoResponse>({
-    indexId: s.number(),
+    indexId: s.int(),
     indexName: s.string(),
     status: s.string(),
     assetAllocation: s.array(s.lazy(() => assetAllocationSchema)),

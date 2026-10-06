@@ -12,6 +12,6 @@ export const sapiV1AlgoFuturesNewOrderTwapResponseSchema: Schema<SapiV1AlgoFutur
   s.object<SapiV1AlgoFuturesNewOrderTwapResponse>({
     clientAlgoId: s.string(),
     success: s.boolean(),
-    code: s.number(),
+    code: s.int(),
     msg: s.string(),
   });

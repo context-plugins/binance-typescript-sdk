@@ -4,7 +4,7 @@
 
 Accessor: `client.autoInvest` · Source: `src/resources/auto-invest.ts` · 17 operations · Request and error types: namespace `AutoInvest`
 
-**Type sources**: every type an operation names, with the file that declares it and the schema value exported beside it. Import every name from `binance-public-spot-api`; the `Source` path is where to **read** the shape, never what to import. `ResponseError` and the runtime error family are excluded — see sdk-map.md.
+**Type sources**: every type an operation names, with the file that declares it and the schema value exported beside it. Import every name from `binance`; the `Source` path is where to **read** the shape, never what to import. `ApiError`, the runtime error family and the file vocabulary are excluded — see sdk-map.md.
 
 ### changePlanStatus
 
@@ -12,8 +12,9 @@ Accessor: `client.autoInvest` · Source: `src/resources/auto-invest.ts` · 17 op
 - **Wire**: `POST /sapi/v1/lending/auto-invest/plan/edit-status`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `SapiV1LendingAutoInvestPlanEditStatusResponse`
-- **Error**: `AutoInvest.ChangePlanStatusError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `AutoInvest.ChangePlanStatusError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `AutoInvest.ChangePlanStatusRequest` (5):
@@ -39,7 +40,7 @@ Accessor: `client.autoInvest` · Source: `src/resources/auto-invest.ts` · 17 op
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1LendingAutoInvestPlanListResponse`
-- **Error**: `AutoInvest.GetListOfPlansError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `AutoInvest.GetListOfPlansError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `AutoInvest.GetListOfPlansRequest` (4):
@@ -63,7 +64,7 @@ Accessor: `client.autoInvest` · Source: `src/resources/auto-invest.ts` · 17 op
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1LendingAutoInvestTargetAssetRoiListResponse[]` — a bare `application/json` array; the success type *is* the array, not a wrapper model
-- **Error**: `AutoInvest.GetTargetAssetRoiDataUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `AutoInvest.GetTargetAssetRoiDataUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `AutoInvest.GetTargetAssetRoiDataUserDataRequest` (5):
@@ -88,7 +89,7 @@ Accessor: `client.autoInvest` · Source: `src/resources/auto-invest.ts` · 17 op
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1LendingAutoInvestTargetAssetListResponse`
-- **Error**: `AutoInvest.GetTargetAssetListUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `AutoInvest.GetTargetAssetListUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `AutoInvest.GetTargetAssetListUserDataRequest` (6):
@@ -114,7 +115,7 @@ Accessor: `client.autoInvest` · Source: `src/resources/auto-invest.ts` · 17 op
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1LendingAutoInvestRebalanceHistoryResponse[]` — a bare `application/json` array; the success type *is* the array, not a wrapper model
-- **Error**: `AutoInvest.IndexLinkedPlanRebalanceDetailsUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `AutoInvest.IndexLinkedPlanRebalanceDetailsUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `AutoInvest.IndexLinkedPlanRebalanceDetailsUserDataRequest` (7):
@@ -140,8 +141,9 @@ Accessor: `client.autoInvest` · Source: `src/resources/auto-invest.ts` · 17 op
 - **Wire**: `POST /sapi/v1/lending/auto-invest/redeem`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `SapiV1LendingAutoInvestRedeemResponse`
-- **Error**: `AutoInvest.IndexLinkedPlanRedemptionTradeError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `AutoInvest.IndexLinkedPlanRedemptionTradeError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `AutoInvest.IndexLinkedPlanRedemptionTradeRequest` (6):
@@ -167,7 +169,7 @@ Accessor: `client.autoInvest` · Source: `src/resources/auto-invest.ts` · 17 op
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1LendingAutoInvestRedeemHistoryResponse[]` — a bare `application/json` array; the success type *is* the array, not a wrapper model
-- **Error**: `AutoInvest.IndexLinkedPlanRedemptionHistoryUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `AutoInvest.IndexLinkedPlanRedemptionHistoryUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `AutoInvest.IndexLinkedPlanRedemptionHistoryUserDataRequest` (9):
@@ -195,8 +197,9 @@ Accessor: `client.autoInvest` · Source: `src/resources/auto-invest.ts` · 17 op
 - **Wire**: `POST /sapi/v1/lending/auto-invest/plan/edit`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `SapiV1LendingAutoInvestPlanEditResponse`
-- **Error**: `AutoInvest.InvestmentPlanAdjustmentError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `AutoInvest.InvestmentPlanAdjustmentError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `AutoInvest.InvestmentPlanAdjustmentRequest` (12):
@@ -230,8 +233,9 @@ Accessor: `client.autoInvest` · Source: `src/resources/auto-invest.ts` · 17 op
 - **Wire**: `POST /sapi/v1/lending/auto-invest/plan/add`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `SapiV1LendingAutoInvestPlanAddResponse`
-- **Error**: `AutoInvest.InvestmentPlanCreationUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `AutoInvest.InvestmentPlanCreationUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `AutoInvest.InvestmentPlanCreationUserDataRequest` (15):
@@ -270,8 +274,9 @@ Accessor: `client.autoInvest` · Source: `src/resources/auto-invest.ts` · 17 op
 - **Wire**: `POST /sapi/v1/lending/auto-invest/one-off`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `SapiV1LendingAutoInvestOneOffResponse`
-- **Error**: `AutoInvest.OneTimeTransactionTradeError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `AutoInvest.OneTimeTransactionTradeError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `AutoInvest.OneTimeTransactionTradeRequest` (11):
@@ -303,7 +308,7 @@ Accessor: `client.autoInvest` · Source: `src/resources/auto-invest.ts` · 17 op
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1LendingAutoInvestIndexInfoResponse`
-- **Error**: `AutoInvest.QueryIndexDetailsUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `AutoInvest.QueryIndexDetailsUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `AutoInvest.QueryIndexDetailsUserDataRequest` (4):
@@ -327,7 +332,7 @@ Accessor: `client.autoInvest` · Source: `src/resources/auto-invest.ts` · 17 op
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1LendingAutoInvestIndexUserSummaryResponse`
-- **Error**: `AutoInvest.QueryIndexLinkedPlanPositionDetailsUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `AutoInvest.QueryIndexLinkedPlanPositionDetailsUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `AutoInvest.QueryIndexLinkedPlanPositionDetailsUserDataRequest` (4):
@@ -351,7 +356,7 @@ Accessor: `client.autoInvest` · Source: `src/resources/auto-invest.ts` · 17 op
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1LendingAutoInvestOneOffStatusResponse`
-- **Error**: `AutoInvest.QueryOneTimeTransactionStatusUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `AutoInvest.QueryOneTimeTransactionStatusUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `AutoInvest.QueryOneTimeTransactionStatusUserDataRequest` (5):
@@ -376,7 +381,7 @@ Accessor: `client.autoInvest` · Source: `src/resources/auto-invest.ts` · 17 op
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1LendingAutoInvestAllAssetResponse`
-- **Error**: `AutoInvest.QueryAllSourceAssetAndTargetAssetUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `AutoInvest.QueryAllSourceAssetAndTargetAssetUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `AutoInvest.QueryAllSourceAssetAndTargetAssetUserDataRequest` (3):
@@ -399,7 +404,7 @@ Accessor: `client.autoInvest` · Source: `src/resources/auto-invest.ts` · 17 op
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1LendingAutoInvestPlanIdResponse`
-- **Error**: `AutoInvest.QueryHoldingDetailsOfThePlanError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `AutoInvest.QueryHoldingDetailsOfThePlanError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `AutoInvest.QueryHoldingDetailsOfThePlanRequest` (5):
@@ -424,7 +429,7 @@ Accessor: `client.autoInvest` · Source: `src/resources/auto-invest.ts` · 17 op
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1LendingAutoInvestSourceAssetListResponse`
-- **Error**: `AutoInvest.QuerySourceAssetListUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `AutoInvest.QuerySourceAssetListUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `AutoInvest.QuerySourceAssetListUserDataRequest` (7):
@@ -451,7 +456,7 @@ Accessor: `client.autoInvest` · Source: `src/resources/auto-invest.ts` · 17 op
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1LendingAutoInvestHistoryListResponse[]` — a bare `application/json` array; the success type *is* the array, not a wrapper model
-- **Error**: `AutoInvest.QuerySubscriptionTransactionHistoryError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `AutoInvest.QuerySubscriptionTransactionHistoryError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `AutoInvest.QuerySubscriptionTransactionHistoryRequest` (10):

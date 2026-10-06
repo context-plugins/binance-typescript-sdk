@@ -4,12 +4,14 @@ import { accountProfitSchema, type AccountProfit } from "./account-profit.js";
 
 export type Data13 = {
   accountProfits: AccountProfit[];
+  /** Total Rows */
   totalNum: number;
+  /** Rows per page */
   pageSize: number;
 };
 
 export const data13Schema: Schema<Data13> = s.object<Data13>({
   accountProfits: s.array(s.lazy(() => accountProfitSchema)),
-  totalNum: s.number(),
-  pageSize: s.number(),
+  totalNum: s.int(),
+  pageSize: s.int(),
 });

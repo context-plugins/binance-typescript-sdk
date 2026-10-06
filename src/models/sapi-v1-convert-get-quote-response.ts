@@ -15,7 +15,7 @@ export const sapiV1ConvertGetQuoteResponseSchema: Schema<SapiV1ConvertGetQuoteRe
     quoteId: s.string(),
     ratio: s.string(),
     inverseRatio: s.string(),
-    validTimestamp: s.number(),
+    validTimestamp: s.int(),
     toAmount: s.string(),
     fromAmount: s.string(),
   });

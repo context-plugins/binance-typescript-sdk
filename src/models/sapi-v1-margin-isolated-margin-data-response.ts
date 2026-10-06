@@ -11,7 +11,7 @@ export type SapiV1MarginIsolatedMarginDataResponse = {
 
 export const sapiV1MarginIsolatedMarginDataResponseSchema: Schema<SapiV1MarginIsolatedMarginDataResponse> =
   s.object<SapiV1MarginIsolatedMarginDataResponse>({
-    vipLevel: s.optional(s.number()),
+    vipLevel: s.optional(s.int()),
     symbol: s.optional(s.string()),
     leverage: s.optional(s.string()),
     data: s.optional(s.array(s.lazy(() => data3Schema))),

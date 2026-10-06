@@ -9,6 +9,6 @@ export type SapiV1MarginExchangeSmallLiabilityHistoryResponse = {
 
 export const sapiV1MarginExchangeSmallLiabilityHistoryResponseSchema: Schema<SapiV1MarginExchangeSmallLiabilityHistoryResponse> =
   s.object<SapiV1MarginExchangeSmallLiabilityHistoryResponse>({
-    total: s.number(),
+    total: s.int(),
     rows: s.array(s.lazy(() => row5Schema)),
   });

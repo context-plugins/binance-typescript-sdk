@@ -21,8 +21,8 @@ export type OrderReport1 = {
 export const orderReport1Schema: Schema<OrderReport1> = s.object<OrderReport1>({
   symbol: s.string(),
   origClientOrderId: s.string(),
-  orderId: s.number(),
-  orderListId: s.number(),
+  orderId: s.int(),
+  orderListId: s.int(),
   clientOrderId: s.string(),
   price: s.string(),
   origQty: s.string(),

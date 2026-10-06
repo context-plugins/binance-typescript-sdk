@@ -23,10 +23,10 @@ export type Account = {
 };
 
 export const accountSchema: Schema<Account> = s.object<Account>({
-  makerCommission: s.number(),
-  takerCommission: s.number(),
-  buyerCommission: s.number(),
-  sellerCommission: s.number(),
+  makerCommission: s.int(),
+  takerCommission: s.int(),
+  buyerCommission: s.int(),
+  sellerCommission: s.int(),
   commissionRates: commissionRatesSchema,
   canTrade: s.boolean(),
   canWithdraw: s.boolean(),
@@ -34,9 +34,9 @@ export const accountSchema: Schema<Account> = s.object<Account>({
   brokered: s.boolean(),
   requireSelfTradePrevention: s.boolean(),
   preventSor: s.boolean(),
-  updateTime: s.number(),
+  updateTime: s.int(),
   accountType: s.string(),
   balances: s.array(s.lazy(() => balanceSchema)),
   permissions: s.array(s.string()),
-  uid: s.number(),
+  uid: s.int(),
 });

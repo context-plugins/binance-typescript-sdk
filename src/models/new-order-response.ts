@@ -22,10 +22,10 @@ export type NewOrderResponse = {
 
 export const newOrderResponseSchema: Schema<NewOrderResponse> = s.object<NewOrderResponse>({
   symbol: s.string(),
-  orderId: s.number(),
-  orderListId: s.number(),
+  orderId: s.int(),
+  orderListId: s.int(),
   clientOrderId: s.string(),
-  transactTime: s.number(),
+  transactTime: s.int(),
   price: s.string(),
   origQty: s.string(),
   executedQty: s.string(),
@@ -34,7 +34,7 @@ export const newOrderResponseSchema: Schema<NewOrderResponse> = s.object<NewOrde
   timeInForce: s.string(),
   type: s.string(),
   side: s.string(),
-  workingTime: s.number(),
+  workingTime: s.int(),
   fills: s.array(s.string()),
   selfTradePreventionMode: s.string(),
 });

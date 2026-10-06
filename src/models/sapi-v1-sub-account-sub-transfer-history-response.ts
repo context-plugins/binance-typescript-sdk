@@ -18,6 +18,6 @@ export const sapiV1SubAccountSubTransferHistoryResponseSchema: Schema<SapiV1SubA
     asset: s.string(),
     qty: s.string(),
     status: s.string(),
-    tranId: s.number(),
-    time: s.number(),
+    tranId: s.int(),
+    time: s.int(),
   });

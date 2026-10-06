@@ -24,12 +24,12 @@ export type SapiV1LendingAutoInvestHistoryListResponse = {
 
 export const sapiV1LendingAutoInvestHistoryListResponseSchema: Schema<SapiV1LendingAutoInvestHistoryListResponse> =
   s.object<SapiV1LendingAutoInvestHistoryListResponse>({
-    id: s.number(),
+    id: s.int(),
     targetAsset: s.string(),
     planType: s.string(),
     planName: s.string(),
-    planId: s.number(),
-    transactionDateTime: s.number(),
+    planId: s.int(),
+    transactionDateTime: s.int(),
     transactionStatus: s.string(),
     failedType: s.string(),
     sourceAsset: s.string(),

@@ -4,7 +4,7 @@
 
 Accessor: `client.convert` · Source: `src/resources/convert.ts` · 9 operations · Request and error types: namespace `Convert`
 
-**Type sources**: every type an operation names, with the file that declares it and the schema value exported beside it. Import every name from `binance-public-spot-api`; the `Source` path is where to **read** the shape, never what to import. `ResponseError` and the runtime error family are excluded — see sdk-map.md.
+**Type sources**: every type an operation names, with the file that declares it and the schema value exported beside it. Import every name from `binance`; the `Source` path is where to **read** the shape, never what to import. `ApiError`, the runtime error family and the file vocabulary are excluded — see sdk-map.md.
 
 ### acceptQuoteTrade
 
@@ -12,8 +12,9 @@ Accessor: `client.convert` · Source: `src/resources/convert.ts` · 9 operations
 - **Wire**: `POST /sapi/v1/convert/acceptQuote`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `SapiV1ConvertAcceptQuoteResponse`
-- **Error**: `Convert.AcceptQuoteTradeError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Convert.AcceptQuoteTradeError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Convert.AcceptQuoteTradeRequest` (4):
@@ -36,8 +37,9 @@ Accessor: `client.convert` · Source: `src/resources/convert.ts` · 9 operations
 - **Wire**: `POST /sapi/v1/convert/limit/cancelOrder`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `SapiV1ConvertLimitCancelOrderResponse`
-- **Error**: `Convert.CancelLimitOrderUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Convert.CancelLimitOrderUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Convert.CancelLimitOrderUserDataRequest` (4):
@@ -61,7 +63,7 @@ Accessor: `client.convert` · Source: `src/resources/convert.ts` · 9 operations
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1ConvertTradeFlowResponse`
-- **Error**: `Convert.GetConvertTradeHistoryUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Convert.GetConvertTradeHistoryUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Convert.GetConvertTradeHistoryUserDataRequest` (6):
@@ -87,7 +89,7 @@ Accessor: `client.convert` · Source: `src/resources/convert.ts` · 9 operations
 - **Auth**: none — public; no credential is sent
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1ConvertExchangeInfoResponse[]` — a bare `application/json` array; the success type *is* the array, not a wrapper model
-- **Error**: `Convert.ListAllConvertPairsError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Convert.ListAllConvertPairsError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Convert.ListAllConvertPairsRequest` (2):
@@ -109,7 +111,7 @@ Accessor: `client.convert` · Source: `src/resources/convert.ts` · 9 operations
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1ConvertOrderStatusResponse`
-- **Error**: `Convert.OrderStatusUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Convert.OrderStatusUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Convert.OrderStatusUserDataRequest` (5):
@@ -133,8 +135,9 @@ Accessor: `client.convert` · Source: `src/resources/convert.ts` · 9 operations
 - **Wire**: `POST /sapi/v1/convert/limit/placeOrder`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `SapiV1ConvertLimitPlaceOrderResponse`
-- **Error**: `Convert.PlaceLimitOrderUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Convert.PlaceLimitOrderUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Convert.PlaceLimitOrderUserDataRequest` (11):
@@ -168,7 +171,7 @@ Accessor: `client.convert` · Source: `src/resources/convert.ts` · 9 operations
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1ConvertLimitQueryOpenOrdersResponse`
-- **Error**: `Convert.QueryLimitOpenOrdersUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Convert.QueryLimitOpenOrdersUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Convert.QueryLimitOpenOrdersUserDataRequest` (3):
@@ -191,7 +194,7 @@ Accessor: `client.convert` · Source: `src/resources/convert.ts` · 9 operations
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1ConvertAssetInfoResponse[]` — a bare `application/json` array; the success type *is* the array, not a wrapper model
-- **Error**: `Convert.QueryOrderQuantityPrecisionPerAssetUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Convert.QueryOrderQuantityPrecisionPerAssetUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Convert.QueryOrderQuantityPrecisionPerAssetUserDataRequest` (3):
@@ -213,8 +216,9 @@ Accessor: `client.convert` · Source: `src/resources/convert.ts` · 9 operations
 - **Wire**: `POST /sapi/v1/convert/getQuote`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `SapiV1ConvertGetQuoteResponse`
-- **Error**: `Convert.SendQuoteRequestUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Convert.SendQuoteRequestUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Convert.SendQuoteRequestUserDataRequest` (9):

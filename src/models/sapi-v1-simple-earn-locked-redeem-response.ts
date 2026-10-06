@@ -8,6 +8,6 @@ export type SapiV1SimpleEarnLockedRedeemResponse = {
 
 export const sapiV1SimpleEarnLockedRedeemResponseSchema: Schema<SapiV1SimpleEarnLockedRedeemResponse> =
   s.object<SapiV1SimpleEarnLockedRedeemResponse>({
-    redeemId: s.number(),
+    redeemId: s.int(),
     success: s.boolean(),
   });

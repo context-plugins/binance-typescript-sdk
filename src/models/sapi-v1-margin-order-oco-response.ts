@@ -11,7 +11,9 @@ export type SapiV1MarginOrderOcoResponse = {
   listClientOrderId: string;
   transactionTime: number;
   symbol: string;
+  /** will not return if no margin trade happens */
   marginBuyBorrowAmount: string;
+  /** will not return if no margin trade happens */
   marginBuyBorrowAsset: string;
   isIsolated: boolean;
   orders: Order1[];
@@ -20,12 +22,12 @@ export type SapiV1MarginOrderOcoResponse = {
 
 export const sapiV1MarginOrderOcoResponseSchema: Schema<SapiV1MarginOrderOcoResponse> =
   s.object<SapiV1MarginOrderOcoResponse>({
-    orderListId: s.number(),
+    orderListId: s.int(),
     contingencyType: s.string(),
     listStatusType: s.string(),
     listOrderStatus: s.string(),
     listClientOrderId: s.string(),
-    transactionTime: s.number(),
+    transactionTime: s.int(),
     symbol: s.string(),
     marginBuyBorrowAmount: s.string(),
     marginBuyBorrowAsset: s.string(),

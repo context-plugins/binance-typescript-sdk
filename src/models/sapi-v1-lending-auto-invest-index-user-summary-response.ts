@@ -6,8 +6,11 @@ import { detail4Schema, type Detail4 } from "./detail4.js";
 export type SapiV1LendingAutoInvestIndexUserSummaryResponse = {
   indexId: number;
   totalInvestedInUsd: string;
+  /** current invest */
   currentInvestedInUsd: string;
+  /** PNL of the plan in USD based on current amount */
   pnlInUsd: string;
+  /** ROI of the plan based on current amount */
   roi: string;
   assetAllocation: AssetAllocation1[];
   details: Detail4[];
@@ -15,7 +18,7 @@ export type SapiV1LendingAutoInvestIndexUserSummaryResponse = {
 
 export const sapiV1LendingAutoInvestIndexUserSummaryResponseSchema: Schema<SapiV1LendingAutoInvestIndexUserSummaryResponse> =
   s.object<SapiV1LendingAutoInvestIndexUserSummaryResponse>({
-    indexId: s.number(),
+    indexId: s.int(),
     totalInvestedInUsd: s.string(),
     currentInvestedInUsd: s.string(),
     pnlInUsd: s.string(),

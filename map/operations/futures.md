@@ -4,7 +4,7 @@
 
 Accessor: `client.futures` · Source: `src/resources/futures.ts` · 3 operations · Request and error types: namespace `Futures`
 
-**Type sources**: every type an operation names, with the file that declares it and the schema value exported beside it. Import every name from `binance-public-spot-api`; the `Source` path is where to **read** the shape, never what to import. `ResponseError` and the runtime error family are excluded — see sdk-map.md.
+**Type sources**: every type an operation names, with the file that declares it and the schema value exported beside it. Import every name from `binance`; the `Source` path is where to **read** the shape, never what to import. `ApiError`, the runtime error family and the file vocabulary are excluded — see sdk-map.md.
 
 ### getFutureAccountTransactionHistoryListUserData
 
@@ -13,7 +13,7 @@ Accessor: `client.futures` · Source: `src/resources/futures.ts` · 3 operations
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1FuturesTransferResponse1`
-- **Error**: `Futures.GetFutureAccountTransactionHistoryListUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Futures.GetFutureAccountTransactionHistoryListUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Futures.GetFutureAccountTransactionHistoryListUserDataRequest` (8):
@@ -41,7 +41,7 @@ Accessor: `client.futures` · Source: `src/resources/futures.ts` · 3 operations
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1FuturesHistDataLinkResponse`
-- **Error**: `Futures.GetFutureTickLevelOrderbookHistoricalDataDownloadLinkUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Futures.GetFutureTickLevelOrderbookHistoricalDataDownloadLinkUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Futures.GetFutureTickLevelOrderbookHistoricalDataDownloadLinkUserDataRequest` (7):
@@ -68,8 +68,9 @@ Accessor: `client.futures` · Source: `src/resources/futures.ts` · 3 operations
 - **Wire**: `POST /sapi/v1/futures/transfer`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `SapiV1FuturesTransferResponse`
-- **Error**: `Futures.NewFutureAccountTransferUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Futures.NewFutureAccountTransferUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Futures.NewFutureAccountTransferUserDataRequest` (6):

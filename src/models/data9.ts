@@ -10,7 +10,7 @@ export type Data9 = {
 
 export const data9Schema: Schema<Data9> = s.object<Data9>({
   algoName: s.string(),
-  algoId: s.number(),
-  poolIndex: s.number(),
+  algoId: s.int(),
+  poolIndex: s.int(),
   unit: s.string(),
 });

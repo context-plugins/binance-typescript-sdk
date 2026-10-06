@@ -8,6 +8,10 @@ export type Row20 = {
   collateralUsed: string;
   collateralReturn: string;
   repayType: string;
+  /**
+   * 'repayType': '1' // 1 for 'repay with borrowed coin', 2 for 'repay with collateral'
+   * 'repayStatus': 'Repaid' // Repaid, Repaying, Failed
+   */
   repayStatus: string;
   repayTime: number;
   orderId: number;
@@ -21,6 +25,6 @@ export const row20Schema: Schema<Row20> = s.object<Row20>({
   collateralReturn: s.string(),
   repayType: s.string(),
   repayStatus: s.string(),
-  repayTime: s.number(),
-  orderId: s.number(),
+  repayTime: s.int(),
+  orderId: s.int(),
 });

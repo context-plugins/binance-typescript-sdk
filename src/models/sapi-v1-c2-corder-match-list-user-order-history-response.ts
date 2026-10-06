@@ -15,6 +15,6 @@ export const sapiV1C2COrderMatchListUserOrderHistoryResponseSchema: Schema<SapiV
     code: s.string(),
     message: s.string(),
     data: s.array(s.lazy(() => data21Schema)),
-    total: s.number(),
+    total: s.int(),
     success: s.boolean(),
   });

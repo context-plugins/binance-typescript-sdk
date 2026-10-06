@@ -10,7 +10,7 @@ export type SapiV1ManagedSubaccountAccountSnapshotResponse = {
 
 export const sapiV1ManagedSubaccountAccountSnapshotResponseSchema: Schema<SapiV1ManagedSubaccountAccountSnapshotResponse> =
   s.object<SapiV1ManagedSubaccountAccountSnapshotResponse>({
-    code: s.number(),
+    code: s.int(),
     msg: s.string(),
     snapshotVos: s.array(s.lazy(() => snapshotVoSchema)),
   });

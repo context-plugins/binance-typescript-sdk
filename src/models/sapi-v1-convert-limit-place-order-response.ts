@@ -8,6 +8,6 @@ export type SapiV1ConvertLimitPlaceOrderResponse = {
 
 export const sapiV1ConvertLimitPlaceOrderResponseSchema: Schema<SapiV1ConvertLimitPlaceOrderResponse> =
   s.object<SapiV1ConvertLimitPlaceOrderResponse>({
-    orderId: s.number(),
+    orderId: s.int(),
     status: s.string(),
   });

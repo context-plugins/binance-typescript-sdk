@@ -14,7 +14,7 @@ export type SapiV1MarginIsolatedMarginTierResponse = {
 export const sapiV1MarginIsolatedMarginTierResponseSchema: Schema<SapiV1MarginIsolatedMarginTierResponse> =
   s.object<SapiV1MarginIsolatedMarginTierResponse>({
     symbol: s.optional(s.string()),
-    tier: s.optional(s.number()),
+    tier: s.optional(s.int()),
     effectiveMultiple: s.optional(s.string()),
     initialRiskRatio: s.optional(s.string()),
     liquidationRiskRatio: s.optional(s.string()),

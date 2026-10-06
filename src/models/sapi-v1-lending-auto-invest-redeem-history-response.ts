@@ -15,13 +15,13 @@ export type SapiV1LendingAutoInvestRedeemHistoryResponse = {
 
 export const sapiV1LendingAutoInvestRedeemHistoryResponseSchema: Schema<SapiV1LendingAutoInvestRedeemHistoryResponse> =
   s.object<SapiV1LendingAutoInvestRedeemHistoryResponse>({
-    indexId: s.number(),
+    indexId: s.int(),
     indexName: s.string(),
-    redemptionId: s.number(),
+    redemptionId: s.int(),
     status: s.string(),
     asset: s.string(),
     amount: s.string(),
-    redemptionDateTime: s.number(),
+    redemptionDateTime: s.int(),
     transactionFee: s.string(),
     transactionFeeUnit: s.string(),
   });

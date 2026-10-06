@@ -5,6 +5,7 @@ export type SapiV1LoanRepayCollateralRateResponse = {
   loanCoin: string;
   collateralCoin: string;
   repayAmount: string;
+  /** rate of collateral coin/loan coin */
   rate: string;
 };
 

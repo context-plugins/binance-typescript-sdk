@@ -26,7 +26,7 @@ export const futureAccountRespSchema: Schema<FutureAccountResp> = s.object<Futur
   canDeposit: s.boolean(),
   canTrade: s.boolean(),
   canWithdraw: s.boolean(),
-  feeTier: s.number(),
+  feeTier: s.int(),
   maxWithdrawAmount: s.string(),
   totalInitialMargin: s.string(),
   totalMaintenanceMargin: s.string(),
@@ -35,5 +35,5 @@ export const futureAccountRespSchema: Schema<FutureAccountResp> = s.object<Futur
   totalPositionInitialMargin: s.string(),
   totalUnrealizedProfit: s.string(),
   totalWalletBalance: s.string(),
-  updateTime: s.number(),
+  updateTime: s.int(),
 });

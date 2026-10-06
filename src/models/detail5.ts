@@ -8,5 +8,5 @@ export type Detail5 = {
 
 export const detail5Schema: Schema<Detail5> = s.object<Detail5>({
   targetAsset: s.optional(s.string()),
-  percentage: s.optional(s.number()),
+  percentage: s.optional(s.int()),
 });

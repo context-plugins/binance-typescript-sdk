@@ -13,7 +13,7 @@ export const sapiV1PortfolioInterestHistoryResponseSchema: Schema<SapiV1Portfoli
   s.object<SapiV1PortfolioInterestHistoryResponse>({
     asset: s.string(),
     interest: s.string(),
-    interestAccruedTime: s.number(),
+    interestAccruedTime: s.int(),
     interestRate: s.string(),
     principal: s.string(),
   });

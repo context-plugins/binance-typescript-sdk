@@ -15,7 +15,7 @@ export const row3Schema: Schema<Row3> = s.object<Row3>({
   isolatedSymbol: s.string(),
   asset: s.string(),
   interest: s.string(),
-  interestAccuredTime: s.number(),
+  interestAccuredTime: s.int(),
   interestRate: s.string(),
   principal: s.string(),
   type: s.string(),

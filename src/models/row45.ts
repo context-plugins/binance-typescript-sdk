@@ -9,8 +9,13 @@ export type Row45 = {
   lockPeriod: string;
   amount: string;
   originalAmount: string;
+  /**
+   * MATURE for redeem to Spot Wallet, NEW_TRANSFERRED for redeem to Flexible product, AHEAD for
+   * early redemption
+   */
   type: string;
   deliverDate: string;
+  /** Loss of profit on early redemption */
   lossAmount: string;
   isComplete: boolean;
   rewardAsset: string;
@@ -22,8 +27,8 @@ export type Row45 = {
 
 export const row45Schema: Schema<Row45> = s.object<Row45>({
   positionId: s.string(),
-  redeemId: s.number(),
-  time: s.number(),
+  redeemId: s.int(),
+  time: s.int(),
   asset: s.string(),
   lockPeriod: s.string(),
   amount: s.string(),

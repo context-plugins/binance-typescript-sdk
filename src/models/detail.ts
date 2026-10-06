@@ -4,10 +4,15 @@ import type { Schema } from "../core/validation/schema.js";
 export type Detail = {
   asset: string;
   assetFullName: string;
+  /** Convertible amount */
   amountFree: string;
+  /** BTC amount */
   toBtc: string;
+  /** BNB amount(Not deducted commission fee */
   toBnb: string;
+  /** BNB amount(Deducted commission fee */
   toBnbOffExchange: string;
+  /** Commission fee */
   exchange: string;
 };
 

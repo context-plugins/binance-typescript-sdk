@@ -4,7 +4,7 @@
 
 Accessor: `client.giftCard` · Source: `src/resources/gift-card.ts` · 6 operations · Request and error types: namespace `GiftCard`
 
-**Type sources**: every type an operation names, with the file that declares it and the schema value exported beside it. Import every name from `binance-public-spot-api`; the `Source` path is where to **read** the shape, never what to import. `ResponseError` and the runtime error family are excluded — see sdk-map.md.
+**Type sources**: every type an operation names, with the file that declares it and the schema value exported beside it. Import every name from `binance`; the `Source` path is where to **read** the shape, never what to import. `ApiError`, the runtime error family and the file vocabulary are excluded — see sdk-map.md.
 
 ### buyABinanceCodeTrade
 
@@ -12,8 +12,9 @@ Accessor: `client.giftCard` · Source: `src/resources/gift-card.ts` · 6 operati
 - **Wire**: `POST /sapi/v1/giftcard/buyCode`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `SapiV1GiftcardBuyCodeResponse`
-- **Error**: `GiftCard.BuyABinanceCodeTradeError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `GiftCard.BuyABinanceCodeTradeError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `GiftCard.BuyABinanceCodeTradeRequest` (6):
@@ -38,8 +39,9 @@ Accessor: `client.giftCard` · Source: `src/resources/gift-card.ts` · 6 operati
 - **Wire**: `POST /sapi/v1/giftcard/createCode`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `SapiV1GiftcardCreateCodeResponse`
-- **Error**: `GiftCard.CreateABinanceCodeUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `GiftCard.CreateABinanceCodeUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `GiftCard.CreateABinanceCodeUserDataRequest` (5):
@@ -64,7 +66,7 @@ Accessor: `client.giftCard` · Source: `src/resources/gift-card.ts` · 6 operati
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1GiftcardCryptographyRsaPublicKeyResponse`
-- **Error**: `GiftCard.FetchRsaPublicKeyUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `GiftCard.FetchRsaPublicKeyUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `GiftCard.FetchRsaPublicKeyUserDataRequest` (3):
@@ -87,7 +89,7 @@ Accessor: `client.giftCard` · Source: `src/resources/gift-card.ts` · 6 operati
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1GiftcardBuyCodeTokenLimitResponse`
-- **Error**: `GiftCard.FetchTokenLimitUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `GiftCard.FetchTokenLimitUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `GiftCard.FetchTokenLimitUserDataRequest` (4):
@@ -110,8 +112,9 @@ Accessor: `client.giftCard` · Source: `src/resources/gift-card.ts` · 6 operati
 - **Wire**: `POST /sapi/v1/giftcard/redeemCode`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `SapiV1GiftcardRedeemCodeResponse`
-- **Error**: `GiftCard.RedeemABinanceCodeUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `GiftCard.RedeemABinanceCodeUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `GiftCard.RedeemABinanceCodeUserDataRequest` (5):
@@ -136,7 +139,7 @@ Accessor: `client.giftCard` · Source: `src/resources/gift-card.ts` · 6 operati
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `SapiV1GiftcardVerifyResponse`
-- **Error**: `GiftCard.VerifyABinanceCodeUserDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `GiftCard.VerifyABinanceCodeUserDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"error2"` [401] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `GiftCard.VerifyABinanceCodeUserDataRequest` (4):

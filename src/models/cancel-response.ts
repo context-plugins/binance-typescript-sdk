@@ -22,8 +22,8 @@ export type CancelResponse = {
 export const cancelResponseSchema: Schema<CancelResponse> = s.object<CancelResponse>({
   symbol: s.string(),
   origClientOrderId: s.string(),
-  orderId: s.number(),
-  orderListId: s.number(),
+  orderId: s.int(),
+  orderListId: s.int(),
   clientOrderId: s.string(),
   price: s.string(),
   origQty: s.string(),
@@ -34,5 +34,5 @@ export const cancelResponseSchema: Schema<CancelResponse> = s.object<CancelRespo
   type: s.string(),
   side: s.string(),
   selfTradePreventionMode: s.string(),
-  transactTime: s.optional(s.number()),
+  transactTime: s.optional(s.int()),
 });

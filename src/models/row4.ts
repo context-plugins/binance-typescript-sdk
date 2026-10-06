@@ -17,12 +17,12 @@ export type Row4 = {
 export const row4Schema: Schema<Row4> = s.object<Row4>({
   avgPrice: s.string(),
   executedQty: s.string(),
-  orderId: s.number(),
+  orderId: s.int(),
   price: s.string(),
   qty: s.string(),
   side: s.string(),
   symbol: s.string(),
   timeInForce: s.string(),
   isIsolated: s.boolean(),
-  updatedTime: s.number(),
+  updatedTime: s.int(),
 });

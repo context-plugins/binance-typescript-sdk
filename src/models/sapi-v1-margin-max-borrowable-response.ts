@@ -2,7 +2,9 @@ import * as s from "../core/validation/index.js";
 import type { Schema } from "../core/validation/schema.js";
 
 export type SapiV1MarginMaxBorrowableResponse = {
+  /** account's currently max borrowable amount with sufficient system availability */
   amount: string;
+  /** max borrowable amount limited by the account level */
   borrowLimit: string;
 };
 

@@ -7,6 +7,7 @@ export type Row44 = {
   time: number;
   projectId: string;
   redeemId: number;
+  /** SPOT, FUNDING */
   destAccount: string;
   status: string;
 };
@@ -14,9 +15,9 @@ export type Row44 = {
 export const row44Schema: Schema<Row44> = s.object<Row44>({
   amount: s.string(),
   asset: s.string(),
-  time: s.number(),
+  time: s.int(),
   projectId: s.string(),
-  redeemId: s.number(),
+  redeemId: s.int(),
   destAccount: s.string(),
   status: s.string(),
 });

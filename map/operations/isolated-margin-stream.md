@@ -4,7 +4,7 @@
 
 Accessor: `client.isolatedMarginStream` · Source: `src/resources/isolated-margin-stream.ts` · 3 operations · Request and error types: namespace `IsolatedMarginStream`
 
-**Type sources**: every type an operation names, with the file that declares it and the schema value exported beside it. Import every name from `binance-public-spot-api`; the `Source` path is where to **read** the shape, never what to import. `ResponseError` and the runtime error family are excluded — see sdk-map.md.
+**Type sources**: every type an operation names, with the file that declares it and the schema value exported beside it. Import every name from `binance`; the `Source` path is where to **read** the shape, never what to import. `ApiError`, the runtime error family and the file vocabulary are excluded — see sdk-map.md.
 
 ### closeAListenKeyUserStream3
 
@@ -12,8 +12,9 @@ Accessor: `client.isolatedMarginStream` · Source: `src/resources/isolated-margi
 - **Wire**: `DELETE /sapi/v1/userDataStream/isolated`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `Record<string, unknown>` — a bare `application/json` map; the success type *is* the map
-- **Error**: `IsolatedMarginStream.CloseAListenKeyUserStream3Error` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `IsolatedMarginStream.CloseAListenKeyUserStream3Error` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `IsolatedMarginStream.CloseAListenKeyUserStream3Request` (1):
@@ -28,12 +29,13 @@ Accessor: `client.isolatedMarginStream` · Source: `src/resources/isolated-margi
 
 ### generateAListenKeyUserStream
 
-- **Signature**: `generateAListenKeyUserStream(options?: RequestOptions): ApiPromise<SapiV1UserDataStreamIsolatedResponse, ResponseError>`
+- **Signature**: `generateAListenKeyUserStream(options?: RequestOptions): ApiPromise<SapiV1UserDataStreamIsolatedResponse, ApiError>`
 - **Wire**: `POST /sapi/v1/userDataStream/isolated`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `SapiV1UserDataStreamIsolatedResponse`
-- **Error**: `ResponseError` — untyped, `payload.kind` always `"undeclared"`
+- **Error**: `BinanceError` with `kind: "api"` — untyped, `payload.kind` always `"undeclared"`
 
 | Type | Schema value | Source |
 | --- | --- | --- |
@@ -45,8 +47,9 @@ Accessor: `client.isolatedMarginStream` · Source: `src/resources/isolated-margi
 - **Wire**: `PUT /sapi/v1/userDataStream/isolated`
 - **Auth**: `apiKeyAuth`
 - **Request body**: none — no `Content-Type` header is sent
+- **SDK-sent**: `header Idempotency-Key` (minted per call)
 - **Returns**: `Record<string, unknown>` — a bare `application/json` map; the success type *is* the map
-- **Error**: `IsolatedMarginStream.PingKeepAliveAListenKeyUserStreamError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `IsolatedMarginStream.PingKeepAliveAListenKeyUserStreamError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `IsolatedMarginStream.PingKeepAliveAListenKeyUserStreamRequest` (1):

@@ -17,7 +17,7 @@ export type Detail6 = {
 export const detail6Schema: Schema<Detail6> = s.object<Detail6>({
   asset: s.string(),
   rewardAsset: s.string(),
-  duration: s.number(),
+  duration: s.int(),
   renewable: s.boolean(),
   isSoldOut: s.boolean(),
   apr: s.string(),

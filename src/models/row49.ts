@@ -15,8 +15,8 @@ export const row49Schema: Schema<Row49> = s.object<Row49>({
   amount: s.string(),
   productId: s.string(),
   asset: s.string(),
-  createTime: s.number(),
+  createTime: s.int(),
   type: s.string(),
   productName: s.string(),
-  orderId: s.number(),
+  orderId: s.int(),
 });

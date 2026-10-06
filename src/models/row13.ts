@@ -5,6 +5,7 @@ export type Row13 = {
   loanCoin: string;
   repayAmount: string;
   collateralCoin: string;
+  /** Repaid, Repaying, Failed */
   repayStatus: string;
   repayTime: string;
   orderId: string;

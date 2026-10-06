@@ -12,5 +12,5 @@ export const row48Schema: Schema<Row48> = s.object<Row48>({
   productId: s.string(),
   asset: s.string(),
   annualPercentageRate: s.string(),
-  time: s.number(),
+  time: s.int(),
 });

@@ -10,7 +10,7 @@ export type SapiV1MiningPubAlgoListResponse = {
 
 export const sapiV1MiningPubAlgoListResponseSchema: Schema<SapiV1MiningPubAlgoListResponse> =
   s.object<SapiV1MiningPubAlgoListResponse>({
-    code: s.number(),
+    code: s.int(),
     msg: s.string(),
     data: s.array(s.lazy(() => data9Schema)),
   });

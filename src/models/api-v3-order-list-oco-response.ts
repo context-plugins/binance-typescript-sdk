@@ -17,12 +17,12 @@ export type ApiV3OrderListOcoResponse = {
 
 export const apiV3OrderListOcoResponseSchema: Schema<ApiV3OrderListOcoResponse> =
   s.object<ApiV3OrderListOcoResponse>({
-    orderListId: s.number(),
+    orderListId: s.int(),
     contingencyType: s.string(),
     listStatusType: s.string(),
     listOrderStatus: s.string(),
     listClientOrderId: s.string(),
-    transactionTime: s.number(),
+    transactionTime: s.int(),
     symbol: s.string(),
     orders: s.array(s.lazy(() => order1Schema)),
     orderReports: s.array(s.lazy(() => orderReport2Schema)),

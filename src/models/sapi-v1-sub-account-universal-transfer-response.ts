@@ -16,7 +16,7 @@ export type SapiV1SubAccountUniversalTransferResponse = {
 
 export const sapiV1SubAccountUniversalTransferResponseSchema: Schema<SapiV1SubAccountUniversalTransferResponse> =
   s.object<SapiV1SubAccountUniversalTransferResponse>({
-    tranId: s.number(),
+    tranId: s.int(),
     fromEmail: s.string(),
     toEmail: s.string(),
     asset: s.string(),
@@ -24,6 +24,6 @@ export const sapiV1SubAccountUniversalTransferResponseSchema: Schema<SapiV1SubAc
     fromAccountType: s.string(),
     toAccountType: s.string(),
     status: s.string(),
-    createTimeStamp: s.number(),
+    createTimeStamp: s.int(),
     clientTranId: s.string(),
   });

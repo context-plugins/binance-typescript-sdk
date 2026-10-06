@@ -8,6 +8,6 @@ export type SapiV1SimpleEarnFlexibleSubscribeResponse = {
 
 export const sapiV1SimpleEarnFlexibleSubscribeResponseSchema: Schema<SapiV1SimpleEarnFlexibleSubscribeResponse> =
   s.object<SapiV1SimpleEarnFlexibleSubscribeResponse>({
-    purchaseId: s.number(),
+    purchaseId: s.int(),
     success: s.boolean(),
   });

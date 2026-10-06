@@ -9,6 +9,6 @@ export type Balance2 = {
 
 export const balance2Schema: Schema<Balance2> = s.object<Balance2>({
   asset: s.string(),
-  free: s.number(),
-  locked: s.number(),
+  free: s.int(),
+  locked: s.int(),
 });

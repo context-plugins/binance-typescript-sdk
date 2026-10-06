@@ -4,7 +4,7 @@
 
 Accessor: `client.market` · Source: `src/resources/market.ts` · 15 operations · Request and error types: namespace `Market`
 
-**Type sources**: every type an operation names, with the file that declares it and the schema value exported beside it. Import every name from `binance-public-spot-api`; the `Source` path is where to **read** the shape, never what to import. `ResponseError` and the runtime error family are excluded — see sdk-map.md.
+**Type sources**: every type an operation names, with the file that declares it and the schema value exported beside it. Import every name from `binance`; the `Source` path is where to **read** the shape, never what to import. `ApiError`, the runtime error family and the file vocabulary are excluded — see sdk-map.md.
 
 ### hrTickerPriceChangeStatistics24
 
@@ -13,7 +13,7 @@ Accessor: `client.market` · Source: `src/resources/market.ts` · 15 operations 
 - **Auth**: none — public; no credential is sent
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `ApiV3Ticker24HrResponse`
-- **Error**: `Market.HrTickerPriceChangeStatistics24Error` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Market.HrTickerPriceChangeStatistics24Error` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Market.HrTickerPriceChangeStatistics24Request` (3):
@@ -32,12 +32,12 @@ Accessor: `client.market` · Source: `src/resources/market.ts` · 15 operations 
 
 ### checkServerTime
 
-- **Signature**: `checkServerTime(options?: RequestOptions): ApiPromise<ApiV3TimeResponse, ResponseError>`
+- **Signature**: `checkServerTime(options?: RequestOptions): ApiPromise<ApiV3TimeResponse, ApiError>`
 - **Wire**: `GET /api/v3/time`
 - **Auth**: none — public; no credential is sent
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `ApiV3TimeResponse`
-- **Error**: `ResponseError` — untyped, `payload.kind` always `"undeclared"`
+- **Error**: `BinanceError` with `kind: "api"` — untyped, `payload.kind` always `"undeclared"`
 
 | Type | Schema value | Source |
 | --- | --- | --- |
@@ -50,7 +50,7 @@ Accessor: `client.market` · Source: `src/resources/market.ts` · 15 operations 
 - **Auth**: none — public; no credential is sent
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `AggTrade[]` — a bare `application/json` array; the success type *is* the array, not a wrapper model
-- **Error**: `Market.CompressedAggregateTradesListError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Market.CompressedAggregateTradesListError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Market.CompressedAggregateTradesListRequest` (5):
@@ -75,7 +75,7 @@ Accessor: `client.market` · Source: `src/resources/market.ts` · 15 operations 
 - **Auth**: none — public; no credential is sent
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `ApiV3AvgPriceResponse`
-- **Error**: `Market.CurrentAveragePriceError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Market.CurrentAveragePriceError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Market.CurrentAveragePriceRequest` (1):
@@ -96,7 +96,7 @@ Accessor: `client.market` · Source: `src/resources/market.ts` · 15 operations 
 - **Auth**: none — public; no credential is sent
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `ApiV3ExchangeInfoResponse`
-- **Error**: `Market.ExchangeInformationError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Market.ExchangeInformationError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Market.ExchangeInformationRequest` (3):
@@ -119,7 +119,7 @@ Accessor: `client.market` · Source: `src/resources/market.ts` · 15 operations 
 - **Auth**: none — public; no credential is sent
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `ApiV3KlinesResponse[][]` — a bare `application/json` array; the success type *is* the array, not a wrapper model
-- **Error**: `Market.KlineCandlestickDataError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Market.KlineCandlestickDataError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Market.KlineCandlestickDataRequest` (6):
@@ -141,12 +141,12 @@ Accessor: `client.market` · Source: `src/resources/market.ts` · 15 operations 
 
 ### oldTradeLookup
 
-- **Signature**: `oldTradeLookup(request: Market.OldTradeLookupRequest, options?: RequestOptions): ApiPromise<Trade[], ResponseError>`
+- **Signature**: `oldTradeLookup(request: Market.OldTradeLookupRequest, options?: RequestOptions): ApiPromise<Trade[], ApiError>`
 - **Wire**: `GET /api/v3/historicalTrades`
 - **Auth**: none — public; no credential is sent
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `Trade[]` — a bare `application/json` array; the success type *is* the array, not a wrapper model
-- **Error**: `ResponseError` — untyped, `payload.kind` always `"undeclared"`
+- **Error**: `BinanceError` with `kind: "api"` — untyped, `payload.kind` always `"undeclared"`
 
 **Fields** — `Market.OldTradeLookupRequest` (3):
 
@@ -167,7 +167,7 @@ Accessor: `client.market` · Source: `src/resources/market.ts` · 15 operations 
 - **Auth**: none — public; no credential is sent
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `ApiV3DepthResponse`
-- **Error**: `Market.OrderBookError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Market.OrderBookError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Market.OrderBookRequest` (2):
@@ -189,7 +189,7 @@ Accessor: `client.market` · Source: `src/resources/market.ts` · 15 operations 
 - **Auth**: none — public; no credential is sent
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `Trade[]` — a bare `application/json` array; the success type *is* the array, not a wrapper model
-- **Error**: `Market.RecentTradesListError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Market.RecentTradesListError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Market.RecentTradesListRequest` (2):
@@ -211,7 +211,7 @@ Accessor: `client.market` · Source: `src/resources/market.ts` · 15 operations 
 - **Auth**: none — public; no credential is sent
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `ApiV3TickerResponse`
-- **Error**: `Market.RollingWindowPriceChangeStatisticsError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Market.RollingWindowPriceChangeStatisticsError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Market.RollingWindowPriceChangeStatisticsRequest` (4):
@@ -235,7 +235,7 @@ Accessor: `client.market` · Source: `src/resources/market.ts` · 15 operations 
 - **Auth**: none — public; no credential is sent
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `ApiV3TickerBookTickerResponse`
-- **Error**: `Market.SymbolOrderBookTickerError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Market.SymbolOrderBookTickerError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Market.SymbolOrderBookTickerRequest` (2):
@@ -257,7 +257,7 @@ Accessor: `client.market` · Source: `src/resources/market.ts` · 15 operations 
 - **Auth**: none — public; no credential is sent
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `ApiV3TickerPriceResponse`
-- **Error**: `Market.SymbolPriceTickerError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Market.SymbolPriceTickerError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Market.SymbolPriceTickerRequest` (2):
@@ -274,12 +274,12 @@ Accessor: `client.market` · Source: `src/resources/market.ts` · 15 operations 
 
 ### testConnectivity
 
-- **Signature**: `testConnectivity(options?: RequestOptions): ApiPromise<Record<string, unknown>, ResponseError>`
+- **Signature**: `testConnectivity(options?: RequestOptions): ApiPromise<Record<string, unknown>, ApiError>`
 - **Wire**: `GET /api/v3/ping`
 - **Auth**: none — public; no credential is sent
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `Record<string, unknown>` — a bare `application/json` map; the success type *is* the map
-- **Error**: `ResponseError` — untyped, `payload.kind` always `"undeclared"`
+- **Error**: `BinanceError` with `kind: "api"` — untyped, `payload.kind` always `"undeclared"`
 
 ### tradingDayTicker
 
@@ -288,7 +288,7 @@ Accessor: `client.market` · Source: `src/resources/market.ts` · 15 operations 
 - **Auth**: none — public; no credential is sent
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `ApiV3TickerTradingDayResponse`
-- **Error**: `Market.TradingDayTickerError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Market.TradingDayTickerError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Market.TradingDayTickerRequest` (4):
@@ -313,7 +313,7 @@ Accessor: `client.market` · Source: `src/resources/market.ts` · 15 operations 
 - **Auth**: none — public; no credential is sent
 - **Request body**: none — no `Content-Type` header is sent
 - **Returns**: `ApiV3UiKlinesResponse[][]` — a bare `application/json` array; the success type *is* the array, not a wrapper model
-- **Error**: `Market.UiKlinesError` — **typed arms**, narrowed on `err.payload.kind`
+- **Error**: `BinanceError` with `kind: "api"`, an instance of `Market.UiKlinesError` — **typed arms**, narrowed on `err.payload.kind`
 - **Error arms**: `"error"` [400] `Error` · `"undeclared"` [any other] `rawBody: ArrayBuffer`
 
 **Fields** — `Market.UiKlinesRequest` (6):

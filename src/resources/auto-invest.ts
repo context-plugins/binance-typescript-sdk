@@ -1,8 +1,9 @@
 import type { AuthSchemes } from "../auth-schemes.js";
+import { ApiError, type Declared, type ErrorDecoders, type ErrorPayload } from "../core/api-error.js";
 import type { ApiPromise } from "../core/api-promise.js";
 import type { RequestOptions } from "../core/api-request.js";
 import type { RawClient } from "../core/raw-client.js";
-import { ResponseError, type Declared, type ErrorDecoders } from "../core/response-error.js";
+import { uuid } from "../core/uuid.js";
 import * as s from "../core/validation/index.js";
 import { detail1Schema, type Detail1 } from "../models/detail1.js";
 import { detail5Schema, type Detail5 } from "../models/detail5.js";
@@ -86,6 +87,9 @@ import {
 } from "../models/subscription-start-weekday.js";
 import type { Servers } from "../servers.js";
 
+/**
+ * Auto-Invest Endpoints
+ */
 export class AutoInvest {
   readonly #rawClient: RawClient;
   readonly #servers: Servers;
@@ -97,6 +101,23 @@ export class AutoInvest {
     this.#auth = auth;
   }
 
+  /**
+   * Change Plan Status
+   *
+   * @remarks
+   * Change Plan Status
+   *
+   * Weight(IP): 1
+   *
+   * @returns Plan result
+   *
+   * @throws {@link AutoInvest.ChangePlanStatusError} when the API answers with an error status —
+   * narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   changePlanStatus(
     request: AutoInvest.ChangePlanStatusRequest,
     options?: RequestOptions,
@@ -104,15 +125,17 @@ export class AutoInvest {
     return this.#rawClient.execute(
       {
         method: "POST",
-        url: this.#servers.default("/sapi/v1/lending/auto-invest/plan/edit-status"),
+        urlTemplate: this.#servers.default("/sapi/v1/lending/auto-invest/plan/edit-status"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
-          { name: "planId", value: request.planId, schema: s.number() },
+          { name: "planId", value: request.planId, schema: s.int() },
           { name: "status", value: request.status, schema: status1Schema },
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [{ name: "Idempotency-Key", value: uuid(), schema: s.string() }],
         body: { kind: "empty" },
       },
       {
@@ -123,6 +146,23 @@ export class AutoInvest {
     );
   }
 
+  /**
+   * Get list of plans
+   *
+   * @remarks
+   * Query plan lists
+   *
+   * Weight(IP): 1
+   *
+   * @returns Plan result
+   *
+   * @throws {@link AutoInvest.GetListOfPlansError} when the API answers with an error status —
+   * narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   getListOfPlans(
     request: AutoInvest.GetListOfPlansRequest,
     options?: RequestOptions,
@@ -130,14 +170,16 @@ export class AutoInvest {
     return this.#rawClient.execute(
       {
         method: "GET",
-        url: this.#servers.default("/sapi/v1/lending/auto-invest/plan/list"),
+        urlTemplate: this.#servers.default("/sapi/v1/lending/auto-invest/plan/list"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
           { name: "planType", value: request.planType, schema: s.string() },
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [],
         body: { kind: "empty" },
       },
       {
@@ -148,6 +190,23 @@ export class AutoInvest {
     );
   }
 
+  /**
+   * Get target asset ROI data (USER_DATA)
+   *
+   * @remarks
+   * ROI return list for target asset
+   *
+   * Weight(IP): 1
+   *
+   * @returns Target asset list
+   *
+   * @throws {@link AutoInvest.GetTargetAssetRoiDataUserDataError} when the API answers with an
+   * error status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   getTargetAssetRoiDataUserData(
     request: AutoInvest.GetTargetAssetRoiDataUserDataRequest,
     options?: RequestOptions,
@@ -158,15 +217,17 @@ export class AutoInvest {
     return this.#rawClient.execute(
       {
         method: "GET",
-        url: this.#servers.default("/sapi/v1/lending/auto-invest/target-asset/roi/list"),
+        urlTemplate: this.#servers.default("/sapi/v1/lending/auto-invest/target-asset/roi/list"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
           { name: "targetAsset", value: request.targetAsset, schema: s.string() },
           { name: "hisRoiType", value: request.hisRoiType, schema: s.string() },
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [],
         body: { kind: "empty" },
       },
       {
@@ -180,6 +241,21 @@ export class AutoInvest {
     );
   }
 
+  /**
+   * Get target asset list (USER_DATA)
+   *
+   * @remarks
+   * Weight(IP): 1
+   *
+   * @returns Target asset list
+   *
+   * @throws {@link AutoInvest.GetTargetAssetListUserDataError} when the API answers with an error
+   * status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   getTargetAssetListUserData(
     request: AutoInvest.GetTargetAssetListUserDataRequest,
     options?: RequestOptions,
@@ -187,16 +263,18 @@ export class AutoInvest {
     return this.#rawClient.execute(
       {
         method: "GET",
-        url: this.#servers.default("/sapi/v1/lending/auto-invest/target-asset/list"),
+        urlTemplate: this.#servers.default("/sapi/v1/lending/auto-invest/target-asset/list"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
           { name: "targetAsset", value: request.targetAsset, schema: s.optional(s.string()) },
-          { name: "size", value: request.size, schema: s.optional(s.number()) },
-          { name: "current", value: request.current, schema: s.optional(s.number()) },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "size", value: request.size, schema: s.optional(s.int()) },
+          { name: "current", value: request.current, schema: s.optional(s.int()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [],
         body: { kind: "empty" },
       },
       {
@@ -207,6 +285,26 @@ export class AutoInvest {
     );
   }
 
+  /**
+   * Index Linked Plan Rebalance Details (USER_DATA)
+   *
+   * @remarks
+   * Get the history of Index Linked Plan Redemption transactions
+   *
+   * Max 30 day difference between startTime and endTime If no startTime and endTime, default to
+   * show past 30 day records
+   *
+   * Weight(IP): 1
+   *
+   * @returns Rebalance Details
+   *
+   * @throws {@link AutoInvest.IndexLinkedPlanRebalanceDetailsUserDataError} when the API answers
+   * with an error status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   indexLinkedPlanRebalanceDetailsUserData(
     request: AutoInvest.IndexLinkedPlanRebalanceDetailsUserDataRequest,
     options?: RequestOptions,
@@ -217,17 +315,19 @@ export class AutoInvest {
     return this.#rawClient.execute(
       {
         method: "GET",
-        url: this.#servers.default("/sapi/v1/lending/auto-invest/rebalance/history"),
+        urlTemplate: this.#servers.default("/sapi/v1/lending/auto-invest/rebalance/history"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
-          { name: "startTime", value: request.startTime, schema: s.optional(s.number()) },
-          { name: "endTime", value: request.endTime, schema: s.optional(s.number()) },
-          { name: "current", value: request.current, schema: s.optional(s.number()) },
-          { name: "size", value: request.size, schema: s.optional(s.number()) },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "startTime", value: request.startTime, schema: s.optional(s.int()) },
+          { name: "endTime", value: request.endTime, schema: s.optional(s.int()) },
+          { name: "current", value: request.current, schema: s.optional(s.int()) },
+          { name: "size", value: request.size, schema: s.optional(s.int()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [],
         body: { kind: "empty" },
       },
       {
@@ -241,6 +341,23 @@ export class AutoInvest {
     );
   }
 
+  /**
+   * Index Linked Plan Redemption (TRADE)
+   *
+   * @remarks
+   * To redeem index-Linked plan holdings
+   *
+   * Weight(IP): 1
+   *
+   * @returns Redemption result
+   *
+   * @throws {@link AutoInvest.IndexLinkedPlanRedemptionTradeError} when the API answers with an
+   * error status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   indexLinkedPlanRedemptionTrade(
     request: AutoInvest.IndexLinkedPlanRedemptionTradeRequest,
     options?: RequestOptions,
@@ -248,16 +365,18 @@ export class AutoInvest {
     return this.#rawClient.execute(
       {
         method: "POST",
-        url: this.#servers.default("/sapi/v1/lending/auto-invest/redeem"),
+        urlTemplate: this.#servers.default("/sapi/v1/lending/auto-invest/redeem"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
-          { name: "indexId", value: request.indexId, schema: s.number() },
-          { name: "redemptionPercentage", value: request.redemptionPercentage, schema: s.number() },
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "indexId", value: request.indexId, schema: s.int() },
+          { name: "redemptionPercentage", value: request.redemptionPercentage, schema: s.int() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
           { name: "requestId", value: request.requestId, schema: s.optional(s.string()) },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [{ name: "Idempotency-Key", value: uuid(), schema: s.string() }],
         body: { kind: "empty" },
       },
       {
@@ -268,6 +387,26 @@ export class AutoInvest {
     );
   }
 
+  /**
+   * Index Linked Plan Redemption History (USER_DATA)
+   *
+   * @remarks
+   * Get the history of Index Linked Plan Redemption transactions
+   *
+   * Max 30 day difference between startTime and endTime If no startTime and endTime, default to
+   * show past 30 day records
+   *
+   * Weight(IP): 1
+   *
+   * @returns Redemption history
+   *
+   * @throws {@link AutoInvest.IndexLinkedPlanRedemptionHistoryUserDataError} when the API answers
+   * with an error status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   indexLinkedPlanRedemptionHistoryUserData(
     request: AutoInvest.IndexLinkedPlanRedemptionHistoryUserDataRequest,
     options?: RequestOptions,
@@ -278,19 +417,21 @@ export class AutoInvest {
     return this.#rawClient.execute(
       {
         method: "GET",
-        url: this.#servers.default("/sapi/v1/lending/auto-invest/redeem/history"),
+        urlTemplate: this.#servers.default("/sapi/v1/lending/auto-invest/redeem/history"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
-          { name: "requestId", value: request.requestId, schema: s.number() },
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "requestId", value: request.requestId, schema: s.int() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
-          { name: "startTime", value: request.startTime, schema: s.optional(s.number()) },
-          { name: "endTime", value: request.endTime, schema: s.optional(s.number()) },
-          { name: "current", value: request.current, schema: s.optional(s.number()) },
+          { name: "startTime", value: request.startTime, schema: s.optional(s.int()) },
+          { name: "endTime", value: request.endTime, schema: s.optional(s.int()) },
+          { name: "current", value: request.current, schema: s.optional(s.int()) },
           { name: "asset", value: request.asset, schema: s.optional(s.string()) },
-          { name: "size", value: request.size, schema: s.optional(s.number()) },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "size", value: request.size, schema: s.optional(s.int()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [],
         body: { kind: "empty" },
       },
       {
@@ -304,6 +445,23 @@ export class AutoInvest {
     );
   }
 
+  /**
+   * Investment plan adjustment
+   *
+   * @remarks
+   * Query Source Asset to be used for investment
+   *
+   * Weight(IP): 1
+   *
+   * @returns Plan result
+   *
+   * @throws {@link AutoInvest.InvestmentPlanAdjustmentError} when the API answers with an error
+   * status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   investmentPlanAdjustment(
     request: AutoInvest.InvestmentPlanAdjustmentRequest,
     options?: RequestOptions,
@@ -311,21 +469,18 @@ export class AutoInvest {
     return this.#rawClient.execute(
       {
         method: "POST",
-        url: this.#servers.default("/sapi/v1/lending/auto-invest/plan/edit"),
+        urlTemplate: this.#servers.default("/sapi/v1/lending/auto-invest/plan/edit"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
-          { name: "planId", value: request.planId, schema: s.number() },
-          { name: "subscriptionAmount", value: request.subscriptionAmount, schema: s.number() },
+          { name: "planId", value: request.planId, schema: s.int() },
+          { name: "subscriptionAmount", value: request.subscriptionAmount, schema: s.float64() },
           { name: "subscriptionCycle", value: request.subscriptionCycle, schema: subscriptionCycleSchema },
-          { name: "subscriptionStartTime", value: request.subscriptionStartTime, schema: s.number() },
+          { name: "subscriptionStartTime", value: request.subscriptionStartTime, schema: s.int() },
           { name: "sourceAsset", value: request.sourceAsset, schema: s.string() },
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
-          {
-            name: "subscriptionStartDay",
-            value: request.subscriptionStartDay,
-            schema: s.optional(s.number()),
-          },
+          { name: "subscriptionStartDay", value: request.subscriptionStartDay, schema: s.optional(s.int()) },
           {
             name: "subscriptionStartWeekday",
             value: request.subscriptionStartWeekday,
@@ -341,8 +496,9 @@ export class AutoInvest {
             value: request.details,
             schema: s.optional(s.array(s.lazy(() => detail1Schema))),
           },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [{ name: "Idempotency-Key", value: uuid(), schema: s.string() }],
         body: { kind: "empty" },
       },
       {
@@ -353,6 +509,23 @@ export class AutoInvest {
     );
   }
 
+  /**
+   * Investment plan creation (USER_DATA)
+   *
+   * @remarks
+   * Post an investment plan creation
+   *
+   * Weight(IP): 1
+   *
+   * @returns Plan result
+   *
+   * @throws {@link AutoInvest.InvestmentPlanCreationUserDataError} when the API answers with an
+   * error status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   investmentPlanCreationUserData(
     request: AutoInvest.InvestmentPlanCreationUserDataRequest,
     options?: RequestOptions,
@@ -360,25 +533,22 @@ export class AutoInvest {
     return this.#rawClient.execute(
       {
         method: "POST",
-        url: this.#servers.default("/sapi/v1/lending/auto-invest/plan/add"),
+        urlTemplate: this.#servers.default("/sapi/v1/lending/auto-invest/plan/add"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
           { name: "sourceType", value: request.sourceType, schema: sourceTypeSchema },
           { name: "planType", value: request.planType, schema: planTypeSchema },
-          { name: "subscriptionAmount", value: request.subscriptionAmount, schema: s.number() },
+          { name: "subscriptionAmount", value: request.subscriptionAmount, schema: s.float64() },
           { name: "subscriptionCycle", value: request.subscriptionCycle, schema: subscriptionCycleSchema },
-          { name: "subscriptionStartTime", value: request.subscriptionStartTime, schema: s.number() },
+          { name: "subscriptionStartTime", value: request.subscriptionStartTime, schema: s.int() },
           { name: "sourceAsset", value: request.sourceAsset, schema: s.string() },
           { name: "details", value: request.details, schema: s.array(s.lazy(() => detail1Schema)) },
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
           { name: "requestId", value: request.requestId, schema: s.optional(s.string()) },
-          { name: "IndexId", value: request.indexId, schema: s.optional(s.number()) },
-          {
-            name: "subscriptionStartDay",
-            value: request.subscriptionStartDay,
-            schema: s.optional(s.number()),
-          },
+          { name: "IndexId", value: request.indexId, schema: s.optional(s.int()) },
+          { name: "subscriptionStartDay", value: request.subscriptionStartDay, schema: s.optional(s.int()) },
           {
             name: "subscriptionStartWeekday",
             value: request.subscriptionStartWeekday,
@@ -389,8 +559,9 @@ export class AutoInvest {
             value: request.flexibleAllowedToUse,
             schema: s.optional(s.boolean()),
           },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [{ name: "Idempotency-Key", value: uuid(), schema: s.string() }],
         body: { kind: "empty" },
       },
       {
@@ -401,6 +572,23 @@ export class AutoInvest {
     );
   }
 
+  /**
+   * One Time Transaction(TRADE)
+   *
+   * @remarks
+   * One time transaction
+   *
+   * Weight(IP): 1
+   *
+   * @returns transaction result
+   *
+   * @throws {@link AutoInvest.OneTimeTransactionTradeError} when the API answers with an error
+   * status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   oneTimeTransactionTrade(
     request: AutoInvest.OneTimeTransactionTradeRequest,
     options?: RequestOptions,
@@ -408,13 +596,14 @@ export class AutoInvest {
     return this.#rawClient.execute(
       {
         method: "POST",
-        url: this.#servers.default("/sapi/v1/lending/auto-invest/one-off"),
+        urlTemplate: this.#servers.default("/sapi/v1/lending/auto-invest/one-off"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
           { name: "sourceType", value: request.sourceType, schema: s.string() },
-          { name: "subscriptionAmount", value: request.subscriptionAmount, schema: s.number() },
+          { name: "subscriptionAmount", value: request.subscriptionAmount, schema: s.float64() },
           { name: "sourceAsset", value: request.sourceAsset, schema: s.string() },
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
           { name: "requestId", value: request.requestId, schema: s.optional(s.string()) },
           {
@@ -422,15 +611,16 @@ export class AutoInvest {
             value: request.flexibleAllowedToUse,
             schema: s.optional(s.boolean()),
           },
-          { name: "planId", value: request.planId, schema: s.optional(s.number()) },
-          { name: "indexId", value: request.indexId, schema: s.optional(s.number()) },
+          { name: "planId", value: request.planId, schema: s.optional(s.int()) },
+          { name: "indexId", value: request.indexId, schema: s.optional(s.int()) },
           {
             name: "details",
             value: request.details,
             schema: s.optional(s.array(s.lazy(() => detail5Schema))),
           },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [{ name: "Idempotency-Key", value: uuid(), schema: s.string() }],
         body: { kind: "empty" },
       },
       {
@@ -441,6 +631,23 @@ export class AutoInvest {
     );
   }
 
+  /**
+   * Query Index Details(USER_DATA)
+   *
+   * @remarks
+   * Query index details
+   *
+   * Weight(IP): 1
+   *
+   * @returns Index result
+   *
+   * @throws {@link AutoInvest.QueryIndexDetailsUserDataError} when the API answers with an error
+   * status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   queryIndexDetailsUserData(
     request: AutoInvest.QueryIndexDetailsUserDataRequest,
     options?: RequestOptions,
@@ -448,14 +655,16 @@ export class AutoInvest {
     return this.#rawClient.execute(
       {
         method: "GET",
-        url: this.#servers.default("/sapi/v1/lending/auto-invest/index/info"),
+        urlTemplate: this.#servers.default("/sapi/v1/lending/auto-invest/index/info"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
-          { name: "indexId", value: request.indexId, schema: s.number() },
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "indexId", value: request.indexId, schema: s.int() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [],
         body: { kind: "empty" },
       },
       {
@@ -466,6 +675,23 @@ export class AutoInvest {
     );
   }
 
+  /**
+   * Query Index Linked Plan Position Details(USER_DATA)
+   *
+   * @remarks
+   * Details on users Index-Linked plan position details
+   *
+   * Weight(IP): 1
+   *
+   * @returns Position Details
+   *
+   * @throws {@link AutoInvest.QueryIndexLinkedPlanPositionDetailsUserDataError} when the API
+   * answers with an error status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   queryIndexLinkedPlanPositionDetailsUserData(
     request: AutoInvest.QueryIndexLinkedPlanPositionDetailsUserDataRequest,
     options?: RequestOptions,
@@ -476,14 +702,16 @@ export class AutoInvest {
     return this.#rawClient.execute(
       {
         method: "GET",
-        url: this.#servers.default("/sapi/v1/lending/auto-invest/index/user-summary"),
+        urlTemplate: this.#servers.default("/sapi/v1/lending/auto-invest/index/user-summary"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
-          { name: "indexId", value: request.indexId, schema: s.number() },
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "indexId", value: request.indexId, schema: s.int() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [],
         body: { kind: "empty" },
       },
       {
@@ -494,6 +722,23 @@ export class AutoInvest {
     );
   }
 
+  /**
+   * Query One-Time Transaction Status (USER_DATA)
+   *
+   * @remarks
+   * Transaction status for one-time transaction
+   *
+   * Weight(IP): 1
+   *
+   * @returns transaction result
+   *
+   * @throws {@link AutoInvest.QueryOneTimeTransactionStatusUserDataError} when the API answers with
+   * an error status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   queryOneTimeTransactionStatusUserData(
     request: AutoInvest.QueryOneTimeTransactionStatusUserDataRequest,
     options?: RequestOptions,
@@ -504,15 +749,17 @@ export class AutoInvest {
     return this.#rawClient.execute(
       {
         method: "GET",
-        url: this.#servers.default("/sapi/v1/lending/auto-invest/one-off/status"),
+        urlTemplate: this.#servers.default("/sapi/v1/lending/auto-invest/one-off/status"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
-          { name: "transactionId", value: request.transactionId, schema: s.number() },
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "transactionId", value: request.transactionId, schema: s.int() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
           { name: "requestId", value: request.requestId, schema: s.optional(s.string()) },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [],
         body: { kind: "empty" },
       },
       {
@@ -523,6 +770,23 @@ export class AutoInvest {
     );
   }
 
+  /**
+   * Query all source asset and target asset (USER_DATA)
+   *
+   * @remarks
+   * Query all source assets and target assets
+   *
+   * Weight(IP): 1
+   *
+   * @returns Target asset
+   *
+   * @throws {@link AutoInvest.QueryAllSourceAssetAndTargetAssetUserDataError} when the API answers
+   * with an error status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   queryAllSourceAssetAndTargetAssetUserData(
     request: AutoInvest.QueryAllSourceAssetAndTargetAssetUserDataRequest,
     options?: RequestOptions,
@@ -533,13 +797,15 @@ export class AutoInvest {
     return this.#rawClient.execute(
       {
         method: "GET",
-        url: this.#servers.default("/sapi/v1/lending/auto-invest/all/asset"),
+        urlTemplate: this.#servers.default("/sapi/v1/lending/auto-invest/all/asset"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [],
         body: { kind: "empty" },
       },
       {
@@ -550,6 +816,23 @@ export class AutoInvest {
     );
   }
 
+  /**
+   * Query holding details of the plan
+   *
+   * @remarks
+   * Query holding details of the plan
+   *
+   * Weight(IP): 1
+   *
+   * @returns Plan result
+   *
+   * @throws {@link AutoInvest.QueryHoldingDetailsOfThePlanError} when the API answers with an error
+   * status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   queryHoldingDetailsOfThePlan(
     request: AutoInvest.QueryHoldingDetailsOfThePlanRequest,
     options?: RequestOptions,
@@ -557,15 +840,17 @@ export class AutoInvest {
     return this.#rawClient.execute(
       {
         method: "GET",
-        url: this.#servers.default("/sapi/v1/lending/auto-invest/plan/id"),
+        urlTemplate: this.#servers.default("/sapi/v1/lending/auto-invest/plan/id"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
-          { name: "planId", value: request.planId, schema: s.optional(s.number()) },
+          { name: "planId", value: request.planId, schema: s.optional(s.int()) },
           { name: "requestId", value: request.requestId, schema: s.optional(s.string()) },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [],
         body: { kind: "empty" },
       },
       {
@@ -576,6 +861,23 @@ export class AutoInvest {
     );
   }
 
+  /**
+   * Query source asset list (USER_DATA)
+   *
+   * @remarks
+   * Query Source Asset to be used for investment
+   *
+   * Weight(IP): 1
+   *
+   * @returns Asset list
+   *
+   * @throws {@link AutoInvest.QuerySourceAssetListUserDataError} when the API answers with an error
+   * status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   querySourceAssetListUserData(
     request: AutoInvest.QuerySourceAssetListUserDataRequest,
     options?: RequestOptions,
@@ -586,21 +888,23 @@ export class AutoInvest {
     return this.#rawClient.execute(
       {
         method: "GET",
-        url: this.#servers.default("/sapi/v1/lending/auto-invest/source-asset/list"),
+        urlTemplate: this.#servers.default("/sapi/v1/lending/auto-invest/source-asset/list"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
           { name: "usageType", value: request.usageType, schema: s.string() },
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
           { name: "targetAsset", value: request.targetAsset, schema: s.optional(s.string()) },
-          { name: "indexId", value: request.indexId, schema: s.optional(s.number()) },
+          { name: "indexId", value: request.indexId, schema: s.optional(s.int()) },
           {
             name: "flexibleAllowedToUse",
             value: request.flexibleAllowedToUse,
             schema: s.optional(s.boolean()),
           },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [],
         body: { kind: "empty" },
       },
       {
@@ -611,6 +915,23 @@ export class AutoInvest {
     );
   }
 
+  /**
+   * Query subscription transaction history
+   *
+   * @remarks
+   * Query subscription transaction history of a plan
+   *
+   * Weight(IP): 1
+   *
+   * @returns Plan result
+   *
+   * @throws {@link AutoInvest.QuerySubscriptionTransactionHistoryError} when the API answers with
+   * an error status — narrow on `err.payload.kind`
+   *
+   * @throws {@link BinanceError} when no usable response was produced: a connection failure, a
+   * timeout, a body that would not decode, a value that would not encode, or a credential that
+   * could not be obtained
+   */
   querySubscriptionTransactionHistory(
     request: AutoInvest.QuerySubscriptionTransactionHistoryRequest,
     options?: RequestOptions,
@@ -621,20 +942,22 @@ export class AutoInvest {
     return this.#rawClient.execute(
       {
         method: "GET",
-        url: this.#servers.default("/sapi/v1/lending/auto-invest/history/list"),
+        urlTemplate: this.#servers.default("/sapi/v1/lending/auto-invest/history/list"),
         auth: this.#auth.apiKeyAuth,
+        pathParams: [],
         query: [
-          { name: "timestamp", value: request.timestamp, schema: s.number() },
+          { name: "timestamp", value: request.timestamp, schema: s.int() },
           { name: "signature", value: request.signature, schema: s.string() },
-          { name: "planId", value: request.planId, schema: s.optional(s.number()) },
-          { name: "startTime", value: request.startTime, schema: s.optional(s.number()) },
-          { name: "endTime", value: request.endTime, schema: s.optional(s.number()) },
-          { name: "targetAsset", value: request.targetAsset, schema: s.optional(s.number()) },
+          { name: "planId", value: request.planId, schema: s.optional(s.int()) },
+          { name: "startTime", value: request.startTime, schema: s.optional(s.int()) },
+          { name: "endTime", value: request.endTime, schema: s.optional(s.int()) },
+          { name: "targetAsset", value: request.targetAsset, schema: s.optional(s.int()) },
           { name: "planType", value: request.planType, schema: s.optional(s.lazy(() => planType1Schema)) },
-          { name: "size", value: request.size, schema: s.optional(s.number()) },
-          { name: "current", value: request.current, schema: s.optional(s.number()) },
-          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.number()) },
+          { name: "size", value: request.size, schema: s.optional(s.int()) },
+          { name: "current", value: request.current, schema: s.optional(s.int()) },
+          { name: "recvWindow", value: request.recvWindow, schema: s.optional(s.int()) },
         ],
+        headers: [],
         body: { kind: "empty" },
       },
       {
@@ -653,14 +976,17 @@ export namespace AutoInvest {
   export type ChangePlanStatusRequest = {
     planId: number;
     status: Status1;
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class ChangePlanStatusError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class ChangePlanStatusError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<ChangePlanStatusError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -669,14 +995,17 @@ export namespace AutoInvest {
 
   export type GetListOfPlansRequest = {
     planType: string;
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class GetListOfPlansError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class GetListOfPlansError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<GetListOfPlansError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -686,14 +1015,17 @@ export namespace AutoInvest {
   export type GetTargetAssetRoiDataUserDataRequest = {
     targetAsset: string;
     hisRoiType: string;
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class GetTargetAssetRoiDataUserDataError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class GetTargetAssetRoiDataUserDataError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<GetTargetAssetRoiDataUserDataError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -701,17 +1033,22 @@ export namespace AutoInvest {
   }
 
   export type GetTargetAssetListUserDataRequest = {
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
     targetAsset?: string;
+    /** Default:10 Max:100 */
     size?: number;
+    /** Current querying page. Start from 1. Default:1 */
     current?: number;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class GetTargetAssetListUserDataError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class GetTargetAssetListUserDataError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<GetTargetAssetListUserDataError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -719,18 +1056,25 @@ export namespace AutoInvest {
   }
 
   export type IndexLinkedPlanRebalanceDetailsUserDataRequest = {
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
+    /** UTC timestamp in ms */
     startTime?: number;
+    /** UTC timestamp in ms */
     endTime?: number;
+    /** Current querying page. Start from 1. Default:1 */
     current?: number;
+    /** Default:10 Max:100 */
     size?: number;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class IndexLinkedPlanRebalanceDetailsUserDataError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class IndexLinkedPlanRebalanceDetailsUserDataError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<IndexLinkedPlanRebalanceDetailsUserDataError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -738,17 +1082,23 @@ export namespace AutoInvest {
   }
 
   export type IndexLinkedPlanRedemptionTradeRequest = {
+    /** PORTFOLIO plan's Id */
     indexId: number;
+    /** user redeem percentage,10/20/100. */
     redemptionPercentage: number;
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
+    /** sourceType + unique, transactionId and requestId cannot be empty at the same time */
     requestId?: string;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class IndexLinkedPlanRedemptionTradeError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class IndexLinkedPlanRedemptionTradeError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<IndexLinkedPlanRedemptionTradeError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -757,19 +1107,26 @@ export namespace AutoInvest {
 
   export type IndexLinkedPlanRedemptionHistoryUserDataRequest = {
     requestId: number;
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
+    /** UTC timestamp in ms */
     startTime?: number;
+    /** UTC timestamp in ms */
     endTime?: number;
+    /** Current querying page. Start from 1. Default:1 */
     current?: number;
     asset?: string;
+    /** Default:10 Max:100 */
     size?: number;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class IndexLinkedPlanRedemptionHistoryUserDataError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class IndexLinkedPlanRedemptionHistoryUserDataError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<IndexLinkedPlanRedemptionHistoryUserDataError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -782,18 +1139,21 @@ export namespace AutoInvest {
     subscriptionCycle: SubscriptionCycle;
     subscriptionStartTime: number;
     sourceAsset: string;
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
     subscriptionStartDay?: number;
     subscriptionStartWeekday?: SubscriptionStartWeekday;
     flexibleAllowedToUse?: boolean;
     details?: Detail1[];
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class InvestmentPlanAdjustmentError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class InvestmentPlanAdjustmentError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<InvestmentPlanAdjustmentError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -808,19 +1168,22 @@ export namespace AutoInvest {
     subscriptionStartTime: number;
     sourceAsset: string;
     details: Detail1[];
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
     requestId?: string;
     indexId?: number;
     subscriptionStartDay?: number;
     subscriptionStartWeekday?: SubscriptionStartWeekday;
     flexibleAllowedToUse?: boolean;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class InvestmentPlanCreationUserDataError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class InvestmentPlanCreationUserDataError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<InvestmentPlanCreationUserDataError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -831,19 +1194,22 @@ export namespace AutoInvest {
     sourceType: string;
     subscriptionAmount: number;
     sourceAsset: string;
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
     requestId?: string;
     flexibleAllowedToUse?: boolean;
     planId?: number;
     indexId?: number;
     details?: Detail5[];
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class OneTimeTransactionTradeError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class OneTimeTransactionTradeError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<OneTimeTransactionTradeError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -852,14 +1218,17 @@ export namespace AutoInvest {
 
   export type QueryIndexDetailsUserDataRequest = {
     indexId: number;
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class QueryIndexDetailsUserDataError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class QueryIndexDetailsUserDataError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<QueryIndexDetailsUserDataError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -868,14 +1237,17 @@ export namespace AutoInvest {
 
   export type QueryIndexLinkedPlanPositionDetailsUserDataRequest = {
     indexId: number;
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class QueryIndexLinkedPlanPositionDetailsUserDataError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class QueryIndexLinkedPlanPositionDetailsUserDataError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<QueryIndexLinkedPlanPositionDetailsUserDataError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -884,15 +1256,18 @@ export namespace AutoInvest {
 
   export type QueryOneTimeTransactionStatusUserDataRequest = {
     transactionId: number;
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
     requestId?: string;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class QueryOneTimeTransactionStatusUserDataError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class QueryOneTimeTransactionStatusUserDataError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<QueryOneTimeTransactionStatusUserDataError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -900,14 +1275,17 @@ export namespace AutoInvest {
   }
 
   export type QueryAllSourceAssetAndTargetAssetUserDataRequest = {
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class QueryAllSourceAssetAndTargetAssetUserDataError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class QueryAllSourceAssetAndTargetAssetUserDataError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<QueryAllSourceAssetAndTargetAssetUserDataError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -915,16 +1293,19 @@ export namespace AutoInvest {
   }
 
   export type QueryHoldingDetailsOfThePlanRequest = {
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
     planId?: number;
     requestId?: string;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class QueryHoldingDetailsOfThePlanError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class QueryHoldingDetailsOfThePlanError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<QueryHoldingDetailsOfThePlanError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -933,17 +1314,20 @@ export namespace AutoInvest {
 
   export type QuerySourceAssetListUserDataRequest = {
     usageType: string;
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
     targetAsset?: string;
     indexId?: number;
     flexibleAllowedToUse?: boolean;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class QuerySourceAssetListUserDataError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class QuerySourceAssetListUserDataError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<QuerySourceAssetListUserDataError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },
@@ -951,21 +1335,28 @@ export namespace AutoInvest {
   }
 
   export type QuerySubscriptionTransactionHistoryRequest = {
+    /** UTC timestamp in ms */
     timestamp: number;
+    /** Signature */
     signature: string;
     planId?: number;
+    /** UTC timestamp in ms */
     startTime?: number;
+    /** UTC timestamp in ms */
     endTime?: number;
     targetAsset?: number;
     planType?: PlanType1;
+    /** Default:10 Max:100 */
     size?: number;
+    /** Current querying page. Start from 1. Default:1 */
     current?: number;
+    /** The value cannot be greater than 60000 */
     recvWindow?: number;
   };
 
-  export class QuerySubscriptionTransactionHistoryError extends ResponseError<
-    Declared<"error", Error> | Declared<"error2", Error>
-  > {
+  export class QuerySubscriptionTransactionHistoryError extends ApiError {
+    declare readonly payload: ErrorPayload<Declared<"error", Error> | Declared<"error2", Error>>;
+
     static readonly errors: ErrorDecoders<QuerySubscriptionTransactionHistoryError> = [
       { on: 400, kind: "error", decode: { kind: "json", schema: errorSchema } },
       { on: 401, kind: "error2", decode: { kind: "json", schema: errorSchema } },

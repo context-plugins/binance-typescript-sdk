@@ -11,10 +11,10 @@ export type Row6 = {
 };
 
 export const row6Schema: Schema<Row6> = s.object<Row6>({
-  id: s.number(),
+  id: s.int(),
   amount: s.string(),
   asset: s.string(),
-  divTime: s.number(),
+  divTime: s.int(),
   enInfo: s.string(),
-  tranId: s.number(),
+  tranId: s.int(),
 });

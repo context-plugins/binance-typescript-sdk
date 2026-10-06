@@ -18,12 +18,12 @@ export type SapiV1MarginOrderOtocoResponse = {
 
 export const sapiV1MarginOrderOtocoResponseSchema: Schema<SapiV1MarginOrderOtocoResponse> =
   s.object<SapiV1MarginOrderOtocoResponse>({
-    orderListId: s.number(),
+    orderListId: s.int(),
     contingencyType: s.string(),
     listStatusType: s.string(),
     listOrderStatus: s.string(),
     listClientOrderId: s.string(),
-    transactionTime: s.number(),
+    transactionTime: s.int(),
     symbol: s.string(),
     isIsolated: s.boolean(),
     orders: s.array(s.lazy(() => order1Schema)),

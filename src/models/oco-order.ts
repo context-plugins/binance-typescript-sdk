@@ -16,12 +16,12 @@ export type OcoOrder = {
 };
 
 export const ocoOrderSchema: Schema<OcoOrder> = s.object<OcoOrder>({
-  orderListId: s.number(),
+  orderListId: s.int(),
   contingencyType: s.string(),
   listStatusType: s.string(),
   listOrderStatus: s.string(),
   listClientOrderId: s.string(),
-  transactionTime: s.number(),
+  transactionTime: s.int(),
   symbol: s.string(),
   orders: s.array(s.lazy(() => order1Schema)),
   orderReports: s.array(s.lazy(() => orderReportSchema)),

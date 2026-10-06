@@ -16,5 +16,5 @@ export const row5Schema: Schema<Row5> = s.object<Row5>({
   targetAsset: s.string(),
   targetAmount: s.string(),
   bizType: s.string(),
-  timestamp: s.number(),
+  timestamp: s.int(),
 });

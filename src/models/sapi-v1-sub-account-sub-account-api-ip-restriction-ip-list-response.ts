@@ -12,6 +12,6 @@ export const sapiV1SubAccountSubAccountApiIpRestrictionIpListResponseSchema: Sch
   s.object<SapiV1SubAccountSubAccountApiIpRestrictionIpListResponse>({
     ipRestrict: s.string(),
     ipList: s.array(s.string()),
-    updateTime: s.number(),
+    updateTime: s.int(),
     apiKey: s.string(),
   });

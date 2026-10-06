@@ -6,8 +6,11 @@ import { taxCommissionSchema, type TaxCommission } from "./tax-commission.js";
 
 export type ApiV3AccountCommissionResponse = {
   symbol: string;
+  /** Standard commission rates on trades from the order. */
   standardCommission: StandardCommission;
+  /** Tax commission rates for trades from the order. */
   taxCommission: TaxCommission;
+  /** Discount commission when paying in BNB. */
   discount: Discount;
 };
 

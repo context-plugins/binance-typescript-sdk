@@ -8,6 +8,10 @@ export type Data7 = {
   amount: string;
   totalFee: string;
   method: string;
+  /**
+   * Processing, Failed, Successful, Finished, Refunding, Refunded, Refund Failed, Order Partial
+   * credit Stopped
+   */
   status: string;
   createTime: number;
   updateTime: number;
@@ -21,6 +25,6 @@ export const data7Schema: Schema<Data7> = s.object<Data7>({
   totalFee: s.string(),
   method: s.string(),
   status: s.string(),
-  createTime: s.number(),
-  updateTime: s.number(),
+  createTime: s.int(),
+  updateTime: s.int(),
 });

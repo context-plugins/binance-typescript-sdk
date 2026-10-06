@@ -1,6 +1,6 @@
 # Reference
 
-> Source: [BinancePublicSpotApiClient](src/client.ts)
+> Source: [BinanceClient](src/client.ts)
 
 ## Market
 
@@ -28,19 +28,43 @@ Weight(IP):
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.market.hrTickerPriceChangeStatistics24();
+  const response = await client.market.hrTickerPriceChangeStatistics24({
+    symbol: "BNBUSDT",
+    symbols: '["BTCUSDT","BNBBTC"]',
+    type: Type.Full,
+  });
   // TODO: Handle 'response' of type ApiV3Ticker24HrResponse
 } catch (err) {
-  if (err instanceof Market.HrTickerPriceChangeStatistics24Error && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Market.HrTickerPriceChangeStatistics24Error, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.market.hrTickerPriceChangeStatistics24({
+  symbol: "BNBUSDT",
+  symbols: '["BTCUSDT","BNBBTC"]',
+  type: Type.Full,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type ApiV3Ticker24HrResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -66,9 +90,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[ApiV3Ticker24HrResponse](src/models/unions/api-v3-ticker24-hr-response.ts)</code>
+**Direct**: `await client.market.hrTickerPriceChangeStatistics24(request)`
 
-**OnError**: <code>[Market.HrTickerPriceChangeStatistics24Error](src/resources/market.ts)</code>
+- **OnSuccess**: <code>[ApiV3Ticker24HrResponse](src/models/unions/api-v3-ticker24-hr-response.ts)</code>
+- **OnError**: throws <code>[Market.HrTickerPriceChangeStatistics24Error](src/resources/market.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.market.hrTickerPriceChangeStatistics24(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;ApiV3Ticker24HrResponse, Market.HrTickerPriceChangeStatistics24Error&gt;</code>, with `result.value` of type <code>[ApiV3Ticker24HrResponse](src/models/unions/api-v3-ticker24-hr-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -79,7 +111,7 @@ try {
 </details>
 
 <details>
-<summary><code>checkServerTime(options?: RequestOptions): ApiPromise&lt;ApiV3TimeResponse, ResponseError&gt;</code></summary>
+<summary><code>checkServerTime(options?: RequestOptions): ApiPromise&lt;ApiV3TimeResponse, ApiError&gt;</code></summary>
 
 <dl>
 <dd>
@@ -96,7 +128,7 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -106,7 +138,25 @@ try {
   const response = await client.market.checkServerTime();
   // TODO: Handle 'response' of type ApiV3TimeResponse
 } catch (err) {
-  // TODO: Handle 'err' of type ResponseError
+  // TODO: Handle 'err' of type ApiError, where 'err.payload' is always the Undeclared arm
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.market.checkServerTime().asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type ApiV3TimeResponse
+} else {
+  // TODO: Handle 'result', where 'result.payload' is always the Undeclared arm
 }
 ```
 
@@ -118,9 +168,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[ApiV3TimeResponse](src/models/api-v3-time-response.ts)</code>
+**Direct**: `await client.market.checkServerTime()`
 
-**OnError**: <code>[ResponseError](src/core/response-error.ts)</code>
+- **OnSuccess**: <code>[ApiV3TimeResponse](src/models/api-v3-time-response.ts)</code>
+- **OnError**: throws <code>[ApiError](src/core/api-error.ts)</code>, with `err.payload` always the <code>[Undeclared](src/core/api-error.ts)</code> arm
+
+**As ApiResult**: `await client.market.checkServerTime().asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;ApiV3TimeResponse, ApiError&gt;</code>, with `result.value` of type <code>[ApiV3TimeResponse](src/models/api-v3-time-response.ts)</code>
+- **OnError**: `result.payload` always the <code>[Undeclared](src/core/api-error.ts)</code> arm, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -158,19 +216,38 @@ Weight(IP): 2
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.market.compressedAggregateTradesList({ symbol });
+  const response = await client.market.compressedAggregateTradesList({ symbol: "BNBUSDT", limit: 5 });
   // TODO: Handle 'response' of type AggTrade[]
 } catch (err) {
-  if (err instanceof Market.CompressedAggregateTradesListError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Market.CompressedAggregateTradesListError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.market.compressedAggregateTradesList({
+  symbol: "BNBUSDT",
+  limit: 5,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type AggTrade[]
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -198,9 +275,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[AggTrade](src/models/agg-trade.ts)[]</code>
+**Direct**: `await client.market.compressedAggregateTradesList(request)`
 
-**OnError**: <code>[Market.CompressedAggregateTradesListError](src/resources/market.ts)</code>
+- **OnSuccess**: <code>[AggTrade](src/models/agg-trade.ts)[]</code>
+- **OnError**: throws <code>[Market.CompressedAggregateTradesListError](src/resources/market.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.market.compressedAggregateTradesList(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;AggTrade[], Market.CompressedAggregateTradesListError&gt;</code>, with `result.value` of type <code>[AggTrade](src/models/agg-trade.ts)[]</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -228,19 +313,35 @@ Weight(IP): 2
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.market.currentAveragePrice({ symbol });
+  const response = await client.market.currentAveragePrice({ symbol: "BNBUSDT" });
   // TODO: Handle 'response' of type ApiV3AvgPriceResponse
 } catch (err) {
-  if (err instanceof Market.CurrentAveragePriceError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Market.CurrentAveragePriceError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.market.currentAveragePrice({ symbol: "BNBUSDT" }).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type ApiV3AvgPriceResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -264,9 +365,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[ApiV3AvgPriceResponse](src/models/api-v3-avg-price-response.ts)</code>
+**Direct**: `await client.market.currentAveragePrice(request)`
 
-**OnError**: <code>[Market.CurrentAveragePriceError](src/resources/market.ts)</code>
+- **OnSuccess**: <code>[ApiV3AvgPriceResponse](src/models/api-v3-avg-price-response.ts)</code>
+- **OnError**: throws <code>[Market.CurrentAveragePriceError](src/resources/market.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.market.currentAveragePrice(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;ApiV3AvgPriceResponse, Market.CurrentAveragePriceError&gt;</code>, with `result.value` of type <code>[ApiV3AvgPriceResponse](src/models/api-v3-avg-price-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -305,19 +414,43 @@ Weight(IP): 10
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.market.exchangeInformation();
+  const response = await client.market.exchangeInformation({
+    symbol: "BNBUSDT",
+    symbols: '["BTCUSDT","BNBBTC"]',
+    permissions: "'SPOT' or ['MARGIN','LEVERAGED']",
+  });
   // TODO: Handle 'response' of type ApiV3ExchangeInfoResponse
 } catch (err) {
-  if (err instanceof Market.ExchangeInformationError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Market.ExchangeInformationError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.market.exchangeInformation({
+  symbol: "BNBUSDT",
+  symbols: '["BTCUSDT","BNBBTC"]',
+  permissions: "'SPOT' or ['MARGIN','LEVERAGED']",
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type ApiV3ExchangeInfoResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -343,9 +476,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[ApiV3ExchangeInfoResponse](src/models/api-v3-exchange-info-response.ts)</code>
+**Direct**: `await client.market.exchangeInformation(request)`
 
-**OnError**: <code>[Market.ExchangeInformationError](src/resources/market.ts)</code>
+- **OnSuccess**: <code>[ApiV3ExchangeInfoResponse](src/models/api-v3-exchange-info-response.ts)</code>
+- **OnError**: throws <code>[Market.ExchangeInformationError](src/resources/market.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.market.exchangeInformation(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;ApiV3ExchangeInfoResponse, Market.ExchangeInformationError&gt;</code>, with `result.value` of type <code>[ApiV3ExchangeInfoResponse](src/models/api-v3-exchange-info-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -376,19 +517,43 @@ Weight(IP): 2
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.market.klineCandlestickData({ symbol, interval });
+  const response = await client.market.klineCandlestickData({
+    symbol: "BNBUSDT",
+    interval: Interval._1S,
+    limit: 5,
+  });
   // TODO: Handle 'response' of type ApiV3KlinesResponse[][]
 } catch (err) {
-  if (err instanceof Market.KlineCandlestickDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Market.KlineCandlestickDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.market.klineCandlestickData({
+  symbol: "BNBUSDT",
+  interval: Interval._1S,
+  limit: 5,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type ApiV3KlinesResponse[][]
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -417,9 +582,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[ApiV3KlinesResponse](src/models/unions/api-v3-klines-response.ts)[][]</code>
+**Direct**: `await client.market.klineCandlestickData(request)`
 
-**OnError**: <code>[Market.KlineCandlestickDataError](src/resources/market.ts)</code>
+- **OnSuccess**: <code>[ApiV3KlinesResponse](src/models/unions/api-v3-klines-response.ts)[][]</code>
+- **OnError**: throws <code>[Market.KlineCandlestickDataError](src/resources/market.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.market.klineCandlestickData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;ApiV3KlinesResponse[][], Market.KlineCandlestickDataError&gt;</code>, with `result.value` of type <code>[ApiV3KlinesResponse](src/models/unions/api-v3-klines-response.ts)[][]</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -430,7 +603,7 @@ try {
 </details>
 
 <details>
-<summary><code>oldTradeLookup(request: Market.OldTradeLookupRequest, options?: RequestOptions): ApiPromise&lt;Trade[], ResponseError&gt;</code></summary>
+<summary><code>oldTradeLookup(request: Market.OldTradeLookupRequest, options?: RequestOptions): ApiPromise&lt;Trade[], ApiError&gt;</code></summary>
 
 <dl>
 <dd>
@@ -447,17 +620,35 @@ Weight(IP): 10
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.market.oldTradeLookup({ symbol });
+  const response = await client.market.oldTradeLookup({ symbol: "BNBUSDT", limit: 5 });
   // TODO: Handle 'response' of type Trade[]
 } catch (err) {
-  // TODO: Handle 'err' of type ResponseError
+  // TODO: Handle 'err' of type ApiError, where 'err.payload' is always the Undeclared arm
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.market.oldTradeLookup({ symbol: "BNBUSDT", limit: 5 }).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type Trade[]
+} else {
+  // TODO: Handle 'result', where 'result.payload' is always the Undeclared arm
 }
 ```
 
@@ -483,9 +674,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[Trade](src/models/trade.ts)[]</code>
+**Direct**: `await client.market.oldTradeLookup(request)`
 
-**OnError**: <code>[ResponseError](src/core/response-error.ts)</code>
+- **OnSuccess**: <code>[Trade](src/models/trade.ts)[]</code>
+- **OnError**: throws <code>[ApiError](src/core/api-error.ts)</code>, with `err.payload` always the <code>[Undeclared](src/core/api-error.ts)</code> arm
+
+**As ApiResult**: `await client.market.oldTradeLookup(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;Trade[], ApiError&gt;</code>, with `result.value` of type <code>[Trade](src/models/trade.ts)[]</code>
+- **OnError**: `result.payload` always the <code>[Undeclared](src/core/api-error.ts)</code> arm, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -516,19 +715,35 @@ try {
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.market.orderBook({ symbol });
+  const response = await client.market.orderBook({ symbol: "BNBUSDT", limit: 100 });
   // TODO: Handle 'response' of type ApiV3DepthResponse
 } catch (err) {
-  if (err instanceof Market.OrderBookError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Market.OrderBookError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.market.orderBook({ symbol: "BNBUSDT", limit: 100 }).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type ApiV3DepthResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -543,7 +758,7 @@ try {
 | Name | Type | Description |
 | --- | --- | --- |
 | <code>symbol</code> | <code>string</code> | Trading symbol, e.g. BNBUSDT |
-| <code>limit?</code> | <code>number</code> | If limit > 5000, then the response will truncate to 5000 |
+| <code>limit?</code> | <code>number</code> | If limit > 5000, then the response will truncate to 5000<br>**Default**: 100 |
 
 </dd>
 </dl>
@@ -553,9 +768,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[ApiV3DepthResponse](src/models/api-v3-depth-response.ts)</code>
+**Direct**: `await client.market.orderBook(request)`
 
-**OnError**: <code>[Market.OrderBookError](src/resources/market.ts)</code>
+- **OnSuccess**: <code>[ApiV3DepthResponse](src/models/api-v3-depth-response.ts)</code>
+- **OnError**: throws <code>[Market.OrderBookError](src/resources/market.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.market.orderBook(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;ApiV3DepthResponse, Market.OrderBookError&gt;</code>, with `result.value` of type <code>[ApiV3DepthResponse](src/models/api-v3-depth-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -583,19 +806,35 @@ Weight(IP): 10
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.market.recentTradesList({ symbol });
+  const response = await client.market.recentTradesList({ symbol: "BNBUSDT", limit: 5 });
   // TODO: Handle 'response' of type Trade[]
 } catch (err) {
-  if (err instanceof Market.RecentTradesListError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Market.RecentTradesListError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.market.recentTradesList({ symbol: "BNBUSDT", limit: 5 }).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type Trade[]
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -620,9 +859,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[Trade](src/models/trade.ts)[]</code>
+**Direct**: `await client.market.recentTradesList(request)`
 
-**OnError**: <code>[Market.RecentTradesListError](src/resources/market.ts)</code>
+- **OnSuccess**: <code>[Trade](src/models/trade.ts)[]</code>
+- **OnError**: throws <code>[Market.RecentTradesListError](src/resources/market.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.market.recentTradesList(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;Trade[], Market.RecentTradesListError&gt;</code>, with `result.value` of type <code>[Trade](src/models/trade.ts)[]</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -656,19 +903,41 @@ The weight for this request will cap at 200 once the number of symbols in the re
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.market.rollingWindowPriceChangeStatistics();
+  const response = await client.market.rollingWindowPriceChangeStatistics({
+    symbol: "BNBUSDT",
+    symbols: '["BTCUSDT","BNBBTC"]',
+  });
   // TODO: Handle 'response' of type ApiV3TickerResponse
 } catch (err) {
-  if (err instanceof Market.RollingWindowPriceChangeStatisticsError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Market.RollingWindowPriceChangeStatisticsError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.market.rollingWindowPriceChangeStatistics({
+  symbol: "BNBUSDT",
+  symbols: '["BTCUSDT","BNBBTC"]',
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type ApiV3TickerResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -695,9 +964,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[ApiV3TickerResponse](src/models/api-v3-ticker-response.ts)</code>
+**Direct**: `await client.market.rollingWindowPriceChangeStatistics(request)`
 
-**OnError**: <code>[Market.RollingWindowPriceChangeStatisticsError](src/resources/market.ts)</code>
+- **OnSuccess**: <code>[ApiV3TickerResponse](src/models/api-v3-ticker-response.ts)</code>
+- **OnError**: throws <code>[Market.RollingWindowPriceChangeStatisticsError](src/resources/market.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.market.rollingWindowPriceChangeStatistics(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;ApiV3TickerResponse, Market.RollingWindowPriceChangeStatisticsError&gt;</code>, with `result.value` of type <code>[ApiV3TickerResponse](src/models/api-v3-ticker-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -729,19 +1006,41 @@ Weight(IP):
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.market.symbolOrderBookTicker();
+  const response = await client.market.symbolOrderBookTicker({
+    symbol: "BNBUSDT",
+    symbols: '["BTCUSDT","BNBBTC"]',
+  });
   // TODO: Handle 'response' of type ApiV3TickerBookTickerResponse
 } catch (err) {
-  if (err instanceof Market.SymbolOrderBookTickerError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Market.SymbolOrderBookTickerError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.market.symbolOrderBookTicker({
+  symbol: "BNBUSDT",
+  symbols: '["BTCUSDT","BNBBTC"]',
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type ApiV3TickerBookTickerResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -766,9 +1065,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[ApiV3TickerBookTickerResponse](src/models/unions/api-v3-ticker-book-ticker-response.ts)</code>
+**Direct**: `await client.market.symbolOrderBookTicker(request)`
 
-**OnError**: <code>[Market.SymbolOrderBookTickerError](src/resources/market.ts)</code>
+- **OnSuccess**: <code>[ApiV3TickerBookTickerResponse](src/models/unions/api-v3-ticker-book-ticker-response.ts)</code>
+- **OnError**: throws <code>[Market.SymbolOrderBookTickerError](src/resources/market.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.market.symbolOrderBookTicker(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;ApiV3TickerBookTickerResponse, Market.SymbolOrderBookTickerError&gt;</code>, with `result.value` of type <code>[ApiV3TickerBookTickerResponse](src/models/unions/api-v3-ticker-book-ticker-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -800,19 +1107,41 @@ Weight(IP):
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.market.symbolPriceTicker();
+  const response = await client.market.symbolPriceTicker({
+    symbol: "BNBUSDT",
+    symbols: '["BTCUSDT","BNBBTC"]',
+  });
   // TODO: Handle 'response' of type ApiV3TickerPriceResponse
 } catch (err) {
-  if (err instanceof Market.SymbolPriceTickerError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Market.SymbolPriceTickerError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.market.symbolPriceTicker({
+  symbol: "BNBUSDT",
+  symbols: '["BTCUSDT","BNBBTC"]',
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type ApiV3TickerPriceResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -837,9 +1166,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[ApiV3TickerPriceResponse](src/models/unions/api-v3-ticker-price-response.ts)</code>
+**Direct**: `await client.market.symbolPriceTicker(request)`
 
-**OnError**: <code>[Market.SymbolPriceTickerError](src/resources/market.ts)</code>
+- **OnSuccess**: <code>[ApiV3TickerPriceResponse](src/models/unions/api-v3-ticker-price-response.ts)</code>
+- **OnError**: throws <code>[Market.SymbolPriceTickerError](src/resources/market.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.market.symbolPriceTicker(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;ApiV3TickerPriceResponse, Market.SymbolPriceTickerError&gt;</code>, with `result.value` of type <code>[ApiV3TickerPriceResponse](src/models/unions/api-v3-ticker-price-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -850,7 +1187,7 @@ try {
 </details>
 
 <details>
-<summary><code>testConnectivity(options?: RequestOptions): ApiPromise&lt;Record&lt;string, unknown&gt;, ResponseError&gt;</code></summary>
+<summary><code>testConnectivity(options?: RequestOptions): ApiPromise&lt;Record&lt;string, unknown&gt;, ApiError&gt;</code></summary>
 
 <dl>
 <dd>
@@ -867,7 +1204,7 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -877,7 +1214,25 @@ try {
   const response = await client.market.testConnectivity();
   // TODO: Handle 'response' of type Record<string, unknown>
 } catch (err) {
-  // TODO: Handle 'err' of type ResponseError
+  // TODO: Handle 'err' of type ApiError, where 'err.payload' is always the Undeclared arm
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.market.testConnectivity().asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type Record<string, unknown>
+} else {
+  // TODO: Handle 'result', where 'result.payload' is always the Undeclared arm
 }
 ```
 
@@ -889,9 +1244,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>Record&lt;string, unknown&gt;</code>
+**Direct**: `await client.market.testConnectivity()`
 
-**OnError**: <code>[ResponseError](src/core/response-error.ts)</code>
+- **OnSuccess**: <code>Record&lt;string, unknown&gt;</code>
+- **OnError**: throws <code>[ApiError](src/core/api-error.ts)</code>, with `err.payload` always the <code>[Undeclared](src/core/api-error.ts)</code> arm
+
+**As ApiResult**: `await client.market.testConnectivity().asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;Record&lt;string, unknown&gt;, ApiError&gt;</code>, with `result.value` of type <code>Record&lt;string, unknown&gt;</code>
+- **OnError**: `result.payload` always the <code>[Undeclared](src/core/api-error.ts)</code> arm, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -926,19 +1289,43 @@ Weight:
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.market.tradingDayTicker();
+  const response = await client.market.tradingDayTicker({
+    symbol: "BNBUSDT",
+    symbols: '["BTCUSDT","BNBBTC"]',
+    type: Type.Full,
+  });
   // TODO: Handle 'response' of type ApiV3TickerTradingDayResponse
 } catch (err) {
-  if (err instanceof Market.TradingDayTickerError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Market.TradingDayTickerError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.market.tradingDayTicker({
+  symbol: "BNBUSDT",
+  symbols: '["BTCUSDT","BNBBTC"]',
+  type: Type.Full,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type ApiV3TickerTradingDayResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -965,9 +1352,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[ApiV3TickerTradingDayResponse](src/models/unions/api-v3-ticker-trading-day-response.ts)</code>
+**Direct**: `await client.market.tradingDayTicker(request)`
 
-**OnError**: <code>[Market.TradingDayTickerError](src/resources/market.ts)</code>
+- **OnSuccess**: <code>[ApiV3TickerTradingDayResponse](src/models/unions/api-v3-ticker-trading-day-response.ts)</code>
+- **OnError**: throws <code>[Market.TradingDayTickerError](src/resources/market.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.market.tradingDayTicker(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;ApiV3TickerTradingDayResponse, Market.TradingDayTickerError&gt;</code>, with `result.value` of type <code>[ApiV3TickerTradingDayResponse](src/models/unions/api-v3-ticker-trading-day-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -997,19 +1392,39 @@ Weight(IP): 2
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.market.uiKlines({ symbol, interval });
+  const response = await client.market.uiKlines({ symbol: "BNBUSDT", interval: Interval._1S, limit: 5 });
   // TODO: Handle 'response' of type ApiV3UiKlinesResponse[][]
 } catch (err) {
-  if (err instanceof Market.UiKlinesError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Market.UiKlinesError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.market.uiKlines({
+  symbol: "BNBUSDT",
+  interval: Interval._1S,
+  limit: 5,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type ApiV3UiKlinesResponse[][]
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -1038,9 +1453,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[ApiV3UiKlinesResponse](src/models/unions/api-v3-ui-klines-response.ts)[][]</code>
+**Direct**: `await client.market.uiKlines(request)`
 
-**OnError**: <code>[Market.UiKlinesError](src/resources/market.ts)</code>
+- **OnSuccess**: <code>[ApiV3UiKlinesResponse](src/models/unions/api-v3-ui-klines-response.ts)[][]</code>
+- **OnError**: throws <code>[Market.UiKlinesError](src/resources/market.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.market.uiKlines(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;ApiV3UiKlinesResponse[][], Market.UiKlinesError&gt;</code>, with `result.value` of type <code>[ApiV3UiKlinesResponse](src/models/unions/api-v3-ui-klines-response.ts)[][]</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -1072,19 +1495,43 @@ Weight(IP): 20
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.tradeApi.accountInformationUserData({ timestamp, signature });
+  const response = await client.tradeApi.accountInformationUserData({
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type Account
 } catch (err) {
-  if (err instanceof TradeApi.AccountInformationUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type TradeApi.AccountInformationUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.tradeApi.accountInformationUserData({
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type Account
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -1110,9 +1557,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[Account](src/models/account.ts)</code>
+**Direct**: `await client.tradeApi.accountInformationUserData(request)`
 
-**OnError**: <code>[TradeApi.AccountInformationUserDataError](src/resources/trade-api.ts)</code>
+- **OnSuccess**: <code>[Account](src/models/account.ts)</code>
+- **OnError**: throws <code>[TradeApi.AccountInformationUserDataError](src/resources/trade-api.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.tradeApi.accountInformationUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;Account, TradeApi.AccountInformationUserDataError&gt;</code>, with `result.value` of type <code>[Account](src/models/account.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -1159,19 +1614,47 @@ Weight(IP): 20
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.tradeApi.accountTradeListUserData({ symbol, timestamp, signature });
+  const response = await client.tradeApi.accountTradeListUserData({
+    symbol: "BNBUSDT",
+    timestamp: 1,
+    signature: "some example string",
+    limit: 5,
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type MyTrade[]
 } catch (err) {
-  if (err instanceof TradeApi.AccountTradeListUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type TradeApi.AccountTradeListUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.tradeApi.accountTradeListUserData({
+  symbol: "BNBUSDT",
+  timestamp: 1,
+  signature: "some example string",
+  limit: 5,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type MyTrade[]
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -1203,9 +1686,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[MyTrade](src/models/my-trade.ts)[]</code>
+**Direct**: `await client.tradeApi.accountTradeListUserData(request)`
 
-**OnError**: <code>[TradeApi.AccountTradeListUserDataError](src/resources/trade-api.ts)</code>
+- **OnSuccess**: <code>[MyTrade](src/models/my-trade.ts)[]</code>
+- **OnError**: throws <code>[TradeApi.AccountTradeListUserDataError](src/resources/trade-api.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.tradeApi.accountTradeListUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;MyTrade[], TradeApi.AccountTradeListUserDataError&gt;</code>, with `result.value` of type <code>[MyTrade](src/models/my-trade.ts)[]</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -1237,19 +1728,47 @@ Weight(IP): 20
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.tradeApi.allOrdersUserData({ symbol, timestamp, signature });
+  const response = await client.tradeApi.allOrdersUserData({
+    symbol: "BNBUSDT",
+    timestamp: 1,
+    signature: "some example string",
+    limit: 5,
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type OrderDetails[]
 } catch (err) {
-  if (err instanceof TradeApi.AllOrdersUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type TradeApi.AllOrdersUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.tradeApi.allOrdersUserData({
+  symbol: "BNBUSDT",
+  timestamp: 1,
+  signature: "some example string",
+  limit: 5,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type OrderDetails[]
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -1280,9 +1799,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[OrderDetails](src/models/order-details.ts)[]</code>
+**Direct**: `await client.tradeApi.allOrdersUserData(request)`
 
-**OnError**: <code>[TradeApi.AllOrdersUserDataError](src/resources/trade-api.ts)</code>
+- **OnSuccess**: <code>[OrderDetails](src/models/order-details.ts)[]</code>
+- **OnError**: throws <code>[TradeApi.AllOrdersUserDataError](src/resources/trade-api.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.tradeApi.allOrdersUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;OrderDetails[], TradeApi.AllOrdersUserDataError&gt;</code>, with `result.value` of type <code>[OrderDetails](src/models/order-details.ts)[]</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -1312,19 +1839,45 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.tradeApi.cancelOcoTrade({ symbol, timestamp, signature });
+  const response = await client.tradeApi.cancelOcoTrade({
+    symbol: "BNBUSDT",
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type OcoOrder
 } catch (err) {
-  if (err instanceof TradeApi.CancelOcoTradeError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type TradeApi.CancelOcoTradeError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.tradeApi.cancelOcoTrade({
+  symbol: "BNBUSDT",
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type OcoOrder
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -1354,9 +1907,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[OcoOrder](src/models/oco-order.ts)</code>
+**Direct**: `await client.tradeApi.cancelOcoTrade(request)`
 
-**OnError**: <code>[TradeApi.CancelOcoTradeError](src/resources/trade-api.ts)</code>
+- **OnSuccess**: <code>[OcoOrder](src/models/oco-order.ts)</code>
+- **OnError**: throws <code>[TradeApi.CancelOcoTradeError](src/resources/trade-api.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.tradeApi.cancelOcoTrade(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;OcoOrder, TradeApi.CancelOcoTradeError&gt;</code>, with `result.value` of type <code>[OcoOrder](src/models/oco-order.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -1386,19 +1947,47 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.tradeApi.cancelOrderTrade({ symbol, timestamp, signature });
+  const response = await client.tradeApi.cancelOrderTrade({
+    symbol: "BNBUSDT",
+    timestamp: 1,
+    signature: "some example string",
+    cancelRestrictions: CancelRestrictions.OnlyNew,
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type Order
 } catch (err) {
-  if (err instanceof TradeApi.CancelOrderTradeError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type TradeApi.CancelOrderTradeError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.tradeApi.cancelOrderTrade({
+  symbol: "BNBUSDT",
+  timestamp: 1,
+  signature: "some example string",
+  cancelRestrictions: CancelRestrictions.OnlyNew,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type Order
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -1429,9 +2018,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[Order](src/models/order.ts)</code>
+**Direct**: `await client.tradeApi.cancelOrderTrade(request)`
 
-**OnError**: <code>[TradeApi.CancelOrderTradeError](src/resources/trade-api.ts)</code>
+- **OnSuccess**: <code>[Order](src/models/order.ts)</code>
+- **OnError**: throws <code>[TradeApi.CancelOrderTradeError](src/resources/trade-api.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.tradeApi.cancelOrderTrade(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;Order, TradeApi.CancelOrderTradeError&gt;</code>, with `result.value` of type <code>[Order](src/models/order.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -1460,19 +2057,45 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.tradeApi.cancelAllOpenOrdersOnASymbolTrade({ symbol, timestamp, signature });
+  const response = await client.tradeApi.cancelAllOpenOrdersOnASymbolTrade({
+    symbol: "BNBUSDT",
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type ApiV3OpenOrdersResponse[]
 } catch (err) {
-  if (err instanceof TradeApi.CancelAllOpenOrdersOnASymbolTradeError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type TradeApi.CancelAllOpenOrdersOnASymbolTradeError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.tradeApi.cancelAllOpenOrdersOnASymbolTrade({
+  symbol: "BNBUSDT",
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type ApiV3OpenOrdersResponse[]
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -1499,9 +2122,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[ApiV3OpenOrdersResponse](src/models/unions/api-v3-open-orders-response.ts)[]</code>
+**Direct**: `await client.tradeApi.cancelAllOpenOrdersOnASymbolTrade(request)`
 
-**OnError**: <code>[TradeApi.CancelAllOpenOrdersOnASymbolTradeError](src/resources/trade-api.ts)</code>
+- **OnSuccess**: <code>[ApiV3OpenOrdersResponse](src/models/unions/api-v3-open-orders-response.ts)[]</code>
+- **OnError**: throws <code>[TradeApi.CancelAllOpenOrdersOnASymbolTradeError](src/resources/trade-api.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.tradeApi.cancelAllOpenOrdersOnASymbolTrade(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;ApiV3OpenOrdersResponse[], TradeApi.CancelAllOpenOrdersOnASymbolTradeError&gt;</code>, with `result.value` of type <code>[ApiV3OpenOrdersResponse](src/models/unions/api-v3-open-orders-response.ts)[]</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -1533,7 +2164,7 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -1541,20 +2172,57 @@ Weight(IP): 1
 ```ts
 try {
   const response = await client.tradeApi.cancelAnExistingOrderAndSendANewOrderTrade({
-    symbol,
-    side,
-    type,
-    cancelReplaceMode,
-    timestamp,
-    signature,
+    symbol: "BNBUSDT",
+    side: Side.Sell,
+    type: Type1.Limit,
+    cancelReplaceMode: "STOP_ON_FAILURE",
+    timestamp: 1,
+    signature: "some example string",
+    cancelRestrictions: CancelRestrictions.OnlyNew,
+    timeInForce: TimeInForce.Gtc,
+    quantity: 1,
+    price: 219,
+    cancelOrderId: 12,
+    stopPrice: 221.01,
+    selfTradePreventionMode: SelfTradePreventionMode.ExpireTaker,
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type ApiV3OrderCancelReplaceResponse
 } catch (err) {
-  if (
-    err instanceof TradeApi.CancelAnExistingOrderAndSendANewOrderTradeError && err.payload.kind === "error"
-  ) {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type TradeApi.CancelAnExistingOrderAndSendANewOrderTradeError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.tradeApi.cancelAnExistingOrderAndSendANewOrderTrade({
+  symbol: "BNBUSDT",
+  side: Side.Sell,
+  type: Type1.Limit,
+  cancelReplaceMode: "STOP_ON_FAILURE",
+  timestamp: 1,
+  signature: "some example string",
+  cancelRestrictions: CancelRestrictions.OnlyNew,
+  timeInForce: TimeInForce.Gtc,
+  quantity: 1,
+  price: 219,
+  cancelOrderId: 12,
+  stopPrice: 221.01,
+  selfTradePreventionMode: SelfTradePreventionMode.ExpireTaker,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type ApiV3OrderCancelReplaceResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -1600,9 +2268,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[ApiV3OrderCancelReplaceResponse](src/models/api-v3-order-cancel-replace-response.ts)</code>
+**Direct**: `await client.tradeApi.cancelAnExistingOrderAndSendANewOrderTrade(request)`
 
-**OnError**: <code>[TradeApi.CancelAnExistingOrderAndSendANewOrderTradeError](src/resources/trade-api.ts)</code>
+- **OnSuccess**: <code>[ApiV3OrderCancelReplaceResponse](src/models/api-v3-order-cancel-replace-response.ts)</code>
+- **OnError**: throws <code>[TradeApi.CancelAnExistingOrderAndSendANewOrderTradeError](src/resources/trade-api.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.tradeApi.cancelAnExistingOrderAndSendANewOrderTrade(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;ApiV3OrderCancelReplaceResponse, TradeApi.CancelAnExistingOrderAndSendANewOrderTradeError&gt;</code>, with `result.value` of type <code>[ApiV3OrderCancelReplaceResponse](src/models/api-v3-order-cancel-replace-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -1632,19 +2308,45 @@ Weight(IP):
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.tradeApi.currentOpenOrdersUserData({ timestamp, signature });
+  const response = await client.tradeApi.currentOpenOrdersUserData({
+    timestamp: 1,
+    signature: "some example string",
+    symbol: "BNBUSDT",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type OrderDetails[]
 } catch (err) {
-  if (err instanceof TradeApi.CurrentOpenOrdersUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type TradeApi.CurrentOpenOrdersUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.tradeApi.currentOpenOrdersUserData({
+  timestamp: 1,
+  signature: "some example string",
+  symbol: "BNBUSDT",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type OrderDetails[]
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -1671,9 +2373,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[OrderDetails](src/models/order-details.ts)[]</code>
+**Direct**: `await client.tradeApi.currentOpenOrdersUserData(request)`
 
-**OnError**: <code>[TradeApi.CurrentOpenOrdersUserDataError](src/resources/trade-api.ts)</code>
+- **OnSuccess**: <code>[OrderDetails](src/models/order-details.ts)[]</code>
+- **OnError**: throws <code>[TradeApi.CurrentOpenOrdersUserDataError](src/resources/trade-api.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.tradeApi.currentOpenOrdersUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;OrderDetails[], TradeApi.CurrentOpenOrdersUserDataError&gt;</code>, with `result.value` of type <code>[OrderDetails](src/models/order-details.ts)[]</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -1716,19 +2426,59 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.tradeApi.newOrderTrade({ symbol, side, type, timestamp, signature });
+  const response = await client.tradeApi.newOrderTrade({
+    symbol: "BNBUSDT",
+    side: Side.Sell,
+    type: Type1.Limit,
+    timestamp: 1,
+    signature: "some example string",
+    timeInForce: TimeInForce.Gtc,
+    quantity: 1,
+    price: 219,
+    stopPrice: 221.01,
+    selfTradePreventionMode: SelfTradePreventionMode.ExpireTaker,
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type ApiV3OrderResponse
 } catch (err) {
-  if (err instanceof TradeApi.NewOrderTradeError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type TradeApi.NewOrderTradeError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.tradeApi.newOrderTrade({
+  symbol: "BNBUSDT",
+  side: Side.Sell,
+  type: Type1.Limit,
+  timestamp: 1,
+  signature: "some example string",
+  timeInForce: TimeInForce.Gtc,
+  quantity: 1,
+  price: 219,
+  stopPrice: 221.01,
+  selfTradePreventionMode: SelfTradePreventionMode.ExpireTaker,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type ApiV3OrderResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -1769,9 +2519,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[ApiV3OrderResponse](src/models/unions/api-v3-order-response.ts)</code>
+**Direct**: `await client.tradeApi.newOrderTrade(request)`
 
-**OnError**: <code>[TradeApi.NewOrderTradeError](src/resources/trade-api.ts)</code>
+- **OnSuccess**: <code>[ApiV3OrderResponse](src/models/unions/api-v3-order-response.ts)</code>
+- **OnError**: throws <code>[TradeApi.NewOrderTradeError](src/resources/trade-api.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.tradeApi.newOrderTrade(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;ApiV3OrderResponse, TradeApi.NewOrderTradeError&gt;</code>, with `result.value` of type <code>[ApiV3OrderResponse](src/models/unions/api-v3-order-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -1805,7 +2563,7 @@ Weight: 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -1813,23 +2571,53 @@ Weight: 1
 ```ts
 try {
   const response = await client.tradeApi.newOrderListOtoTrade({
-    symbol,
-    workingType,
-    workingSide,
-    workingPrice,
-    workingQuantity,
-    workingIcebergQty,
-    pendingType,
-    pendingSide,
-    pendingQuantity,
-    timestamp,
-    signature,
+    symbol: "BNBUSDT",
+    workingType: WorkingType.Limit,
+    workingSide: WorkingSide.Buy,
+    workingPrice: 1.5,
+    workingQuantity: 1.5,
+    workingIcebergQty: 1.5,
+    pendingType: PendingType.Limit,
+    pendingSide: PendingSide.Buy,
+    pendingQuantity: 1.5,
+    timestamp: 1,
+    signature: "some example string",
+    selfTradePreventionMode: SelfTradePreventionMode.ExpireTaker,
   });
   // TODO: Handle 'response' of type ApiV3OrderListOtoResponse
 } catch (err) {
-  if (err instanceof TradeApi.NewOrderListOtoTradeError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type TradeApi.NewOrderListOtoTradeError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.tradeApi.newOrderListOtoTrade({
+  symbol: "BNBUSDT",
+  workingType: WorkingType.Limit,
+  workingSide: WorkingSide.Buy,
+  workingPrice: 1.5,
+  workingQuantity: 1.5,
+  workingIcebergQty: 1.5,
+  pendingType: PendingType.Limit,
+  pendingSide: PendingSide.Buy,
+  pendingQuantity: 1.5,
+  timestamp: 1,
+  signature: "some example string",
+  selfTradePreventionMode: SelfTradePreventionMode.ExpireTaker,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type ApiV3OrderListOtoResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -1878,9 +2666,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[ApiV3OrderListOtoResponse](src/models/api-v3-order-list-oto-response.ts)</code>
+**Direct**: `await client.tradeApi.newOrderListOtoTrade(request)`
 
-**OnError**: <code>[TradeApi.NewOrderListOtoTradeError](src/resources/trade-api.ts)</code>
+- **OnSuccess**: <code>[ApiV3OrderListOtoResponse](src/models/api-v3-order-list-oto-response.ts)</code>
+- **OnError**: throws <code>[TradeApi.NewOrderListOtoTradeError](src/resources/trade-api.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.tradeApi.newOrderListOtoTrade(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;ApiV3OrderListOtoResponse, TradeApi.NewOrderListOtoTradeError&gt;</code>, with `result.value` of type <code>[ApiV3OrderListOtoResponse](src/models/api-v3-order-list-oto-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -1914,7 +2710,7 @@ Weight: 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -1922,23 +2718,55 @@ Weight: 1
 ```ts
 try {
   const response = await client.tradeApi.newOrderListOtocoTrade({
-    symbol,
-    workingType,
-    workingSide,
-    workingPrice,
-    workingQuantity,
-    workingIcebergQty,
-    pendingSide,
-    pendingQuantity,
-    pendingAboveType,
-    timestamp,
-    signature,
+    symbol: "BNBUSDT",
+    workingType: WorkingType.Limit,
+    workingSide: WorkingSide.Buy,
+    workingPrice: 1.5,
+    workingQuantity: 1.5,
+    workingIcebergQty: 1.5,
+    pendingSide: PendingSide.Buy,
+    pendingQuantity: 1.5,
+    pendingAboveType: PendingAboveType.LimitMaker,
+    timestamp: 1,
+    signature: "some example string",
+    selfTradePreventionMode: SelfTradePreventionMode.ExpireTaker,
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type ApiV3OrderListOtocoResponse
 } catch (err) {
-  if (err instanceof TradeApi.NewOrderListOtocoTradeError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type TradeApi.NewOrderListOtocoTradeError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.tradeApi.newOrderListOtocoTrade({
+  symbol: "BNBUSDT",
+  workingType: WorkingType.Limit,
+  workingSide: WorkingSide.Buy,
+  workingPrice: 1.5,
+  workingQuantity: 1.5,
+  workingIcebergQty: 1.5,
+  pendingSide: PendingSide.Buy,
+  pendingQuantity: 1.5,
+  pendingAboveType: PendingAboveType.LimitMaker,
+  timestamp: 1,
+  signature: "some example string",
+  selfTradePreventionMode: SelfTradePreventionMode.ExpireTaker,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type ApiV3OrderListOtocoResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -1997,9 +2825,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[ApiV3OrderListOtocoResponse](src/models/api-v3-order-list-otoco-response.ts)</code>
+**Direct**: `await client.tradeApi.newOrderListOtocoTrade(request)`
 
-**OnError**: <code>[TradeApi.NewOrderListOtocoTradeError](src/resources/trade-api.ts)</code>
+- **OnSuccess**: <code>[ApiV3OrderListOtocoResponse](src/models/api-v3-order-list-otoco-response.ts)</code>
+- **OnError**: throws <code>[TradeApi.NewOrderListOtocoTradeError](src/resources/trade-api.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.tradeApi.newOrderListOtocoTrade(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;ApiV3OrderListOtocoResponse, TradeApi.NewOrderListOtocoTradeError&gt;</code>, with `result.value` of type <code>[ApiV3OrderListOtocoResponse](src/models/api-v3-order-list-otoco-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -2034,7 +2870,7 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -2042,19 +2878,51 @@ Weight(IP): 1
 ```ts
 try {
   const response = await client.tradeApi.newOrderListOcoTrade({
-    symbol,
-    side,
-    quantity,
-    aboveType,
-    belowType,
-    timestamp,
-    signature,
+    symbol: "BNBUSDT",
+    side: Side.Sell,
+    quantity: 1,
+    aboveType: "some example string",
+    belowType: "some example string",
+    timestamp: 1,
+    signature: "some example string",
+    aboveTimeInForce: AboveTimeInForce.Gtc,
+    belowTimeInForce: BelowTimeInForce.Gtc,
+    selfTradePreventionMode: SelfTradePreventionMode.ExpireTaker,
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type ApiV3OrderListOcoResponse
 } catch (err) {
-  if (err instanceof TradeApi.NewOrderListOcoTradeError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type TradeApi.NewOrderListOcoTradeError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.tradeApi.newOrderListOcoTrade({
+  symbol: "BNBUSDT",
+  side: Side.Sell,
+  quantity: 1,
+  aboveType: "some example string",
+  belowType: "some example string",
+  timestamp: 1,
+  signature: "some example string",
+  aboveTimeInForce: AboveTimeInForce.Gtc,
+  belowTimeInForce: BelowTimeInForce.Gtc,
+  selfTradePreventionMode: SelfTradePreventionMode.ExpireTaker,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type ApiV3OrderListOcoResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -2104,9 +2972,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[ApiV3OrderListOcoResponse](src/models/api-v3-order-list-oco-response.ts)</code>
+**Direct**: `await client.tradeApi.newOrderListOcoTrade(request)`
 
-**OnError**: <code>[TradeApi.NewOrderListOcoTradeError](src/resources/trade-api.ts)</code>
+- **OnSuccess**: <code>[ApiV3OrderListOcoResponse](src/models/api-v3-order-list-oco-response.ts)</code>
+- **OnError**: throws <code>[TradeApi.NewOrderListOcoTradeError](src/resources/trade-api.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.tradeApi.newOrderListOcoTrade(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;ApiV3OrderListOcoResponse, TradeApi.NewOrderListOcoTradeError&gt;</code>, with `result.value` of type <code>[ApiV3OrderListOcoResponse](src/models/api-v3-order-list-oco-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -2132,7 +3008,7 @@ Weight(IP): 6
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -2140,18 +3016,47 @@ Weight(IP): 6
 ```ts
 try {
   const response = await client.tradeApi.newOrderUsingSorTrade({
-    symbol,
-    side,
-    type,
-    quantity,
-    timestamp,
-    signature,
+    symbol: "BNBUSDT",
+    side: Side.Sell,
+    type: Type1.Limit,
+    quantity: 1,
+    timestamp: 1,
+    signature: "some example string",
+    timeInForce: TimeInForce.Gtc,
+    selfTradePreventionMode: SelfTradePreventionMode.ExpireTaker,
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type ApiV3SorOrderResponse
 } catch (err) {
-  if (err instanceof TradeApi.NewOrderUsingSorTradeError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type TradeApi.NewOrderUsingSorTradeError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.tradeApi.newOrderUsingSorTrade({
+  symbol: "BNBUSDT",
+  side: Side.Sell,
+  type: Type1.Limit,
+  quantity: 1,
+  timestamp: 1,
+  signature: "some example string",
+  timeInForce: TimeInForce.Gtc,
+  selfTradePreventionMode: SelfTradePreventionMode.ExpireTaker,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type ApiV3SorOrderResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -2189,9 +3094,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[ApiV3SorOrderResponse](src/models/api-v3-sor-order-response.ts)</code>
+**Direct**: `await client.tradeApi.newOrderUsingSorTrade(request)`
 
-**OnError**: <code>[TradeApi.NewOrderUsingSorTradeError](src/resources/trade-api.ts)</code>
+- **OnSuccess**: <code>[ApiV3SorOrderResponse](src/models/api-v3-sor-order-response.ts)</code>
+- **OnError**: throws <code>[TradeApi.NewOrderUsingSorTradeError](src/resources/trade-api.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.tradeApi.newOrderUsingSorTrade(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;ApiV3SorOrderResponse, TradeApi.NewOrderUsingSorTradeError&gt;</code>, with `result.value` of type <code>[ApiV3SorOrderResponse](src/models/api-v3-sor-order-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -2231,19 +3144,47 @@ Note: The time between startTime and endTime can't be longer than 24 hours.
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.tradeApi.queryAllocationsUserData({ symbol, timestamp, signature });
+  const response = await client.tradeApi.queryAllocationsUserData({
+    symbol: "BNBUSDT",
+    timestamp: 1,
+    signature: "some example string",
+    limit: 5,
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type ApiV3MyAllocationsResponse[]
 } catch (err) {
-  if (err instanceof TradeApi.QueryAllocationsUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type TradeApi.QueryAllocationsUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.tradeApi.queryAllocationsUserData({
+  symbol: "BNBUSDT",
+  timestamp: 1,
+  signature: "some example string",
+  limit: 5,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type ApiV3MyAllocationsResponse[]
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -2275,9 +3216,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[ApiV3MyAllocationsResponse](src/models/api-v3-my-allocations-response.ts)[]</code>
+**Direct**: `await client.tradeApi.queryAllocationsUserData(request)`
 
-**OnError**: <code>[TradeApi.QueryAllocationsUserDataError](src/resources/trade-api.ts)</code>
+- **OnSuccess**: <code>[ApiV3MyAllocationsResponse](src/models/api-v3-my-allocations-response.ts)[]</code>
+- **OnError**: throws <code>[TradeApi.QueryAllocationsUserDataError](src/resources/trade-api.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.tradeApi.queryAllocationsUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;ApiV3MyAllocationsResponse[], TradeApi.QueryAllocationsUserDataError&gt;</code>, with `result.value` of type <code>[ApiV3MyAllocationsResponse](src/models/api-v3-my-allocations-response.ts)[]</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -2305,19 +3254,43 @@ Weight: 20
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.tradeApi.queryCommissionRatesUserData({ symbol, timestamp, signature });
+  const response = await client.tradeApi.queryCommissionRatesUserData({
+    symbol: "BNBUSDT",
+    timestamp: 1,
+    signature: "some example string",
+  });
   // TODO: Handle 'response' of type ApiV3AccountCommissionResponse
 } catch (err) {
-  if (err instanceof TradeApi.QueryCommissionRatesUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type TradeApi.QueryCommissionRatesUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.tradeApi.queryCommissionRatesUserData({
+  symbol: "BNBUSDT",
+  timestamp: 1,
+  signature: "some example string",
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type ApiV3AccountCommissionResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -2343,9 +3316,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[ApiV3AccountCommissionResponse](src/models/api-v3-account-commission-response.ts)</code>
+**Direct**: `await client.tradeApi.queryCommissionRatesUserData(request)`
 
-**OnError**: <code>[TradeApi.QueryCommissionRatesUserDataError](src/resources/trade-api.ts)</code>
+- **OnSuccess**: <code>[ApiV3AccountCommissionResponse](src/models/api-v3-account-commission-response.ts)</code>
+- **OnError**: throws <code>[TradeApi.QueryCommissionRatesUserDataError](src/resources/trade-api.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.tradeApi.queryCommissionRatesUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;ApiV3AccountCommissionResponse, TradeApi.QueryCommissionRatesUserDataError&gt;</code>, with `result.value` of type <code>[ApiV3AccountCommissionResponse](src/models/api-v3-account-commission-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -2373,19 +3354,43 @@ Weight(IP): 40
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.tradeApi.queryCurrentOrderCountUsageTrade({ timestamp, signature });
+  const response = await client.tradeApi.queryCurrentOrderCountUsageTrade({
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type ApiV3RateLimitOrderResponse[]
 } catch (err) {
-  if (err instanceof TradeApi.QueryCurrentOrderCountUsageTradeError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type TradeApi.QueryCurrentOrderCountUsageTradeError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.tradeApi.queryCurrentOrderCountUsageTrade({
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type ApiV3RateLimitOrderResponse[]
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -2411,9 +3416,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[ApiV3RateLimitOrderResponse](src/models/api-v3-rate-limit-order-response.ts)[]</code>
+**Direct**: `await client.tradeApi.queryCurrentOrderCountUsageTrade(request)`
 
-**OnError**: <code>[TradeApi.QueryCurrentOrderCountUsageTradeError](src/resources/trade-api.ts)</code>
+- **OnSuccess**: <code>[ApiV3RateLimitOrderResponse](src/models/api-v3-rate-limit-order-response.ts)[]</code>
+- **OnError**: throws <code>[TradeApi.QueryCurrentOrderCountUsageTradeError](src/resources/trade-api.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.tradeApi.queryCurrentOrderCountUsageTrade(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;ApiV3RateLimitOrderResponse[], TradeApi.QueryCurrentOrderCountUsageTradeError&gt;</code>, with `result.value` of type <code>[ApiV3RateLimitOrderResponse](src/models/api-v3-rate-limit-order-response.ts)[]</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -2441,19 +3454,43 @@ Weight(IP): 4
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.tradeApi.queryOcoUserData({ timestamp, signature });
+  const response = await client.tradeApi.queryOcoUserData({
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type ApiV3OrderListResponse
 } catch (err) {
-  if (err instanceof TradeApi.QueryOcoUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type TradeApi.QueryOcoUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.tradeApi.queryOcoUserData({
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type ApiV3OrderListResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -2481,9 +3518,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[ApiV3OrderListResponse](src/models/api-v3-order-list-response.ts)</code>
+**Direct**: `await client.tradeApi.queryOcoUserData(request)`
 
-**OnError**: <code>[TradeApi.QueryOcoUserDataError](src/resources/trade-api.ts)</code>
+- **OnSuccess**: <code>[ApiV3OrderListResponse](src/models/api-v3-order-list-response.ts)</code>
+- **OnError**: throws <code>[TradeApi.QueryOcoUserDataError](src/resources/trade-api.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.tradeApi.queryOcoUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;ApiV3OrderListResponse, TradeApi.QueryOcoUserDataError&gt;</code>, with `result.value` of type <code>[ApiV3OrderListResponse](src/models/api-v3-order-list-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -2509,19 +3554,43 @@ Weight(IP): 6
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.tradeApi.queryOpenOcoUserData({ timestamp, signature });
+  const response = await client.tradeApi.queryOpenOcoUserData({
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type ApiV3OpenOrderListResponse[]
 } catch (err) {
-  if (err instanceof TradeApi.QueryOpenOcoUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type TradeApi.QueryOpenOcoUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.tradeApi.queryOpenOcoUserData({
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type ApiV3OpenOrderListResponse[]
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -2547,9 +3616,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[ApiV3OpenOrderListResponse](src/models/api-v3-open-order-list-response.ts)[]</code>
+**Direct**: `await client.tradeApi.queryOpenOcoUserData(request)`
 
-**OnError**: <code>[TradeApi.QueryOpenOcoUserDataError](src/resources/trade-api.ts)</code>
+- **OnSuccess**: <code>[ApiV3OpenOrderListResponse](src/models/api-v3-open-order-list-response.ts)[]</code>
+- **OnError**: throws <code>[TradeApi.QueryOpenOcoUserDataError](src/resources/trade-api.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.tradeApi.queryOpenOcoUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;ApiV3OpenOrderListResponse[], TradeApi.QueryOpenOcoUserDataError&gt;</code>, with `result.value` of type <code>[ApiV3OpenOrderListResponse](src/models/api-v3-open-order-list-response.ts)[]</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -2580,19 +3657,45 @@ Weight(IP): 4
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.tradeApi.queryOrderUserData({ symbol, timestamp, signature });
+  const response = await client.tradeApi.queryOrderUserData({
+    symbol: "BNBUSDT",
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type OrderDetails
 } catch (err) {
-  if (err instanceof TradeApi.QueryOrderUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type TradeApi.QueryOrderUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.tradeApi.queryOrderUserData({
+  symbol: "BNBUSDT",
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type OrderDetails
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -2621,9 +3724,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[OrderDetails](src/models/order-details.ts)</code>
+**Direct**: `await client.tradeApi.queryOrderUserData(request)`
 
-**OnError**: <code>[TradeApi.QueryOrderUserDataError](src/resources/trade-api.ts)</code>
+- **OnSuccess**: <code>[OrderDetails](src/models/order-details.ts)</code>
+- **OnError**: throws <code>[TradeApi.QueryOrderUserDataError](src/resources/trade-api.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.tradeApi.queryOrderUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;OrderDetails, TradeApi.QueryOrderUserDataError&gt;</code>, with `result.value` of type <code>[OrderDetails](src/models/order-details.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -2665,19 +3776,51 @@ Querying by orderId:               20
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.tradeApi.queryPreventedMatches({ symbol, timestamp, signature });
+  const response = await client.tradeApi.queryPreventedMatches({
+    symbol: "BNBUSDT",
+    timestamp: 1,
+    signature: "some example string",
+    preventedMatchId: 1,
+    fromPreventedMatchId: 1,
+    limit: 5,
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type ApiV3MyPreventedMatchesResponse[]
 } catch (err) {
-  if (err instanceof TradeApi.QueryPreventedMatchesError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type TradeApi.QueryPreventedMatchesError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.tradeApi.queryPreventedMatches({
+  symbol: "BNBUSDT",
+  timestamp: 1,
+  signature: "some example string",
+  preventedMatchId: 1,
+  fromPreventedMatchId: 1,
+  limit: 5,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type ApiV3MyPreventedMatchesResponse[]
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -2708,9 +3851,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[ApiV3MyPreventedMatchesResponse](src/models/api-v3-my-prevented-matches-response.ts)[]</code>
+**Direct**: `await client.tradeApi.queryPreventedMatches(request)`
 
-**OnError**: <code>[TradeApi.QueryPreventedMatchesError](src/resources/trade-api.ts)</code>
+- **OnSuccess**: <code>[ApiV3MyPreventedMatchesResponse](src/models/api-v3-my-prevented-matches-response.ts)[]</code>
+- **OnError**: throws <code>[TradeApi.QueryPreventedMatchesError](src/resources/trade-api.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.tradeApi.queryPreventedMatches(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;ApiV3MyPreventedMatchesResponse[], TradeApi.QueryPreventedMatchesError&gt;</code>, with `result.value` of type <code>[ApiV3MyPreventedMatchesResponse](src/models/api-v3-my-prevented-matches-response.ts)[]</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -2738,19 +3889,45 @@ Weight(IP): 20
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.tradeApi.queryAllOcoUserData({ timestamp, signature });
+  const response = await client.tradeApi.queryAllOcoUserData({
+    timestamp: 1,
+    signature: "some example string",
+    limit: 5,
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type ApiV3AllOrderListResponse[]
 } catch (err) {
-  if (err instanceof TradeApi.QueryAllOcoUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type TradeApi.QueryAllOcoUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.tradeApi.queryAllOcoUserData({
+  timestamp: 1,
+  signature: "some example string",
+  limit: 5,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type ApiV3AllOrderListResponse[]
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -2780,9 +3957,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[ApiV3AllOrderListResponse](src/models/api-v3-all-order-list-response.ts)[]</code>
+**Direct**: `await client.tradeApi.queryAllOcoUserData(request)`
 
-**OnError**: <code>[TradeApi.QueryAllOcoUserDataError](src/resources/trade-api.ts)</code>
+- **OnSuccess**: <code>[ApiV3AllOrderListResponse](src/models/api-v3-all-order-list-response.ts)[]</code>
+- **OnError**: throws <code>[TradeApi.QueryAllOcoUserDataError](src/resources/trade-api.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.tradeApi.queryAllOcoUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;ApiV3AllOrderListResponse[], TradeApi.QueryAllOcoUserDataError&gt;</code>, with `result.value` of type <code>[ApiV3AllOrderListResponse](src/models/api-v3-all-order-list-response.ts)[]</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -2813,19 +3998,59 @@ Weight(IP):
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.tradeApi.testNewOrderTrade({ symbol, side, type, timestamp, signature });
+  const response = await client.tradeApi.testNewOrderTrade({
+    symbol: "BNBUSDT",
+    side: Side.Sell,
+    type: Type1.Limit,
+    timestamp: 1,
+    signature: "some example string",
+    timeInForce: TimeInForce.Gtc,
+    quantity: 1,
+    price: 219,
+    stopPrice: 221.01,
+    recvWindow: 5000,
+    computeCommissionRates: false,
+  });
   // TODO: Handle 'response' of type Record<string, unknown>
 } catch (err) {
-  if (err instanceof TradeApi.TestNewOrderTradeError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type TradeApi.TestNewOrderTradeError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.tradeApi.testNewOrderTrade({
+  symbol: "BNBUSDT",
+  side: Side.Sell,
+  type: Type1.Limit,
+  timestamp: 1,
+  signature: "some example string",
+  timeInForce: TimeInForce.Gtc,
+  quantity: 1,
+  price: 219,
+  stopPrice: 221.01,
+  recvWindow: 5000,
+  computeCommissionRates: false,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type Record<string, unknown>
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -2866,9 +4091,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>Record&lt;string, unknown&gt;</code>
+**Direct**: `await client.tradeApi.testNewOrderTrade(request)`
 
-**OnError**: <code>[TradeApi.TestNewOrderTradeError](src/resources/trade-api.ts)</code>
+- **OnSuccess**: <code>Record&lt;string, unknown&gt;</code>
+- **OnError**: throws <code>[TradeApi.TestNewOrderTradeError](src/resources/trade-api.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.tradeApi.testNewOrderTrade(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;Record&lt;string, unknown&gt;, TradeApi.TestNewOrderTradeError&gt;</code>, with `result.value` of type <code>Record&lt;string, unknown&gt;</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -2899,7 +4132,7 @@ Weight(IP):
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -2907,18 +4140,49 @@ Weight(IP):
 ```ts
 try {
   const response = await client.tradeApi.testNewOrderUsingSorTrade({
-    symbol,
-    side,
-    type,
-    quantity,
-    timestamp,
-    signature,
+    symbol: "BNBUSDT",
+    side: Side.Sell,
+    type: Type1.Limit,
+    quantity: 1,
+    timestamp: 1,
+    signature: "some example string",
+    timeInForce: TimeInForce.Gtc,
+    selfTradePreventionMode: SelfTradePreventionMode.ExpireTaker,
+    computeCommissionRates: false,
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type Record<string, unknown>
 } catch (err) {
-  if (err instanceof TradeApi.TestNewOrderUsingSorTradeError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type TradeApi.TestNewOrderUsingSorTradeError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.tradeApi.testNewOrderUsingSorTrade({
+  symbol: "BNBUSDT",
+  side: Side.Sell,
+  type: Type1.Limit,
+  quantity: 1,
+  timestamp: 1,
+  signature: "some example string",
+  timeInForce: TimeInForce.Gtc,
+  selfTradePreventionMode: SelfTradePreventionMode.ExpireTaker,
+  computeCommissionRates: false,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type Record<string, unknown>
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -2957,9 +4221,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>Record&lt;string, unknown&gt;</code>
+**Direct**: `await client.tradeApi.testNewOrderUsingSorTrade(request)`
 
-**OnError**: <code>[TradeApi.TestNewOrderUsingSorTradeError](src/resources/trade-api.ts)</code>
+- **OnSuccess**: <code>Record&lt;string, unknown&gt;</code>
+- **OnError**: throws <code>[TradeApi.TestNewOrderUsingSorTradeError](src/resources/trade-api.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.tradeApi.testNewOrderUsingSorTrade(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;Record&lt;string, unknown&gt;, TradeApi.TestNewOrderUsingSorTradeError&gt;</code>, with `result.value` of type <code>Record&lt;string, unknown&gt;</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -2991,7 +4263,7 @@ Weight(UID): 3000
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -2999,15 +4271,37 @@ Weight(UID): 3000
 ```ts
 try {
   const response = await client.margin.adjustCrossMarginMaxLeverageUserData({
-    maxLeverage,
-    timestamp,
-    signature,
+    maxLeverage: 3,
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1MarginMaxLeverageResponse
 } catch (err) {
-  if (err instanceof Margin.AdjustCrossMarginMaxLeverageUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Margin.AdjustCrossMarginMaxLeverageUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.margin.adjustCrossMarginMaxLeverageUserData({
+  maxLeverage: 3,
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1MarginMaxLeverageResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -3034,9 +4328,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1MarginMaxLeverageResponse](src/models/sapi-v1-margin-max-leverage-response.ts)</code>
+**Direct**: `await client.margin.adjustCrossMarginMaxLeverageUserData(request)`
 
-**OnError**: <code>[Margin.AdjustCrossMarginMaxLeverageUserDataError](src/resources/margin.ts)</code>
+- **OnSuccess**: <code>[SapiV1MarginMaxLeverageResponse](src/models/sapi-v1-margin-max-leverage-response.ts)</code>
+- **OnError**: throws <code>[Margin.AdjustCrossMarginMaxLeverageUserDataError](src/resources/margin.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.margin.adjustCrossMarginMaxLeverageUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1MarginMaxLeverageResponse, Margin.AdjustCrossMarginMaxLeverageUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1MarginMaxLeverageResponse](src/models/sapi-v1-margin-max-leverage-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -3063,7 +4365,7 @@ Weight(IP): 100
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -3073,9 +4375,25 @@ try {
   const response = await client.margin.crossMarginCollateralRatioMarketData();
   // TODO: Handle 'response' of type SapiV1MarginCrossMarginCollateralRatioResponse[]
 } catch (err) {
-  if (err instanceof Margin.CrossMarginCollateralRatioMarketDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Margin.CrossMarginCollateralRatioMarketDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.margin.crossMarginCollateralRatioMarketData().asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1MarginCrossMarginCollateralRatioResponse[]
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -3087,9 +4405,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1MarginCrossMarginCollateralRatioResponse](src/models/sapi-v1-margin-cross-margin-collateral-ratio-response.ts)[]</code>
+**Direct**: `await client.margin.crossMarginCollateralRatioMarketData()`
 
-**OnError**: <code>[Margin.CrossMarginCollateralRatioMarketDataError](src/resources/margin.ts)</code>
+- **OnSuccess**: <code>[SapiV1MarginCrossMarginCollateralRatioResponse](src/models/sapi-v1-margin-cross-margin-collateral-ratio-response.ts)[]</code>
+- **OnError**: throws <code>[Margin.CrossMarginCollateralRatioMarketDataError](src/resources/margin.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.margin.crossMarginCollateralRatioMarketData().asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1MarginCrossMarginCollateralRatioResponse[], Margin.CrossMarginCollateralRatioMarketDataError&gt;</code>, with `result.value` of type <code>[SapiV1MarginCrossMarginCollateralRatioResponse](src/models/sapi-v1-margin-cross-margin-collateral-ratio-response.ts)[]</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -3117,19 +4443,45 @@ Weight(UID): 300
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.margin.disableIsolatedMarginAccountTrade({ symbol, timestamp, signature });
+  const response = await client.margin.disableIsolatedMarginAccountTrade({
+    symbol: "BNBUSDT",
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1MarginIsolatedAccountResponse
 } catch (err) {
-  if (err instanceof Margin.DisableIsolatedMarginAccountTradeError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Margin.DisableIsolatedMarginAccountTradeError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.margin.disableIsolatedMarginAccountTrade({
+  symbol: "BNBUSDT",
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1MarginIsolatedAccountResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -3156,9 +4508,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1MarginIsolatedAccountResponse](src/models/sapi-v1-margin-isolated-account-response.ts)</code>
+**Direct**: `await client.margin.disableIsolatedMarginAccountTrade(request)`
 
-**OnError**: <code>[Margin.DisableIsolatedMarginAccountTradeError](src/resources/margin.ts)</code>
+- **OnSuccess**: <code>[SapiV1MarginIsolatedAccountResponse](src/models/sapi-v1-margin-isolated-account-response.ts)</code>
+- **OnError**: throws <code>[Margin.DisableIsolatedMarginAccountTradeError](src/resources/margin.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.margin.disableIsolatedMarginAccountTrade(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1MarginIsolatedAccountResponse, Margin.DisableIsolatedMarginAccountTradeError&gt;</code>, with `result.value` of type <code>[SapiV1MarginIsolatedAccountResponse](src/models/sapi-v1-margin-isolated-account-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -3186,19 +4546,45 @@ Weight(UID): 300
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.margin.enableIsolatedMarginAccountTrade({ symbol, timestamp, signature });
+  const response = await client.margin.enableIsolatedMarginAccountTrade({
+    symbol: "BNBUSDT",
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1MarginIsolatedAccountResponse
 } catch (err) {
-  if (err instanceof Margin.EnableIsolatedMarginAccountTradeError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Margin.EnableIsolatedMarginAccountTradeError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.margin.enableIsolatedMarginAccountTrade({
+  symbol: "BNBUSDT",
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1MarginIsolatedAccountResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -3225,9 +4611,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1MarginIsolatedAccountResponse](src/models/sapi-v1-margin-isolated-account-response.ts)</code>
+**Direct**: `await client.margin.enableIsolatedMarginAccountTrade(request)`
 
-**OnError**: <code>[Margin.EnableIsolatedMarginAccountTradeError](src/resources/margin.ts)</code>
+- **OnSuccess**: <code>[SapiV1MarginIsolatedAccountResponse](src/models/sapi-v1-margin-isolated-account-response.ts)</code>
+- **OnError**: throws <code>[Margin.EnableIsolatedMarginAccountTradeError](src/resources/margin.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.margin.enableIsolatedMarginAccountTrade(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1MarginIsolatedAccountResponse, Margin.EnableIsolatedMarginAccountTradeError&gt;</code>, with `result.value` of type <code>[SapiV1MarginIsolatedAccountResponse](src/models/sapi-v1-margin-isolated-account-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -3253,19 +4647,35 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.margin.getAllCrossMarginPairsMarketData({ symbol });
+  const response = await client.margin.getAllCrossMarginPairsMarketData({ symbol: "BNBUSDT" });
   // TODO: Handle 'response' of type SapiV1MarginAllPairsResponse[]
 } catch (err) {
-  if (err instanceof Margin.GetAllCrossMarginPairsMarketDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Margin.GetAllCrossMarginPairsMarketDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.margin.getAllCrossMarginPairsMarketData({ symbol: "BNBUSDT" }).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1MarginAllPairsResponse[]
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -3289,9 +4699,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1MarginAllPairsResponse](src/models/sapi-v1-margin-all-pairs-response.ts)[]</code>
+**Direct**: `await client.margin.getAllCrossMarginPairsMarketData(request)`
 
-**OnError**: <code>[Margin.GetAllCrossMarginPairsMarketDataError](src/resources/margin.ts)</code>
+- **OnSuccess**: <code>[SapiV1MarginAllPairsResponse](src/models/sapi-v1-margin-all-pairs-response.ts)[]</code>
+- **OnError**: throws <code>[Margin.GetAllCrossMarginPairsMarketDataError](src/resources/margin.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.margin.getAllCrossMarginPairsMarketData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1MarginAllPairsResponse[], Margin.GetAllCrossMarginPairsMarketDataError&gt;</code>, with `result.value` of type <code>[SapiV1MarginAllPairsResponse](src/models/sapi-v1-margin-all-pairs-response.ts)[]</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -3317,19 +4735,45 @@ Weight(IP): 10
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.margin.getAllIsolatedMarginSymbolUserData({ symbol, timestamp, signature });
+  const response = await client.margin.getAllIsolatedMarginSymbolUserData({
+    symbol: "BNBUSDT",
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1MarginIsolatedAllPairsResponse[]
 } catch (err) {
-  if (err instanceof Margin.GetAllIsolatedMarginSymbolUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Margin.GetAllIsolatedMarginSymbolUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.margin.getAllIsolatedMarginSymbolUserData({
+  symbol: "BNBUSDT",
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1MarginIsolatedAllPairsResponse[]
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -3356,9 +4800,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1MarginIsolatedAllPairsResponse](src/models/sapi-v1-margin-isolated-all-pairs-response.ts)[]</code>
+**Direct**: `await client.margin.getAllIsolatedMarginSymbolUserData(request)`
 
-**OnError**: <code>[Margin.GetAllIsolatedMarginSymbolUserDataError](src/resources/margin.ts)</code>
+- **OnSuccess**: <code>[SapiV1MarginIsolatedAllPairsResponse](src/models/sapi-v1-margin-isolated-all-pairs-response.ts)[]</code>
+- **OnError**: throws <code>[Margin.GetAllIsolatedMarginSymbolUserDataError](src/resources/margin.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.margin.getAllIsolatedMarginSymbolUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1MarginIsolatedAllPairsResponse[], Margin.GetAllIsolatedMarginSymbolUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1MarginIsolatedAllPairsResponse](src/models/sapi-v1-margin-isolated-all-pairs-response.ts)[]</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -3384,19 +4836,35 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.margin.getAllMarginAssetsMarketData({ asset });
+  const response = await client.margin.getAllMarginAssetsMarketData({ asset: "BTC" });
   // TODO: Handle 'response' of type SapiV1MarginAllAssetsResponse[]
 } catch (err) {
-  if (err instanceof Margin.GetAllMarginAssetsMarketDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Margin.GetAllMarginAssetsMarketDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.margin.getAllMarginAssetsMarketData({ asset: "BTC" }).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1MarginAllAssetsResponse[]
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -3420,9 +4888,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1MarginAllAssetsResponse](src/models/sapi-v1-margin-all-assets-response.ts)[]</code>
+**Direct**: `await client.margin.getAllMarginAssetsMarketData(request)`
 
-**OnError**: <code>[Margin.GetAllMarginAssetsMarketDataError](src/resources/margin.ts)</code>
+- **OnSuccess**: <code>[SapiV1MarginAllAssetsResponse](src/models/sapi-v1-margin-all-assets-response.ts)[]</code>
+- **OnError**: throws <code>[Margin.GetAllMarginAssetsMarketDataError](src/resources/margin.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.margin.getAllMarginAssetsMarketData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1MarginAllAssetsResponse[], Margin.GetAllMarginAssetsMarketDataError&gt;</code>, with `result.value` of type <code>[SapiV1MarginAllAssetsResponse](src/models/sapi-v1-margin-all-assets-response.ts)[]</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -3448,19 +4924,43 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.margin.getBnbBurnStatusUserData({ timestamp, signature });
+  const response = await client.margin.getBnbBurnStatusUserData({
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type BnbBurnStatus
 } catch (err) {
-  if (err instanceof Margin.GetBnbBurnStatusUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Margin.GetBnbBurnStatusUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.margin.getBnbBurnStatusUserData({
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type BnbBurnStatus
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -3486,9 +4986,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[BnbBurnStatus](src/models/bnb-burn-status.ts)</code>
+**Direct**: `await client.margin.getBnbBurnStatusUserData(request)`
 
-**OnError**: <code>[Margin.GetBnbBurnStatusUserDataError](src/resources/margin.ts)</code>
+- **OnSuccess**: <code>[BnbBurnStatus](src/models/bnb-burn-status.ts)</code>
+- **OnError**: throws <code>[Margin.GetBnbBurnStatusUserDataError](src/resources/margin.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.margin.getBnbBurnStatusUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;BnbBurnStatus, Margin.GetBnbBurnStatusUserDataError&gt;</code>, with `result.value` of type <code>[BnbBurnStatus](src/models/bnb-burn-status.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -3518,19 +5026,49 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.margin.getCrossMarginTransferHistoryUserData({ timestamp, signature });
+  const response = await client.margin.getCrossMarginTransferHistoryUserData({
+    timestamp: 1,
+    signature: "some example string",
+    asset: "BNB",
+    current: 1,
+    size: 100,
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1MarginTransferResponse
 } catch (err) {
-  if (err instanceof Margin.GetCrossMarginTransferHistoryUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Margin.GetCrossMarginTransferHistoryUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.margin.getCrossMarginTransferHistoryUserData({
+  timestamp: 1,
+  signature: "some example string",
+  asset: "BNB",
+  current: 1,
+  size: 100,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1MarginTransferResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -3563,9 +5101,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1MarginTransferResponse](src/models/sapi-v1-margin-transfer-response.ts)</code>
+**Direct**: `await client.margin.getCrossMarginTransferHistoryUserData(request)`
 
-**OnError**: <code>[Margin.GetCrossMarginTransferHistoryUserDataError](src/resources/margin.ts)</code>
+- **OnSuccess**: <code>[SapiV1MarginTransferResponse](src/models/sapi-v1-margin-transfer-response.ts)</code>
+- **OnError**: throws <code>[Margin.GetCrossMarginTransferHistoryUserDataError](src/resources/margin.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.margin.getCrossMarginTransferHistoryUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1MarginTransferResponse, Margin.GetCrossMarginTransferHistoryUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1MarginTransferResponse](src/models/sapi-v1-margin-transfer-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -3593,19 +5139,47 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.margin.getForceLiquidationRecordUserData({ timestamp, signature });
+  const response = await client.margin.getForceLiquidationRecordUserData({
+    timestamp: 1,
+    signature: "some example string",
+    current: 1,
+    size: 100,
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1MarginForceLiquidationRecResponse
 } catch (err) {
-  if (err instanceof Margin.GetForceLiquidationRecordUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Margin.GetForceLiquidationRecordUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.margin.getForceLiquidationRecordUserData({
+  timestamp: 1,
+  signature: "some example string",
+  current: 1,
+  size: 100,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1MarginForceLiquidationRecResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -3636,9 +5210,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1MarginForceLiquidationRecResponse](src/models/sapi-v1-margin-force-liquidation-rec-response.ts)</code>
+**Direct**: `await client.margin.getForceLiquidationRecordUserData(request)`
 
-**OnError**: <code>[Margin.GetForceLiquidationRecordUserDataError](src/resources/margin.ts)</code>
+- **OnSuccess**: <code>[SapiV1MarginForceLiquidationRecResponse](src/models/sapi-v1-margin-force-liquidation-rec-response.ts)</code>
+- **OnError**: throws <code>[Margin.GetForceLiquidationRecordUserDataError](src/resources/margin.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.margin.getForceLiquidationRecordUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1MarginForceLiquidationRecResponse, Margin.GetForceLiquidationRecordUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1MarginForceLiquidationRecResponse](src/models/sapi-v1-margin-force-liquidation-rec-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -3673,19 +5255,49 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.margin.getInterestHistoryUserData({ timestamp, signature });
+  const response = await client.margin.getInterestHistoryUserData({
+    timestamp: 1,
+    signature: "some example string",
+    asset: "BNB",
+    current: 1,
+    size: 100,
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1MarginInterestHistoryResponse
 } catch (err) {
-  if (err instanceof Margin.GetInterestHistoryUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Margin.GetInterestHistoryUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.margin.getInterestHistoryUserData({
+  timestamp: 1,
+  signature: "some example string",
+  asset: "BNB",
+  current: 1,
+  size: 100,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1MarginInterestHistoryResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -3718,9 +5330,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1MarginInterestHistoryResponse](src/models/sapi-v1-margin-interest-history-response.ts)</code>
+**Direct**: `await client.margin.getInterestHistoryUserData(request)`
 
-**OnError**: <code>[Margin.GetInterestHistoryUserDataError](src/resources/margin.ts)</code>
+- **OnSuccess**: <code>[SapiV1MarginInterestHistoryResponse](src/models/sapi-v1-margin-interest-history-response.ts)</code>
+- **OnError**: throws <code>[Margin.GetInterestHistoryUserDataError](src/resources/margin.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.margin.getInterestHistoryUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1MarginInterestHistoryResponse, Margin.GetInterestHistoryUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1MarginInterestHistoryResponse](src/models/sapi-v1-margin-interest-history-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -3748,19 +5368,43 @@ Weight(UID): 100
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.margin.getSmallLiabilityExchangeCoinListUserData({ timestamp, signature });
+  const response = await client.margin.getSmallLiabilityExchangeCoinListUserData({
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1MarginExchangeSmallLiabilityResponse[]
 } catch (err) {
-  if (err instanceof Margin.GetSmallLiabilityExchangeCoinListUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Margin.GetSmallLiabilityExchangeCoinListUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.margin.getSmallLiabilityExchangeCoinListUserData({
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1MarginExchangeSmallLiabilityResponse[]
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -3786,9 +5430,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1MarginExchangeSmallLiabilityResponse](src/models/sapi-v1-margin-exchange-small-liability-response.ts)[]</code>
+**Direct**: `await client.margin.getSmallLiabilityExchangeCoinListUserData(request)`
 
-**OnError**: <code>[Margin.GetSmallLiabilityExchangeCoinListUserDataError](src/resources/margin.ts)</code>
+- **OnSuccess**: <code>[SapiV1MarginExchangeSmallLiabilityResponse](src/models/sapi-v1-margin-exchange-small-liability-response.ts)[]</code>
+- **OnError**: throws <code>[Margin.GetSmallLiabilityExchangeCoinListUserDataError](src/resources/margin.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.margin.getSmallLiabilityExchangeCoinListUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1MarginExchangeSmallLiabilityResponse[], Margin.GetSmallLiabilityExchangeCoinListUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1MarginExchangeSmallLiabilityResponse](src/models/sapi-v1-margin-exchange-small-liability-response.ts)[]</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -3816,19 +5468,47 @@ Weight(UID): 100
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.margin.getSmallLiabilityExchangeHistoryUserData({ timestamp, signature });
+  const response = await client.margin.getSmallLiabilityExchangeHistoryUserData({
+    timestamp: 1,
+    signature: "some example string",
+    current: 1,
+    size: 100,
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1MarginExchangeSmallLiabilityHistoryResponse
 } catch (err) {
-  if (err instanceof Margin.GetSmallLiabilityExchangeHistoryUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Margin.GetSmallLiabilityExchangeHistoryUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.margin.getSmallLiabilityExchangeHistoryUserData({
+  timestamp: 1,
+  signature: "some example string",
+  current: 1,
+  size: 100,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1MarginExchangeSmallLiabilityHistoryResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -3858,9 +5538,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1MarginExchangeSmallLiabilityHistoryResponse](src/models/sapi-v1-margin-exchange-small-liability-history-response.ts)</code>
+**Direct**: `await client.margin.getSmallLiabilityExchangeHistoryUserData(request)`
 
-**OnError**: <code>[Margin.GetSmallLiabilityExchangeHistoryUserDataError](src/resources/margin.ts)</code>
+- **OnSuccess**: <code>[SapiV1MarginExchangeSmallLiabilityHistoryResponse](src/models/sapi-v1-margin-exchange-small-liability-history-response.ts)</code>
+- **OnError**: throws <code>[Margin.GetSmallLiabilityExchangeHistoryUserDataError](src/resources/margin.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.margin.getSmallLiabilityExchangeHistoryUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1MarginExchangeSmallLiabilityHistoryResponse, Margin.GetSmallLiabilityExchangeHistoryUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1MarginExchangeSmallLiabilityHistoryResponse](src/models/sapi-v1-margin-exchange-small-liability-history-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -3888,19 +5576,45 @@ Weight(IP): 10
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.margin.getSummaryOfMarginAccountUserData({ email, timestamp, signature });
+  const response = await client.margin.getSummaryOfMarginAccountUserData({
+    email: "me@email.com",
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1MarginTradeCoeffResponse
 } catch (err) {
-  if (err instanceof Margin.GetSummaryOfMarginAccountUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Margin.GetSummaryOfMarginAccountUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.margin.getSummaryOfMarginAccountUserData({
+  email: "me@email.com",
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1MarginTradeCoeffResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -3927,9 +5641,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1MarginTradeCoeffResponse](src/models/sapi-v1-margin-trade-coeff-response.ts)</code>
+**Direct**: `await client.margin.getSummaryOfMarginAccountUserData(request)`
 
-**OnError**: <code>[Margin.GetSummaryOfMarginAccountUserDataError](src/resources/margin.ts)</code>
+- **OnSuccess**: <code>[SapiV1MarginTradeCoeffResponse](src/models/sapi-v1-margin-trade-coeff-response.ts)</code>
+- **OnError**: throws <code>[Margin.GetSummaryOfMarginAccountUserDataError](src/resources/margin.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.margin.getSummaryOfMarginAccountUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1MarginTradeCoeffResponse, Margin.GetSummaryOfMarginAccountUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1MarginTradeCoeffResponse](src/models/sapi-v1-margin-trade-coeff-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -3957,19 +5679,47 @@ Weight(UID): 100
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.margin.getAFutureHourlyInterestRateUserData({ timestamp, signature });
+  const response = await client.margin.getAFutureHourlyInterestRateUserData({
+    timestamp: 1,
+    signature: "some example string",
+    assets: "BTC,ETH",
+    isIsolated: IsIsolated.True,
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1MarginNextHourlyInterestRateResponse[]
 } catch (err) {
-  if (err instanceof Margin.GetAFutureHourlyInterestRateUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Margin.GetAFutureHourlyInterestRateUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.margin.getAFutureHourlyInterestRateUserData({
+  timestamp: 1,
+  signature: "some example string",
+  assets: "BTC,ETH",
+  isIsolated: IsIsolated.True,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1MarginNextHourlyInterestRateResponse[]
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -3997,9 +5747,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1MarginNextHourlyInterestRateResponse](src/models/sapi-v1-margin-next-hourly-interest-rate-response.ts)[]</code>
+**Direct**: `await client.margin.getAFutureHourlyInterestRateUserData(request)`
 
-**OnError**: <code>[Margin.GetAFutureHourlyInterestRateUserDataError](src/resources/margin.ts)</code>
+- **OnSuccess**: <code>[SapiV1MarginNextHourlyInterestRateResponse](src/models/sapi-v1-margin-next-hourly-interest-rate-response.ts)[]</code>
+- **OnError**: throws <code>[Margin.GetAFutureHourlyInterestRateUserDataError](src/resources/margin.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.margin.getAFutureHourlyInterestRateUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1MarginNextHourlyInterestRateResponse[], Margin.GetAFutureHourlyInterestRateUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1MarginNextHourlyInterestRateResponse](src/models/sapi-v1-margin-next-hourly-interest-rate-response.ts)[]</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -4027,21 +5785,47 @@ Weight(IP): 100
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.margin.getCrossOrIsolatedMarginCapitalFlowUserData({ timestamp, signature });
+  const response = await client.margin.getCrossOrIsolatedMarginCapitalFlowUserData({
+    timestamp: 1,
+    signature: "some example string",
+    asset: "BNB",
+    symbol: "BTCUSDT",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1MarginCapitalFlowResponse[]
 } catch (err) {
-  if (
-    err instanceof Margin.GetCrossOrIsolatedMarginCapitalFlowUserDataError && err.payload.kind === "error"
-  ) {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Margin.GetCrossOrIsolatedMarginCapitalFlowUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.margin.getCrossOrIsolatedMarginCapitalFlowUserData({
+  timestamp: 1,
+  signature: "some example string",
+  asset: "BNB",
+  symbol: "BTCUSDT",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1MarginCapitalFlowResponse[]
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -4074,9 +5858,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1MarginCapitalFlowResponse](src/models/sapi-v1-margin-capital-flow-response.ts)[]</code>
+**Direct**: `await client.margin.getCrossOrIsolatedMarginCapitalFlowUserData(request)`
 
-**OnError**: <code>[Margin.GetCrossOrIsolatedMarginCapitalFlowUserDataError](src/resources/margin.ts)</code>
+- **OnSuccess**: <code>[SapiV1MarginCapitalFlowResponse](src/models/sapi-v1-margin-capital-flow-response.ts)[]</code>
+- **OnError**: throws <code>[Margin.GetCrossOrIsolatedMarginCapitalFlowUserDataError](src/resources/margin.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.margin.getCrossOrIsolatedMarginCapitalFlowUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1MarginCapitalFlowResponse[], Margin.GetCrossOrIsolatedMarginCapitalFlowUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1MarginCapitalFlowResponse](src/models/sapi-v1-margin-capital-flow-response.ts)[]</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -4104,7 +5896,7 @@ Weight(IP): 100
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -4113,17 +5905,35 @@ Weight(IP): 100
 try {
   const response =
     await client.margin.getTokensOrSymbolsDelistScheduleForCrossMarginAndIsolatedMarginMarketData({
-      timestamp,
-      signature,
+      timestamp: 1,
+      signature: "some example string",
+      recvWindow: 5000,
     });
   // TODO: Handle 'response' of type SapiV1MarginDelistScheduleResponse[]
 } catch (err) {
-  if (
-    err instanceof Margin.GetTokensOrSymbolsDelistScheduleForCrossMarginAndIsolatedMarginMarketDataError &&
-      err.payload.kind === "error"
-  ) {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Margin.GetTokensOrSymbolsDelistScheduleForCrossMarginAndIsolatedMarginMarketDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.margin.getTokensOrSymbolsDelistScheduleForCrossMarginAndIsolatedMarginMarketData({
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1MarginDelistScheduleResponse[]
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -4149,9 +5959,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1MarginDelistScheduleResponse](src/models/sapi-v1-margin-delist-schedule-response.ts)[]</code>
+**Direct**: `await client.margin.getTokensOrSymbolsDelistScheduleForCrossMarginAndIsolatedMarginMarketData(request)`
 
-**OnError**: <code>[Margin.GetTokensOrSymbolsDelistScheduleForCrossMarginAndIsolatedMarginMarketDataError](src/resources/margin.ts)</code>
+- **OnSuccess**: <code>[SapiV1MarginDelistScheduleResponse](src/models/sapi-v1-margin-delist-schedule-response.ts)[]</code>
+- **OnError**: throws <code>[Margin.GetTokensOrSymbolsDelistScheduleForCrossMarginAndIsolatedMarginMarketDataError](src/resources/margin.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.margin.getTokensOrSymbolsDelistScheduleForCrossMarginAndIsolatedMarginMarketData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1MarginDelistScheduleResponse[], Margin.GetTokensOrSymbolsDelistScheduleForCrossMarginAndIsolatedMarginMarketDataError&gt;</code>, with `result.value` of type <code>[SapiV1MarginDelistScheduleResponse](src/models/sapi-v1-margin-delist-schedule-response.ts)[]</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -4182,19 +6000,45 @@ Weight(UID): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.margin.marginAccountCancelOcoTrade({ symbol, timestamp, signature });
+  const response = await client.margin.marginAccountCancelOcoTrade({
+    symbol: "BNBUSDT",
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type MarginOcoOrder
 } catch (err) {
-  if (err instanceof Margin.MarginAccountCancelOcoTradeError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Margin.MarginAccountCancelOcoTradeError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.margin.marginAccountCancelOcoTrade({
+  symbol: "BNBUSDT",
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type MarginOcoOrder
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -4225,9 +6069,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[MarginOcoOrder](src/models/margin-oco-order.ts)</code>
+**Direct**: `await client.margin.marginAccountCancelOcoTrade(request)`
 
-**OnError**: <code>[Margin.MarginAccountCancelOcoTradeError](src/resources/margin.ts)</code>
+- **OnSuccess**: <code>[MarginOcoOrder](src/models/margin-oco-order.ts)</code>
+- **OnError**: throws <code>[Margin.MarginAccountCancelOcoTradeError](src/resources/margin.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.margin.marginAccountCancelOcoTrade(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;MarginOcoOrder, Margin.MarginAccountCancelOcoTradeError&gt;</code>, with `result.value` of type <code>[MarginOcoOrder](src/models/margin-oco-order.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -4257,19 +6109,45 @@ Weight(IP): 10
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.margin.marginAccountCancelOrderTrade({ symbol, timestamp, signature });
+  const response = await client.margin.marginAccountCancelOrderTrade({
+    symbol: "BNBUSDT",
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type MarginOrder
 } catch (err) {
-  if (err instanceof Margin.MarginAccountCancelOrderTradeError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Margin.MarginAccountCancelOrderTradeError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.margin.marginAccountCancelOrderTrade({
+  symbol: "BNBUSDT",
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type MarginOrder
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -4300,9 +6178,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[MarginOrder](src/models/margin-order.ts)</code>
+**Direct**: `await client.margin.marginAccountCancelOrderTrade(request)`
 
-**OnError**: <code>[Margin.MarginAccountCancelOrderTradeError](src/resources/margin.ts)</code>
+- **OnSuccess**: <code>[MarginOrder](src/models/margin-order.ts)</code>
+- **OnError**: throws <code>[Margin.MarginAccountCancelOrderTradeError](src/resources/margin.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.margin.marginAccountCancelOrderTrade(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;MarginOrder, Margin.MarginAccountCancelOrderTradeError&gt;</code>, with `result.value` of type <code>[MarginOrder](src/models/margin-order.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -4332,7 +6218,7 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -4340,17 +6226,37 @@ Weight(IP): 1
 ```ts
 try {
   const response = await client.margin.marginAccountCancelAllOpenOrdersOnASymbolTrade({
-    symbol,
-    timestamp,
-    signature,
+    symbol: "BNBUSDT",
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1MarginOpenOrdersResponse[]
 } catch (err) {
-  if (
-    err instanceof Margin.MarginAccountCancelAllOpenOrdersOnASymbolTradeError && err.payload.kind === "error"
-  ) {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Margin.MarginAccountCancelAllOpenOrdersOnASymbolTradeError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.margin.marginAccountCancelAllOpenOrdersOnASymbolTrade({
+  symbol: "BNBUSDT",
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1MarginOpenOrdersResponse[]
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -4378,9 +6284,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1MarginOpenOrdersResponse](src/models/unions/sapi-v1-margin-open-orders-response.ts)[]</code>
+**Direct**: `await client.margin.marginAccountCancelAllOpenOrdersOnASymbolTrade(request)`
 
-**OnError**: <code>[Margin.MarginAccountCancelAllOpenOrdersOnASymbolTradeError](src/resources/margin.ts)</code>
+- **OnSuccess**: <code>[SapiV1MarginOpenOrdersResponse](src/models/unions/sapi-v1-margin-open-orders-response.ts)[]</code>
+- **OnError**: throws <code>[Margin.MarginAccountCancelAllOpenOrdersOnASymbolTradeError](src/resources/margin.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.margin.marginAccountCancelAllOpenOrdersOnASymbolTrade(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1MarginOpenOrdersResponse[], Margin.MarginAccountCancelAllOpenOrdersOnASymbolTradeError&gt;</code>, with `result.value` of type <code>[SapiV1MarginOpenOrdersResponse](src/models/unions/sapi-v1-margin-open-orders-response.ts)[]</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -4417,7 +6331,7 @@ Weight(UID): 6
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -4425,19 +6339,47 @@ Weight(UID): 6
 ```ts
 try {
   const response = await client.margin.marginAccountNewOcoTrade({
-    symbol,
-    side,
-    quantity,
-    price,
-    stopPrice,
-    timestamp,
-    signature,
+    symbol: "BNBUSDT",
+    side: Side.Sell,
+    quantity: 1,
+    price: 218,
+    stopPrice: 220,
+    timestamp: 1,
+    signature: "some example string",
+    selfTradePreventionMode: SelfTradePreventionMode.ExpireTaker,
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1MarginOrderOcoResponse
 } catch (err) {
-  if (err instanceof Margin.MarginAccountNewOcoTradeError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Margin.MarginAccountNewOcoTradeError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.margin.marginAccountNewOcoTrade({
+  symbol: "BNBUSDT",
+  side: Side.Sell,
+  quantity: 1,
+  price: 218,
+  stopPrice: 220,
+  timestamp: 1,
+  signature: "some example string",
+  selfTradePreventionMode: SelfTradePreventionMode.ExpireTaker,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1MarginOrderOcoResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -4479,9 +6421,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1MarginOrderOcoResponse](src/models/sapi-v1-margin-order-oco-response.ts)</code>
+**Direct**: `await client.margin.marginAccountNewOcoTrade(request)`
 
-**OnError**: <code>[Margin.MarginAccountNewOcoTradeError](src/resources/margin.ts)</code>
+- **OnSuccess**: <code>[SapiV1MarginOrderOcoResponse](src/models/sapi-v1-margin-order-oco-response.ts)</code>
+- **OnError**: throws <code>[Margin.MarginAccountNewOcoTradeError](src/resources/margin.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.margin.marginAccountNewOcoTrade(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1MarginOrderOcoResponse, Margin.MarginAccountNewOcoTradeError&gt;</code>, with `result.value` of type <code>[SapiV1MarginOrderOcoResponse](src/models/sapi-v1-margin-order-oco-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -4515,7 +6465,7 @@ Weight(UID): 6
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -4523,23 +6473,55 @@ Weight(UID): 6
 ```ts
 try {
   const response = await client.margin.marginAccountNewOtoTrade({
-    symbol,
-    workingType,
-    workingSide,
-    workingPrice,
-    workingQuantity,
-    workingIcebergQty,
-    pendingType,
-    pendingSide,
-    pendingQuantity,
-    timestamp,
-    signature,
+    symbol: "BNBUSDT",
+    workingType: WorkingType.Limit,
+    workingSide: WorkingSide.Buy,
+    workingPrice: 1.5,
+    workingQuantity: 1.5,
+    workingIcebergQty: 1.5,
+    pendingType: PendingType.Limit,
+    pendingSide: PendingSide.Buy,
+    pendingQuantity: 1.5,
+    timestamp: 1,
+    signature: "some example string",
+    selfTradePreventionMode: SelfTradePreventionMode.ExpireTaker,
+    autoRepayAtCancel: true,
   });
   // TODO: Handle 'response' of type SapiV1MarginOrderOtoResponse
 } catch (err) {
-  if (err instanceof Margin.MarginAccountNewOtoTradeError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Margin.MarginAccountNewOtoTradeError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.margin.marginAccountNewOtoTrade({
+  symbol: "BNBUSDT",
+  workingType: WorkingType.Limit,
+  workingSide: WorkingSide.Buy,
+  workingPrice: 1.5,
+  workingQuantity: 1.5,
+  workingIcebergQty: 1.5,
+  pendingType: PendingType.Limit,
+  pendingSide: PendingSide.Buy,
+  pendingQuantity: 1.5,
+  timestamp: 1,
+  signature: "some example string",
+  selfTradePreventionMode: SelfTradePreventionMode.ExpireTaker,
+  autoRepayAtCancel: true,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1MarginOrderOtoResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -4587,9 +6569,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1MarginOrderOtoResponse](src/models/sapi-v1-margin-order-oto-response.ts)</code>
+**Direct**: `await client.margin.marginAccountNewOtoTrade(request)`
 
-**OnError**: <code>[Margin.MarginAccountNewOtoTradeError](src/resources/margin.ts)</code>
+- **OnSuccess**: <code>[SapiV1MarginOrderOtoResponse](src/models/sapi-v1-margin-order-oto-response.ts)</code>
+- **OnError**: throws <code>[Margin.MarginAccountNewOtoTradeError](src/resources/margin.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.margin.marginAccountNewOtoTrade(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1MarginOrderOtoResponse, Margin.MarginAccountNewOtoTradeError&gt;</code>, with `result.value` of type <code>[SapiV1MarginOrderOtoResponse](src/models/sapi-v1-margin-order-oto-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -4623,7 +6613,7 @@ Weight(UID): 6
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -4631,23 +6621,55 @@ Weight(UID): 6
 ```ts
 try {
   const response = await client.margin.marginAccountNewOtocoTrade({
-    symbol,
-    workingType,
-    workingSide,
-    workingPrice,
-    workingQuantity,
-    workingIcebergQty,
-    pendingSide,
-    pendingQuantity,
-    pendingAboveType,
-    timestamp,
-    signature,
+    symbol: "BNBUSDT",
+    workingType: WorkingType.Limit,
+    workingSide: WorkingSide.Buy,
+    workingPrice: 1.5,
+    workingQuantity: 1.5,
+    workingIcebergQty: 1.5,
+    pendingSide: PendingSide.Buy,
+    pendingQuantity: 1.5,
+    pendingAboveType: PendingAboveType.LimitMaker,
+    timestamp: 1,
+    signature: "some example string",
+    autoRepayAtCancel: true,
+    selfTradePreventionMode: SelfTradePreventionMode.ExpireTaker,
   });
   // TODO: Handle 'response' of type SapiV1MarginOrderOtocoResponse
 } catch (err) {
-  if (err instanceof Margin.MarginAccountNewOtocoTradeError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Margin.MarginAccountNewOtocoTradeError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.margin.marginAccountNewOtocoTrade({
+  symbol: "BNBUSDT",
+  workingType: WorkingType.Limit,
+  workingSide: WorkingSide.Buy,
+  workingPrice: 1.5,
+  workingQuantity: 1.5,
+  workingIcebergQty: 1.5,
+  pendingSide: PendingSide.Buy,
+  pendingQuantity: 1.5,
+  pendingAboveType: PendingAboveType.LimitMaker,
+  timestamp: 1,
+  signature: "some example string",
+  autoRepayAtCancel: true,
+  selfTradePreventionMode: SelfTradePreventionMode.ExpireTaker,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1MarginOrderOtocoResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -4702,9 +6724,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1MarginOrderOtocoResponse](src/models/sapi-v1-margin-order-otoco-response.ts)</code>
+**Direct**: `await client.margin.marginAccountNewOtocoTrade(request)`
 
-**OnError**: <code>[Margin.MarginAccountNewOtocoTradeError](src/resources/margin.ts)</code>
+- **OnSuccess**: <code>[SapiV1MarginOrderOtocoResponse](src/models/sapi-v1-margin-order-otoco-response.ts)</code>
+- **OnError**: throws <code>[Margin.MarginAccountNewOtocoTradeError](src/resources/margin.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.margin.marginAccountNewOtocoTrade(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1MarginOrderOtocoResponse, Margin.MarginAccountNewOtocoTradeError&gt;</code>, with `result.value` of type <code>[SapiV1MarginOrderOtocoResponse](src/models/sapi-v1-margin-order-otoco-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -4732,7 +6762,7 @@ Weight(UID): 6
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -4740,19 +6770,53 @@ Weight(UID): 6
 ```ts
 try {
   const response = await client.margin.marginAccountNewOrderTrade({
-    symbol,
-    side,
-    type,
-    quantity,
-    autoRepayAtCancel,
-    timestamp,
-    signature,
+    symbol: "BNBUSDT",
+    side: Side.Sell,
+    type: Type1.Limit,
+    quantity: 1,
+    autoRepayAtCancel: true,
+    timestamp: 1,
+    signature: "some example string",
+    price: 219,
+    stopPrice: 221.01,
+    timeInForce: TimeInForce.Gtc,
+    selfTradePreventionMode: SelfTradePreventionMode.ExpireTaker,
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1MarginOrderResponse
 } catch (err) {
-  if (err instanceof Margin.MarginAccountNewOrderTradeError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Margin.MarginAccountNewOrderTradeError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.margin.marginAccountNewOrderTrade({
+  symbol: "BNBUSDT",
+  side: Side.Sell,
+  type: Type1.Limit,
+  quantity: 1,
+  autoRepayAtCancel: true,
+  timestamp: 1,
+  signature: "some example string",
+  price: 219,
+  stopPrice: 221.01,
+  timeInForce: TimeInForce.Gtc,
+  selfTradePreventionMode: SelfTradePreventionMode.ExpireTaker,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1MarginOrderResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -4793,9 +6857,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1MarginOrderResponse](src/models/unions/sapi-v1-margin-order-response.ts)</code>
+**Direct**: `await client.margin.marginAccountNewOrderTrade(request)`
 
-**OnError**: <code>[Margin.MarginAccountNewOrderTradeError](src/resources/margin.ts)</code>
+- **OnSuccess**: <code>[SapiV1MarginOrderResponse](src/models/unions/sapi-v1-margin-order-response.ts)</code>
+- **OnError**: throws <code>[Margin.MarginAccountNewOrderTradeError](src/resources/margin.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.margin.marginAccountNewOrderTrade(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1MarginOrderResponse, Margin.MarginAccountNewOrderTradeError&gt;</code>, with `result.value` of type <code>[SapiV1MarginOrderResponse](src/models/unions/sapi-v1-margin-order-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -4823,19 +6895,47 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.margin.marginInterestRateHistoryUserData({ asset, timestamp, signature });
+  const response = await client.margin.marginInterestRateHistoryUserData({
+    asset: "BTC",
+    timestamp: 1,
+    signature: "some example string",
+    vipLevel: 1,
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1MarginInterestRateHistoryResponse[]
 } catch (err) {
-  if (err instanceof Margin.MarginInterestRateHistoryUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Margin.MarginInterestRateHistoryUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.margin.marginInterestRateHistoryUserData({
+  asset: "BTC",
+  timestamp: 1,
+  signature: "some example string",
+  vipLevel: 1,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1MarginInterestRateHistoryResponse[]
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -4865,9 +6965,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1MarginInterestRateHistoryResponse](src/models/sapi-v1-margin-interest-rate-history-response.ts)[]</code>
+**Direct**: `await client.margin.marginInterestRateHistoryUserData(request)`
 
-**OnError**: <code>[Margin.MarginInterestRateHistoryUserDataError](src/resources/margin.ts)</code>
+- **OnSuccess**: <code>[SapiV1MarginInterestRateHistoryResponse](src/models/sapi-v1-margin-interest-rate-history-response.ts)[]</code>
+- **OnError**: throws <code>[Margin.MarginInterestRateHistoryUserDataError](src/resources/margin.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.margin.marginInterestRateHistoryUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1MarginInterestRateHistoryResponse[], Margin.MarginInterestRateHistoryUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1MarginInterestRateHistoryResponse](src/models/sapi-v1-margin-interest-rate-history-response.ts)[]</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -4895,7 +7003,7 @@ Weight(UID): 3000
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -4903,19 +7011,45 @@ Weight(UID): 3000
 ```ts
 try {
   const response = await client.margin.marginAccountBorrowRepayMargin({
-    asset,
-    isIsolated,
-    symbol,
-    amount,
-    type,
-    timestamp,
-    signature,
+    asset: "BTC",
+    isIsolated: "some example string",
+    symbol: "BNBUSDT",
+    amount: 1.01,
+    type: "some example string",
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1MarginBorrowRepayResponse
 } catch (err) {
-  if (err instanceof Margin.MarginAccountBorrowRepayMarginError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Margin.MarginAccountBorrowRepayMarginError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.margin.marginAccountBorrowRepayMargin({
+  asset: "BTC",
+  isIsolated: "some example string",
+  symbol: "BNBUSDT",
+  amount: 1.01,
+  type: "some example string",
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1MarginBorrowRepayResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -4946,9 +7080,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1MarginBorrowRepayResponse](src/models/sapi-v1-margin-borrow-repay-response.ts)</code>
+**Direct**: `await client.margin.marginAccountBorrowRepayMargin(request)`
 
-**OnError**: <code>[Margin.MarginAccountBorrowRepayMarginError](src/resources/margin.ts)</code>
+- **OnSuccess**: <code>[SapiV1MarginBorrowRepayResponse](src/models/sapi-v1-margin-borrow-repay-response.ts)</code>
+- **OnError**: throws <code>[Margin.MarginAccountBorrowRepayMarginError](src/resources/margin.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.margin.marginAccountBorrowRepayMargin(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1MarginBorrowRepayResponse, Margin.MarginAccountBorrowRepayMarginError&gt;</code>, with `result.value` of type <code>[SapiV1MarginBorrowRepayResponse](src/models/sapi-v1-margin-borrow-repay-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -4976,19 +7118,45 @@ Weight(UID): 3000
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.margin.marginManualLiquidationMargin({ type, timestamp, signature });
+  const response = await client.margin.marginManualLiquidationMargin({
+    type: Type4.Margin,
+    timestamp: 1,
+    signature: "some example string",
+    symbol: "BTCUSDT",
+  });
   // TODO: Handle 'response' of type SapiV1MarginManualLiquidationResponse[]
 } catch (err) {
-  if (err instanceof Margin.MarginManualLiquidationMarginError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Margin.MarginManualLiquidationMarginError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.margin.marginManualLiquidationMargin({
+  type: Type4.Margin,
+  timestamp: 1,
+  signature: "some example string",
+  symbol: "BTCUSDT",
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1MarginManualLiquidationResponse[]
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -5015,9 +7183,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1MarginManualLiquidationResponse](src/models/sapi-v1-margin-manual-liquidation-response.ts)[]</code>
+**Direct**: `await client.margin.marginManualLiquidationMargin(request)`
 
-**OnError**: <code>[Margin.MarginManualLiquidationMarginError](src/resources/margin.ts)</code>
+- **OnSuccess**: <code>[SapiV1MarginManualLiquidationResponse](src/models/sapi-v1-margin-manual-liquidation-response.ts)[]</code>
+- **OnError**: throws <code>[Margin.MarginManualLiquidationMarginError](src/resources/margin.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.margin.marginManualLiquidationMargin(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1MarginManualLiquidationResponse[], Margin.MarginManualLiquidationMarginError&gt;</code>, with `result.value` of type <code>[SapiV1MarginManualLiquidationResponse](src/models/sapi-v1-margin-manual-liquidation-response.ts)[]</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -5043,19 +7219,43 @@ Weight(IP): 10
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.margin.queryCrossMarginAccountDetailsUserData({ timestamp, signature });
+  const response = await client.margin.queryCrossMarginAccountDetailsUserData({
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1MarginAccountResponse
 } catch (err) {
-  if (err instanceof Margin.QueryCrossMarginAccountDetailsUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Margin.QueryCrossMarginAccountDetailsUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.margin.queryCrossMarginAccountDetailsUserData({
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1MarginAccountResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -5081,9 +7281,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1MarginAccountResponse](src/models/sapi-v1-margin-account-response.ts)</code>
+**Direct**: `await client.margin.queryCrossMarginAccountDetailsUserData(request)`
 
-**OnError**: <code>[Margin.QueryCrossMarginAccountDetailsUserDataError](src/resources/margin.ts)</code>
+- **OnSuccess**: <code>[SapiV1MarginAccountResponse](src/models/sapi-v1-margin-account-response.ts)</code>
+- **OnError**: throws <code>[Margin.QueryCrossMarginAccountDetailsUserDataError](src/resources/margin.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.margin.queryCrossMarginAccountDetailsUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1MarginAccountResponse, Margin.QueryCrossMarginAccountDetailsUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1MarginAccountResponse](src/models/sapi-v1-margin-account-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -5111,19 +7319,47 @@ Weight(IP): 1 when coin is specified; 5 when the coin parameter is omitted
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.margin.queryCrossMarginFeeDataUserData({ timestamp, signature });
+  const response = await client.margin.queryCrossMarginFeeDataUserData({
+    timestamp: 1,
+    signature: "some example string",
+    vipLevel: 1,
+    coin: "BNB",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1MarginCrossMarginDataResponse[]
 } catch (err) {
-  if (err instanceof Margin.QueryCrossMarginFeeDataUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Margin.QueryCrossMarginFeeDataUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.margin.queryCrossMarginFeeDataUserData({
+  timestamp: 1,
+  signature: "some example string",
+  vipLevel: 1,
+  coin: "BNB",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1MarginCrossMarginDataResponse[]
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -5151,9 +7387,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1MarginCrossMarginDataResponse](src/models/sapi-v1-margin-cross-margin-data-response.ts)[]</code>
+**Direct**: `await client.margin.queryCrossMarginFeeDataUserData(request)`
 
-**OnError**: <code>[Margin.QueryCrossMarginFeeDataUserDataError](src/resources/margin.ts)</code>
+- **OnSuccess**: <code>[SapiV1MarginCrossMarginDataResponse](src/models/sapi-v1-margin-cross-margin-data-response.ts)[]</code>
+- **OnError**: throws <code>[Margin.QueryCrossMarginFeeDataUserDataError](src/resources/margin.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.margin.queryCrossMarginFeeDataUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1MarginCrossMarginDataResponse[], Margin.QueryCrossMarginFeeDataUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1MarginCrossMarginDataResponse](src/models/sapi-v1-margin-cross-margin-data-response.ts)[]</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -5181,19 +7425,43 @@ Weight(IP): 20
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.margin.queryCurrentMarginOrderCountUsageTrade({ timestamp, signature });
+  const response = await client.margin.queryCurrentMarginOrderCountUsageTrade({
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1MarginRateLimitOrderResponse[]
 } catch (err) {
-  if (err instanceof Margin.QueryCurrentMarginOrderCountUsageTradeError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Margin.QueryCurrentMarginOrderCountUsageTradeError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.margin.queryCurrentMarginOrderCountUsageTrade({
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1MarginRateLimitOrderResponse[]
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -5221,9 +7489,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1MarginRateLimitOrderResponse](src/models/sapi-v1-margin-rate-limit-order-response.ts)[]</code>
+**Direct**: `await client.margin.queryCurrentMarginOrderCountUsageTrade(request)`
 
-**OnError**: <code>[Margin.QueryCurrentMarginOrderCountUsageTradeError](src/resources/margin.ts)</code>
+- **OnSuccess**: <code>[SapiV1MarginRateLimitOrderResponse](src/models/sapi-v1-margin-rate-limit-order-response.ts)[]</code>
+- **OnError**: throws <code>[Margin.QueryCurrentMarginOrderCountUsageTradeError](src/resources/margin.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.margin.queryCurrentMarginOrderCountUsageTrade(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1MarginRateLimitOrderResponse[], Margin.QueryCurrentMarginOrderCountUsageTradeError&gt;</code>, with `result.value` of type <code>[SapiV1MarginRateLimitOrderResponse](src/models/sapi-v1-margin-rate-limit-order-response.ts)[]</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -5251,7 +7527,7 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -5259,16 +7535,35 @@ Weight(IP): 1
 ```ts
 try {
   const response = await client.margin.queryEnabledIsolatedMarginAccountLimitUserData({
-    timestamp,
-    signature,
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1MarginIsolatedAccountLimitResponse
 } catch (err) {
-  if (
-    err instanceof Margin.QueryEnabledIsolatedMarginAccountLimitUserDataError && err.payload.kind === "error"
-  ) {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Margin.QueryEnabledIsolatedMarginAccountLimitUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.margin.queryEnabledIsolatedMarginAccountLimitUserData({
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1MarginIsolatedAccountLimitResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -5294,9 +7589,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1MarginIsolatedAccountLimitResponse](src/models/sapi-v1-margin-isolated-account-limit-response.ts)</code>
+**Direct**: `await client.margin.queryEnabledIsolatedMarginAccountLimitUserData(request)`
 
-**OnError**: <code>[Margin.QueryEnabledIsolatedMarginAccountLimitUserDataError](src/resources/margin.ts)</code>
+- **OnSuccess**: <code>[SapiV1MarginIsolatedAccountLimitResponse](src/models/sapi-v1-margin-isolated-account-limit-response.ts)</code>
+- **OnError**: throws <code>[Margin.QueryEnabledIsolatedMarginAccountLimitUserDataError](src/resources/margin.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.margin.queryEnabledIsolatedMarginAccountLimitUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1MarginIsolatedAccountLimitResponse, Margin.QueryEnabledIsolatedMarginAccountLimitUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1MarginIsolatedAccountLimitResponse](src/models/sapi-v1-margin-isolated-account-limit-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -5325,19 +7628,45 @@ Weight(IP): 10
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.margin.queryIsolatedMarginAccountInfoUserData({ timestamp, signature });
+  const response = await client.margin.queryIsolatedMarginAccountInfoUserData({
+    timestamp: 1,
+    signature: "some example string",
+    symbols: "BTCUSDT,BNBUSDT,ADAUSDT",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type IsolatedMarginAccountInfo
 } catch (err) {
-  if (err instanceof Margin.QueryIsolatedMarginAccountInfoUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Margin.QueryIsolatedMarginAccountInfoUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.margin.queryIsolatedMarginAccountInfoUserData({
+  timestamp: 1,
+  signature: "some example string",
+  symbols: "BTCUSDT,BNBUSDT,ADAUSDT",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type IsolatedMarginAccountInfo
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -5364,9 +7693,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[IsolatedMarginAccountInfo](src/models/isolated-margin-account-info.ts)</code>
+**Direct**: `await client.margin.queryIsolatedMarginAccountInfoUserData(request)`
 
-**OnError**: <code>[Margin.QueryIsolatedMarginAccountInfoUserDataError](src/resources/margin.ts)</code>
+- **OnSuccess**: <code>[IsolatedMarginAccountInfo](src/models/isolated-margin-account-info.ts)</code>
+- **OnError**: throws <code>[Margin.QueryIsolatedMarginAccountInfoUserDataError](src/resources/margin.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.margin.queryIsolatedMarginAccountInfoUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;IsolatedMarginAccountInfo, Margin.QueryIsolatedMarginAccountInfoUserDataError&gt;</code>, with `result.value` of type <code>[IsolatedMarginAccountInfo](src/models/isolated-margin-account-info.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -5394,19 +7731,47 @@ Weight(IP): 1 when a single is specified; 10 when the symbol parameter is omitte
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.margin.queryIsolatedMarginFeeDataUserData({ timestamp, signature });
+  const response = await client.margin.queryIsolatedMarginFeeDataUserData({
+    timestamp: 1,
+    signature: "some example string",
+    vipLevel: 1,
+    symbol: "BNBUSDT",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1MarginIsolatedMarginDataResponse[]
 } catch (err) {
-  if (err instanceof Margin.QueryIsolatedMarginFeeDataUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Margin.QueryIsolatedMarginFeeDataUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.margin.queryIsolatedMarginFeeDataUserData({
+  timestamp: 1,
+  signature: "some example string",
+  vipLevel: 1,
+  symbol: "BNBUSDT",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1MarginIsolatedMarginDataResponse[]
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -5434,9 +7799,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1MarginIsolatedMarginDataResponse](src/models/sapi-v1-margin-isolated-margin-data-response.ts)[]</code>
+**Direct**: `await client.margin.queryIsolatedMarginFeeDataUserData(request)`
 
-**OnError**: <code>[Margin.QueryIsolatedMarginFeeDataUserDataError](src/resources/margin.ts)</code>
+- **OnSuccess**: <code>[SapiV1MarginIsolatedMarginDataResponse](src/models/sapi-v1-margin-isolated-margin-data-response.ts)[]</code>
+- **OnError**: throws <code>[Margin.QueryIsolatedMarginFeeDataUserDataError](src/resources/margin.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.margin.queryIsolatedMarginFeeDataUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1MarginIsolatedMarginDataResponse[], Margin.QueryIsolatedMarginFeeDataUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1MarginIsolatedMarginDataResponse](src/models/sapi-v1-margin-isolated-margin-data-response.ts)[]</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -5464,19 +7837,47 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.margin.queryIsolatedMarginTierDataUserData({ symbol, timestamp, signature });
+  const response = await client.margin.queryIsolatedMarginTierDataUserData({
+    symbol: "BNBUSDT",
+    timestamp: 1,
+    signature: "some example string",
+    tier: "1",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1MarginIsolatedMarginTierResponse[]
 } catch (err) {
-  if (err instanceof Margin.QueryIsolatedMarginTierDataUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Margin.QueryIsolatedMarginTierDataUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.margin.queryIsolatedMarginTierDataUserData({
+  symbol: "BNBUSDT",
+  timestamp: 1,
+  signature: "some example string",
+  tier: "1",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1MarginIsolatedMarginTierResponse[]
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -5504,9 +7905,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1MarginIsolatedMarginTierResponse](src/models/sapi-v1-margin-isolated-margin-tier-response.ts)[]</code>
+**Direct**: `await client.margin.queryIsolatedMarginTierDataUserData(request)`
 
-**OnError**: <code>[Margin.QueryIsolatedMarginTierDataUserDataError](src/resources/margin.ts)</code>
+- **OnSuccess**: <code>[SapiV1MarginIsolatedMarginTierResponse](src/models/sapi-v1-margin-isolated-margin-tier-response.ts)[]</code>
+- **OnError**: throws <code>[Margin.QueryIsolatedMarginTierDataUserDataError](src/resources/margin.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.margin.queryIsolatedMarginTierDataUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1MarginIsolatedMarginTierResponse[], Margin.QueryIsolatedMarginTierDataUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1MarginIsolatedMarginTierResponse](src/models/sapi-v1-margin-isolated-margin-tier-response.ts)[]</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -5534,7 +7943,7 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -5544,12 +7953,26 @@ try {
   const response = await client.margin.queryLiabilityCoinLeverageBracketInCrossMarginProModeMarketData();
   // TODO: Handle 'response' of type SapiV1MarginLeverageBracketResponse[]
 } catch (err) {
-  if (
-    err instanceof Margin.QueryLiabilityCoinLeverageBracketInCrossMarginProModeMarketDataError &&
-      err.payload.kind === "error"
-  ) {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Margin.QueryLiabilityCoinLeverageBracketInCrossMarginProModeMarketDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result =
+  await client.margin.queryLiabilityCoinLeverageBracketInCrossMarginProModeMarketData().asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1MarginLeverageBracketResponse[]
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -5561,9 +7984,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1MarginLeverageBracketResponse](src/models/sapi-v1-margin-leverage-bracket-response.ts)[]</code>
+**Direct**: `await client.margin.queryLiabilityCoinLeverageBracketInCrossMarginProModeMarketData()`
 
-**OnError**: <code>[Margin.QueryLiabilityCoinLeverageBracketInCrossMarginProModeMarketDataError](src/resources/margin.ts)</code>
+- **OnSuccess**: <code>[SapiV1MarginLeverageBracketResponse](src/models/sapi-v1-margin-leverage-bracket-response.ts)[]</code>
+- **OnError**: throws <code>[Margin.QueryLiabilityCoinLeverageBracketInCrossMarginProModeMarketDataError](src/resources/margin.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.margin.queryLiabilityCoinLeverageBracketInCrossMarginProModeMarketData().asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1MarginLeverageBracketResponse[], Margin.QueryLiabilityCoinLeverageBracketInCrossMarginProModeMarketDataError&gt;</code>, with `result.value` of type <code>[SapiV1MarginLeverageBracketResponse](src/models/sapi-v1-margin-leverage-bracket-response.ts)[]</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -5594,19 +8025,47 @@ Request Limit: 60 times/min per IP
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.margin.queryMarginAccountSAllOrdersUserData({ symbol, timestamp, signature });
+  const response = await client.margin.queryMarginAccountSAllOrdersUserData({
+    symbol: "BNBUSDT",
+    timestamp: 1,
+    signature: "some example string",
+    limit: 5,
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type MarginOrderDetail[]
 } catch (err) {
-  if (err instanceof Margin.QueryMarginAccountSAllOrdersUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Margin.QueryMarginAccountSAllOrdersUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.margin.queryMarginAccountSAllOrdersUserData({
+  symbol: "BNBUSDT",
+  timestamp: 1,
+  signature: "some example string",
+  limit: 5,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type MarginOrderDetail[]
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -5638,9 +8097,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[MarginOrderDetail](src/models/margin-order-detail.ts)[]</code>
+**Direct**: `await client.margin.queryMarginAccountSAllOrdersUserData(request)`
 
-**OnError**: <code>[Margin.QueryMarginAccountSAllOrdersUserDataError](src/resources/margin.ts)</code>
+- **OnSuccess**: <code>[MarginOrderDetail](src/models/margin-order-detail.ts)[]</code>
+- **OnError**: throws <code>[Margin.QueryMarginAccountSAllOrdersUserDataError](src/resources/margin.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.margin.queryMarginAccountSAllOrdersUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;MarginOrderDetail[], Margin.QueryMarginAccountSAllOrdersUserDataError&gt;</code>, with `result.value` of type <code>[MarginOrderDetail](src/models/margin-order-detail.ts)[]</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -5670,19 +8137,43 @@ Weight(IP): 10
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.margin.queryMarginAccountSOcoUserData({ timestamp, signature });
+  const response = await client.margin.queryMarginAccountSOcoUserData({
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1MarginOrderListResponse
 } catch (err) {
-  if (err instanceof Margin.QueryMarginAccountSOcoUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Margin.QueryMarginAccountSOcoUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.margin.queryMarginAccountSOcoUserData({
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1MarginOrderListResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -5712,9 +8203,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1MarginOrderListResponse](src/models/sapi-v1-margin-order-list-response.ts)</code>
+**Direct**: `await client.margin.queryMarginAccountSOcoUserData(request)`
 
-**OnError**: <code>[Margin.QueryMarginAccountSOcoUserDataError](src/resources/margin.ts)</code>
+- **OnSuccess**: <code>[SapiV1MarginOrderListResponse](src/models/sapi-v1-margin-order-list-response.ts)</code>
+- **OnError**: throws <code>[Margin.QueryMarginAccountSOcoUserDataError](src/resources/margin.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.margin.queryMarginAccountSOcoUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1MarginOrderListResponse, Margin.QueryMarginAccountSOcoUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1MarginOrderListResponse](src/models/sapi-v1-margin-order-list-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -5740,19 +8239,43 @@ Weight(IP): 10
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.margin.queryMarginAccountSOpenOcoUserData({ timestamp, signature });
+  const response = await client.margin.queryMarginAccountSOpenOcoUserData({
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1MarginOpenOrderListResponse[]
 } catch (err) {
-  if (err instanceof Margin.QueryMarginAccountSOpenOcoUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Margin.QueryMarginAccountSOpenOcoUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.margin.queryMarginAccountSOpenOcoUserData({
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1MarginOpenOrderListResponse[]
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -5780,9 +8303,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1MarginOpenOrderListResponse](src/models/sapi-v1-margin-open-order-list-response.ts)[]</code>
+**Direct**: `await client.margin.queryMarginAccountSOpenOcoUserData(request)`
 
-**OnError**: <code>[Margin.QueryMarginAccountSOpenOcoUserDataError](src/resources/margin.ts)</code>
+- **OnSuccess**: <code>[SapiV1MarginOpenOrderListResponse](src/models/sapi-v1-margin-open-order-list-response.ts)[]</code>
+- **OnError**: throws <code>[Margin.QueryMarginAccountSOpenOcoUserDataError](src/resources/margin.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.margin.queryMarginAccountSOpenOcoUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1MarginOpenOrderListResponse[], Margin.QueryMarginAccountSOpenOcoUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1MarginOpenOrderListResponse](src/models/sapi-v1-margin-open-order-list-response.ts)[]</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -5812,19 +8343,45 @@ Weight(IP): 10
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.margin.queryMarginAccountSOpenOrdersUserData({ timestamp, signature });
+  const response = await client.margin.queryMarginAccountSOpenOrdersUserData({
+    timestamp: 1,
+    signature: "some example string",
+    symbol: "BNBUSDT",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type MarginOrderDetail[]
 } catch (err) {
-  if (err instanceof Margin.QueryMarginAccountSOpenOrdersUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Margin.QueryMarginAccountSOpenOrdersUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.margin.queryMarginAccountSOpenOrdersUserData({
+  timestamp: 1,
+  signature: "some example string",
+  symbol: "BNBUSDT",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type MarginOrderDetail[]
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -5852,9 +8409,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[MarginOrderDetail](src/models/margin-order-detail.ts)[]</code>
+**Direct**: `await client.margin.queryMarginAccountSOpenOrdersUserData(request)`
 
-**OnError**: <code>[Margin.QueryMarginAccountSOpenOrdersUserDataError](src/resources/margin.ts)</code>
+- **OnSuccess**: <code>[MarginOrderDetail](src/models/margin-order-detail.ts)[]</code>
+- **OnError**: throws <code>[Margin.QueryMarginAccountSOpenOrdersUserDataError](src/resources/margin.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.margin.queryMarginAccountSOpenOrdersUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;MarginOrderDetail[], Margin.QueryMarginAccountSOpenOrdersUserDataError&gt;</code>, with `result.value` of type <code>[MarginOrderDetail](src/models/margin-order-detail.ts)[]</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -5883,19 +8448,45 @@ Weight(IP): 10
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.margin.queryMarginAccountSOrderUserData({ symbol, timestamp, signature });
+  const response = await client.margin.queryMarginAccountSOrderUserData({
+    symbol: "BNBUSDT",
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type MarginOrderDetail
 } catch (err) {
-  if (err instanceof Margin.QueryMarginAccountSOrderUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Margin.QueryMarginAccountSOrderUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.margin.queryMarginAccountSOrderUserData({
+  symbol: "BNBUSDT",
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type MarginOrderDetail
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -5925,9 +8516,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[MarginOrderDetail](src/models/margin-order-detail.ts)</code>
+**Direct**: `await client.margin.queryMarginAccountSOrderUserData(request)`
 
-**OnError**: <code>[Margin.QueryMarginAccountSOrderUserDataError](src/resources/margin.ts)</code>
+- **OnSuccess**: <code>[MarginOrderDetail](src/models/margin-order-detail.ts)</code>
+- **OnError**: throws <code>[Margin.QueryMarginAccountSOrderUserDataError](src/resources/margin.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.margin.queryMarginAccountSOrderUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;MarginOrderDetail, Margin.QueryMarginAccountSOrderUserDataError&gt;</code>, with `result.value` of type <code>[MarginOrderDetail](src/models/margin-order-detail.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -5955,19 +8554,47 @@ Weight(IP): 10
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.margin.queryMarginAccountSTradeListUserData({ symbol, timestamp, signature });
+  const response = await client.margin.queryMarginAccountSTradeListUserData({
+    symbol: "BNBUSDT",
+    timestamp: 1,
+    signature: "some example string",
+    limit: 5,
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type MarginTrade[]
 } catch (err) {
-  if (err instanceof Margin.QueryMarginAccountSTradeListUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Margin.QueryMarginAccountSTradeListUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.margin.queryMarginAccountSTradeListUserData({
+  symbol: "BNBUSDT",
+  timestamp: 1,
+  signature: "some example string",
+  limit: 5,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type MarginTrade[]
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -5999,9 +8626,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[MarginTrade](src/models/margin-trade.ts)[]</code>
+**Direct**: `await client.margin.queryMarginAccountSTradeListUserData(request)`
 
-**OnError**: <code>[Margin.QueryMarginAccountSTradeListUserDataError](src/resources/margin.ts)</code>
+- **OnSuccess**: <code>[MarginTrade](src/models/margin-trade.ts)[]</code>
+- **OnError**: throws <code>[Margin.QueryMarginAccountSTradeListUserDataError](src/resources/margin.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.margin.queryMarginAccountSTradeListUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;MarginTrade[], Margin.QueryMarginAccountSTradeListUserDataError&gt;</code>, with `result.value` of type <code>[MarginTrade](src/models/margin-trade.ts)[]</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -6029,19 +8664,43 @@ Weight(IP): 200
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.margin.queryMarginAccountSAllOcoUserData({ timestamp, signature });
+  const response = await client.margin.queryMarginAccountSAllOcoUserData({
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1MarginAllOrderListResponse[]
 } catch (err) {
-  if (err instanceof Margin.QueryMarginAccountSAllOcoUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Margin.QueryMarginAccountSAllOcoUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.margin.queryMarginAccountSAllOcoUserData({
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1MarginAllOrderListResponse[]
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -6073,9 +8732,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1MarginAllOrderListResponse](src/models/sapi-v1-margin-all-order-list-response.ts)[]</code>
+**Direct**: `await client.margin.queryMarginAccountSAllOcoUserData(request)`
 
-**OnError**: <code>[Margin.QueryMarginAccountSAllOcoUserDataError](src/resources/margin.ts)</code>
+- **OnSuccess**: <code>[SapiV1MarginAllOrderListResponse](src/models/sapi-v1-margin-all-order-list-response.ts)[]</code>
+- **OnError**: throws <code>[Margin.QueryMarginAccountSAllOcoUserDataError](src/resources/margin.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.margin.queryMarginAccountSAllOcoUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1MarginAllOrderListResponse[], Margin.QueryMarginAccountSAllOcoUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1MarginAllOrderListResponse](src/models/sapi-v1-margin-all-order-list-response.ts)[]</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -6103,19 +8770,43 @@ Weight(UID): 50
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.margin.queryMarginAvailableInventoryUserData({ type, timestamp, signature });
+  const response = await client.margin.queryMarginAvailableInventoryUserData({
+    type: Type4.Margin,
+    timestamp: 1,
+    signature: "some example string",
+  });
   // TODO: Handle 'response' of type SapiV1MarginAvailableInventoryResponse
 } catch (err) {
-  if (err instanceof Margin.QueryMarginAvailableInventoryUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Margin.QueryMarginAvailableInventoryUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.margin.queryMarginAvailableInventoryUserData({
+  type: Type4.Margin,
+  timestamp: 1,
+  signature: "some example string",
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1MarginAvailableInventoryResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -6141,9 +8832,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1MarginAvailableInventoryResponse](src/models/sapi-v1-margin-available-inventory-response.ts)</code>
+**Direct**: `await client.margin.queryMarginAvailableInventoryUserData(request)`
 
-**OnError**: <code>[Margin.QueryMarginAvailableInventoryUserDataError](src/resources/margin.ts)</code>
+- **OnSuccess**: <code>[SapiV1MarginAvailableInventoryResponse](src/models/sapi-v1-margin-available-inventory-response.ts)</code>
+- **OnError**: throws <code>[Margin.QueryMarginAvailableInventoryUserDataError](src/resources/margin.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.margin.queryMarginAvailableInventoryUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1MarginAvailableInventoryResponse, Margin.QueryMarginAvailableInventoryUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1MarginAvailableInventoryResponse](src/models/sapi-v1-margin-available-inventory-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -6169,19 +8868,35 @@ Weight(IP): 10
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.margin.queryMarginPriceIndexMarketData({ symbol });
+  const response = await client.margin.queryMarginPriceIndexMarketData({ symbol: "BNBUSDT" });
   // TODO: Handle 'response' of type SapiV1MarginPriceIndexResponse
 } catch (err) {
-  if (err instanceof Margin.QueryMarginPriceIndexMarketDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Margin.QueryMarginPriceIndexMarketDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.margin.queryMarginPriceIndexMarketData({ symbol: "BNBUSDT" }).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1MarginPriceIndexResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -6205,9 +8920,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1MarginPriceIndexResponse](src/models/sapi-v1-margin-price-index-response.ts)</code>
+**Direct**: `await client.margin.queryMarginPriceIndexMarketData(request)`
 
-**OnError**: <code>[Margin.QueryMarginPriceIndexMarketDataError](src/resources/margin.ts)</code>
+- **OnSuccess**: <code>[SapiV1MarginPriceIndexResponse](src/models/sapi-v1-margin-price-index-response.ts)</code>
+- **OnError**: throws <code>[Margin.QueryMarginPriceIndexMarketDataError](src/resources/margin.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.margin.queryMarginPriceIndexMarketData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1MarginPriceIndexResponse, Margin.QueryMarginPriceIndexMarketDataError&gt;</code>, with `result.value` of type <code>[SapiV1MarginPriceIndexResponse](src/models/sapi-v1-margin-price-index-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -6236,19 +8959,45 @@ Weight(IP): 50
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.margin.queryMaxBorrowUserData({ asset, timestamp, signature });
+  const response = await client.margin.queryMaxBorrowUserData({
+    asset: "BTC",
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1MarginMaxBorrowableResponse
 } catch (err) {
-  if (err instanceof Margin.QueryMaxBorrowUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Margin.QueryMaxBorrowUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.margin.queryMaxBorrowUserData({
+  asset: "BTC",
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1MarginMaxBorrowableResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -6276,9 +9025,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1MarginMaxBorrowableResponse](src/models/sapi-v1-margin-max-borrowable-response.ts)</code>
+**Direct**: `await client.margin.queryMaxBorrowUserData(request)`
 
-**OnError**: <code>[Margin.QueryMaxBorrowUserDataError](src/resources/margin.ts)</code>
+- **OnSuccess**: <code>[SapiV1MarginMaxBorrowableResponse](src/models/sapi-v1-margin-max-borrowable-response.ts)</code>
+- **OnError**: throws <code>[Margin.QueryMaxBorrowUserDataError](src/resources/margin.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.margin.queryMaxBorrowUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1MarginMaxBorrowableResponse, Margin.QueryMaxBorrowUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1MarginMaxBorrowableResponse](src/models/sapi-v1-margin-max-borrowable-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -6306,19 +9063,45 @@ Weight(IP): 50
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.margin.queryMaxTransferOutAmountUserData({ asset, timestamp, signature });
+  const response = await client.margin.queryMaxTransferOutAmountUserData({
+    asset: "BTC",
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1MarginMaxTransferableResponse
 } catch (err) {
-  if (err instanceof Margin.QueryMaxTransferOutAmountUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Margin.QueryMaxTransferOutAmountUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.margin.queryMaxTransferOutAmountUserData({
+  asset: "BTC",
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1MarginMaxTransferableResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -6346,9 +9129,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1MarginMaxTransferableResponse](src/models/sapi-v1-margin-max-transferable-response.ts)</code>
+**Direct**: `await client.margin.queryMaxTransferOutAmountUserData(request)`
 
-**OnError**: <code>[Margin.QueryMaxTransferOutAmountUserDataError](src/resources/margin.ts)</code>
+- **OnSuccess**: <code>[SapiV1MarginMaxTransferableResponse](src/models/sapi-v1-margin-max-transferable-response.ts)</code>
+- **OnError**: throws <code>[Margin.QueryMaxTransferOutAmountUserDataError](src/resources/margin.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.margin.queryMaxTransferOutAmountUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1MarginMaxTransferableResponse, Margin.QueryMaxTransferOutAmountUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1MarginMaxTransferableResponse](src/models/sapi-v1-margin-max-transferable-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -6381,7 +9172,7 @@ Weight(IP): 10
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -6389,18 +9180,43 @@ Weight(IP): 10
 ```ts
 try {
   const response = await client.margin.queryBorrowRepayRecordsInMarginAccountUserData({
-    asset,
-    type,
-    timestamp,
-    signature,
+    asset: "BTC",
+    type: "some example string",
+    timestamp: 1,
+    signature: "some example string",
+    current: 1,
+    size: 100,
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1MarginBorrowRepayResponse1
 } catch (err) {
-  if (
-    err instanceof Margin.QueryBorrowRepayRecordsInMarginAccountUserDataError && err.payload.kind === "error"
-  ) {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Margin.QueryBorrowRepayRecordsInMarginAccountUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.margin.queryBorrowRepayRecordsInMarginAccountUserData({
+  asset: "BTC",
+  type: "some example string",
+  timestamp: 1,
+  signature: "some example string",
+  current: 1,
+  size: 100,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1MarginBorrowRepayResponse1
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -6434,9 +9250,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1MarginBorrowRepayResponse1](src/models/sapi-v1-margin-borrow-repay-response1.ts)</code>
+**Direct**: `await client.margin.queryBorrowRepayRecordsInMarginAccountUserData(request)`
 
-**OnError**: <code>[Margin.QueryBorrowRepayRecordsInMarginAccountUserDataError](src/resources/margin.ts)</code>
+- **OnSuccess**: <code>[SapiV1MarginBorrowRepayResponse1](src/models/sapi-v1-margin-borrow-repay-response1.ts)</code>
+- **OnError**: throws <code>[Margin.QueryBorrowRepayRecordsInMarginAccountUserDataError](src/resources/margin.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.margin.queryBorrowRepayRecordsInMarginAccountUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1MarginBorrowRepayResponse1, Margin.QueryBorrowRepayRecordsInMarginAccountUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1MarginBorrowRepayResponse1](src/models/sapi-v1-margin-borrow-repay-response1.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -6464,7 +9288,7 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -6472,17 +9296,39 @@ Weight(IP): 1
 ```ts
 try {
   const response = await client.margin.toggleBnbBurnOnSpotTradeAndMarginInterestUserData({
-    timestamp,
-    signature,
+    timestamp: 1,
+    signature: "some example string",
+    spotBnbBurn: SpotBnbBurn.True,
+    interestBnbBurn: InterestBnbBurn.False,
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type BnbBurnStatus
 } catch (err) {
-  if (
-    err instanceof Margin.ToggleBnbBurnOnSpotTradeAndMarginInterestUserDataError &&
-      err.payload.kind === "error"
-  ) {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Margin.ToggleBnbBurnOnSpotTradeAndMarginInterestUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.margin.toggleBnbBurnOnSpotTradeAndMarginInterestUserData({
+  timestamp: 1,
+  signature: "some example string",
+  spotBnbBurn: SpotBnbBurn.True,
+  interestBnbBurn: InterestBnbBurn.False,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type BnbBurnStatus
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -6510,9 +9356,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[BnbBurnStatus](src/models/bnb-burn-status.ts)</code>
+**Direct**: `await client.margin.toggleBnbBurnOnSpotTradeAndMarginInterestUserData(request)`
 
-**OnError**: <code>[Margin.ToggleBnbBurnOnSpotTradeAndMarginInterestUserDataError](src/resources/margin.ts)</code>
+- **OnSuccess**: <code>[BnbBurnStatus](src/models/bnb-burn-status.ts)</code>
+- **OnError**: throws <code>[Margin.ToggleBnbBurnOnSpotTradeAndMarginInterestUserDataError](src/resources/margin.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.margin.toggleBnbBurnOnSpotTradeAndMarginInterestUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;BnbBurnStatus, Margin.ToggleBnbBurnOnSpotTradeAndMarginInterestUserDataError&gt;</code>, with `result.value` of type <code>[BnbBurnStatus](src/models/bnb-burn-status.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -6544,19 +9398,43 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.wallet.accountApiTradingStatusUserData({ timestamp, signature });
+  const response = await client.wallet.accountApiTradingStatusUserData({
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1AccountApiTradingStatusResponse
 } catch (err) {
-  if (err instanceof Wallet.AccountApiTradingStatusUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Wallet.AccountApiTradingStatusUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.wallet.accountApiTradingStatusUserData({
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1AccountApiTradingStatusResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -6582,9 +9460,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1AccountApiTradingStatusResponse](src/models/sapi-v1-account-api-trading-status-response.ts)</code>
+**Direct**: `await client.wallet.accountApiTradingStatusUserData(request)`
 
-**OnError**: <code>[Wallet.AccountApiTradingStatusUserDataError](src/resources/wallet.ts)</code>
+- **OnSuccess**: <code>[SapiV1AccountApiTradingStatusResponse](src/models/sapi-v1-account-api-trading-status-response.ts)</code>
+- **OnError**: throws <code>[Wallet.AccountApiTradingStatusUserDataError](src/resources/wallet.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.wallet.accountApiTradingStatusUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1AccountApiTradingStatusResponse, Wallet.AccountApiTradingStatusUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1AccountApiTradingStatusResponse](src/models/sapi-v1-account-api-trading-status-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -6612,19 +9498,43 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.wallet.accountStatusUserData({ timestamp, signature });
+  const response = await client.wallet.accountStatusUserData({
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1AccountStatusResponse
 } catch (err) {
-  if (err instanceof Wallet.AccountStatusUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Wallet.AccountStatusUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.wallet.accountStatusUserData({
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1AccountStatusResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -6650,9 +9560,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1AccountStatusResponse](src/models/sapi-v1-account-status-response.ts)</code>
+**Direct**: `await client.wallet.accountStatusUserData(request)`
 
-**OnError**: <code>[Wallet.AccountStatusUserDataError](src/resources/wallet.ts)</code>
+- **OnSuccess**: <code>[SapiV1AccountStatusResponse](src/models/sapi-v1-account-status-response.ts)</code>
+- **OnError**: throws <code>[Wallet.AccountStatusUserDataError](src/resources/wallet.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.wallet.accountStatusUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1AccountStatusResponse, Wallet.AccountStatusUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1AccountStatusResponse](src/models/sapi-v1-account-status-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -6680,19 +9598,43 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.wallet.accountInfoUserData({ timestamp, signature });
+  const response = await client.wallet.accountInfoUserData({
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1AccountInfoResponse
 } catch (err) {
-  if (err instanceof Wallet.AccountInfoUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Wallet.AccountInfoUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.wallet.accountInfoUserData({
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1AccountInfoResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -6718,9 +9660,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1AccountInfoResponse](src/models/sapi-v1-account-info-response.ts)</code>
+**Direct**: `await client.wallet.accountInfoUserData(request)`
 
-**OnError**: <code>[Wallet.AccountInfoUserDataError](src/resources/wallet.ts)</code>
+- **OnSuccess**: <code>[SapiV1AccountInfoResponse](src/models/sapi-v1-account-info-response.ts)</code>
+- **OnError**: throws <code>[Wallet.AccountInfoUserDataError](src/resources/wallet.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.wallet.accountInfoUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1AccountInfoResponse, Wallet.AccountInfoUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1AccountInfoResponse](src/models/sapi-v1-account-info-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -6748,19 +9698,43 @@ Weight(IP): 10
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.wallet.allCoinsInformationUserData({ timestamp, signature });
+  const response = await client.wallet.allCoinsInformationUserData({
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1CapitalConfigGetallResponse[]
 } catch (err) {
-  if (err instanceof Wallet.AllCoinsInformationUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Wallet.AllCoinsInformationUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.wallet.allCoinsInformationUserData({
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1CapitalConfigGetallResponse[]
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -6786,9 +9760,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1CapitalConfigGetallResponse](src/models/sapi-v1-capital-config-getall-response.ts)[]</code>
+**Direct**: `await client.wallet.allCoinsInformationUserData(request)`
 
-**OnError**: <code>[Wallet.AllCoinsInformationUserDataError](src/resources/wallet.ts)</code>
+- **OnSuccess**: <code>[SapiV1CapitalConfigGetallResponse](src/models/sapi-v1-capital-config-getall-response.ts)[]</code>
+- **OnError**: throws <code>[Wallet.AllCoinsInformationUserDataError](src/resources/wallet.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.wallet.allCoinsInformationUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1CapitalConfigGetallResponse[], Wallet.AllCoinsInformationUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1CapitalConfigGetallResponse](src/models/sapi-v1-capital-config-getall-response.ts)[]</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -6818,19 +9800,45 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.wallet.assetDetailUserData({ timestamp, signature });
+  const response = await client.wallet.assetDetailUserData({
+    timestamp: 1,
+    signature: "some example string",
+    asset: "BNB",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1AssetAssetDetailResponse
 } catch (err) {
-  if (err instanceof Wallet.AssetDetailUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Wallet.AssetDetailUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.wallet.assetDetailUserData({
+  timestamp: 1,
+  signature: "some example string",
+  asset: "BNB",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1AssetAssetDetailResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -6857,9 +9865,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1AssetAssetDetailResponse](src/models/sapi-v1-asset-asset-detail-response.ts)</code>
+**Direct**: `await client.wallet.assetDetailUserData(request)`
 
-**OnError**: <code>[Wallet.AssetDetailUserDataError](src/resources/wallet.ts)</code>
+- **OnSuccess**: <code>[SapiV1AssetAssetDetailResponse](src/models/sapi-v1-asset-asset-detail-response.ts)</code>
+- **OnError**: throws <code>[Wallet.AssetDetailUserDataError](src/resources/wallet.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.wallet.assetDetailUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1AssetAssetDetailResponse, Wallet.AssetDetailUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1AssetAssetDetailResponse](src/models/sapi-v1-asset-asset-detail-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -6887,19 +9903,45 @@ Weight(IP): 10
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.wallet.assetDividendRecordUserData({ timestamp, signature });
+  const response = await client.wallet.assetDividendRecordUserData({
+    timestamp: 1,
+    signature: "some example string",
+    asset: "BNB",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1AssetAssetDividendResponse
 } catch (err) {
-  if (err instanceof Wallet.AssetDividendRecordUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Wallet.AssetDividendRecordUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.wallet.assetDividendRecordUserData({
+  timestamp: 1,
+  signature: "some example string",
+  asset: "BNB",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1AssetAssetDividendResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -6918,7 +9960,7 @@ try {
 | <code>asset?</code> | <code>string</code> | - |
 | <code>startTime?</code> | <code>number</code> | UTC timestamp in ms |
 | <code>endTime?</code> | <code>number</code> | UTC timestamp in ms |
-| <code>limit?</code> | <code>number</code> | - |
+| <code>limit?</code> | <code>number</code> | -<br>**Default**: 20 |
 | <code>recvWindow?</code> | <code>number</code> | The value cannot be greater than 60000 |
 
 </dd>
@@ -6929,9 +9971,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1AssetAssetDividendResponse](src/models/sapi-v1-asset-asset-dividend-response.ts)</code>
+**Direct**: `await client.wallet.assetDividendRecordUserData(request)`
 
-**OnError**: <code>[Wallet.AssetDividendRecordUserDataError](src/resources/wallet.ts)</code>
+- **OnSuccess**: <code>[SapiV1AssetAssetDividendResponse](src/models/sapi-v1-asset-asset-dividend-response.ts)</code>
+- **OnError**: throws <code>[Wallet.AssetDividendRecordUserDataError](src/resources/wallet.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.wallet.assetDividendRecordUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1AssetAssetDividendResponse, Wallet.AssetDividendRecordUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1AssetAssetDividendResponse](src/models/sapi-v1-asset-asset-dividend-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -6960,7 +10010,7 @@ Weight(UID): 5
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -6968,18 +10018,43 @@ Weight(UID): 5
 ```ts
 try {
   const response = await client.wallet.convertTransferUserData({
-    clientTranId,
-    asset,
-    amount,
-    targetAsset,
-    timestamp,
-    signature,
+    clientTranId: "some example string",
+    asset: "BTC",
+    amount: 1.01,
+    targetAsset: "BNB",
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1AssetConvertTransferResponse
 } catch (err) {
-  if (err instanceof Wallet.ConvertTransferUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Wallet.ConvertTransferUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.wallet.convertTransferUserData({
+  clientTranId: "some example string",
+  asset: "BTC",
+  amount: 1.01,
+  targetAsset: "BNB",
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1AssetConvertTransferResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -7009,9 +10084,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1AssetConvertTransferResponse](src/models/sapi-v1-asset-convert-transfer-response.ts)</code>
+**Direct**: `await client.wallet.convertTransferUserData(request)`
 
-**OnError**: <code>[Wallet.ConvertTransferUserDataError](src/resources/wallet.ts)</code>
+- **OnSuccess**: <code>[SapiV1AssetConvertTransferResponse](src/models/sapi-v1-asset-convert-transfer-response.ts)</code>
+- **OnError**: throws <code>[Wallet.ConvertTransferUserDataError](src/resources/wallet.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.wallet.convertTransferUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1AssetConvertTransferResponse, Wallet.ConvertTransferUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1AssetConvertTransferResponse](src/models/sapi-v1-asset-convert-transfer-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -7041,19 +10124,45 @@ Weight(IP): 2400
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.wallet.dailyAccountSnapshotUserData({ type, timestamp, signature });
+  const response = await client.wallet.dailyAccountSnapshotUserData({
+    type: Type6.Spot,
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1AccountSnapshotResponse
 } catch (err) {
-  if (err instanceof Wallet.DailyAccountSnapshotUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Wallet.DailyAccountSnapshotUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.wallet.dailyAccountSnapshotUserData({
+  type: Type6.Spot,
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1AccountSnapshotResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -7072,7 +10181,7 @@ try {
 | <code>signature</code> | <code>string</code> | Signature |
 | <code>startTime?</code> | <code>number</code> | UTC timestamp in ms |
 | <code>endTime?</code> | <code>number</code> | UTC timestamp in ms |
-| <code>limit?</code> | <code>number</code> | - |
+| <code>limit?</code> | <code>number</code> | -<br>**Default**: 7 |
 | <code>recvWindow?</code> | <code>number</code> | The value cannot be greater than 60000 |
 
 </dd>
@@ -7083,9 +10192,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1AccountSnapshotResponse](src/models/unions/sapi-v1-account-snapshot-response.ts)</code>
+**Direct**: `await client.wallet.dailyAccountSnapshotUserData(request)`
 
-**OnError**: <code>[Wallet.DailyAccountSnapshotUserDataError](src/resources/wallet.ts)</code>
+- **OnSuccess**: <code>[SapiV1AccountSnapshotResponse](src/models/unions/sapi-v1-account-snapshot-response.ts)</code>
+- **OnError**: throws <code>[Wallet.DailyAccountSnapshotUserDataError](src/resources/wallet.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.wallet.dailyAccountSnapshotUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1AccountSnapshotResponse, Wallet.DailyAccountSnapshotUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1AccountSnapshotResponse](src/models/unions/sapi-v1-account-snapshot-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -7116,7 +10233,7 @@ Weight(IP): 10
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -7124,15 +10241,39 @@ Weight(IP): 10
 ```ts
 try {
   const response = await client.wallet.depositAddressSupportingNetworkUserData({
-    coin,
-    timestamp,
-    signature,
+    coin: "BNB",
+    timestamp: 1,
+    signature: "some example string",
+    network: "BTC",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1CapitalDepositAddressResponse
 } catch (err) {
-  if (err instanceof Wallet.DepositAddressSupportingNetworkUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Wallet.DepositAddressSupportingNetworkUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.wallet.depositAddressSupportingNetworkUserData({
+  coin: "BNB",
+  timestamp: 1,
+  signature: "some example string",
+  network: "BTC",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1CapitalDepositAddressResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -7160,9 +10301,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1CapitalDepositAddressResponse](src/models/sapi-v1-capital-deposit-address-response.ts)</code>
+**Direct**: `await client.wallet.depositAddressSupportingNetworkUserData(request)`
 
-**OnError**: <code>[Wallet.DepositAddressSupportingNetworkUserDataError](src/resources/wallet.ts)</code>
+- **OnSuccess**: <code>[SapiV1CapitalDepositAddressResponse](src/models/sapi-v1-capital-deposit-address-response.ts)</code>
+- **OnError**: throws <code>[Wallet.DepositAddressSupportingNetworkUserDataError](src/resources/wallet.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.wallet.depositAddressSupportingNetworkUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1CapitalDepositAddressResponse, Wallet.DepositAddressSupportingNetworkUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1CapitalDepositAddressResponse](src/models/sapi-v1-capital-deposit-address-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -7193,19 +10342,47 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.wallet.depositHistorySupportingNetworkUserData({ timestamp, signature });
+  const response = await client.wallet.depositHistorySupportingNetworkUserData({
+    timestamp: 1,
+    signature: "some example string",
+    coin: "BNB",
+    limit: 5,
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1CapitalDepositHisrecResponse[]
 } catch (err) {
-  if (err instanceof Wallet.DepositHistorySupportingNetworkUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Wallet.DepositHistorySupportingNetworkUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.wallet.depositHistorySupportingNetworkUserData({
+  timestamp: 1,
+  signature: "some example string",
+  coin: "BNB",
+  limit: 5,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1CapitalDepositHisrecResponse[]
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -7237,9 +10414,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1CapitalDepositHisrecResponse](src/models/sapi-v1-capital-deposit-hisrec-response.ts)[]</code>
+**Direct**: `await client.wallet.depositHistorySupportingNetworkUserData(request)`
 
-**OnError**: <code>[Wallet.DepositHistorySupportingNetworkUserDataError](src/resources/wallet.ts)</code>
+- **OnSuccess**: <code>[SapiV1CapitalDepositHisrecResponse](src/models/sapi-v1-capital-deposit-hisrec-response.ts)[]</code>
+- **OnError**: throws <code>[Wallet.DepositHistorySupportingNetworkUserDataError](src/resources/wallet.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.wallet.depositHistorySupportingNetworkUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1CapitalDepositHisrecResponse[], Wallet.DepositHistorySupportingNetworkUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1CapitalDepositHisrecResponse](src/models/sapi-v1-capital-deposit-hisrec-response.ts)[]</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -7268,19 +10453,43 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.wallet.disableFastWithdrawSwitchUserData({ timestamp, signature });
+  const response = await client.wallet.disableFastWithdrawSwitchUserData({
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type Record<string, unknown>
 } catch (err) {
-  if (err instanceof Wallet.DisableFastWithdrawSwitchUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Wallet.DisableFastWithdrawSwitchUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.wallet.disableFastWithdrawSwitchUserData({
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type Record<string, unknown>
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -7306,9 +10515,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>Record&lt;string, unknown&gt;</code>
+**Direct**: `await client.wallet.disableFastWithdrawSwitchUserData(request)`
 
-**OnError**: <code>[Wallet.DisableFastWithdrawSwitchUserDataError](src/resources/wallet.ts)</code>
+- **OnSuccess**: <code>Record&lt;string, unknown&gt;</code>
+- **OnError**: throws <code>[Wallet.DisableFastWithdrawSwitchUserDataError](src/resources/wallet.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.wallet.disableFastWithdrawSwitchUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;Record&lt;string, unknown&gt;, Wallet.DisableFastWithdrawSwitchUserDataError&gt;</code>, with `result.value` of type <code>Record&lt;string, unknown&gt;</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -7336,19 +10553,45 @@ Weight(UID): 10
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.wallet.dustTransferUserData({ asset, timestamp, signature });
+  const response = await client.wallet.dustTransferUserData({
+    asset: ["some example string"],
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1AssetDustResponse
 } catch (err) {
-  if (err instanceof Wallet.DustTransferUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Wallet.DustTransferUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.wallet.dustTransferUserData({
+  asset: ["some example string"],
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1AssetDustResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -7376,9 +10619,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1AssetDustResponse](src/models/sapi-v1-asset-dust-response.ts)</code>
+**Direct**: `await client.wallet.dustTransferUserData(request)`
 
-**OnError**: <code>[Wallet.DustTransferUserDataError](src/resources/wallet.ts)</code>
+- **OnSuccess**: <code>[SapiV1AssetDustResponse](src/models/sapi-v1-asset-dust-response.ts)</code>
+- **OnError**: throws <code>[Wallet.DustTransferUserDataError](src/resources/wallet.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.wallet.dustTransferUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1AssetDustResponse, Wallet.DustTransferUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1AssetDustResponse](src/models/sapi-v1-asset-dust-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -7404,19 +10655,43 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.wallet.dustLogUserData({ timestamp, signature });
+  const response = await client.wallet.dustLogUserData({
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1AssetDribbletResponse
 } catch (err) {
-  if (err instanceof Wallet.DustLogUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Wallet.DustLogUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.wallet.dustLogUserData({
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1AssetDribbletResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -7445,9 +10720,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1AssetDribbletResponse](src/models/sapi-v1-asset-dribblet-response.ts)</code>
+**Direct**: `await client.wallet.dustLogUserData(request)`
 
-**OnError**: <code>[Wallet.DustLogUserDataError](src/resources/wallet.ts)</code>
+- **OnSuccess**: <code>[SapiV1AssetDribbletResponse](src/models/sapi-v1-asset-dribblet-response.ts)</code>
+- **OnError**: throws <code>[Wallet.DustLogUserDataError](src/resources/wallet.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.wallet.dustLogUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1AssetDribbletResponse, Wallet.DustLogUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1AssetDribbletResponse](src/models/sapi-v1-asset-dribblet-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -7476,19 +10759,43 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.wallet.enableFastWithdrawSwitchUserData({ timestamp, signature });
+  const response = await client.wallet.enableFastWithdrawSwitchUserData({
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type Record<string, unknown>
 } catch (err) {
-  if (err instanceof Wallet.EnableFastWithdrawSwitchUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Wallet.EnableFastWithdrawSwitchUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.wallet.enableFastWithdrawSwitchUserData({
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type Record<string, unknown>
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -7514,9 +10821,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>Record&lt;string, unknown&gt;</code>
+**Direct**: `await client.wallet.enableFastWithdrawSwitchUserData(request)`
 
-**OnError**: <code>[Wallet.EnableFastWithdrawSwitchUserDataError](src/resources/wallet.ts)</code>
+- **OnSuccess**: <code>Record&lt;string, unknown&gt;</code>
+- **OnError**: throws <code>[Wallet.EnableFastWithdrawSwitchUserDataError](src/resources/wallet.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.wallet.enableFastWithdrawSwitchUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;Record&lt;string, unknown&gt;, Wallet.EnableFastWithdrawSwitchUserDataError&gt;</code>, with `result.value` of type <code>Record&lt;string, unknown&gt;</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -7544,7 +10859,7 @@ Weight(IP): 10
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -7552,15 +10867,39 @@ Weight(IP): 10
 ```ts
 try {
   const response = await client.wallet.fetchDepositAddressListWithNetworkUserData({
-    coin,
-    timestamp,
-    signature,
+    coin: "BTC",
+    timestamp: 1,
+    signature: "some example string",
+    network: "BTC",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1CapitalDepositAddressListResponse[]
 } catch (err) {
-  if (err instanceof Wallet.FetchDepositAddressListWithNetworkUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Wallet.FetchDepositAddressListWithNetworkUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.wallet.fetchDepositAddressListWithNetworkUserData({
+  coin: "BTC",
+  timestamp: 1,
+  signature: "some example string",
+  network: "BTC",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1CapitalDepositAddressListResponse[]
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -7588,9 +10927,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1CapitalDepositAddressListResponse](src/models/sapi-v1-capital-deposit-address-list-response.ts)[]</code>
+**Direct**: `await client.wallet.fetchDepositAddressListWithNetworkUserData(request)`
 
-**OnError**: <code>[Wallet.FetchDepositAddressListWithNetworkUserDataError](src/resources/wallet.ts)</code>
+- **OnSuccess**: <code>[SapiV1CapitalDepositAddressListResponse](src/models/sapi-v1-capital-deposit-address-list-response.ts)[]</code>
+- **OnError**: throws <code>[Wallet.FetchDepositAddressListWithNetworkUserDataError](src/resources/wallet.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.wallet.fetchDepositAddressListWithNetworkUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1CapitalDepositAddressListResponse[], Wallet.FetchDepositAddressListWithNetworkUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1CapitalDepositAddressListResponse](src/models/sapi-v1-capital-deposit-address-list-response.ts)[]</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -7618,7 +10965,7 @@ Weight(IP): 10
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -7628,9 +10975,25 @@ try {
   const response = await client.wallet.fetchWithdrawAddressListUserData();
   // TODO: Handle 'response' of type SapiV1CapitalWithdrawAddressListResponse[]
 } catch (err) {
-  if (err instanceof Wallet.FetchWithdrawAddressListUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Wallet.FetchWithdrawAddressListUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.wallet.fetchWithdrawAddressListUserData().asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1CapitalWithdrawAddressListResponse[]
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -7642,9 +11005,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1CapitalWithdrawAddressListResponse](src/models/sapi-v1-capital-withdraw-address-list-response.ts)[]</code>
+**Direct**: `await client.wallet.fetchWithdrawAddressListUserData()`
 
-**OnError**: <code>[Wallet.FetchWithdrawAddressListUserDataError](src/resources/wallet.ts)</code>
+- **OnSuccess**: <code>[SapiV1CapitalWithdrawAddressListResponse](src/models/sapi-v1-capital-withdraw-address-list-response.ts)[]</code>
+- **OnError**: throws <code>[Wallet.FetchWithdrawAddressListUserDataError](src/resources/wallet.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.wallet.fetchWithdrawAddressListUserData().asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1CapitalWithdrawAddressListResponse[], Wallet.FetchWithdrawAddressListUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1CapitalWithdrawAddressListResponse](src/models/sapi-v1-capital-withdraw-address-list-response.ts)[]</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -7672,19 +11043,45 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.wallet.fundingWalletUserData({ timestamp, signature });
+  const response = await client.wallet.fundingWalletUserData({
+    timestamp: 1,
+    signature: "some example string",
+    asset: "BNB",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1AssetGetFundingAssetResponse[]
 } catch (err) {
-  if (err instanceof Wallet.FundingWalletUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Wallet.FundingWalletUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.wallet.fundingWalletUserData({
+  timestamp: 1,
+  signature: "some example string",
+  asset: "BNB",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1AssetGetFundingAssetResponse[]
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -7712,9 +11109,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1AssetGetFundingAssetResponse](src/models/sapi-v1-asset-get-funding-asset-response.ts)[]</code>
+**Direct**: `await client.wallet.fundingWalletUserData(request)`
 
-**OnError**: <code>[Wallet.FundingWalletUserDataError](src/resources/wallet.ts)</code>
+- **OnSuccess**: <code>[SapiV1AssetGetFundingAssetResponse](src/models/sapi-v1-asset-get-funding-asset-response.ts)[]</code>
+- **OnError**: throws <code>[Wallet.FundingWalletUserDataError](src/resources/wallet.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.wallet.fundingWalletUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1AssetGetFundingAssetResponse[], Wallet.FundingWalletUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1AssetGetFundingAssetResponse](src/models/sapi-v1-asset-get-funding-asset-response.ts)[]</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -7740,19 +11145,43 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.wallet.getApiKeyPermissionUserData({ timestamp, signature });
+  const response = await client.wallet.getApiKeyPermissionUserData({
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1AccountApiRestrictionsResponse
 } catch (err) {
-  if (err instanceof Wallet.GetApiKeyPermissionUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Wallet.GetApiKeyPermissionUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.wallet.getApiKeyPermissionUserData({
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1AccountApiRestrictionsResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -7778,9 +11207,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1AccountApiRestrictionsResponse](src/models/sapi-v1-account-api-restrictions-response.ts)</code>
+**Direct**: `await client.wallet.getApiKeyPermissionUserData(request)`
 
-**OnError**: <code>[Wallet.GetApiKeyPermissionUserDataError](src/resources/wallet.ts)</code>
+- **OnSuccess**: <code>[SapiV1AccountApiRestrictionsResponse](src/models/sapi-v1-account-api-restrictions-response.ts)</code>
+- **OnError**: throws <code>[Wallet.GetApiKeyPermissionUserDataError](src/resources/wallet.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.wallet.getApiKeyPermissionUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1AccountApiRestrictionsResponse, Wallet.GetApiKeyPermissionUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1AccountApiRestrictionsResponse](src/models/sapi-v1-account-api-restrictions-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -7806,19 +11243,43 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.wallet.getAssetsThatCanBeConvertedIntoBnbUserData({ timestamp, signature });
+  const response = await client.wallet.getAssetsThatCanBeConvertedIntoBnbUserData({
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1AssetDustBtcResponse
 } catch (err) {
-  if (err instanceof Wallet.GetAssetsThatCanBeConvertedIntoBnbUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Wallet.GetAssetsThatCanBeConvertedIntoBnbUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.wallet.getAssetsThatCanBeConvertedIntoBnbUserData({
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1AssetDustBtcResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -7845,9 +11306,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1AssetDustBtcResponse](src/models/sapi-v1-asset-dust-btc-response.ts)</code>
+**Direct**: `await client.wallet.getAssetsThatCanBeConvertedIntoBnbUserData(request)`
 
-**OnError**: <code>[Wallet.GetAssetsThatCanBeConvertedIntoBnbUserDataError](src/resources/wallet.ts)</code>
+- **OnSuccess**: <code>[SapiV1AssetDustBtcResponse](src/models/sapi-v1-asset-dust-btc-response.ts)</code>
+- **OnError**: throws <code>[Wallet.GetAssetsThatCanBeConvertedIntoBnbUserDataError](src/resources/wallet.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.wallet.getAssetsThatCanBeConvertedIntoBnbUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1AssetDustBtcResponse, Wallet.GetAssetsThatCanBeConvertedIntoBnbUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1AssetDustBtcResponse](src/models/sapi-v1-asset-dust-btc-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -7875,7 +11344,7 @@ Weight(UID): 600
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -7883,18 +11352,47 @@ Weight(UID): 600
 ```ts
 try {
   const response = await client.wallet.getCloudMiningPaymentAndRefundHistoryUserData({
-    startTime,
-    endTime,
-    timestamp,
-    signature,
+    startTime: 1,
+    endTime: 1,
+    timestamp: 1,
+    signature: "some example string",
+    tranId: 118263615991,
+    asset: "BTC",
+    current: 1,
+    size: 100,
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1AssetLedgerTransferCloudMiningQueryByPageResponse
 } catch (err) {
-  if (
-    err instanceof Wallet.GetCloudMiningPaymentAndRefundHistoryUserDataError && err.payload.kind === "error"
-  ) {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Wallet.GetCloudMiningPaymentAndRefundHistoryUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.wallet.getCloudMiningPaymentAndRefundHistoryUserData({
+  startTime: 1,
+  endTime: 1,
+  timestamp: 1,
+  signature: "some example string",
+  tranId: 118263615991,
+  asset: "BTC",
+  current: 1,
+  size: 100,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1AssetLedgerTransferCloudMiningQueryByPageResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -7927,9 +11425,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1AssetLedgerTransferCloudMiningQueryByPageResponse](src/models/sapi-v1-asset-ledger-transfer-cloud-mining-query-by-page-response.ts)</code>
+**Direct**: `await client.wallet.getCloudMiningPaymentAndRefundHistoryUserData(request)`
 
-**OnError**: <code>[Wallet.GetCloudMiningPaymentAndRefundHistoryUserDataError](src/resources/wallet.ts)</code>
+- **OnSuccess**: <code>[SapiV1AssetLedgerTransferCloudMiningQueryByPageResponse](src/models/sapi-v1-asset-ledger-transfer-cloud-mining-query-by-page-response.ts)</code>
+- **OnError**: throws <code>[Wallet.GetCloudMiningPaymentAndRefundHistoryUserDataError](src/resources/wallet.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.wallet.getCloudMiningPaymentAndRefundHistoryUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1AssetLedgerTransferCloudMiningQueryByPageResponse, Wallet.GetCloudMiningPaymentAndRefundHistoryUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1AssetLedgerTransferCloudMiningQueryByPageResponse](src/models/sapi-v1-asset-ledger-transfer-cloud-mining-query-by-page-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -7957,19 +11463,43 @@ Weight(IP): 100
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.wallet.getSymbolsDelistScheduleForSpotMarketData({ timestamp, signature });
+  const response = await client.wallet.getSymbolsDelistScheduleForSpotMarketData({
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1SpotDelistScheduleResponse[]
 } catch (err) {
-  if (err instanceof Wallet.GetSymbolsDelistScheduleForSpotMarketDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Wallet.GetSymbolsDelistScheduleForSpotMarketDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.wallet.getSymbolsDelistScheduleForSpotMarketData({
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1SpotDelistScheduleResponse[]
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -7995,9 +11525,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1SpotDelistScheduleResponse](src/models/sapi-v1-spot-delist-schedule-response.ts)[]</code>
+**Direct**: `await client.wallet.getSymbolsDelistScheduleForSpotMarketData(request)`
 
-**OnError**: <code>[Wallet.GetSymbolsDelistScheduleForSpotMarketDataError](src/resources/wallet.ts)</code>
+- **OnSuccess**: <code>[SapiV1SpotDelistScheduleResponse](src/models/sapi-v1-spot-delist-schedule-response.ts)[]</code>
+- **OnError**: throws <code>[Wallet.GetSymbolsDelistScheduleForSpotMarketDataError](src/resources/wallet.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.wallet.getSymbolsDelistScheduleForSpotMarketData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1SpotDelistScheduleResponse[], Wallet.GetSymbolsDelistScheduleForSpotMarketDataError&gt;</code>, with `result.value` of type <code>[SapiV1SpotDelistScheduleResponse](src/models/sapi-v1-spot-delist-schedule-response.ts)[]</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -8025,19 +11563,43 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.wallet.oneClickArrivalDepositApplyUserData({ timestamp, signature });
+  const response = await client.wallet.oneClickArrivalDepositApplyUserData({
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1CapitalDepositCreditApplyResponse
 } catch (err) {
-  if (err instanceof Wallet.OneClickArrivalDepositApplyUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Wallet.OneClickArrivalDepositApplyUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.wallet.oneClickArrivalDepositApplyUserData({
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1CapitalDepositCreditApplyResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -8067,9 +11629,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1CapitalDepositCreditApplyResponse](src/models/sapi-v1-capital-deposit-credit-apply-response.ts)</code>
+**Direct**: `await client.wallet.oneClickArrivalDepositApplyUserData(request)`
 
-**OnError**: <code>[Wallet.OneClickArrivalDepositApplyUserDataError](src/resources/wallet.ts)</code>
+- **OnSuccess**: <code>[SapiV1CapitalDepositCreditApplyResponse](src/models/sapi-v1-capital-deposit-credit-apply-response.ts)</code>
+- **OnError**: throws <code>[Wallet.OneClickArrivalDepositApplyUserDataError](src/resources/wallet.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.wallet.oneClickArrivalDepositApplyUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1CapitalDepositCreditApplyResponse, Wallet.OneClickArrivalDepositApplyUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1CapitalDepositCreditApplyResponse](src/models/sapi-v1-capital-deposit-credit-apply-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -8095,7 +11665,7 @@ Weight(UID): 5
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -8103,16 +11673,47 @@ Weight(UID): 5
 ```ts
 try {
   const response = await client.wallet.queryConvertTransferUserData({
-    startTime,
-    endTime,
-    timestamp,
-    signature,
+    startTime: 1,
+    endTime: 1,
+    timestamp: 1,
+    signature: "some example string",
+    tranId: 118263615991,
+    asset: "BTC",
+    current: 1,
+    size: 100,
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1AssetConvertTransferQueryByPageResponse
 } catch (err) {
-  if (err instanceof Wallet.QueryConvertTransferUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Wallet.QueryConvertTransferUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.wallet.queryConvertTransferUserData({
+  startTime: 1,
+  endTime: 1,
+  timestamp: 1,
+  signature: "some example string",
+  tranId: 118263615991,
+  asset: "BTC",
+  current: 1,
+  size: 100,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1AssetConvertTransferQueryByPageResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -8145,9 +11746,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1AssetConvertTransferQueryByPageResponse](src/models/sapi-v1-asset-convert-transfer-query-by-page-response.ts)</code>
+**Direct**: `await client.wallet.queryConvertTransferUserData(request)`
 
-**OnError**: <code>[Wallet.QueryConvertTransferUserDataError](src/resources/wallet.ts)</code>
+- **OnSuccess**: <code>[SapiV1AssetConvertTransferQueryByPageResponse](src/models/sapi-v1-asset-convert-transfer-query-by-page-response.ts)</code>
+- **OnError**: throws <code>[Wallet.QueryConvertTransferUserDataError](src/resources/wallet.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.wallet.queryConvertTransferUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1AssetConvertTransferQueryByPageResponse, Wallet.QueryConvertTransferUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1AssetConvertTransferQueryByPageResponse](src/models/sapi-v1-asset-convert-transfer-query-by-page-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -8175,7 +11784,7 @@ Weight(IP): 60
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -8183,21 +11792,49 @@ Weight(IP): 60
 ```ts
 try {
   const response = await client.wallet.queryUserDelegationHistoryForMasterAccountUserData({
-    email,
-    startTime,
-    endTime,
-    asset,
-    timestamp,
-    signature,
+    email: "alice@test.com",
+    startTime: 1695205406000,
+    endTime: 1695205396000,
+    asset: "BTC",
+    timestamp: 1,
+    signature: "some example string",
+    type: "Delegate",
+    current: 1,
+    size: 100,
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1AssetCustodyTransferHistoryResponse
 } catch (err) {
-  if (
-    err instanceof Wallet.QueryUserDelegationHistoryForMasterAccountUserDataError &&
-      err.payload.kind === "error"
-  ) {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Wallet.QueryUserDelegationHistoryForMasterAccountUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.wallet.queryUserDelegationHistoryForMasterAccountUserData({
+  email: "alice@test.com",
+  startTime: 1695205406000,
+  endTime: 1695205396000,
+  asset: "BTC",
+  timestamp: 1,
+  signature: "some example string",
+  type: "Delegate",
+  current: 1,
+  size: 100,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1AssetCustodyTransferHistoryResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -8230,9 +11867,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1AssetCustodyTransferHistoryResponse](src/models/sapi-v1-asset-custody-transfer-history-response.ts)</code>
+**Direct**: `await client.wallet.queryUserDelegationHistoryForMasterAccountUserData(request)`
 
-**OnError**: <code>[Wallet.QueryUserDelegationHistoryForMasterAccountUserDataError](src/resources/wallet.ts)</code>
+- **OnSuccess**: <code>[SapiV1AssetCustodyTransferHistoryResponse](src/models/sapi-v1-asset-custody-transfer-history-response.ts)</code>
+- **OnError**: throws <code>[Wallet.QueryUserDelegationHistoryForMasterAccountUserDataError](src/resources/wallet.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.wallet.queryUserDelegationHistoryForMasterAccountUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1AssetCustodyTransferHistoryResponse, Wallet.QueryUserDelegationHistoryForMasterAccountUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1AssetCustodyTransferHistoryResponse](src/models/sapi-v1-asset-custody-transfer-history-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -8263,7 +11908,7 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -8271,15 +11916,45 @@ Weight(IP): 1
 ```ts
 try {
   const response = await client.wallet.queryUserUniversalTransferHistoryUserData({
-    type,
-    timestamp,
-    signature,
+    type: Type7.MainC2C,
+    timestamp: 1,
+    signature: "some example string",
+    current: 1,
+    size: 100,
+    fromSymbol: "BNBUSDT",
+    toSymbol: "BNBUSDT",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1AssetTransferResponse
 } catch (err) {
-  if (err instanceof Wallet.QueryUserUniversalTransferHistoryUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Wallet.QueryUserUniversalTransferHistoryUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.wallet.queryUserUniversalTransferHistoryUserData({
+  type: Type7.MainC2C,
+  timestamp: 1,
+  signature: "some example string",
+  current: 1,
+  size: 100,
+  fromSymbol: "BNBUSDT",
+  toSymbol: "BNBUSDT",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1AssetTransferResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -8312,9 +11987,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1AssetTransferResponse](src/models/sapi-v1-asset-transfer-response.ts)</code>
+**Direct**: `await client.wallet.queryUserUniversalTransferHistoryUserData(request)`
 
-**OnError**: <code>[Wallet.QueryUserUniversalTransferHistoryUserDataError](src/resources/wallet.ts)</code>
+- **OnSuccess**: <code>[SapiV1AssetTransferResponse](src/models/sapi-v1-asset-transfer-response.ts)</code>
+- **OnError**: throws <code>[Wallet.QueryUserUniversalTransferHistoryUserDataError](src/resources/wallet.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.wallet.queryUserUniversalTransferHistoryUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1AssetTransferResponse, Wallet.QueryUserUniversalTransferHistoryUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1AssetTransferResponse](src/models/sapi-v1-asset-transfer-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -8342,19 +12025,43 @@ Weight(IP): 60
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.wallet.queryUserWalletBalanceUserData({ timestamp, signature });
+  const response = await client.wallet.queryUserWalletBalanceUserData({
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1AssetWalletBalanceResponse[]
 } catch (err) {
-  if (err instanceof Wallet.QueryUserWalletBalanceUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Wallet.QueryUserWalletBalanceUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.wallet.queryUserWalletBalanceUserData({
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1AssetWalletBalanceResponse[]
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -8380,9 +12087,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1AssetWalletBalanceResponse](src/models/sapi-v1-asset-wallet-balance-response.ts)[]</code>
+**Direct**: `await client.wallet.queryUserWalletBalanceUserData(request)`
 
-**OnError**: <code>[Wallet.QueryUserWalletBalanceUserDataError](src/resources/wallet.ts)</code>
+- **OnSuccess**: <code>[SapiV1AssetWalletBalanceResponse](src/models/sapi-v1-asset-wallet-balance-response.ts)[]</code>
+- **OnError**: throws <code>[Wallet.QueryUserWalletBalanceUserDataError](src/resources/wallet.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.wallet.queryUserWalletBalanceUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1AssetWalletBalanceResponse[], Wallet.QueryUserWalletBalanceUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1AssetWalletBalanceResponse](src/models/sapi-v1-asset-wallet-balance-response.ts)[]</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -8410,7 +12125,7 @@ Weight(UID): 600'
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -8420,9 +12135,25 @@ try {
   const response = await client.wallet.queryAutoConvertingStableCoinsUserData();
   // TODO: Handle 'response' of type SapiV1CapitalContractConvertibleCoinsResponse
 } catch (err) {
-  if (err instanceof Wallet.QueryAutoConvertingStableCoinsUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Wallet.QueryAutoConvertingStableCoinsUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.wallet.queryAutoConvertingStableCoinsUserData().asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1CapitalContractConvertibleCoinsResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -8434,9 +12165,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1CapitalContractConvertibleCoinsResponse](src/models/sapi-v1-capital-contract-convertible-coins-response.ts)</code>
+**Direct**: `await client.wallet.queryAutoConvertingStableCoinsUserData()`
 
-**OnError**: <code>[Wallet.QueryAutoConvertingStableCoinsUserDataError](src/resources/wallet.ts)</code>
+- **OnSuccess**: <code>[SapiV1CapitalContractConvertibleCoinsResponse](src/models/sapi-v1-capital-contract-convertible-coins-response.ts)</code>
+- **OnError**: throws <code>[Wallet.QueryAutoConvertingStableCoinsUserDataError](src/resources/wallet.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.wallet.queryAutoConvertingStableCoinsUserData().asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1CapitalContractConvertibleCoinsResponse, Wallet.QueryAutoConvertingStableCoinsUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1CapitalContractConvertibleCoinsResponse](src/models/sapi-v1-capital-contract-convertible-coins-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -8464,7 +12203,7 @@ Weight(UID): 600'
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -8472,17 +12211,33 @@ Weight(UID): 600'
 ```ts
 try {
   const response = await client.wallet.switchOnOffBusdAndStableCoinsConversionUserDataUserData({
-    coin,
-    enable,
+    coin: "some example string",
+    enable: true,
   });
   // TODO: Handle 'response' of type Record<string, unknown>
 } catch (err) {
-  if (
-    err instanceof Wallet.SwitchOnOffBusdAndStableCoinsConversionUserDataUserDataError &&
-      err.payload.kind === "error"
-  ) {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Wallet.SwitchOnOffBusdAndStableCoinsConversionUserDataUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.wallet.switchOnOffBusdAndStableCoinsConversionUserDataUserData({
+  coin: "some example string",
+  enable: true,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type Record<string, unknown>
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -8507,9 +12262,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>Record&lt;string, unknown&gt;</code>
+**Direct**: `await client.wallet.switchOnOffBusdAndStableCoinsConversionUserDataUserData(request)`
 
-**OnError**: <code>[Wallet.SwitchOnOffBusdAndStableCoinsConversionUserDataUserDataError](src/resources/wallet.ts)</code>
+- **OnSuccess**: <code>Record&lt;string, unknown&gt;</code>
+- **OnError**: throws <code>[Wallet.SwitchOnOffBusdAndStableCoinsConversionUserDataUserDataError](src/resources/wallet.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.wallet.switchOnOffBusdAndStableCoinsConversionUserDataUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;Record&lt;string, unknown&gt;, Wallet.SwitchOnOffBusdAndStableCoinsConversionUserDataUserDataError&gt;</code>, with `result.value` of type <code>Record&lt;string, unknown&gt;</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -8520,7 +12283,7 @@ try {
 </details>
 
 <details>
-<summary><code>systemStatusSystem(options?: RequestOptions): ApiPromise&lt;SapiV1SystemStatusResponse, ResponseError&gt;</code></summary>
+<summary><code>systemStatusSystem(options?: RequestOptions): ApiPromise&lt;SapiV1SystemStatusResponse, ApiError&gt;</code></summary>
 
 <dl>
 <dd>
@@ -8537,7 +12300,7 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -8547,7 +12310,25 @@ try {
   const response = await client.wallet.systemStatusSystem();
   // TODO: Handle 'response' of type SapiV1SystemStatusResponse
 } catch (err) {
-  // TODO: Handle 'err' of type ResponseError
+  // TODO: Handle 'err' of type ApiError, where 'err.payload' is always the Undeclared arm
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.wallet.systemStatusSystem().asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1SystemStatusResponse
+} else {
+  // TODO: Handle 'result', where 'result.payload' is always the Undeclared arm
 }
 ```
 
@@ -8559,9 +12340,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1SystemStatusResponse](src/models/sapi-v1-system-status-response.ts)</code>
+**Direct**: `await client.wallet.systemStatusSystem()`
 
-**OnError**: <code>[ResponseError](src/core/response-error.ts)</code>
+- **OnSuccess**: <code>[SapiV1SystemStatusResponse](src/models/sapi-v1-system-status-response.ts)</code>
+- **OnError**: throws <code>[ApiError](src/core/api-error.ts)</code>, with `err.payload` always the <code>[Undeclared](src/core/api-error.ts)</code> arm
+
+**As ApiResult**: `await client.wallet.systemStatusSystem().asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1SystemStatusResponse, ApiError&gt;</code>, with `result.value` of type <code>[SapiV1SystemStatusResponse](src/models/sapi-v1-system-status-response.ts)</code>
+- **OnError**: `result.payload` always the <code>[Undeclared](src/core/api-error.ts)</code> arm, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -8589,19 +12378,45 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.wallet.tradeFeeUserData({ timestamp, signature });
+  const response = await client.wallet.tradeFeeUserData({
+    timestamp: 1,
+    signature: "some example string",
+    symbol: "BNBUSDT",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1AssetTradeFeeResponse[]
 } catch (err) {
-  if (err instanceof Wallet.TradeFeeUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Wallet.TradeFeeUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.wallet.tradeFeeUserData({
+  timestamp: 1,
+  signature: "some example string",
+  symbol: "BNBUSDT",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1AssetTradeFeeResponse[]
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -8628,9 +12443,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1AssetTradeFeeResponse](src/models/sapi-v1-asset-trade-fee-response.ts)[]</code>
+**Direct**: `await client.wallet.tradeFeeUserData(request)`
 
-**OnError**: <code>[Wallet.TradeFeeUserDataError](src/resources/wallet.ts)</code>
+- **OnSuccess**: <code>[SapiV1AssetTradeFeeResponse](src/models/sapi-v1-asset-trade-fee-response.ts)[]</code>
+- **OnError**: throws <code>[Wallet.TradeFeeUserDataError](src/resources/wallet.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.wallet.tradeFeeUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1AssetTradeFeeResponse[], Wallet.TradeFeeUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1AssetTradeFeeResponse](src/models/sapi-v1-asset-trade-fee-response.ts)[]</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -8658,19 +12481,45 @@ Weight(IP): 5
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.wallet.userAssetUserData({ timestamp, signature });
+  const response = await client.wallet.userAssetUserData({
+    timestamp: 1,
+    signature: "some example string",
+    asset: "BNB",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV3AssetGetUserAssetResponse[]
 } catch (err) {
-  if (err instanceof Wallet.UserAssetUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Wallet.UserAssetUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.wallet.userAssetUserData({
+  timestamp: 1,
+  signature: "some example string",
+  asset: "BNB",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV3AssetGetUserAssetResponse[]
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -8698,9 +12547,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV3AssetGetUserAssetResponse](src/models/sapi-v3-asset-get-user-asset-response.ts)[]</code>
+**Direct**: `await client.wallet.userAssetUserData(request)`
 
-**OnError**: <code>[Wallet.UserAssetUserDataError](src/resources/wallet.ts)</code>
+- **OnSuccess**: <code>[SapiV3AssetGetUserAssetResponse](src/models/sapi-v3-asset-get-user-asset-response.ts)[]</code>
+- **OnError**: throws <code>[Wallet.UserAssetUserDataError](src/resources/wallet.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.wallet.userAssetUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV3AssetGetUserAssetResponse[], Wallet.UserAssetUserDataError&gt;</code>, with `result.value` of type <code>[SapiV3AssetGetUserAssetResponse](src/models/sapi-v3-asset-get-user-asset-response.ts)[]</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -8766,7 +12623,7 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -8774,17 +12631,45 @@ Weight(IP): 1
 ```ts
 try {
   const response = await client.wallet.userUniversalTransferUserData({
-    type,
-    asset,
-    amount,
-    timestamp,
-    signature,
+    type: Type7.MainC2C,
+    asset: "BTC",
+    amount: 1.01,
+    timestamp: 1,
+    signature: "some example string",
+    fromSymbol: "BNBUSDT",
+    toSymbol: "BNBUSDT",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1AssetTransferResponse1
 } catch (err) {
-  if (err instanceof Wallet.UserUniversalTransferUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Wallet.UserUniversalTransferUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.wallet.userUniversalTransferUserData({
+  type: Type7.MainC2C,
+  asset: "BTC",
+  amount: 1.01,
+  timestamp: 1,
+  signature: "some example string",
+  fromSymbol: "BNBUSDT",
+  toSymbol: "BNBUSDT",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1AssetTransferResponse1
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -8815,9 +12700,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1AssetTransferResponse1](src/models/sapi-v1-asset-transfer-response1.ts)</code>
+**Direct**: `await client.wallet.userUniversalTransferUserData(request)`
 
-**OnError**: <code>[Wallet.UserUniversalTransferUserDataError](src/resources/wallet.ts)</code>
+- **OnSuccess**: <code>[SapiV1AssetTransferResponse1](src/models/sapi-v1-asset-transfer-response1.ts)</code>
+- **OnError**: throws <code>[Wallet.UserUniversalTransferUserDataError](src/resources/wallet.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.wallet.userUniversalTransferUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1AssetTransferResponse1, Wallet.UserUniversalTransferUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1AssetTransferResponse1](src/models/sapi-v1-asset-transfer-response1.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -8848,19 +12741,51 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.wallet.withdrawUserData({ coin, address, amount, timestamp, signature });
+  const response = await client.wallet.withdrawUserData({
+    coin: "BNB",
+    address: "some example string",
+    amount: 1.01,
+    timestamp: 1,
+    signature: "some example string",
+    network: "BTC",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1CapitalWithdrawApplyResponse
 } catch (err) {
-  if (err instanceof Wallet.WithdrawUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Wallet.WithdrawUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.wallet.withdrawUserData({
+  coin: "BNB",
+  address: "some example string",
+  amount: 1.01,
+  timestamp: 1,
+  signature: "some example string",
+  network: "BTC",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1CapitalWithdrawApplyResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -8882,7 +12807,7 @@ try {
 | <code>withdrawOrderId?</code> | <code>string</code> | Client id for withdraw |
 | <code>network?</code> | <code>string</code> | - |
 | <code>addressTag?</code> | <code>string</code> | Secondary address identifier for coins like XRP,XMR etc. |
-| <code>transactionFeeFlag?</code> | <code>boolean</code> | When making internal transfer<br>- `true` ->  returning the fee to the destination account;<br>- `false` -> returning the fee back to the departure account. |
+| <code>transactionFeeFlag?</code> | <code>boolean</code> | When making internal transfer<br>- `true` ->  returning the fee to the destination account;<br>- `false` -> returning the fee back to the departure account.<br>**Default**: false |
 | <code>name?</code> | <code>string</code> | - |
 | <code>walletType?</code> | <code>number</code> | The wallet type for withdraw，0-Spot wallet, 1- Funding wallet. Default is Spot wallet |
 | <code>recvWindow?</code> | <code>number</code> | The value cannot be greater than 60000 |
@@ -8895,9 +12820,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1CapitalWithdrawApplyResponse](src/models/sapi-v1-capital-withdraw-apply-response.ts)</code>
+**Direct**: `await client.wallet.withdrawUserData(request)`
 
-**OnError**: <code>[Wallet.WithdrawUserDataError](src/resources/wallet.ts)</code>
+- **OnSuccess**: <code>[SapiV1CapitalWithdrawApplyResponse](src/models/sapi-v1-capital-withdraw-apply-response.ts)</code>
+- **OnError**: throws <code>[Wallet.WithdrawUserDataError](src/resources/wallet.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.wallet.withdrawUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1CapitalWithdrawApplyResponse, Wallet.WithdrawUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1CapitalWithdrawApplyResponse](src/models/sapi-v1-capital-withdraw-apply-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -8934,19 +12867,47 @@ Request Limit: 10 requests per second
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.wallet.withdrawHistorySupportingNetworkUserData({ timestamp, signature });
+  const response = await client.wallet.withdrawHistorySupportingNetworkUserData({
+    timestamp: 1,
+    signature: "some example string",
+    coin: "BNB",
+    limit: 5,
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1CapitalWithdrawHistoryResponse[]
 } catch (err) {
-  if (err instanceof Wallet.WithdrawHistorySupportingNetworkUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Wallet.WithdrawHistorySupportingNetworkUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.wallet.withdrawHistorySupportingNetworkUserData({
+  timestamp: 1,
+  signature: "some example string",
+  coin: "BNB",
+  limit: 5,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1CapitalWithdrawHistoryResponse[]
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -8979,9 +12940,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1CapitalWithdrawHistoryResponse](src/models/sapi-v1-capital-withdraw-history-response.ts)[]</code>
+**Direct**: `await client.wallet.withdrawHistorySupportingNetworkUserData(request)`
 
-**OnError**: <code>[Wallet.WithdrawHistorySupportingNetworkUserDataError](src/resources/wallet.ts)</code>
+- **OnSuccess**: <code>[SapiV1CapitalWithdrawHistoryResponse](src/models/sapi-v1-capital-withdraw-history-response.ts)[]</code>
+- **OnError**: throws <code>[Wallet.WithdrawHistorySupportingNetworkUserDataError](src/resources/wallet.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.wallet.withdrawHistorySupportingNetworkUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1CapitalWithdrawHistoryResponse[], Wallet.WithdrawHistorySupportingNetworkUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1CapitalWithdrawHistoryResponse](src/models/sapi-v1-capital-withdraw-history-response.ts)[]</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -9014,7 +12983,7 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -9022,17 +12991,37 @@ Weight(IP): 1
 ```ts
 try {
   const response = await client.subAccountApi.createAVirtualSubAccountForMasterAccount({
-    subAccountString,
-    timestamp,
-    signature,
+    subAccountString: "some example string",
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1SubAccountVirtualSubAccountResponse
 } catch (err) {
-  if (
-    err instanceof SubAccountApi.CreateAVirtualSubAccountForMasterAccountError && err.payload.kind === "error"
-  ) {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type SubAccountApi.CreateAVirtualSubAccountForMasterAccountError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.subAccountApi.createAVirtualSubAccountForMasterAccount({
+  subAccountString: "some example string",
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1SubAccountVirtualSubAccountResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -9059,9 +13048,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1SubAccountVirtualSubAccountResponse](src/models/sapi-v1-sub-account-virtual-sub-account-response.ts)</code>
+**Direct**: `await client.subAccountApi.createAVirtualSubAccountForMasterAccount(request)`
 
-**OnError**: <code>[SubAccountApi.CreateAVirtualSubAccountForMasterAccountError](src/resources/sub-account-api.ts)</code>
+- **OnSuccess**: <code>[SapiV1SubAccountVirtualSubAccountResponse](src/models/sapi-v1-sub-account-virtual-sub-account-response.ts)</code>
+- **OnError**: throws <code>[SubAccountApi.CreateAVirtualSubAccountForMasterAccountError](src/resources/sub-account-api.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.subAccountApi.createAVirtualSubAccountForMasterAccount(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1SubAccountVirtualSubAccountResponse, SubAccountApi.CreateAVirtualSubAccountForMasterAccountError&gt;</code>, with `result.value` of type <code>[SapiV1SubAccountVirtualSubAccountResponse](src/models/sapi-v1-sub-account-virtual-sub-account-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -9087,7 +13084,7 @@ Weight(UID): 3000
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -9095,19 +13092,39 @@ Weight(UID): 3000
 ```ts
 try {
   const response = await client.subAccountApi.deleteIpListForASubAccountApiKeyForMasterAccount({
-    email,
-    subAccountApiKey,
-    timestamp,
-    signature,
+    email: "some example string",
+    subAccountApiKey: "some example string",
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1SubAccountSubAccountApiIpRestrictionIpListResponse
 } catch (err) {
-  if (
-    err instanceof SubAccountApi.DeleteIpListForASubAccountApiKeyForMasterAccountError &&
-      err.payload.kind === "error"
-  ) {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type SubAccountApi.DeleteIpListForASubAccountApiKeyForMasterAccountError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.subAccountApi.deleteIpListForASubAccountApiKeyForMasterAccount({
+  email: "some example string",
+  subAccountApiKey: "some example string",
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1SubAccountSubAccountApiIpRestrictionIpListResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -9137,9 +13154,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1SubAccountSubAccountApiIpRestrictionIpListResponse](src/models/sapi-v1-sub-account-sub-account-api-ip-restriction-ip-list-response.ts)</code>
+**Direct**: `await client.subAccountApi.deleteIpListForASubAccountApiKeyForMasterAccount(request)`
 
-**OnError**: <code>[SubAccountApi.DeleteIpListForASubAccountApiKeyForMasterAccountError](src/resources/sub-account-api.ts)</code>
+- **OnSuccess**: <code>[SapiV1SubAccountSubAccountApiIpRestrictionIpListResponse](src/models/sapi-v1-sub-account-sub-account-api-ip-restriction-ip-list-response.ts)</code>
+- **OnError**: throws <code>[SubAccountApi.DeleteIpListForASubAccountApiKeyForMasterAccountError](src/resources/sub-account-api.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.subAccountApi.deleteIpListForASubAccountApiKeyForMasterAccount(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1SubAccountSubAccountApiIpRestrictionIpListResponse, SubAccountApi.DeleteIpListForASubAccountApiKeyForMasterAccountError&gt;</code>, with `result.value` of type <code>[SapiV1SubAccountSubAccountApiIpRestrictionIpListResponse](src/models/sapi-v1-sub-account-sub-account-api-ip-restriction-ip-list-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -9165,7 +13190,7 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -9173,20 +13198,41 @@ Weight(IP): 1
 ```ts
 try {
   const response = await client.subAccountApi.depositAssetsIntoTheManagedSubAccountForInvestorMasterAccount({
-    toEmail,
-    asset,
-    amount,
-    timestamp,
-    signature,
+    toEmail: "some example string",
+    asset: "BTC",
+    amount: 1.01,
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1ManagedSubaccountDepositResponse
 } catch (err) {
-  if (
-    err instanceof SubAccountApi.DepositAssetsIntoTheManagedSubAccountForInvestorMasterAccountError &&
-      err.payload.kind === "error"
-  ) {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type SubAccountApi.DepositAssetsIntoTheManagedSubAccountForInvestorMasterAccountError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.subAccountApi.depositAssetsIntoTheManagedSubAccountForInvestorMasterAccount({
+  toEmail: "some example string",
+  asset: "BTC",
+  amount: 1.01,
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1ManagedSubaccountDepositResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -9215,9 +13261,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1ManagedSubaccountDepositResponse](src/models/sapi-v1-managed-subaccount-deposit-response.ts)</code>
+**Direct**: `await client.subAccountApi.depositAssetsIntoTheManagedSubAccountForInvestorMasterAccount(request)`
 
-**OnError**: <code>[SubAccountApi.DepositAssetsIntoTheManagedSubAccountForInvestorMasterAccountError](src/resources/sub-account-api.ts)</code>
+- **OnSuccess**: <code>[SapiV1ManagedSubaccountDepositResponse](src/models/sapi-v1-managed-subaccount-deposit-response.ts)</code>
+- **OnError**: throws <code>[SubAccountApi.DepositAssetsIntoTheManagedSubAccountForInvestorMasterAccountError](src/resources/sub-account-api.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.subAccountApi.depositAssetsIntoTheManagedSubAccountForInvestorMasterAccount(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1ManagedSubaccountDepositResponse, SubAccountApi.DepositAssetsIntoTheManagedSubAccountForInvestorMasterAccountError&gt;</code>, with `result.value` of type <code>[SapiV1ManagedSubaccountDepositResponse](src/models/sapi-v1-managed-subaccount-deposit-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -9243,7 +13297,7 @@ Weight(IP): 10
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -9251,18 +13305,37 @@ Weight(IP): 10
 ```ts
 try {
   const response = await client.subAccountApi.detailOnSubAccountSFuturesAccountForMasterAccount({
-    email,
-    timestamp,
-    signature,
+    email: "alice@test.com",
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1SubAccountFuturesAccountResponse
 } catch (err) {
-  if (
-    err instanceof SubAccountApi.DetailOnSubAccountSFuturesAccountForMasterAccountError &&
-      err.payload.kind === "error"
-  ) {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type SubAccountApi.DetailOnSubAccountSFuturesAccountForMasterAccountError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.subAccountApi.detailOnSubAccountSFuturesAccountForMasterAccount({
+  email: "alice@test.com",
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1SubAccountFuturesAccountResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -9289,9 +13362,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1SubAccountFuturesAccountResponse](src/models/sapi-v1-sub-account-futures-account-response.ts)</code>
+**Direct**: `await client.subAccountApi.detailOnSubAccountSFuturesAccountForMasterAccount(request)`
 
-**OnError**: <code>[SubAccountApi.DetailOnSubAccountSFuturesAccountForMasterAccountError](src/resources/sub-account-api.ts)</code>
+- **OnSuccess**: <code>[SapiV1SubAccountFuturesAccountResponse](src/models/sapi-v1-sub-account-futures-account-response.ts)</code>
+- **OnError**: throws <code>[SubAccountApi.DetailOnSubAccountSFuturesAccountForMasterAccountError](src/resources/sub-account-api.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.subAccountApi.detailOnSubAccountSFuturesAccountForMasterAccount(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1SubAccountFuturesAccountResponse, SubAccountApi.DetailOnSubAccountSFuturesAccountForMasterAccountError&gt;</code>, with `result.value` of type <code>[SapiV1SubAccountFuturesAccountResponse](src/models/sapi-v1-sub-account-futures-account-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -9317,7 +13398,7 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -9325,19 +13406,39 @@ Weight(IP): 1
 ```ts
 try {
   const response = await client.subAccountApi.detailOnSubAccountSFuturesAccountV2ForMasterAccount({
-    email,
-    futuresType,
-    timestamp,
-    signature,
+    email: "some example string",
+    futuresType: 1,
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV2SubAccountFuturesAccountResponse
 } catch (err) {
-  if (
-    err instanceof SubAccountApi.DetailOnSubAccountSFuturesAccountV2ForMasterAccountError &&
-      err.payload.kind === "error"
-  ) {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type SubAccountApi.DetailOnSubAccountSFuturesAccountV2ForMasterAccountError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.subAccountApi.detailOnSubAccountSFuturesAccountV2ForMasterAccount({
+  email: "some example string",
+  futuresType: 1,
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV2SubAccountFuturesAccountResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -9365,9 +13466,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV2SubAccountFuturesAccountResponse](src/models/unions/sapi-v2-sub-account-futures-account-response.ts)</code>
+**Direct**: `await client.subAccountApi.detailOnSubAccountSFuturesAccountV2ForMasterAccount(request)`
 
-**OnError**: <code>[SubAccountApi.DetailOnSubAccountSFuturesAccountV2ForMasterAccountError](src/resources/sub-account-api.ts)</code>
+- **OnSuccess**: <code>[SapiV2SubAccountFuturesAccountResponse](src/models/unions/sapi-v2-sub-account-futures-account-response.ts)</code>
+- **OnError**: throws <code>[SubAccountApi.DetailOnSubAccountSFuturesAccountV2ForMasterAccountError](src/resources/sub-account-api.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.subAccountApi.detailOnSubAccountSFuturesAccountV2ForMasterAccount(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV2SubAccountFuturesAccountResponse, SubAccountApi.DetailOnSubAccountSFuturesAccountV2ForMasterAccountError&gt;</code>, with `result.value` of type <code>[SapiV2SubAccountFuturesAccountResponse](src/models/unions/sapi-v2-sub-account-futures-account-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -9393,7 +13502,7 @@ Weight(IP): 10
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -9401,18 +13510,37 @@ Weight(IP): 10
 ```ts
 try {
   const response = await client.subAccountApi.detailOnSubAccountSMarginAccountForMasterAccount({
-    email,
-    timestamp,
-    signature,
+    email: "some example string",
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1SubAccountMarginAccountResponse
 } catch (err) {
-  if (
-    err instanceof SubAccountApi.DetailOnSubAccountSMarginAccountForMasterAccountError &&
-      err.payload.kind === "error"
-  ) {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type SubAccountApi.DetailOnSubAccountSMarginAccountForMasterAccountError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.subAccountApi.detailOnSubAccountSMarginAccountForMasterAccount({
+  email: "some example string",
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1SubAccountMarginAccountResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -9439,9 +13567,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1SubAccountMarginAccountResponse](src/models/sapi-v1-sub-account-margin-account-response.ts)</code>
+**Direct**: `await client.subAccountApi.detailOnSubAccountSMarginAccountForMasterAccount(request)`
 
-**OnError**: <code>[SubAccountApi.DetailOnSubAccountSMarginAccountForMasterAccountError](src/resources/sub-account-api.ts)</code>
+- **OnSuccess**: <code>[SapiV1SubAccountMarginAccountResponse](src/models/sapi-v1-sub-account-margin-account-response.ts)</code>
+- **OnError**: throws <code>[SubAccountApi.DetailOnSubAccountSMarginAccountForMasterAccountError](src/resources/sub-account-api.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.subAccountApi.detailOnSubAccountSMarginAccountForMasterAccount(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1SubAccountMarginAccountResponse, SubAccountApi.DetailOnSubAccountSMarginAccountForMasterAccountError&gt;</code>, with `result.value` of type <code>[SapiV1SubAccountMarginAccountResponse](src/models/sapi-v1-sub-account-margin-account-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -9467,7 +13603,7 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -9475,18 +13611,37 @@ Weight(IP): 1
 ```ts
 try {
   const response = await client.subAccountApi.enableFuturesForSubAccountForMasterAccount({
-    email,
-    timestamp,
-    signature,
+    email: "some example string",
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1SubAccountFuturesEnableResponse
 } catch (err) {
-  if (
-    err instanceof SubAccountApi.EnableFuturesForSubAccountForMasterAccountError &&
-      err.payload.kind === "error"
-  ) {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type SubAccountApi.EnableFuturesForSubAccountForMasterAccountError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.subAccountApi.enableFuturesForSubAccountForMasterAccount({
+  email: "some example string",
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1SubAccountFuturesEnableResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -9513,9 +13668,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1SubAccountFuturesEnableResponse](src/models/sapi-v1-sub-account-futures-enable-response.ts)</code>
+**Direct**: `await client.subAccountApi.enableFuturesForSubAccountForMasterAccount(request)`
 
-**OnError**: <code>[SubAccountApi.EnableFuturesForSubAccountForMasterAccountError](src/resources/sub-account-api.ts)</code>
+- **OnSuccess**: <code>[SapiV1SubAccountFuturesEnableResponse](src/models/sapi-v1-sub-account-futures-enable-response.ts)</code>
+- **OnError**: throws <code>[SubAccountApi.EnableFuturesForSubAccountForMasterAccountError](src/resources/sub-account-api.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.subAccountApi.enableFuturesForSubAccountForMasterAccount(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1SubAccountFuturesEnableResponse, SubAccountApi.EnableFuturesForSubAccountForMasterAccountError&gt;</code>, with `result.value` of type <code>[SapiV1SubAccountFuturesEnableResponse](src/models/sapi-v1-sub-account-futures-enable-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -9541,7 +13704,7 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -9549,19 +13712,39 @@ Weight(IP): 1
 ```ts
 try {
   const response = await client.subAccountApi.enableLeverageTokenForSubAccountForMasterAccount({
-    email,
-    enableBlvt,
-    timestamp,
-    signature,
+    email: "some example string",
+    enableBlvt: true,
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1SubAccountBlvtEnableResponse
 } catch (err) {
-  if (
-    err instanceof SubAccountApi.EnableLeverageTokenForSubAccountForMasterAccountError &&
-      err.payload.kind === "error"
-  ) {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type SubAccountApi.EnableLeverageTokenForSubAccountForMasterAccountError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.subAccountApi.enableLeverageTokenForSubAccountForMasterAccount({
+  email: "some example string",
+  enableBlvt: true,
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1SubAccountBlvtEnableResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -9589,9 +13772,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1SubAccountBlvtEnableResponse](src/models/sapi-v1-sub-account-blvt-enable-response.ts)</code>
+**Direct**: `await client.subAccountApi.enableLeverageTokenForSubAccountForMasterAccount(request)`
 
-**OnError**: <code>[SubAccountApi.EnableLeverageTokenForSubAccountForMasterAccountError](src/resources/sub-account-api.ts)</code>
+- **OnSuccess**: <code>[SapiV1SubAccountBlvtEnableResponse](src/models/sapi-v1-sub-account-blvt-enable-response.ts)</code>
+- **OnError**: throws <code>[SubAccountApi.EnableLeverageTokenForSubAccountForMasterAccountError](src/resources/sub-account-api.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.subAccountApi.enableLeverageTokenForSubAccountForMasterAccount(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1SubAccountBlvtEnableResponse, SubAccountApi.EnableLeverageTokenForSubAccountForMasterAccountError&gt;</code>, with `result.value` of type <code>[SapiV1SubAccountBlvtEnableResponse](src/models/sapi-v1-sub-account-blvt-enable-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -9617,7 +13808,7 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -9625,18 +13816,37 @@ Weight(IP): 1
 ```ts
 try {
   const response = await client.subAccountApi.enableMarginForSubAccountForMasterAccount({
-    email,
-    timestamp,
-    signature,
+    email: "some example string",
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1SubAccountMarginEnableResponse
 } catch (err) {
-  if (
-    err instanceof SubAccountApi.EnableMarginForSubAccountForMasterAccountError &&
-      err.payload.kind === "error"
-  ) {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type SubAccountApi.EnableMarginForSubAccountForMasterAccountError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.subAccountApi.enableMarginForSubAccountForMasterAccount({
+  email: "some example string",
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1SubAccountMarginEnableResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -9663,9 +13873,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1SubAccountMarginEnableResponse](src/models/sapi-v1-sub-account-margin-enable-response.ts)</code>
+**Direct**: `await client.subAccountApi.enableMarginForSubAccountForMasterAccount(request)`
 
-**OnError**: <code>[SubAccountApi.EnableMarginForSubAccountForMasterAccountError](src/resources/sub-account-api.ts)</code>
+- **OnSuccess**: <code>[SapiV1SubAccountMarginEnableResponse](src/models/sapi-v1-sub-account-margin-enable-response.ts)</code>
+- **OnError**: throws <code>[SubAccountApi.EnableMarginForSubAccountForMasterAccountError](src/resources/sub-account-api.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.subAccountApi.enableMarginForSubAccountForMasterAccount(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1SubAccountMarginEnableResponse, SubAccountApi.EnableMarginForSubAccountForMasterAccountError&gt;</code>, with `result.value` of type <code>[SapiV1SubAccountMarginEnableResponse](src/models/sapi-v1-sub-account-margin-enable-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -9693,7 +13911,7 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -9701,18 +13919,37 @@ Weight(IP): 1
 ```ts
 try {
   const response = await client.subAccountApi.enableOptionsForSubAccountForMasterAccountUserData({
-    email,
-    timestamp,
-    signature,
+    email: "some example string",
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1SubAccountEoptionsEnableResponse
 } catch (err) {
-  if (
-    err instanceof SubAccountApi.EnableOptionsForSubAccountForMasterAccountUserDataError &&
-      err.payload.kind === "error"
-  ) {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type SubAccountApi.EnableOptionsForSubAccountForMasterAccountUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.subAccountApi.enableOptionsForSubAccountForMasterAccountUserData({
+  email: "some example string",
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1SubAccountEoptionsEnableResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -9739,9 +13976,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1SubAccountEoptionsEnableResponse](src/models/sapi-v1-sub-account-eoptions-enable-response.ts)</code>
+**Direct**: `await client.subAccountApi.enableOptionsForSubAccountForMasterAccountUserData(request)`
 
-**OnError**: <code>[SubAccountApi.EnableOptionsForSubAccountForMasterAccountUserDataError](src/resources/sub-account-api.ts)</code>
+- **OnSuccess**: <code>[SapiV1SubAccountEoptionsEnableResponse](src/models/sapi-v1-sub-account-eoptions-enable-response.ts)</code>
+- **OnError**: throws <code>[SubAccountApi.EnableOptionsForSubAccountForMasterAccountUserDataError](src/resources/sub-account-api.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.subAccountApi.enableOptionsForSubAccountForMasterAccountUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1SubAccountEoptionsEnableResponse, SubAccountApi.EnableOptionsForSubAccountForMasterAccountUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1SubAccountEoptionsEnableResponse](src/models/sapi-v1-sub-account-eoptions-enable-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -9767,7 +14012,7 @@ Weight(IP): 10
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -9775,18 +14020,37 @@ Weight(IP): 10
 ```ts
 try {
   const response = await client.subAccountApi.futuresPositionRiskOfSubAccountForMasterAccount({
-    email,
-    timestamp,
-    signature,
+    email: "some example string",
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1SubAccountFuturesPositionRiskResponse[]
 } catch (err) {
-  if (
-    err instanceof SubAccountApi.FuturesPositionRiskOfSubAccountForMasterAccountError &&
-      err.payload.kind === "error"
-  ) {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type SubAccountApi.FuturesPositionRiskOfSubAccountForMasterAccountError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.subAccountApi.futuresPositionRiskOfSubAccountForMasterAccount({
+  email: "some example string",
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1SubAccountFuturesPositionRiskResponse[]
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -9813,9 +14077,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1SubAccountFuturesPositionRiskResponse](src/models/sapi-v1-sub-account-futures-position-risk-response.ts)[]</code>
+**Direct**: `await client.subAccountApi.futuresPositionRiskOfSubAccountForMasterAccount(request)`
 
-**OnError**: <code>[SubAccountApi.FuturesPositionRiskOfSubAccountForMasterAccountError](src/resources/sub-account-api.ts)</code>
+- **OnSuccess**: <code>[SapiV1SubAccountFuturesPositionRiskResponse](src/models/sapi-v1-sub-account-futures-position-risk-response.ts)[]</code>
+- **OnError**: throws <code>[SubAccountApi.FuturesPositionRiskOfSubAccountForMasterAccountError](src/resources/sub-account-api.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.subAccountApi.futuresPositionRiskOfSubAccountForMasterAccount(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1SubAccountFuturesPositionRiskResponse[], SubAccountApi.FuturesPositionRiskOfSubAccountForMasterAccountError&gt;</code>, with `result.value` of type <code>[SapiV1SubAccountFuturesPositionRiskResponse](src/models/sapi-v1-sub-account-futures-position-risk-response.ts)[]</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -9841,7 +14113,7 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -9849,19 +14121,39 @@ Weight(IP): 1
 ```ts
 try {
   const response = await client.subAccountApi.futuresPositionRiskOfSubAccountV2ForMasterAccount({
-    email,
-    futuresType,
-    timestamp,
-    signature,
+    email: "some example string",
+    futuresType: 1,
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV2SubAccountFuturesPositionRiskResponse
 } catch (err) {
-  if (
-    err instanceof SubAccountApi.FuturesPositionRiskOfSubAccountV2ForMasterAccountError &&
-      err.payload.kind === "error"
-  ) {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type SubAccountApi.FuturesPositionRiskOfSubAccountV2ForMasterAccountError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.subAccountApi.futuresPositionRiskOfSubAccountV2ForMasterAccount({
+  email: "some example string",
+  futuresType: 1,
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV2SubAccountFuturesPositionRiskResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -9889,9 +14181,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV2SubAccountFuturesPositionRiskResponse](src/models/unions/sapi-v2-sub-account-futures-position-risk-response.ts)</code>
+**Direct**: `await client.subAccountApi.futuresPositionRiskOfSubAccountV2ForMasterAccount(request)`
 
-**OnError**: <code>[SubAccountApi.FuturesPositionRiskOfSubAccountV2ForMasterAccountError](src/resources/sub-account-api.ts)</code>
+- **OnSuccess**: <code>[SapiV2SubAccountFuturesPositionRiskResponse](src/models/unions/sapi-v2-sub-account-futures-position-risk-response.ts)</code>
+- **OnError**: throws <code>[SubAccountApi.FuturesPositionRiskOfSubAccountV2ForMasterAccountError](src/resources/sub-account-api.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.subAccountApi.futuresPositionRiskOfSubAccountV2ForMasterAccount(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV2SubAccountFuturesPositionRiskResponse, SubAccountApi.FuturesPositionRiskOfSubAccountV2ForMasterAccountError&gt;</code>, with `result.value` of type <code>[SapiV2SubAccountFuturesPositionRiskResponse](src/models/unions/sapi-v2-sub-account-futures-position-risk-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -9917,7 +14217,7 @@ Weight(UID): 3000
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -9925,19 +14225,39 @@ Weight(UID): 3000
 ```ts
 try {
   const response = await client.subAccountApi.getIpRestrictionForASubAccountApiKeyForMasterAccount({
-    email,
-    subAccountApiKey,
-    timestamp,
-    signature,
+    email: "some example string",
+    subAccountApiKey: "some example string",
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1SubAccountSubAccountApiIpRestrictionResponse
 } catch (err) {
-  if (
-    err instanceof SubAccountApi.GetIpRestrictionForASubAccountApiKeyForMasterAccountError &&
-      err.payload.kind === "error"
-  ) {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type SubAccountApi.GetIpRestrictionForASubAccountApiKeyForMasterAccountError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.subAccountApi.getIpRestrictionForASubAccountApiKeyForMasterAccount({
+  email: "some example string",
+  subAccountApiKey: "some example string",
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1SubAccountSubAccountApiIpRestrictionResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -9965,9 +14285,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1SubAccountSubAccountApiIpRestrictionResponse](src/models/sapi-v1-sub-account-sub-account-api-ip-restriction-response.ts)</code>
+**Direct**: `await client.subAccountApi.getIpRestrictionForASubAccountApiKeyForMasterAccount(request)`
 
-**OnError**: <code>[SubAccountApi.GetIpRestrictionForASubAccountApiKeyForMasterAccountError](src/resources/sub-account-api.ts)</code>
+- **OnSuccess**: <code>[SapiV1SubAccountSubAccountApiIpRestrictionResponse](src/models/sapi-v1-sub-account-sub-account-api-ip-restriction-response.ts)</code>
+- **OnError**: throws <code>[SubAccountApi.GetIpRestrictionForASubAccountApiKeyForMasterAccountError](src/resources/sub-account-api.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.subAccountApi.getIpRestrictionForASubAccountApiKeyForMasterAccount(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1SubAccountSubAccountApiIpRestrictionResponse, SubAccountApi.GetIpRestrictionForASubAccountApiKeyForMasterAccountError&gt;</code>, with `result.value` of type <code>[SapiV1SubAccountSubAccountApiIpRestrictionResponse](src/models/sapi-v1-sub-account-sub-account-api-ip-restriction-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -9995,7 +14323,7 @@ Weight(UID): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -10003,19 +14331,41 @@ Weight(UID): 1
 ```ts
 try {
   const response = await client.subAccountApi.getManagedSubAccountDepositAddressForInvestorMasterAccount({
-    email,
-    coin,
-    timestamp,
-    signature,
+    email: "some example string",
+    coin: "BNB",
+    timestamp: 1,
+    signature: "some example string",
+    network: "BTC",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1ManagedSubaccountDepositAddressResponse
 } catch (err) {
-  if (
-    err instanceof SubAccountApi.GetManagedSubAccountDepositAddressForInvestorMasterAccountError &&
-      err.payload.kind === "error"
-  ) {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type SubAccountApi.GetManagedSubAccountDepositAddressForInvestorMasterAccountError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.subAccountApi.getManagedSubAccountDepositAddressForInvestorMasterAccount({
+  email: "some example string",
+  coin: "BNB",
+  timestamp: 1,
+  signature: "some example string",
+  network: "BTC",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1ManagedSubaccountDepositAddressResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -10044,9 +14394,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1ManagedSubaccountDepositAddressResponse](src/models/sapi-v1-managed-subaccount-deposit-address-response.ts)</code>
+**Direct**: `await client.subAccountApi.getManagedSubAccountDepositAddressForInvestorMasterAccount(request)`
 
-**OnError**: <code>[SubAccountApi.GetManagedSubAccountDepositAddressForInvestorMasterAccountError](src/resources/sub-account-api.ts)</code>
+- **OnSuccess**: <code>[SapiV1ManagedSubaccountDepositAddressResponse](src/models/sapi-v1-managed-subaccount-deposit-address-response.ts)</code>
+- **OnError**: throws <code>[SubAccountApi.GetManagedSubAccountDepositAddressForInvestorMasterAccountError](src/resources/sub-account-api.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.subAccountApi.getManagedSubAccountDepositAddressForInvestorMasterAccount(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1ManagedSubaccountDepositAddressResponse, SubAccountApi.GetManagedSubAccountDepositAddressForInvestorMasterAccountError&gt;</code>, with `result.value` of type <code>[SapiV1ManagedSubaccountDepositAddressResponse](src/models/sapi-v1-managed-subaccount-deposit-address-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -10072,7 +14430,7 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -10080,18 +14438,37 @@ Weight(IP): 1
 ```ts
 try {
   const response = await client.subAccountApi.managedSubAccountAssetDetailsForInvestorMasterAccount({
-    email,
-    timestamp,
-    signature,
+    email: "some example string",
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1ManagedSubaccountAssetResponse[]
 } catch (err) {
-  if (
-    err instanceof SubAccountApi.ManagedSubAccountAssetDetailsForInvestorMasterAccountError &&
-      err.payload.kind === "error"
-  ) {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type SubAccountApi.ManagedSubAccountAssetDetailsForInvestorMasterAccountError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.subAccountApi.managedSubAccountAssetDetailsForInvestorMasterAccount({
+  email: "some example string",
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1ManagedSubaccountAssetResponse[]
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -10118,9 +14495,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1ManagedSubaccountAssetResponse](src/models/sapi-v1-managed-subaccount-asset-response.ts)[]</code>
+**Direct**: `await client.subAccountApi.managedSubAccountAssetDetailsForInvestorMasterAccount(request)`
 
-**OnError**: <code>[SubAccountApi.ManagedSubAccountAssetDetailsForInvestorMasterAccountError](src/resources/sub-account-api.ts)</code>
+- **OnSuccess**: <code>[SapiV1ManagedSubaccountAssetResponse](src/models/sapi-v1-managed-subaccount-asset-response.ts)[]</code>
+- **OnError**: throws <code>[SubAccountApi.ManagedSubAccountAssetDetailsForInvestorMasterAccountError](src/resources/sub-account-api.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.subAccountApi.managedSubAccountAssetDetailsForInvestorMasterAccount(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1ManagedSubaccountAssetResponse[], SubAccountApi.ManagedSubAccountAssetDetailsForInvestorMasterAccountError&gt;</code>, with `result.value` of type <code>[SapiV1ManagedSubaccountAssetResponse](src/models/sapi-v1-managed-subaccount-asset-response.ts)[]</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -10150,7 +14535,7 @@ Weight(IP): 2400
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -10158,19 +14543,39 @@ Weight(IP): 2400
 ```ts
 try {
   const response = await client.subAccountApi.managedSubAccountSnapshotForInvestorMasterAccount({
-    email,
-    type,
-    timestamp,
-    signature,
+    email: "some example string",
+    type: "SPOT",
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1ManagedSubaccountAccountSnapshotResponse
 } catch (err) {
-  if (
-    err instanceof SubAccountApi.ManagedSubAccountSnapshotForInvestorMasterAccountError &&
-      err.payload.kind === "error"
-  ) {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type SubAccountApi.ManagedSubAccountSnapshotForInvestorMasterAccountError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.subAccountApi.managedSubAccountSnapshotForInvestorMasterAccount({
+  email: "some example string",
+  type: "SPOT",
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1ManagedSubaccountAccountSnapshotResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -10201,9 +14606,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1ManagedSubaccountAccountSnapshotResponse](src/models/sapi-v1-managed-subaccount-account-snapshot-response.ts)</code>
+**Direct**: `await client.subAccountApi.managedSubAccountSnapshotForInvestorMasterAccount(request)`
 
-**OnError**: <code>[SubAccountApi.ManagedSubAccountSnapshotForInvestorMasterAccountError](src/resources/sub-account-api.ts)</code>
+- **OnSuccess**: <code>[SapiV1ManagedSubaccountAccountSnapshotResponse](src/models/sapi-v1-managed-subaccount-account-snapshot-response.ts)</code>
+- **OnError**: throws <code>[SubAccountApi.ManagedSubAccountSnapshotForInvestorMasterAccountError](src/resources/sub-account-api.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.subAccountApi.managedSubAccountSnapshotForInvestorMasterAccount(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1ManagedSubaccountAccountSnapshotResponse, SubAccountApi.ManagedSubAccountSnapshotForInvestorMasterAccountError&gt;</code>, with `result.value` of type <code>[SapiV1ManagedSubaccountAccountSnapshotResponse](src/models/sapi-v1-managed-subaccount-account-snapshot-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -10229,7 +14642,7 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -10237,21 +14650,43 @@ Weight(IP): 1
 ```ts
 try {
   const response = await client.subAccountApi.marginTransferForSubAccountForMasterAccount({
-    email,
-    asset,
-    amount,
-    type,
-    timestamp,
-    signature,
+    email: "some example string",
+    asset: "BTC",
+    amount: 1.01,
+    type: 1,
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1SubAccountMarginTransferResponse
 } catch (err) {
-  if (
-    err instanceof SubAccountApi.MarginTransferForSubAccountForMasterAccountError &&
-      err.payload.kind === "error"
-  ) {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type SubAccountApi.MarginTransferForSubAccountForMasterAccountError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.subAccountApi.marginTransferForSubAccountForMasterAccount({
+  email: "some example string",
+  asset: "BTC",
+  amount: 1.01,
+  type: 1,
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1SubAccountMarginTransferResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -10281,9 +14716,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1SubAccountMarginTransferResponse](src/models/sapi-v1-sub-account-margin-transfer-response.ts)</code>
+**Direct**: `await client.subAccountApi.marginTransferForSubAccountForMasterAccount(request)`
 
-**OnError**: <code>[SubAccountApi.MarginTransferForSubAccountForMasterAccountError](src/resources/sub-account-api.ts)</code>
+- **OnSuccess**: <code>[SapiV1SubAccountMarginTransferResponse](src/models/sapi-v1-sub-account-margin-transfer-response.ts)</code>
+- **OnError**: throws <code>[SubAccountApi.MarginTransferForSubAccountForMasterAccountError](src/resources/sub-account-api.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.subAccountApi.marginTransferForSubAccountForMasterAccount(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1SubAccountMarginTransferResponse, SubAccountApi.MarginTransferForSubAccountForMasterAccountError&gt;</code>, with `result.value` of type <code>[SapiV1SubAccountMarginTransferResponse](src/models/sapi-v1-sub-account-margin-transfer-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -10311,7 +14754,7 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -10319,18 +14762,45 @@ Weight(IP): 1
 ```ts
 try {
   const response = await client.subAccountApi.queryManagedSubAccountTransferLogForInvestorMasterAccount({
-    email,
-    timestamp,
-    signature,
+    email: "some example string",
+    timestamp: 1,
+    signature: "some example string",
+    page: 1,
+    limit: 5,
+    transfers: "FROM",
+    transferFunctionAccountType: "SPOT",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1ManagedSubaccountQueryTransLogForInvestorResponse
 } catch (err) {
-  if (
-    err instanceof SubAccountApi.QueryManagedSubAccountTransferLogForInvestorMasterAccountError &&
-      err.payload.kind === "error"
-  ) {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type SubAccountApi.QueryManagedSubAccountTransferLogForInvestorMasterAccountError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.subAccountApi.queryManagedSubAccountTransferLogForInvestorMasterAccount({
+  email: "some example string",
+  timestamp: 1,
+  signature: "some example string",
+  page: 1,
+  limit: 5,
+  transfers: "FROM",
+  transferFunctionAccountType: "SPOT",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1ManagedSubaccountQueryTransLogForInvestorResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -10363,9 +14833,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1ManagedSubaccountQueryTransLogForInvestorResponse](src/models/sapi-v1-managed-subaccount-query-trans-log-for-investor-response.ts)</code>
+**Direct**: `await client.subAccountApi.queryManagedSubAccountTransferLogForInvestorMasterAccount(request)`
 
-**OnError**: <code>[SubAccountApi.QueryManagedSubAccountTransferLogForInvestorMasterAccountError](src/resources/sub-account-api.ts)</code>
+- **OnSuccess**: <code>[SapiV1ManagedSubaccountQueryTransLogForInvestorResponse](src/models/sapi-v1-managed-subaccount-query-trans-log-for-investor-response.ts)</code>
+- **OnError**: throws <code>[SubAccountApi.QueryManagedSubAccountTransferLogForInvestorMasterAccountError](src/resources/sub-account-api.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.subAccountApi.queryManagedSubAccountTransferLogForInvestorMasterAccount(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1ManagedSubaccountQueryTransLogForInvestorResponse, SubAccountApi.QueryManagedSubAccountTransferLogForInvestorMasterAccountError&gt;</code>, with `result.value` of type <code>[SapiV1ManagedSubaccountQueryTransLogForInvestorResponse](src/models/sapi-v1-managed-subaccount-query-trans-log-for-investor-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -10393,7 +14871,7 @@ Weight(IP): 60
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -10401,18 +14879,45 @@ Weight(IP): 60
 ```ts
 try {
   const response = await client.subAccountApi.queryManagedSubAccountTransferLogForTradingTeamMasterAccount({
-    email,
-    timestamp,
-    signature,
+    email: "some example string",
+    timestamp: 1,
+    signature: "some example string",
+    page: 1,
+    limit: 5,
+    transfers: "FROM",
+    transferFunctionAccountType: "SPOT",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1ManagedSubaccountQueryTransLogForTradeParentResponse
 } catch (err) {
-  if (
-    err instanceof SubAccountApi.QueryManagedSubAccountTransferLogForTradingTeamMasterAccountError &&
-      err.payload.kind === "error"
-  ) {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type SubAccountApi.QueryManagedSubAccountTransferLogForTradingTeamMasterAccountError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.subAccountApi.queryManagedSubAccountTransferLogForTradingTeamMasterAccount({
+  email: "some example string",
+  timestamp: 1,
+  signature: "some example string",
+  page: 1,
+  limit: 5,
+  transfers: "FROM",
+  transferFunctionAccountType: "SPOT",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1ManagedSubaccountQueryTransLogForTradeParentResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -10445,9 +14950,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1ManagedSubaccountQueryTransLogForTradeParentResponse](src/models/sapi-v1-managed-subaccount-query-trans-log-for-trade-parent-response.ts)</code>
+**Direct**: `await client.subAccountApi.queryManagedSubAccountTransferLogForTradingTeamMasterAccount(request)`
 
-**OnError**: <code>[SubAccountApi.QueryManagedSubAccountTransferLogForTradingTeamMasterAccountError](src/resources/sub-account-api.ts)</code>
+- **OnSuccess**: <code>[SapiV1ManagedSubaccountQueryTransLogForTradeParentResponse](src/models/sapi-v1-managed-subaccount-query-trans-log-for-trade-parent-response.ts)</code>
+- **OnError**: throws <code>[SubAccountApi.QueryManagedSubAccountTransferLogForTradingTeamMasterAccountError](src/resources/sub-account-api.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.subAccountApi.queryManagedSubAccountTransferLogForTradingTeamMasterAccount(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1ManagedSubaccountQueryTransLogForTradeParentResponse, SubAccountApi.QueryManagedSubAccountTransferLogForTradingTeamMasterAccountError&gt;</code>, with `result.value` of type <code>[SapiV1ManagedSubaccountQueryTransLogForTradeParentResponse](src/models/sapi-v1-managed-subaccount-query-trans-log-for-trade-parent-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -10475,7 +14988,7 @@ Weight(UID): 60
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -10484,19 +14997,43 @@ Weight(UID): 60
 try {
   const response =
     await client.subAccountApi.queryManagedSubAccountTransferLogForTradingTeamSubAccountUserData({
-      transfers,
-      transferFunctionAccountType,
-      timestamp,
-      signature,
+      transfers: Transfers.From,
+      transferFunctionAccountType: TransferFunctionAccountType.Spot,
+      timestamp: 1,
+      signature: "some example string",
+      page: 1,
+      limit: 5,
+      recvWindow: 5000,
     });
   // TODO: Handle 'response' of type SapiV1ManagedSubaccountQueryTransLogResponse
 } catch (err) {
-  if (
-    err instanceof SubAccountApi.QueryManagedSubAccountTransferLogForTradingTeamSubAccountUserDataError &&
-      err.payload.kind === "error"
-  ) {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type SubAccountApi.QueryManagedSubAccountTransferLogForTradingTeamSubAccountUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.subAccountApi.queryManagedSubAccountTransferLogForTradingTeamSubAccountUserData({
+  transfers: Transfers.From,
+  transferFunctionAccountType: TransferFunctionAccountType.Spot,
+  timestamp: 1,
+  signature: "some example string",
+  page: 1,
+  limit: 5,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1ManagedSubaccountQueryTransLogResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -10528,9 +15065,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1ManagedSubaccountQueryTransLogResponse](src/models/sapi-v1-managed-subaccount-query-trans-log-response.ts)</code>
+**Direct**: `await client.subAccountApi.queryManagedSubAccountTransferLogForTradingTeamSubAccountUserData(request)`
 
-**OnError**: <code>[SubAccountApi.QueryManagedSubAccountTransferLogForTradingTeamSubAccountUserDataError](src/resources/sub-account-api.ts)</code>
+- **OnSuccess**: <code>[SapiV1ManagedSubaccountQueryTransLogResponse](src/models/sapi-v1-managed-subaccount-query-trans-log-response.ts)</code>
+- **OnError**: throws <code>[SubAccountApi.QueryManagedSubAccountTransferLogForTradingTeamSubAccountUserDataError](src/resources/sub-account-api.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.subAccountApi.queryManagedSubAccountTransferLogForTradingTeamSubAccountUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1ManagedSubaccountQueryTransLogResponse, SubAccountApi.QueryManagedSubAccountTransferLogForTradingTeamSubAccountUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1ManagedSubaccountQueryTransLogResponse](src/models/sapi-v1-managed-subaccount-query-trans-log-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -10556,7 +15101,7 @@ Investor can use this api to query managed sub account futures asset details
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -10565,18 +15110,37 @@ Investor can use this api to query managed sub account futures asset details
 try {
   const response =
     await client.subAccountApi.queryManagedSubAccountFuturesAssetDetailsForInvestorMasterAccount({
-      email,
-      timestamp,
-      signature,
+      email: "some example string",
+      timestamp: 1,
+      signature: "some example string",
+      recvWindow: 5000,
     });
   // TODO: Handle 'response' of type SapiV1ManagedSubaccountFetchFutureAssetResponse
 } catch (err) {
-  if (
-    err instanceof SubAccountApi.QueryManagedSubAccountFuturesAssetDetailsForInvestorMasterAccountError &&
-      err.payload.kind === "error"
-  ) {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type SubAccountApi.QueryManagedSubAccountFuturesAssetDetailsForInvestorMasterAccountError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.subAccountApi.queryManagedSubAccountFuturesAssetDetailsForInvestorMasterAccount({
+  email: "some example string",
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1ManagedSubaccountFetchFutureAssetResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -10603,9 +15167,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1ManagedSubaccountFetchFutureAssetResponse](src/models/sapi-v1-managed-subaccount-fetch-future-asset-response.ts)</code>
+**Direct**: `await client.subAccountApi.queryManagedSubAccountFuturesAssetDetailsForInvestorMasterAccount(request)`
 
-**OnError**: <code>[SubAccountApi.QueryManagedSubAccountFuturesAssetDetailsForInvestorMasterAccountError](src/resources/sub-account-api.ts)</code>
+- **OnSuccess**: <code>[SapiV1ManagedSubaccountFetchFutureAssetResponse](src/models/sapi-v1-managed-subaccount-fetch-future-asset-response.ts)</code>
+- **OnError**: throws <code>[SubAccountApi.QueryManagedSubAccountFuturesAssetDetailsForInvestorMasterAccountError](src/resources/sub-account-api.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.subAccountApi.queryManagedSubAccountFuturesAssetDetailsForInvestorMasterAccount(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1ManagedSubaccountFetchFutureAssetResponse, SubAccountApi.QueryManagedSubAccountFuturesAssetDetailsForInvestorMasterAccountError&gt;</code>, with `result.value` of type <code>[SapiV1ManagedSubaccountFetchFutureAssetResponse](src/models/sapi-v1-managed-subaccount-fetch-future-asset-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -10633,7 +15205,7 @@ Weight(UID): 60
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -10641,17 +15213,41 @@ Weight(UID): 60
 ```ts
 try {
   const response = await client.subAccountApi.queryManagedSubAccountListForInvestor({
-    email,
-    timestamp,
-    signature,
+    email: "some example string",
+    timestamp: 1,
+    signature: "some example string",
+    page: 1,
+    limit: 5,
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1ManagedSubaccountInfoResponse
 } catch (err) {
-  if (
-    err instanceof SubAccountApi.QueryManagedSubAccountListForInvestorError && err.payload.kind === "error"
-  ) {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type SubAccountApi.QueryManagedSubAccountListForInvestorError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.subAccountApi.queryManagedSubAccountListForInvestor({
+  email: "some example string",
+  timestamp: 1,
+  signature: "some example string",
+  page: 1,
+  limit: 5,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1ManagedSubaccountInfoResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -10680,9 +15276,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1ManagedSubaccountInfoResponse](src/models/sapi-v1-managed-subaccount-info-response.ts)</code>
+**Direct**: `await client.subAccountApi.queryManagedSubAccountListForInvestor(request)`
 
-**OnError**: <code>[SubAccountApi.QueryManagedSubAccountListForInvestorError](src/resources/sub-account-api.ts)</code>
+- **OnSuccess**: <code>[SapiV1ManagedSubaccountInfoResponse](src/models/sapi-v1-managed-subaccount-info-response.ts)</code>
+- **OnError**: throws <code>[SubAccountApi.QueryManagedSubAccountListForInvestorError](src/resources/sub-account-api.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.subAccountApi.queryManagedSubAccountListForInvestor(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1ManagedSubaccountInfoResponse, SubAccountApi.QueryManagedSubAccountListForInvestorError&gt;</code>, with `result.value` of type <code>[SapiV1ManagedSubaccountInfoResponse](src/models/sapi-v1-managed-subaccount-info-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -10708,7 +15312,7 @@ Investor can use this api to query managed sub account margin asset details
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -10717,18 +15321,37 @@ Investor can use this api to query managed sub account margin asset details
 try {
   const response =
     await client.subAccountApi.queryManagedSubAccountMarginAssetDetailsForInvestorMasterAccount({
-      email,
-      timestamp,
-      signature,
+      email: "some example string",
+      timestamp: 1,
+      signature: "some example string",
+      recvWindow: 5000,
     });
   // TODO: Handle 'response' of type SapiV1ManagedSubaccountMarginAssetResponse
 } catch (err) {
-  if (
-    err instanceof SubAccountApi.QueryManagedSubAccountMarginAssetDetailsForInvestorMasterAccountError &&
-      err.payload.kind === "error"
-  ) {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type SubAccountApi.QueryManagedSubAccountMarginAssetDetailsForInvestorMasterAccountError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.subAccountApi.queryManagedSubAccountMarginAssetDetailsForInvestorMasterAccount({
+  email: "some example string",
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1ManagedSubaccountMarginAssetResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -10755,9 +15378,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1ManagedSubaccountMarginAssetResponse](src/models/sapi-v1-managed-subaccount-margin-asset-response.ts)</code>
+**Direct**: `await client.subAccountApi.queryManagedSubAccountMarginAssetDetailsForInvestorMasterAccount(request)`
 
-**OnError**: <code>[SubAccountApi.QueryManagedSubAccountMarginAssetDetailsForInvestorMasterAccountError](src/resources/sub-account-api.ts)</code>
+- **OnSuccess**: <code>[SapiV1ManagedSubaccountMarginAssetResponse](src/models/sapi-v1-managed-subaccount-margin-asset-response.ts)</code>
+- **OnError**: throws <code>[SubAccountApi.QueryManagedSubAccountMarginAssetDetailsForInvestorMasterAccountError](src/resources/sub-account-api.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.subAccountApi.queryManagedSubAccountMarginAssetDetailsForInvestorMasterAccount(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1ManagedSubaccountMarginAssetResponse, SubAccountApi.QueryManagedSubAccountMarginAssetDetailsForInvestorMasterAccountError&gt;</code>, with `result.value` of type <code>[SapiV1ManagedSubaccountMarginAssetResponse](src/models/sapi-v1-managed-subaccount-margin-asset-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -10785,7 +15416,7 @@ Weight(UID): 60
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -10793,17 +15424,37 @@ Weight(UID): 60
 ```ts
 try {
   const response = await client.subAccountApi.querySubAccountAssetsForMasterAccount({
-    email,
-    timestamp,
-    signature,
+    email: "some example string",
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV4SubAccountAssetsResponse
 } catch (err) {
-  if (
-    err instanceof SubAccountApi.QuerySubAccountAssetsForMasterAccountError && err.payload.kind === "error"
-  ) {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type SubAccountApi.QuerySubAccountAssetsForMasterAccountError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.subAccountApi.querySubAccountAssetsForMasterAccount({
+  email: "some example string",
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV4SubAccountAssetsResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -10830,9 +15481,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV4SubAccountAssetsResponse](src/models/sapi-v4-sub-account-assets-response.ts)</code>
+**Direct**: `await client.subAccountApi.querySubAccountAssetsForMasterAccount(request)`
 
-**OnError**: <code>[SubAccountApi.QuerySubAccountAssetsForMasterAccountError](src/resources/sub-account-api.ts)</code>
+- **OnSuccess**: <code>[SapiV4SubAccountAssetsResponse](src/models/sapi-v4-sub-account-assets-response.ts)</code>
+- **OnError**: throws <code>[SubAccountApi.QuerySubAccountAssetsForMasterAccountError](src/resources/sub-account-api.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.subAccountApi.querySubAccountAssetsForMasterAccount(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV4SubAccountAssetsResponse, SubAccountApi.QuerySubAccountAssetsForMasterAccountError&gt;</code>, with `result.value` of type <code>[SapiV4SubAccountAssetsResponse](src/models/sapi-v4-sub-account-assets-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -10858,19 +15517,47 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.subAccountApi.querySubAccountListForMasterAccount({ timestamp, signature });
+  const response = await client.subAccountApi.querySubAccountListForMasterAccount({
+    timestamp: 1,
+    signature: "some example string",
+    page: 1,
+    limit: 1,
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1SubAccountListResponse
 } catch (err) {
-  if (err instanceof SubAccountApi.QuerySubAccountListForMasterAccountError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type SubAccountApi.QuerySubAccountListForMasterAccountError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.subAccountApi.querySubAccountListForMasterAccount({
+  timestamp: 1,
+  signature: "some example string",
+  page: 1,
+  limit: 1,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1SubAccountListResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -10900,9 +15587,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1SubAccountListResponse](src/models/sapi-v1-sub-account-list-response.ts)</code>
+**Direct**: `await client.subAccountApi.querySubAccountListForMasterAccount(request)`
 
-**OnError**: <code>[SubAccountApi.QuerySubAccountListForMasterAccountError](src/resources/sub-account-api.ts)</code>
+- **OnSuccess**: <code>[SapiV1SubAccountListResponse](src/models/sapi-v1-sub-account-list-response.ts)</code>
+- **OnError**: throws <code>[SubAccountApi.QuerySubAccountListForMasterAccountError](src/resources/sub-account-api.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.subAccountApi.querySubAccountListForMasterAccount(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1SubAccountListResponse, SubAccountApi.QuerySubAccountListForMasterAccountError&gt;</code>, with `result.value` of type <code>[SapiV1SubAccountListResponse](src/models/sapi-v1-sub-account-list-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -10930,7 +15625,7 @@ Weight(UID): 60
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -10938,18 +15633,37 @@ Weight(UID): 60
 ```ts
 try {
   const response = await client.subAccountApi.querySubAccountTransactionStatisticsForMasterAccount({
-    email,
-    timestamp,
-    signature,
+    email: "some example string",
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1SubAccountTransactionStatisticsResponse
 } catch (err) {
-  if (
-    err instanceof SubAccountApi.QuerySubAccountTransactionStatisticsForMasterAccountError &&
-      err.payload.kind === "error"
-  ) {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type SubAccountApi.QuerySubAccountTransactionStatisticsForMasterAccountError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.subAccountApi.querySubAccountTransactionStatisticsForMasterAccount({
+  email: "some example string",
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1SubAccountTransactionStatisticsResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -10976,9 +15690,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1SubAccountTransactionStatisticsResponse](src/models/sapi-v1-sub-account-transaction-statistics-response.ts)</code>
+**Direct**: `await client.subAccountApi.querySubAccountTransactionStatisticsForMasterAccount(request)`
 
-**OnError**: <code>[SubAccountApi.QuerySubAccountTransactionStatisticsForMasterAccountError](src/resources/sub-account-api.ts)</code>
+- **OnSuccess**: <code>[SapiV1SubAccountTransactionStatisticsResponse](src/models/sapi-v1-sub-account-transaction-statistics-response.ts)</code>
+- **OnError**: throws <code>[SubAccountApi.QuerySubAccountTransactionStatisticsForMasterAccountError](src/resources/sub-account-api.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.subAccountApi.querySubAccountTransactionStatisticsForMasterAccount(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1SubAccountTransactionStatisticsResponse, SubAccountApi.QuerySubAccountTransactionStatisticsForMasterAccountError&gt;</code>, with `result.value` of type <code>[SapiV1SubAccountTransactionStatisticsResponse](src/models/sapi-v1-sub-account-transaction-statistics-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -11006,7 +15728,7 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -11014,15 +15736,37 @@ Weight(IP): 1
 ```ts
 try {
   const response = await client.subAccountApi.subAccountAssetsForMasterAccount({
-    email,
-    timestamp,
-    signature,
+    email: "some example string",
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV3SubAccountAssetsResponse
 } catch (err) {
-  if (err instanceof SubAccountApi.SubAccountAssetsForMasterAccountError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type SubAccountApi.SubAccountAssetsForMasterAccountError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.subAccountApi.subAccountAssetsForMasterAccount({
+  email: "some example string",
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV3SubAccountAssetsResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -11049,9 +15793,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV3SubAccountAssetsResponse](src/models/sapi-v3-sub-account-assets-response.ts)</code>
+**Direct**: `await client.subAccountApi.subAccountAssetsForMasterAccount(request)`
 
-**OnError**: <code>[SubAccountApi.SubAccountAssetsForMasterAccountError](src/resources/sub-account-api.ts)</code>
+- **OnSuccess**: <code>[SapiV3SubAccountAssetsResponse](src/models/sapi-v3-sub-account-assets-response.ts)</code>
+- **OnError**: throws <code>[SubAccountApi.SubAccountAssetsForMasterAccountError](src/resources/sub-account-api.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.subAccountApi.subAccountAssetsForMasterAccount(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV3SubAccountAssetsResponse, SubAccountApi.SubAccountAssetsForMasterAccountError&gt;</code>, with `result.value` of type <code>[SapiV3SubAccountAssetsResponse](src/models/sapi-v3-sub-account-assets-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -11079,7 +15831,7 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -11087,17 +15839,39 @@ Weight(IP): 1
 ```ts
 try {
   const response = await client.subAccountApi.subAccountDepositHistoryForMasterAccount({
-    email,
-    timestamp,
-    signature,
+    email: "some example string",
+    timestamp: 1,
+    signature: "some example string",
+    coin: "BNB",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1CapitalDepositSubHisrecResponse[]
 } catch (err) {
-  if (
-    err instanceof SubAccountApi.SubAccountDepositHistoryForMasterAccountError && err.payload.kind === "error"
-  ) {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type SubAccountApi.SubAccountDepositHistoryForMasterAccountError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.subAccountApi.subAccountDepositHistoryForMasterAccount({
+  email: "some example string",
+  timestamp: 1,
+  signature: "some example string",
+  coin: "BNB",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1CapitalDepositSubHisrecResponse[]
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -11130,9 +15904,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1CapitalDepositSubHisrecResponse](src/models/sapi-v1-capital-deposit-sub-hisrec-response.ts)[]</code>
+**Direct**: `await client.subAccountApi.subAccountDepositHistoryForMasterAccount(request)`
 
-**OnError**: <code>[SubAccountApi.SubAccountDepositHistoryForMasterAccountError](src/resources/sub-account-api.ts)</code>
+- **OnSuccess**: <code>[SapiV1CapitalDepositSubHisrecResponse](src/models/sapi-v1-capital-deposit-sub-hisrec-response.ts)[]</code>
+- **OnError**: throws <code>[SubAccountApi.SubAccountDepositHistoryForMasterAccountError](src/resources/sub-account-api.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.subAccountApi.subAccountDepositHistoryForMasterAccount(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1CapitalDepositSubHisrecResponse[], SubAccountApi.SubAccountDepositHistoryForMasterAccountError&gt;</code>, with `result.value` of type <code>[SapiV1CapitalDepositSubHisrecResponse](src/models/sapi-v1-capital-deposit-sub-hisrec-response.ts)[]</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -11160,7 +15942,7 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -11168,22 +15950,45 @@ Weight(IP): 1
 ```ts
 try {
   const response = await client.subAccountApi.subAccountFuturesAssetTransferForMasterAccount({
-    fromEmail,
-    toEmail,
-    futuresType,
-    asset,
-    amount,
-    timestamp,
-    signature,
+    fromEmail: "some example string",
+    toEmail: "some example string",
+    futuresType: 2,
+    asset: "BTC",
+    amount: 1.01,
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1SubAccountFuturesInternalTransferResponse1
 } catch (err) {
-  if (
-    err instanceof SubAccountApi.SubAccountFuturesAssetTransferForMasterAccountError &&
-      err.payload.kind === "error"
-  ) {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type SubAccountApi.SubAccountFuturesAssetTransferForMasterAccountError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.subAccountApi.subAccountFuturesAssetTransferForMasterAccount({
+  fromEmail: "some example string",
+  toEmail: "some example string",
+  futuresType: 2,
+  asset: "BTC",
+  amount: 1.01,
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1SubAccountFuturesInternalTransferResponse1
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -11214,9 +16019,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1SubAccountFuturesInternalTransferResponse1](src/models/sapi-v1-sub-account-futures-internal-transfer-response1.ts)</code>
+**Direct**: `await client.subAccountApi.subAccountFuturesAssetTransferForMasterAccount(request)`
 
-**OnError**: <code>[SubAccountApi.SubAccountFuturesAssetTransferForMasterAccountError](src/resources/sub-account-api.ts)</code>
+- **OnSuccess**: <code>[SapiV1SubAccountFuturesInternalTransferResponse1](src/models/sapi-v1-sub-account-futures-internal-transfer-response1.ts)</code>
+- **OnError**: throws <code>[SubAccountApi.SubAccountFuturesAssetTransferForMasterAccountError](src/resources/sub-account-api.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.subAccountApi.subAccountFuturesAssetTransferForMasterAccount(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1SubAccountFuturesInternalTransferResponse1, SubAccountApi.SubAccountFuturesAssetTransferForMasterAccountError&gt;</code>, with `result.value` of type <code>[SapiV1SubAccountFuturesInternalTransferResponse1](src/models/sapi-v1-sub-account-futures-internal-transfer-response1.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -11242,7 +16055,7 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -11250,19 +16063,41 @@ Weight(IP): 1
 ```ts
 try {
   const response = await client.subAccountApi.subAccountFuturesAssetTransferHistoryForMasterAccount({
-    email,
-    futuresType,
-    timestamp,
-    signature,
+    email: "some example string",
+    futuresType: 2,
+    timestamp: 1,
+    signature: "some example string",
+    page: 1,
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1SubAccountFuturesInternalTransferResponse
 } catch (err) {
-  if (
-    err instanceof SubAccountApi.SubAccountFuturesAssetTransferHistoryForMasterAccountError &&
-      err.payload.kind === "error"
-  ) {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type SubAccountApi.SubAccountFuturesAssetTransferHistoryForMasterAccountError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.subAccountApi.subAccountFuturesAssetTransferHistoryForMasterAccount({
+  email: "some example string",
+  futuresType: 2,
+  timestamp: 1,
+  signature: "some example string",
+  page: 1,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1SubAccountFuturesInternalTransferResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -11294,9 +16129,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1SubAccountFuturesInternalTransferResponse](src/models/sapi-v1-sub-account-futures-internal-transfer-response.ts)</code>
+**Direct**: `await client.subAccountApi.subAccountFuturesAssetTransferHistoryForMasterAccount(request)`
 
-**OnError**: <code>[SubAccountApi.SubAccountFuturesAssetTransferHistoryForMasterAccountError](src/resources/sub-account-api.ts)</code>
+- **OnSuccess**: <code>[SapiV1SubAccountFuturesInternalTransferResponse](src/models/sapi-v1-sub-account-futures-internal-transfer-response.ts)</code>
+- **OnError**: throws <code>[SubAccountApi.SubAccountFuturesAssetTransferHistoryForMasterAccountError](src/resources/sub-account-api.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.subAccountApi.subAccountFuturesAssetTransferHistoryForMasterAccount(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1SubAccountFuturesInternalTransferResponse, SubAccountApi.SubAccountFuturesAssetTransferHistoryForMasterAccountError&gt;</code>, with `result.value` of type <code>[SapiV1SubAccountFuturesInternalTransferResponse](src/models/sapi-v1-sub-account-futures-internal-transfer-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -11325,7 +16168,7 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -11333,17 +16176,39 @@ Weight(IP): 1
 ```ts
 try {
   const response = await client.subAccountApi.subAccountSpotAssetTransferHistoryForMasterAccount({
-    timestamp,
-    signature,
+    timestamp: 1,
+    signature: "some example string",
+    page: 1,
+    limit: 1,
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1SubAccountSubTransferHistoryResponse[]
 } catch (err) {
-  if (
-    err instanceof SubAccountApi.SubAccountSpotAssetTransferHistoryForMasterAccountError &&
-      err.payload.kind === "error"
-  ) {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type SubAccountApi.SubAccountSpotAssetTransferHistoryForMasterAccountError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.subAccountApi.subAccountSpotAssetTransferHistoryForMasterAccount({
+  timestamp: 1,
+  signature: "some example string",
+  page: 1,
+  limit: 1,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1SubAccountSubTransferHistoryResponse[]
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -11375,9 +16240,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1SubAccountSubTransferHistoryResponse](src/models/sapi-v1-sub-account-sub-transfer-history-response.ts)[]</code>
+**Direct**: `await client.subAccountApi.subAccountSpotAssetTransferHistoryForMasterAccount(request)`
 
-**OnError**: <code>[SubAccountApi.SubAccountSpotAssetTransferHistoryForMasterAccountError](src/resources/sub-account-api.ts)</code>
+- **OnSuccess**: <code>[SapiV1SubAccountSubTransferHistoryResponse](src/models/sapi-v1-sub-account-sub-transfer-history-response.ts)[]</code>
+- **OnError**: throws <code>[SubAccountApi.SubAccountSpotAssetTransferHistoryForMasterAccountError](src/resources/sub-account-api.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.subAccountApi.subAccountSpotAssetTransferHistoryForMasterAccount(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1SubAccountSubTransferHistoryResponse[], SubAccountApi.SubAccountSpotAssetTransferHistoryForMasterAccountError&gt;</code>, with `result.value` of type <code>[SapiV1SubAccountSubTransferHistoryResponse](src/models/sapi-v1-sub-account-sub-transfer-history-response.ts)[]</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -11405,7 +16278,7 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -11413,17 +16286,37 @@ Weight(IP): 1
 ```ts
 try {
   const response = await client.subAccountApi.subAccountSpotAssetsSummaryForMasterAccount({
-    timestamp,
-    signature,
+    timestamp: 1,
+    signature: "some example string",
+    page: 1,
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1SubAccountSpotSummaryResponse
 } catch (err) {
-  if (
-    err instanceof SubAccountApi.SubAccountSpotAssetsSummaryForMasterAccountError &&
-      err.payload.kind === "error"
-  ) {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type SubAccountApi.SubAccountSpotAssetsSummaryForMasterAccountError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.subAccountApi.subAccountSpotAssetsSummaryForMasterAccount({
+  timestamp: 1,
+  signature: "some example string",
+  page: 1,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1SubAccountSpotSummaryResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -11452,9 +16345,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1SubAccountSpotSummaryResponse](src/models/sapi-v1-sub-account-spot-summary-response.ts)</code>
+**Direct**: `await client.subAccountApi.subAccountSpotAssetsSummaryForMasterAccount(request)`
 
-**OnError**: <code>[SubAccountApi.SubAccountSpotAssetsSummaryForMasterAccountError](src/resources/sub-account-api.ts)</code>
+- **OnSuccess**: <code>[SapiV1SubAccountSpotSummaryResponse](src/models/sapi-v1-sub-account-spot-summary-response.ts)</code>
+- **OnError**: throws <code>[SubAccountApi.SubAccountSpotAssetsSummaryForMasterAccountError](src/resources/sub-account-api.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.subAccountApi.subAccountSpotAssetsSummaryForMasterAccount(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1SubAccountSpotSummaryResponse, SubAccountApi.SubAccountSpotAssetsSummaryForMasterAccountError&gt;</code>, with `result.value` of type <code>[SapiV1SubAccountSpotSummaryResponse](src/models/sapi-v1-sub-account-spot-summary-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -11482,7 +16383,7 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -11490,19 +16391,41 @@ Weight(IP): 1
 ```ts
 try {
   const response = await client.subAccountApi.subAccountSpotAssetsSummaryForMasterAccount2({
-    email,
-    coin,
-    timestamp,
-    signature,
+    email: "some example string",
+    coin: "BNB",
+    timestamp: 1,
+    signature: "some example string",
+    network: "BTC",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1CapitalDepositSubAddressResponse
 } catch (err) {
-  if (
-    err instanceof SubAccountApi.SubAccountSpotAssetsSummaryForMasterAccount2Error &&
-      err.payload.kind === "error"
-  ) {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type SubAccountApi.SubAccountSpotAssetsSummaryForMasterAccount2Error, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.subAccountApi.subAccountSpotAssetsSummaryForMasterAccount2({
+  email: "some example string",
+  coin: "BNB",
+  timestamp: 1,
+  signature: "some example string",
+  network: "BTC",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1CapitalDepositSubAddressResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -11531,9 +16454,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1CapitalDepositSubAddressResponse](src/models/sapi-v1-capital-deposit-sub-address-response.ts)</code>
+**Direct**: `await client.subAccountApi.subAccountSpotAssetsSummaryForMasterAccount2(request)`
 
-**OnError**: <code>[SubAccountApi.SubAccountSpotAssetsSummaryForMasterAccount2Error](src/resources/sub-account-api.ts)</code>
+- **OnSuccess**: <code>[SapiV1CapitalDepositSubAddressResponse](src/models/sapi-v1-capital-deposit-sub-address-response.ts)</code>
+- **OnError**: throws <code>[SubAccountApi.SubAccountSpotAssetsSummaryForMasterAccount2Error](src/resources/sub-account-api.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.subAccountApi.subAccountSpotAssetsSummaryForMasterAccount2(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1CapitalDepositSubAddressResponse, SubAccountApi.SubAccountSpotAssetsSummaryForMasterAccount2Error&gt;</code>, with `result.value` of type <code>[SapiV1CapitalDepositSubAddressResponse](src/models/sapi-v1-capital-deposit-sub-address-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -11562,7 +16493,7 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -11570,16 +16501,39 @@ Weight(IP): 1
 ```ts
 try {
   const response = await client.subAccountApi.subAccountTransferHistoryForSubAccount({
-    timestamp,
-    signature,
+    timestamp: 1,
+    signature: "some example string",
+    asset: "BNB",
+    limit: 5,
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1SubAccountTransferSubUserHistoryResponse[]
 } catch (err) {
-  if (
-    err instanceof SubAccountApi.SubAccountTransferHistoryForSubAccountError && err.payload.kind === "error"
-  ) {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type SubAccountApi.SubAccountTransferHistoryForSubAccountError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.subAccountApi.subAccountTransferHistoryForSubAccount({
+  timestamp: 1,
+  signature: "some example string",
+  asset: "BNB",
+  limit: 5,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1SubAccountTransferSubUserHistoryResponse[]
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -11610,9 +16564,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1SubAccountTransferSubUserHistoryResponse](src/models/sapi-v1-sub-account-transfer-sub-user-history-response.ts)[]</code>
+**Direct**: `await client.subAccountApi.subAccountTransferHistoryForSubAccount(request)`
 
-**OnError**: <code>[SubAccountApi.SubAccountTransferHistoryForSubAccountError](src/resources/sub-account-api.ts)</code>
+- **OnSuccess**: <code>[SapiV1SubAccountTransferSubUserHistoryResponse](src/models/sapi-v1-sub-account-transfer-sub-user-history-response.ts)[]</code>
+- **OnError**: throws <code>[SubAccountApi.SubAccountTransferHistoryForSubAccountError](src/resources/sub-account-api.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.subAccountApi.subAccountTransferHistoryForSubAccount(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1SubAccountTransferSubUserHistoryResponse[], SubAccountApi.SubAccountTransferHistoryForSubAccountError&gt;</code>, with `result.value` of type <code>[SapiV1SubAccountTransferSubUserHistoryResponse](src/models/sapi-v1-sub-account-transfer-sub-user-history-response.ts)[]</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -11640,7 +16602,7 @@ Weight(IP): 10
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -11648,17 +16610,35 @@ Weight(IP): 10
 ```ts
 try {
   const response = await client.subAccountApi.subAccountSStatusOnMarginFuturesForMasterAccount({
-    timestamp,
-    signature,
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1SubAccountStatusResponse[]
 } catch (err) {
-  if (
-    err instanceof SubAccountApi.SubAccountSStatusOnMarginFuturesForMasterAccountError &&
-      err.payload.kind === "error"
-  ) {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type SubAccountApi.SubAccountSStatusOnMarginFuturesForMasterAccountError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.subAccountApi.subAccountSStatusOnMarginFuturesForMasterAccount({
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1SubAccountStatusResponse[]
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -11685,9 +16665,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1SubAccountStatusResponse](src/models/sapi-v1-sub-account-status-response.ts)[]</code>
+**Direct**: `await client.subAccountApi.subAccountSStatusOnMarginFuturesForMasterAccount(request)`
 
-**OnError**: <code>[SubAccountApi.SubAccountSStatusOnMarginFuturesForMasterAccountError](src/resources/sub-account-api.ts)</code>
+- **OnSuccess**: <code>[SapiV1SubAccountStatusResponse](src/models/sapi-v1-sub-account-status-response.ts)[]</code>
+- **OnError**: throws <code>[SubAccountApi.SubAccountSStatusOnMarginFuturesForMasterAccountError](src/resources/sub-account-api.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.subAccountApi.subAccountSStatusOnMarginFuturesForMasterAccount(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1SubAccountStatusResponse[], SubAccountApi.SubAccountSStatusOnMarginFuturesForMasterAccountError&gt;</code>, with `result.value` of type <code>[SapiV1SubAccountStatusResponse](src/models/sapi-v1-sub-account-status-response.ts)[]</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -11713,7 +16701,7 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -11721,17 +16709,35 @@ Weight(IP): 1
 ```ts
 try {
   const response = await client.subAccountApi.summaryOfSubAccountSFuturesAccountForMasterAccount({
-    timestamp,
-    signature,
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1SubAccountFuturesAccountSummaryResponse
 } catch (err) {
-  if (
-    err instanceof SubAccountApi.SummaryOfSubAccountSFuturesAccountForMasterAccountError &&
-      err.payload.kind === "error"
-  ) {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type SubAccountApi.SummaryOfSubAccountSFuturesAccountForMasterAccountError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.subAccountApi.summaryOfSubAccountSFuturesAccountForMasterAccount({
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1SubAccountFuturesAccountSummaryResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -11757,9 +16763,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1SubAccountFuturesAccountSummaryResponse](src/models/sapi-v1-sub-account-futures-account-summary-response.ts)</code>
+**Direct**: `await client.subAccountApi.summaryOfSubAccountSFuturesAccountForMasterAccount(request)`
 
-**OnError**: <code>[SubAccountApi.SummaryOfSubAccountSFuturesAccountForMasterAccountError](src/resources/sub-account-api.ts)</code>
+- **OnSuccess**: <code>[SapiV1SubAccountFuturesAccountSummaryResponse](src/models/sapi-v1-sub-account-futures-account-summary-response.ts)</code>
+- **OnError**: throws <code>[SubAccountApi.SummaryOfSubAccountSFuturesAccountForMasterAccountError](src/resources/sub-account-api.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.subAccountApi.summaryOfSubAccountSFuturesAccountForMasterAccount(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1SubAccountFuturesAccountSummaryResponse, SubAccountApi.SummaryOfSubAccountSFuturesAccountForMasterAccountError&gt;</code>, with `result.value` of type <code>[SapiV1SubAccountFuturesAccountSummaryResponse](src/models/sapi-v1-sub-account-futures-account-summary-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -11785,7 +16799,7 @@ Weight(IP): 10
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -11793,18 +16807,39 @@ Weight(IP): 10
 ```ts
 try {
   const response = await client.subAccountApi.summaryOfSubAccountSFuturesAccountV2ForMasterAccount({
-    futuresType,
-    timestamp,
-    signature,
+    futuresType: 1,
+    timestamp: 1,
+    signature: "some example string",
+    page: 1,
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV2SubAccountFuturesAccountSummaryResponse
 } catch (err) {
-  if (
-    err instanceof SubAccountApi.SummaryOfSubAccountSFuturesAccountV2ForMasterAccountError &&
-      err.payload.kind === "error"
-  ) {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type SubAccountApi.SummaryOfSubAccountSFuturesAccountV2ForMasterAccountError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.subAccountApi.summaryOfSubAccountSFuturesAccountV2ForMasterAccount({
+  futuresType: 1,
+  timestamp: 1,
+  signature: "some example string",
+  page: 1,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV2SubAccountFuturesAccountSummaryResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -11833,9 +16868,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV2SubAccountFuturesAccountSummaryResponse](src/models/unions/sapi-v2-sub-account-futures-account-summary-response.ts)</code>
+**Direct**: `await client.subAccountApi.summaryOfSubAccountSFuturesAccountV2ForMasterAccount(request)`
 
-**OnError**: <code>[SubAccountApi.SummaryOfSubAccountSFuturesAccountV2ForMasterAccountError](src/resources/sub-account-api.ts)</code>
+- **OnSuccess**: <code>[SapiV2SubAccountFuturesAccountSummaryResponse](src/models/unions/sapi-v2-sub-account-futures-account-summary-response.ts)</code>
+- **OnError**: throws <code>[SubAccountApi.SummaryOfSubAccountSFuturesAccountV2ForMasterAccountError](src/resources/sub-account-api.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.subAccountApi.summaryOfSubAccountSFuturesAccountV2ForMasterAccount(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV2SubAccountFuturesAccountSummaryResponse, SubAccountApi.SummaryOfSubAccountSFuturesAccountV2ForMasterAccountError&gt;</code>, with `result.value` of type <code>[SapiV2SubAccountFuturesAccountSummaryResponse](src/models/unions/sapi-v2-sub-account-futures-account-summary-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -11861,7 +16904,7 @@ Weight(IP): 10
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -11869,17 +16912,35 @@ Weight(IP): 10
 ```ts
 try {
   const response = await client.subAccountApi.summaryOfSubAccountSMarginAccountForMasterAccount({
-    timestamp,
-    signature,
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1SubAccountMarginAccountSummaryResponse
 } catch (err) {
-  if (
-    err instanceof SubAccountApi.SummaryOfSubAccountSMarginAccountForMasterAccountError &&
-      err.payload.kind === "error"
-  ) {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type SubAccountApi.SummaryOfSubAccountSMarginAccountForMasterAccountError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.subAccountApi.summaryOfSubAccountSMarginAccountForMasterAccount({
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1SubAccountMarginAccountSummaryResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -11905,9 +16966,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1SubAccountMarginAccountSummaryResponse](src/models/sapi-v1-sub-account-margin-account-summary-response.ts)</code>
+**Direct**: `await client.subAccountApi.summaryOfSubAccountSMarginAccountForMasterAccount(request)`
 
-**OnError**: <code>[SubAccountApi.SummaryOfSubAccountSMarginAccountForMasterAccountError](src/resources/sub-account-api.ts)</code>
+- **OnSuccess**: <code>[SapiV1SubAccountMarginAccountSummaryResponse](src/models/sapi-v1-sub-account-margin-account-summary-response.ts)</code>
+- **OnError**: throws <code>[SubAccountApi.SummaryOfSubAccountSMarginAccountForMasterAccountError](src/resources/sub-account-api.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.subAccountApi.summaryOfSubAccountSMarginAccountForMasterAccount(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1SubAccountMarginAccountSummaryResponse, SubAccountApi.SummaryOfSubAccountSMarginAccountForMasterAccountError&gt;</code>, with `result.value` of type <code>[SapiV1SubAccountMarginAccountSummaryResponse](src/models/sapi-v1-sub-account-margin-account-summary-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -11933,7 +17002,7 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -11941,20 +17010,43 @@ Weight(IP): 1
 ```ts
 try {
   const response = await client.subAccountApi.transferForSubAccountForMasterAccount({
-    email,
-    asset,
-    amount,
-    type,
-    timestamp,
-    signature,
+    email: "some example string",
+    asset: "BTC",
+    amount: 1.01,
+    type: 1,
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1SubAccountFuturesTransferResponse
 } catch (err) {
-  if (
-    err instanceof SubAccountApi.TransferForSubAccountForMasterAccountError && err.payload.kind === "error"
-  ) {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type SubAccountApi.TransferForSubAccountForMasterAccountError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.subAccountApi.transferForSubAccountForMasterAccount({
+  email: "some example string",
+  asset: "BTC",
+  amount: 1.01,
+  type: 1,
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1SubAccountFuturesTransferResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -11984,9 +17076,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1SubAccountFuturesTransferResponse](src/models/sapi-v1-sub-account-futures-transfer-response.ts)</code>
+**Direct**: `await client.subAccountApi.transferForSubAccountForMasterAccount(request)`
 
-**OnError**: <code>[SubAccountApi.TransferForSubAccountForMasterAccountError](src/resources/sub-account-api.ts)</code>
+- **OnSuccess**: <code>[SapiV1SubAccountFuturesTransferResponse](src/models/sapi-v1-sub-account-futures-transfer-response.ts)</code>
+- **OnError**: throws <code>[SubAccountApi.TransferForSubAccountForMasterAccountError](src/resources/sub-account-api.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.subAccountApi.transferForSubAccountForMasterAccount(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1SubAccountFuturesTransferResponse, SubAccountApi.TransferForSubAccountForMasterAccountError&gt;</code>, with `result.value` of type <code>[SapiV1SubAccountFuturesTransferResponse](src/models/sapi-v1-sub-account-futures-transfer-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -12012,7 +17112,7 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -12020,16 +17120,39 @@ Weight(IP): 1
 ```ts
 try {
   const response = await client.subAccountApi.transferToMasterForSubAccount({
-    asset,
-    amount,
-    timestamp,
-    signature,
+    asset: "BTC",
+    amount: 1.01,
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1SubAccountTransferSubToMasterResponse
 } catch (err) {
-  if (err instanceof SubAccountApi.TransferToMasterForSubAccountError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type SubAccountApi.TransferToMasterForSubAccountError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.subAccountApi.transferToMasterForSubAccount({
+  asset: "BTC",
+  amount: 1.01,
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1SubAccountTransferSubToMasterResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -12057,9 +17180,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1SubAccountTransferSubToMasterResponse](src/models/sapi-v1-sub-account-transfer-sub-to-master-response.ts)</code>
+**Direct**: `await client.subAccountApi.transferToMasterForSubAccount(request)`
 
-**OnError**: <code>[SubAccountApi.TransferToMasterForSubAccountError](src/resources/sub-account-api.ts)</code>
+- **OnSuccess**: <code>[SapiV1SubAccountTransferSubToMasterResponse](src/models/sapi-v1-sub-account-transfer-sub-to-master-response.ts)</code>
+- **OnError**: throws <code>[SubAccountApi.TransferToMasterForSubAccountError](src/resources/sub-account-api.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.subAccountApi.transferToMasterForSubAccount(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1SubAccountTransferSubToMasterResponse, SubAccountApi.TransferToMasterForSubAccountError&gt;</code>, with `result.value` of type <code>[SapiV1SubAccountTransferSubToMasterResponse](src/models/sapi-v1-sub-account-transfer-sub-to-master-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -12085,7 +17216,7 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -12093,20 +17224,41 @@ Weight(IP): 1
 ```ts
 try {
   const response = await client.subAccountApi.transferToSubAccountOfSameMasterForSubAccount({
-    toEmail,
-    asset,
-    amount,
-    timestamp,
-    signature,
+    toEmail: "some example string",
+    asset: "BTC",
+    amount: 1.01,
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1SubAccountTransferSubToSubResponse
 } catch (err) {
-  if (
-    err instanceof SubAccountApi.TransferToSubAccountOfSameMasterForSubAccountError &&
-      err.payload.kind === "error"
-  ) {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type SubAccountApi.TransferToSubAccountOfSameMasterForSubAccountError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.subAccountApi.transferToSubAccountOfSameMasterForSubAccount({
+  toEmail: "some example string",
+  asset: "BTC",
+  amount: 1.01,
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1SubAccountTransferSubToSubResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -12135,9 +17287,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1SubAccountTransferSubToSubResponse](src/models/sapi-v1-sub-account-transfer-sub-to-sub-response.ts)</code>
+**Direct**: `await client.subAccountApi.transferToSubAccountOfSameMasterForSubAccount(request)`
 
-**OnError**: <code>[SubAccountApi.TransferToSubAccountOfSameMasterForSubAccountError](src/resources/sub-account-api.ts)</code>
+- **OnSuccess**: <code>[SapiV1SubAccountTransferSubToSubResponse](src/models/sapi-v1-sub-account-transfer-sub-to-sub-response.ts)</code>
+- **OnError**: throws <code>[SubAccountApi.TransferToSubAccountOfSameMasterForSubAccountError](src/resources/sub-account-api.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.subAccountApi.transferToSubAccountOfSameMasterForSubAccount(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1SubAccountTransferSubToSubResponse, SubAccountApi.TransferToSubAccountOfSameMasterForSubAccountError&gt;</code>, with `result.value` of type <code>[SapiV1SubAccountTransferSubToSubResponse](src/models/sapi-v1-sub-account-transfer-sub-to-sub-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -12171,7 +17331,7 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -12179,18 +17339,45 @@ Weight(IP): 1
 ```ts
 try {
   const response = await client.subAccountApi.universalTransferForMasterAccount({
-    fromAccountType,
-    toAccountType,
-    asset,
-    amount,
-    timestamp,
-    signature,
+    fromAccountType: FromAccountType.Spot,
+    toAccountType: ToAccountType.Spot,
+    asset: "BTC",
+    amount: 1.01,
+    timestamp: 1,
+    signature: "some example string",
+    symbol: "BNBUSDT",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1SubAccountUniversalTransferResponse1
 } catch (err) {
-  if (err instanceof SubAccountApi.UniversalTransferForMasterAccountError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type SubAccountApi.UniversalTransferForMasterAccountError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.subAccountApi.universalTransferForMasterAccount({
+  fromAccountType: FromAccountType.Spot,
+  toAccountType: ToAccountType.Spot,
+  asset: "BTC",
+  amount: 1.01,
+  timestamp: 1,
+  signature: "some example string",
+  symbol: "BNBUSDT",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1SubAccountUniversalTransferResponse1
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -12224,9 +17411,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1SubAccountUniversalTransferResponse1](src/models/sapi-v1-sub-account-universal-transfer-response1.ts)</code>
+**Direct**: `await client.subAccountApi.universalTransferForMasterAccount(request)`
 
-**OnError**: <code>[SubAccountApi.UniversalTransferForMasterAccountError](src/resources/sub-account-api.ts)</code>
+- **OnSuccess**: <code>[SapiV1SubAccountUniversalTransferResponse1](src/models/sapi-v1-sub-account-universal-transfer-response1.ts)</code>
+- **OnError**: throws <code>[SubAccountApi.UniversalTransferForMasterAccountError](src/resources/sub-account-api.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.subAccountApi.universalTransferForMasterAccount(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1SubAccountUniversalTransferResponse1, SubAccountApi.UniversalTransferForMasterAccountError&gt;</code>, with `result.value` of type <code>[SapiV1SubAccountUniversalTransferResponse1](src/models/sapi-v1-sub-account-universal-transfer-response1.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -12257,7 +17452,7 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -12265,16 +17460,37 @@ Weight(IP): 1
 ```ts
 try {
   const response = await client.subAccountApi.universalTransferHistoryForMasterAccount({
-    timestamp,
-    signature,
+    timestamp: 1,
+    signature: "some example string",
+    page: 1,
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1SubAccountUniversalTransferResponse[]
 } catch (err) {
-  if (
-    err instanceof SubAccountApi.UniversalTransferHistoryForMasterAccountError && err.payload.kind === "error"
-  ) {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type SubAccountApi.UniversalTransferHistoryForMasterAccountError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.subAccountApi.universalTransferHistoryForMasterAccount({
+  timestamp: 1,
+  signature: "some example string",
+  page: 1,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1SubAccountUniversalTransferResponse[]
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -12307,9 +17523,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1SubAccountUniversalTransferResponse](src/models/sapi-v1-sub-account-universal-transfer-response.ts)[]</code>
+**Direct**: `await client.subAccountApi.universalTransferHistoryForMasterAccount(request)`
 
-**OnError**: <code>[SubAccountApi.UniversalTransferHistoryForMasterAccountError](src/resources/sub-account-api.ts)</code>
+- **OnSuccess**: <code>[SapiV1SubAccountUniversalTransferResponse](src/models/sapi-v1-sub-account-universal-transfer-response.ts)[]</code>
+- **OnError**: throws <code>[SubAccountApi.UniversalTransferHistoryForMasterAccountError](src/resources/sub-account-api.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.subAccountApi.universalTransferHistoryForMasterAccount(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1SubAccountUniversalTransferResponse[], SubAccountApi.UniversalTransferHistoryForMasterAccountError&gt;</code>, with `result.value` of type <code>[SapiV1SubAccountUniversalTransferResponse](src/models/sapi-v1-sub-account-universal-transfer-response.ts)[]</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -12337,7 +17561,7 @@ Weight(UID): 3000
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -12345,20 +17569,41 @@ Weight(UID): 3000
 ```ts
 try {
   const response = await client.subAccountApi.updateIpRestrictionForSubAccountApiKeyForMasterAccount({
-    email,
-    subAccountApiKey,
-    status,
-    timestamp,
-    signature,
+    email: "some example string",
+    subAccountApiKey: "some example string",
+    status: "1",
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV2SubAccountSubAccountApiIpRestrictionResponse
 } catch (err) {
-  if (
-    err instanceof SubAccountApi.UpdateIpRestrictionForSubAccountApiKeyForMasterAccountError &&
-      err.payload.kind === "error"
-  ) {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type SubAccountApi.UpdateIpRestrictionForSubAccountApiKeyForMasterAccountError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.subAccountApi.updateIpRestrictionForSubAccountApiKeyForMasterAccount({
+  email: "some example string",
+  subAccountApiKey: "some example string",
+  status: "1",
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV2SubAccountSubAccountApiIpRestrictionResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -12388,9 +17633,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV2SubAccountSubAccountApiIpRestrictionResponse](src/models/sapi-v2-sub-account-sub-account-api-ip-restriction-response.ts)</code>
+**Direct**: `await client.subAccountApi.updateIpRestrictionForSubAccountApiKeyForMasterAccount(request)`
 
-**OnError**: <code>[SubAccountApi.UpdateIpRestrictionForSubAccountApiKeyForMasterAccountError](src/resources/sub-account-api.ts)</code>
+- **OnSuccess**: <code>[SapiV2SubAccountSubAccountApiIpRestrictionResponse](src/models/sapi-v2-sub-account-sub-account-api-ip-restriction-response.ts)</code>
+- **OnError**: throws <code>[SubAccountApi.UpdateIpRestrictionForSubAccountApiKeyForMasterAccountError](src/resources/sub-account-api.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.subAccountApi.updateIpRestrictionForSubAccountApiKeyForMasterAccount(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV2SubAccountSubAccountApiIpRestrictionResponse, SubAccountApi.UpdateIpRestrictionForSubAccountApiKeyForMasterAccountError&gt;</code>, with `result.value` of type <code>[SapiV2SubAccountSubAccountApiIpRestrictionResponse](src/models/sapi-v2-sub-account-sub-account-api-ip-restriction-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -12416,7 +17669,7 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -12424,16 +17677,43 @@ Weight(IP): 1
 ```ts
 try {
   const response = await client.subAccountApi.withdrawlAssetsFromTheManagedSubAccountForInvestorMasterAccount(
-    { fromEmail, asset, amount, timestamp, signature },
+    {
+      fromEmail: "some example string",
+      asset: "BTC",
+      amount: 1.01,
+      timestamp: 1,
+      signature: "some example string",
+      recvWindow: 5000,
+    },
   );
   // TODO: Handle 'response' of type SapiV1ManagedSubaccountWithdrawResponse
 } catch (err) {
-  if (
-    err instanceof SubAccountApi.WithdrawlAssetsFromTheManagedSubAccountForInvestorMasterAccountError &&
-      err.payload.kind === "error"
-  ) {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type SubAccountApi.WithdrawlAssetsFromTheManagedSubAccountForInvestorMasterAccountError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.subAccountApi.withdrawlAssetsFromTheManagedSubAccountForInvestorMasterAccount({
+  fromEmail: "some example string",
+  asset: "BTC",
+  amount: 1.01,
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1ManagedSubaccountWithdrawResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -12463,9 +17743,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1ManagedSubaccountWithdrawResponse](src/models/sapi-v1-managed-subaccount-withdraw-response.ts)</code>
+**Direct**: `await client.subAccountApi.withdrawlAssetsFromTheManagedSubAccountForInvestorMasterAccount(request)`
 
-**OnError**: <code>[SubAccountApi.WithdrawlAssetsFromTheManagedSubAccountForInvestorMasterAccountError](src/resources/sub-account-api.ts)</code>
+- **OnSuccess**: <code>[SapiV1ManagedSubaccountWithdrawResponse](src/models/sapi-v1-managed-subaccount-withdraw-response.ts)</code>
+- **OnError**: throws <code>[SubAccountApi.WithdrawlAssetsFromTheManagedSubAccountForInvestorMasterAccountError](src/resources/sub-account-api.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.subAccountApi.withdrawlAssetsFromTheManagedSubAccountForInvestorMasterAccount(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1ManagedSubaccountWithdrawResponse, SubAccountApi.WithdrawlAssetsFromTheManagedSubAccountForInvestorMasterAccountError&gt;</code>, with `result.value` of type <code>[SapiV1ManagedSubaccountWithdrawResponse](src/models/sapi-v1-managed-subaccount-withdraw-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -12497,19 +17785,39 @@ Weight: 2
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.stream.closeAListenKeyUserStream();
+  const response = await client.stream.closeAListenKeyUserStream({
+    listenKey: "pqia91ma19a5s61cv6a81va65sdf19v8a65a1a5s61cv6a81va65sdf19v8a65a1",
+  });
   // TODO: Handle 'response' of type Record<string, unknown>
 } catch (err) {
-  if (err instanceof Stream.CloseAListenKeyUserStreamError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Stream.CloseAListenKeyUserStreamError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.stream.closeAListenKeyUserStream({
+  listenKey: "pqia91ma19a5s61cv6a81va65sdf19v8a65a1a5s61cv6a81va65sdf19v8a65a1",
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type Record<string, unknown>
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -12533,9 +17841,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>Record&lt;string, unknown&gt;</code>
+**Direct**: `await client.stream.closeAListenKeyUserStream(request)`
 
-**OnError**: <code>[Stream.CloseAListenKeyUserStreamError](src/resources/stream.ts)</code>
+- **OnSuccess**: <code>Record&lt;string, unknown&gt;</code>
+- **OnError**: throws <code>[Stream.CloseAListenKeyUserStreamError](src/resources/stream.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.stream.closeAListenKeyUserStream(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;Record&lt;string, unknown&gt;, Stream.CloseAListenKeyUserStreamError&gt;</code>, with `result.value` of type <code>Record&lt;string, unknown&gt;</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -12546,7 +17862,7 @@ try {
 </details>
 
 <details>
-<summary><code>createAListenKeyUserStream(options?: RequestOptions): ApiPromise&lt;ApiV3UserDataStreamResponse, ResponseError&gt;</code></summary>
+<summary><code>createAListenKeyUserStream(options?: RequestOptions): ApiPromise&lt;ApiV3UserDataStreamResponse, ApiError&gt;</code></summary>
 
 <dl>
 <dd>
@@ -12564,7 +17880,7 @@ Weight: 2
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -12574,7 +17890,25 @@ try {
   const response = await client.stream.createAListenKeyUserStream();
   // TODO: Handle 'response' of type ApiV3UserDataStreamResponse
 } catch (err) {
-  // TODO: Handle 'err' of type ResponseError
+  // TODO: Handle 'err' of type ApiError, where 'err.payload' is always the Undeclared arm
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.stream.createAListenKeyUserStream().asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type ApiV3UserDataStreamResponse
+} else {
+  // TODO: Handle 'result', where 'result.payload' is always the Undeclared arm
 }
 ```
 
@@ -12586,9 +17920,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[ApiV3UserDataStreamResponse](src/models/api-v3-user-data-stream-response.ts)</code>
+**Direct**: `await client.stream.createAListenKeyUserStream()`
 
-**OnError**: <code>[ResponseError](src/core/response-error.ts)</code>
+- **OnSuccess**: <code>[ApiV3UserDataStreamResponse](src/models/api-v3-user-data-stream-response.ts)</code>
+- **OnError**: throws <code>[ApiError](src/core/api-error.ts)</code>, with `err.payload` always the <code>[Undeclared](src/core/api-error.ts)</code> arm
+
+**As ApiResult**: `await client.stream.createAListenKeyUserStream().asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;ApiV3UserDataStreamResponse, ApiError&gt;</code>, with `result.value` of type <code>[ApiV3UserDataStreamResponse](src/models/api-v3-user-data-stream-response.ts)</code>
+- **OnError**: `result.payload` always the <code>[Undeclared](src/core/api-error.ts)</code> arm, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -12616,19 +17958,39 @@ Weight: 2
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.stream.pingKeepAliveAListenKeyUserStream();
+  const response = await client.stream.pingKeepAliveAListenKeyUserStream({
+    listenKey: "pqia91ma19a5s61cv6a81va65sdf19v8a65a1a5s61cv6a81va65sdf19v8a65a1",
+  });
   // TODO: Handle 'response' of type Record<string, unknown>
 } catch (err) {
-  if (err instanceof Stream.PingKeepAliveAListenKeyUserStreamError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Stream.PingKeepAliveAListenKeyUserStreamError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.stream.pingKeepAliveAListenKeyUserStream({
+  listenKey: "pqia91ma19a5s61cv6a81va65sdf19v8a65a1a5s61cv6a81va65sdf19v8a65a1",
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type Record<string, unknown>
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -12652,9 +18014,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>Record&lt;string, unknown&gt;</code>
+**Direct**: `await client.stream.pingKeepAliveAListenKeyUserStream(request)`
 
-**OnError**: <code>[Stream.PingKeepAliveAListenKeyUserStreamError](src/resources/stream.ts)</code>
+- **OnSuccess**: <code>Record&lt;string, unknown&gt;</code>
+- **OnError**: throws <code>[Stream.PingKeepAliveAListenKeyUserStreamError](src/resources/stream.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.stream.pingKeepAliveAListenKeyUserStream(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;Record&lt;string, unknown&gt;, Stream.PingKeepAliveAListenKeyUserStreamError&gt;</code>, with `result.value` of type <code>Record&lt;string, unknown&gt;</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -12686,19 +18056,39 @@ Weight: 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.marginStream.closeAListenKeyUserStream2();
+  const response = await client.marginStream.closeAListenKeyUserStream2({
+    listenKey: "pqia91ma19a5s61cv6a81va65sdf19v8a65a1a5s61cv6a81va65sdf19v8a65a1",
+  });
   // TODO: Handle 'response' of type Record<string, unknown>
 } catch (err) {
-  if (err instanceof MarginStream.CloseAListenKeyUserStream2Error && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type MarginStream.CloseAListenKeyUserStream2Error, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.marginStream.closeAListenKeyUserStream2({
+  listenKey: "pqia91ma19a5s61cv6a81va65sdf19v8a65a1a5s61cv6a81va65sdf19v8a65a1",
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type Record<string, unknown>
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -12722,9 +18112,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>Record&lt;string, unknown&gt;</code>
+**Direct**: `await client.marginStream.closeAListenKeyUserStream2(request)`
 
-**OnError**: <code>[MarginStream.CloseAListenKeyUserStream2Error](src/resources/margin-stream.ts)</code>
+- **OnSuccess**: <code>Record&lt;string, unknown&gt;</code>
+- **OnError**: throws <code>[MarginStream.CloseAListenKeyUserStream2Error](src/resources/margin-stream.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.marginStream.closeAListenKeyUserStream2(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;Record&lt;string, unknown&gt;, MarginStream.CloseAListenKeyUserStream2Error&gt;</code>, with `result.value` of type <code>Record&lt;string, unknown&gt;</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -12735,7 +18133,7 @@ try {
 </details>
 
 <details>
-<summary><code>createAListenKeyUserStream2(options?: RequestOptions): ApiPromise&lt;SapiV1UserDataStreamResponse, ResponseError&gt;</code></summary>
+<summary><code>createAListenKeyUserStream2(options?: RequestOptions): ApiPromise&lt;SapiV1UserDataStreamResponse, ApiError&gt;</code></summary>
 
 <dl>
 <dd>
@@ -12753,7 +18151,7 @@ Weight: 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -12763,7 +18161,25 @@ try {
   const response = await client.marginStream.createAListenKeyUserStream2();
   // TODO: Handle 'response' of type SapiV1UserDataStreamResponse
 } catch (err) {
-  // TODO: Handle 'err' of type ResponseError
+  // TODO: Handle 'err' of type ApiError, where 'err.payload' is always the Undeclared arm
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.marginStream.createAListenKeyUserStream2().asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1UserDataStreamResponse
+} else {
+  // TODO: Handle 'result', where 'result.payload' is always the Undeclared arm
 }
 ```
 
@@ -12775,9 +18191,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1UserDataStreamResponse](src/models/sapi-v1-user-data-stream-response.ts)</code>
+**Direct**: `await client.marginStream.createAListenKeyUserStream2()`
 
-**OnError**: <code>[ResponseError](src/core/response-error.ts)</code>
+- **OnSuccess**: <code>[SapiV1UserDataStreamResponse](src/models/sapi-v1-user-data-stream-response.ts)</code>
+- **OnError**: throws <code>[ApiError](src/core/api-error.ts)</code>, with `err.payload` always the <code>[Undeclared](src/core/api-error.ts)</code> arm
+
+**As ApiResult**: `await client.marginStream.createAListenKeyUserStream2().asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1UserDataStreamResponse, ApiError&gt;</code>, with `result.value` of type <code>[SapiV1UserDataStreamResponse](src/models/sapi-v1-user-data-stream-response.ts)</code>
+- **OnError**: `result.payload` always the <code>[Undeclared](src/core/api-error.ts)</code> arm, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -12805,19 +18229,39 @@ Weight: 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.marginStream.pingKeepAliveAListenKeyUserStream2();
+  const response = await client.marginStream.pingKeepAliveAListenKeyUserStream2({
+    listenKey: "pqia91ma19a5s61cv6a81va65sdf19v8a65a1a5s61cv6a81va65sdf19v8a65a1",
+  });
   // TODO: Handle 'response' of type Record<string, unknown>
 } catch (err) {
-  if (err instanceof MarginStream.PingKeepAliveAListenKeyUserStream2Error && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type MarginStream.PingKeepAliveAListenKeyUserStream2Error, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.marginStream.pingKeepAliveAListenKeyUserStream2({
+  listenKey: "pqia91ma19a5s61cv6a81va65sdf19v8a65a1a5s61cv6a81va65sdf19v8a65a1",
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type Record<string, unknown>
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -12841,9 +18285,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>Record&lt;string, unknown&gt;</code>
+**Direct**: `await client.marginStream.pingKeepAliveAListenKeyUserStream2(request)`
 
-**OnError**: <code>[MarginStream.PingKeepAliveAListenKeyUserStream2Error](src/resources/margin-stream.ts)</code>
+- **OnSuccess**: <code>Record&lt;string, unknown&gt;</code>
+- **OnError**: throws <code>[MarginStream.PingKeepAliveAListenKeyUserStream2Error](src/resources/margin-stream.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.marginStream.pingKeepAliveAListenKeyUserStream2(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;Record&lt;string, unknown&gt;, MarginStream.PingKeepAliveAListenKeyUserStream2Error&gt;</code>, with `result.value` of type <code>Record&lt;string, unknown&gt;</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -12875,19 +18327,39 @@ Weight: 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.isolatedMarginStream.closeAListenKeyUserStream3();
+  const response = await client.isolatedMarginStream.closeAListenKeyUserStream3({
+    listenKey: "pqia91ma19a5s61cv6a81va65sdf19v8a65a1a5s61cv6a81va65sdf19v8a65a1",
+  });
   // TODO: Handle 'response' of type Record<string, unknown>
 } catch (err) {
-  if (err instanceof IsolatedMarginStream.CloseAListenKeyUserStream3Error && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type IsolatedMarginStream.CloseAListenKeyUserStream3Error, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.isolatedMarginStream.closeAListenKeyUserStream3({
+  listenKey: "pqia91ma19a5s61cv6a81va65sdf19v8a65a1a5s61cv6a81va65sdf19v8a65a1",
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type Record<string, unknown>
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -12911,9 +18383,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>Record&lt;string, unknown&gt;</code>
+**Direct**: `await client.isolatedMarginStream.closeAListenKeyUserStream3(request)`
 
-**OnError**: <code>[IsolatedMarginStream.CloseAListenKeyUserStream3Error](src/resources/isolated-margin-stream.ts)</code>
+- **OnSuccess**: <code>Record&lt;string, unknown&gt;</code>
+- **OnError**: throws <code>[IsolatedMarginStream.CloseAListenKeyUserStream3Error](src/resources/isolated-margin-stream.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.isolatedMarginStream.closeAListenKeyUserStream3(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;Record&lt;string, unknown&gt;, IsolatedMarginStream.CloseAListenKeyUserStream3Error&gt;</code>, with `result.value` of type <code>Record&lt;string, unknown&gt;</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -12924,7 +18404,7 @@ try {
 </details>
 
 <details>
-<summary><code>generateAListenKeyUserStream(options?: RequestOptions): ApiPromise&lt;SapiV1UserDataStreamIsolatedResponse, ResponseError&gt;</code></summary>
+<summary><code>generateAListenKeyUserStream(options?: RequestOptions): ApiPromise&lt;SapiV1UserDataStreamIsolatedResponse, ApiError&gt;</code></summary>
 
 <dl>
 <dd>
@@ -12942,7 +18422,7 @@ Weight: 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -12952,7 +18432,25 @@ try {
   const response = await client.isolatedMarginStream.generateAListenKeyUserStream();
   // TODO: Handle 'response' of type SapiV1UserDataStreamIsolatedResponse
 } catch (err) {
-  // TODO: Handle 'err' of type ResponseError
+  // TODO: Handle 'err' of type ApiError, where 'err.payload' is always the Undeclared arm
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.isolatedMarginStream.generateAListenKeyUserStream().asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1UserDataStreamIsolatedResponse
+} else {
+  // TODO: Handle 'result', where 'result.payload' is always the Undeclared arm
 }
 ```
 
@@ -12964,9 +18462,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1UserDataStreamIsolatedResponse](src/models/sapi-v1-user-data-stream-isolated-response.ts)</code>
+**Direct**: `await client.isolatedMarginStream.generateAListenKeyUserStream()`
 
-**OnError**: <code>[ResponseError](src/core/response-error.ts)</code>
+- **OnSuccess**: <code>[SapiV1UserDataStreamIsolatedResponse](src/models/sapi-v1-user-data-stream-isolated-response.ts)</code>
+- **OnError**: throws <code>[ApiError](src/core/api-error.ts)</code>, with `err.payload` always the <code>[Undeclared](src/core/api-error.ts)</code> arm
+
+**As ApiResult**: `await client.isolatedMarginStream.generateAListenKeyUserStream().asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1UserDataStreamIsolatedResponse, ApiError&gt;</code>, with `result.value` of type <code>[SapiV1UserDataStreamIsolatedResponse](src/models/sapi-v1-user-data-stream-isolated-response.ts)</code>
+- **OnError**: `result.payload` always the <code>[Undeclared](src/core/api-error.ts)</code> arm, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -12994,21 +18500,39 @@ Weight: 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.isolatedMarginStream.pingKeepAliveAListenKeyUserStream();
+  const response = await client.isolatedMarginStream.pingKeepAliveAListenKeyUserStream({
+    listenKey: "pqia91ma19a5s61cv6a81va65sdf19v8a65a1a5s61cv6a81va65sdf19v8a65a1",
+  });
   // TODO: Handle 'response' of type Record<string, unknown>
 } catch (err) {
-  if (
-    err instanceof IsolatedMarginStream.PingKeepAliveAListenKeyUserStreamError && err.payload.kind === "error"
-  ) {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type IsolatedMarginStream.PingKeepAliveAListenKeyUserStreamError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.isolatedMarginStream.pingKeepAliveAListenKeyUserStream({
+  listenKey: "pqia91ma19a5s61cv6a81va65sdf19v8a65a1a5s61cv6a81va65sdf19v8a65a1",
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type Record<string, unknown>
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -13032,9 +18556,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>Record&lt;string, unknown&gt;</code>
+**Direct**: `await client.isolatedMarginStream.pingKeepAliveAListenKeyUserStream(request)`
 
-**OnError**: <code>[IsolatedMarginStream.PingKeepAliveAListenKeyUserStreamError](src/resources/isolated-margin-stream.ts)</code>
+- **OnSuccess**: <code>Record&lt;string, unknown&gt;</code>
+- **OnError**: throws <code>[IsolatedMarginStream.PingKeepAliveAListenKeyUserStreamError](src/resources/isolated-margin-stream.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.isolatedMarginStream.pingKeepAliveAListenKeyUserStream(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;Record&lt;string, unknown&gt;, IsolatedMarginStream.PingKeepAliveAListenKeyUserStreamError&gt;</code>, with `result.value` of type <code>Record&lt;string, unknown&gt;</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -13066,7 +18598,7 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -13074,19 +18606,39 @@ Weight(IP): 1
 ```ts
 try {
   const response = await client.savings.changeFixedActivityPositionToDailyPositionUserData({
-    projectId,
-    lot,
-    timestamp,
-    signature,
+    projectId: "some example string",
+    lot: "some example string",
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1LendingPositionChangedResponse
 } catch (err) {
-  if (
-    err instanceof Savings.ChangeFixedActivityPositionToDailyPositionUserDataError &&
-      err.payload.kind === "error"
-  ) {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Savings.ChangeFixedActivityPositionToDailyPositionUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.savings.changeFixedActivityPositionToDailyPositionUserData({
+  projectId: "some example string",
+  lot: "some example string",
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1LendingPositionChangedResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -13115,9 +18667,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1LendingPositionChangedResponse](src/models/sapi-v1-lending-position-changed-response.ts)</code>
+**Direct**: `await client.savings.changeFixedActivityPositionToDailyPositionUserData(request)`
 
-**OnError**: <code>[Savings.ChangeFixedActivityPositionToDailyPositionUserDataError](src/resources/savings.ts)</code>
+- **OnSuccess**: <code>[SapiV1LendingPositionChangedResponse](src/models/sapi-v1-lending-position-changed-response.ts)</code>
+- **OnError**: throws <code>[Savings.ChangeFixedActivityPositionToDailyPositionUserDataError](src/resources/savings.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.savings.changeFixedActivityPositionToDailyPositionUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1LendingPositionChangedResponse, Savings.ChangeFixedActivityPositionToDailyPositionUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1LendingPositionChangedResponse](src/models/sapi-v1-lending-position-changed-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -13143,19 +18703,51 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.savings.getFixedActivityProjectListUserData({ type, timestamp, signature });
+  const response = await client.savings.getFixedActivityProjectListUserData({
+    type: Type8.Activity,
+    timestamp: 1,
+    signature: "some example string",
+    asset: "BNB",
+    current: 1,
+    size: 100,
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1LendingProjectListResponse[]
 } catch (err) {
-  if (err instanceof Savings.GetFixedActivityProjectListUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Savings.GetFixedActivityProjectListUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.savings.getFixedActivityProjectListUserData({
+  type: Type8.Activity,
+  timestamp: 1,
+  signature: "some example string",
+  asset: "BNB",
+  current: 1,
+  size: 100,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1LendingProjectListResponse[]
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -13188,9 +18780,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1LendingProjectListResponse](src/models/sapi-v1-lending-project-list-response.ts)[]</code>
+**Direct**: `await client.savings.getFixedActivityProjectListUserData(request)`
 
-**OnError**: <code>[Savings.GetFixedActivityProjectListUserDataError](src/resources/savings.ts)</code>
+- **OnSuccess**: <code>[SapiV1LendingProjectListResponse](src/models/sapi-v1-lending-project-list-response.ts)[]</code>
+- **OnError**: throws <code>[Savings.GetFixedActivityProjectListUserDataError](src/resources/savings.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.savings.getFixedActivityProjectListUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1LendingProjectListResponse[], Savings.GetFixedActivityProjectListUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1LendingProjectListResponse](src/models/sapi-v1-lending-project-list-response.ts)[]</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -13216,7 +18816,7 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -13224,15 +18824,37 @@ Weight(IP): 1
 ```ts
 try {
   const response = await client.savings.getFixedActivityProjectPositionUserData({
-    asset,
-    timestamp,
-    signature,
+    asset: "BTC",
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1LendingProjectPositionListResponse[]
 } catch (err) {
-  if (err instanceof Savings.GetFixedActivityProjectPositionUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Savings.GetFixedActivityProjectPositionUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.savings.getFixedActivityProjectPositionUserData({
+  asset: "BTC",
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1LendingProjectPositionListResponse[]
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -13261,9 +18883,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1LendingProjectPositionListResponse](src/models/sapi-v1-lending-project-position-list-response.ts)[]</code>
+**Direct**: `await client.savings.getFixedActivityProjectPositionUserData(request)`
 
-**OnError**: <code>[Savings.GetFixedActivityProjectPositionUserDataError](src/resources/savings.ts)</code>
+- **OnSuccess**: <code>[SapiV1LendingProjectPositionListResponse](src/models/sapi-v1-lending-project-position-list-response.ts)[]</code>
+- **OnError**: throws <code>[Savings.GetFixedActivityProjectPositionUserDataError](src/resources/savings.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.savings.getFixedActivityProjectPositionUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1LendingProjectPositionListResponse[], Savings.GetFixedActivityProjectPositionUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1LendingProjectPositionListResponse](src/models/sapi-v1-lending-project-position-list-response.ts)[]</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -13289,7 +18919,7 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -13297,16 +18927,39 @@ Weight(IP): 1
 ```ts
 try {
   const response = await client.savings.purchaseFixedActivityProjectUserData({
-    projectId,
-    lot,
-    timestamp,
-    signature,
+    projectId: "some example string",
+    lot: "some example string",
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1LendingCustomizedFixedPurchaseResponse
 } catch (err) {
-  if (err instanceof Savings.PurchaseFixedActivityProjectUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Savings.PurchaseFixedActivityProjectUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.savings.purchaseFixedActivityProjectUserData({
+  projectId: "some example string",
+  lot: "some example string",
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1LendingCustomizedFixedPurchaseResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -13334,9 +18987,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1LendingCustomizedFixedPurchaseResponse](src/models/sapi-v1-lending-customized-fixed-purchase-response.ts)</code>
+**Direct**: `await client.savings.purchaseFixedActivityProjectUserData(request)`
 
-**OnError**: <code>[Savings.PurchaseFixedActivityProjectUserDataError](src/resources/savings.ts)</code>
+- **OnSuccess**: <code>[SapiV1LendingCustomizedFixedPurchaseResponse](src/models/sapi-v1-lending-customized-fixed-purchase-response.ts)</code>
+- **OnError**: throws <code>[Savings.PurchaseFixedActivityProjectUserDataError](src/resources/savings.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.savings.purchaseFixedActivityProjectUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1LendingCustomizedFixedPurchaseResponse, Savings.PurchaseFixedActivityProjectUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1LendingCustomizedFixedPurchaseResponse](src/models/sapi-v1-lending-customized-fixed-purchase-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -13366,19 +19027,47 @@ Weight(IP): 5
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.mining.accountListUserData({ algo, userName, timestamp, signature });
+  const response = await client.mining.accountListUserData({
+    algo: "some example string",
+    userName: "some example string",
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1MiningStatisticsUserListResponse
 } catch (err) {
-  if (err instanceof Mining.AccountListUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Mining.AccountListUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.mining.accountListUserData({
+  algo: "some example string",
+  userName: "some example string",
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1MiningStatisticsUserListResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -13406,9 +19095,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1MiningStatisticsUserListResponse](src/models/sapi-v1-mining-statistics-user-list-response.ts)</code>
+**Direct**: `await client.mining.accountListUserData(request)`
 
-**OnError**: <code>[Mining.AccountListUserDataError](src/resources/mining.ts)</code>
+- **OnSuccess**: <code>[SapiV1MiningStatisticsUserListResponse](src/models/sapi-v1-mining-statistics-user-list-response.ts)</code>
+- **OnError**: throws <code>[Mining.AccountListUserDataError](src/resources/mining.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.mining.accountListUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1MiningStatisticsUserListResponse, Mining.AccountListUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1MiningStatisticsUserListResponse](src/models/sapi-v1-mining-statistics-user-list-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -13434,7 +19131,7 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -13444,9 +19141,25 @@ try {
   const response = await client.mining.acquiringAlgorithmMarketData();
   // TODO: Handle 'response' of type SapiV1MiningPubAlgoListResponse
 } catch (err) {
-  if (err instanceof Mining.AcquiringAlgorithmMarketDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Mining.AcquiringAlgorithmMarketDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.mining.acquiringAlgorithmMarketData().asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1MiningPubAlgoListResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -13458,9 +19171,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1MiningPubAlgoListResponse](src/models/sapi-v1-mining-pub-algo-list-response.ts)</code>
+**Direct**: `await client.mining.acquiringAlgorithmMarketData()`
 
-**OnError**: <code>[Mining.AcquiringAlgorithmMarketDataError](src/resources/mining.ts)</code>
+- **OnSuccess**: <code>[SapiV1MiningPubAlgoListResponse](src/models/sapi-v1-mining-pub-algo-list-response.ts)</code>
+- **OnError**: throws <code>[Mining.AcquiringAlgorithmMarketDataError](src/resources/mining.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.mining.acquiringAlgorithmMarketData().asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1MiningPubAlgoListResponse, Mining.AcquiringAlgorithmMarketDataError&gt;</code>, with `result.value` of type <code>[SapiV1MiningPubAlgoListResponse](src/models/sapi-v1-mining-pub-algo-list-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -13486,7 +19207,7 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -13496,9 +19217,25 @@ try {
   const response = await client.mining.acquiringCoinNameMarketData();
   // TODO: Handle 'response' of type SapiV1MiningPubCoinListResponse
 } catch (err) {
-  if (err instanceof Mining.AcquiringCoinNameMarketDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Mining.AcquiringCoinNameMarketDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.mining.acquiringCoinNameMarketData().asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1MiningPubCoinListResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -13510,9 +19247,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1MiningPubCoinListResponse](src/models/sapi-v1-mining-pub-coin-list-response.ts)</code>
+**Direct**: `await client.mining.acquiringCoinNameMarketData()`
 
-**OnError**: <code>[Mining.AcquiringCoinNameMarketDataError](src/resources/mining.ts)</code>
+- **OnSuccess**: <code>[SapiV1MiningPubCoinListResponse](src/models/sapi-v1-mining-pub-coin-list-response.ts)</code>
+- **OnError**: throws <code>[Mining.AcquiringCoinNameMarketDataError](src/resources/mining.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.mining.acquiringCoinNameMarketData().asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1MiningPubCoinListResponse, Mining.AcquiringCoinNameMarketDataError&gt;</code>, with `result.value` of type <code>[SapiV1MiningPubCoinListResponse](src/models/sapi-v1-mining-pub-coin-list-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -13538,7 +19283,7 @@ Weight(IP): 5
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -13546,16 +19291,39 @@ Weight(IP): 5
 ```ts
 try {
   const response = await client.mining.cancelHashrateResaleConfigurationUserData({
-    configId,
-    userName,
-    timestamp,
-    signature,
+    configId: "some example string",
+    userName: "some example string",
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1MiningHashTransferConfigCancelResponse
 } catch (err) {
-  if (err instanceof Mining.CancelHashrateResaleConfigurationUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Mining.CancelHashrateResaleConfigurationUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.mining.cancelHashrateResaleConfigurationUserData({
+  configId: "some example string",
+  userName: "some example string",
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1MiningHashTransferConfigCancelResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -13583,9 +19351,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1MiningHashTransferConfigCancelResponse](src/models/sapi-v1-mining-hash-transfer-config-cancel-response.ts)</code>
+**Direct**: `await client.mining.cancelHashrateResaleConfigurationUserData(request)`
 
-**OnError**: <code>[Mining.CancelHashrateResaleConfigurationUserDataError](src/resources/mining.ts)</code>
+- **OnSuccess**: <code>[SapiV1MiningHashTransferConfigCancelResponse](src/models/sapi-v1-mining-hash-transfer-config-cancel-response.ts)</code>
+- **OnError**: throws <code>[Mining.CancelHashrateResaleConfigurationUserDataError](src/resources/mining.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.mining.cancelHashrateResaleConfigurationUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1MiningHashTransferConfigCancelResponse, Mining.CancelHashrateResaleConfigurationUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1MiningHashTransferConfigCancelResponse](src/models/sapi-v1-mining-hash-transfer-config-cancel-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -13611,19 +19387,49 @@ Weight(IP): 5
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.mining.earningsListUserData({ algo, userName, timestamp, signature });
+  const response = await client.mining.earningsListUserData({
+    algo: "some example string",
+    userName: "some example string",
+    timestamp: 1,
+    signature: "some example string",
+    coin: "BNB",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1MiningPaymentListResponse
 } catch (err) {
-  if (err instanceof Mining.EarningsListUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Mining.EarningsListUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.mining.earningsListUserData({
+  algo: "some example string",
+  userName: "some example string",
+  timestamp: 1,
+  signature: "some example string",
+  coin: "BNB",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1MiningPaymentListResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -13656,9 +19462,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1MiningPaymentListResponse](src/models/sapi-v1-mining-payment-list-response.ts)</code>
+**Direct**: `await client.mining.earningsListUserData(request)`
 
-**OnError**: <code>[Mining.EarningsListUserDataError](src/resources/mining.ts)</code>
+- **OnSuccess**: <code>[SapiV1MiningPaymentListResponse](src/models/sapi-v1-mining-payment-list-response.ts)</code>
+- **OnError**: throws <code>[Mining.EarningsListUserDataError](src/resources/mining.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.mining.earningsListUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1MiningPaymentListResponse, Mining.EarningsListUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1MiningPaymentListResponse](src/models/sapi-v1-mining-payment-list-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -13684,19 +19498,49 @@ Weight(IP): 5
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.mining.extraBonusListUserData({ algo, userName, timestamp, signature });
+  const response = await client.mining.extraBonusListUserData({
+    algo: "some example string",
+    userName: "some example string",
+    timestamp: 1,
+    signature: "some example string",
+    coin: "BNB",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1MiningPaymentOtherResponse
 } catch (err) {
-  if (err instanceof Mining.ExtraBonusListUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Mining.ExtraBonusListUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.mining.extraBonusListUserData({
+  algo: "some example string",
+  userName: "some example string",
+  timestamp: 1,
+  signature: "some example string",
+  coin: "BNB",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1MiningPaymentOtherResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -13729,9 +19573,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1MiningPaymentOtherResponse](src/models/sapi-v1-mining-payment-other-response.ts)</code>
+**Direct**: `await client.mining.extraBonusListUserData(request)`
 
-**OnError**: <code>[Mining.ExtraBonusListUserDataError](src/resources/mining.ts)</code>
+- **OnSuccess**: <code>[SapiV1MiningPaymentOtherResponse](src/models/sapi-v1-mining-payment-other-response.ts)</code>
+- **OnError**: throws <code>[Mining.ExtraBonusListUserDataError](src/resources/mining.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.mining.extraBonusListUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1MiningPaymentOtherResponse, Mining.ExtraBonusListUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1MiningPaymentOtherResponse](src/models/sapi-v1-mining-payment-other-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -13757,7 +19609,7 @@ Weight(IP): 5
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -13765,16 +19617,39 @@ Weight(IP): 5
 ```ts
 try {
   const response = await client.mining.hashrateResaleDetailsUserData({
-    configId,
-    userName,
-    timestamp,
-    signature,
+    configId: "some example string",
+    userName: "some example string",
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1MiningHashTransferProfitDetailsResponse
 } catch (err) {
-  if (err instanceof Mining.HashrateResaleDetailsUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Mining.HashrateResaleDetailsUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.mining.hashrateResaleDetailsUserData({
+  configId: "some example string",
+  userName: "some example string",
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1MiningHashTransferProfitDetailsResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -13804,9 +19679,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1MiningHashTransferProfitDetailsResponse](src/models/sapi-v1-mining-hash-transfer-profit-details-response.ts)</code>
+**Direct**: `await client.mining.hashrateResaleDetailsUserData(request)`
 
-**OnError**: <code>[Mining.HashrateResaleDetailsUserDataError](src/resources/mining.ts)</code>
+- **OnSuccess**: <code>[SapiV1MiningHashTransferProfitDetailsResponse](src/models/sapi-v1-mining-hash-transfer-profit-details-response.ts)</code>
+- **OnError**: throws <code>[Mining.HashrateResaleDetailsUserDataError](src/resources/mining.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.mining.hashrateResaleDetailsUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1MiningHashTransferProfitDetailsResponse, Mining.HashrateResaleDetailsUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1MiningHashTransferProfitDetailsResponse](src/models/sapi-v1-mining-hash-transfer-profit-details-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -13832,19 +19715,43 @@ Weight(IP): 5
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.mining.hashrateResaleListUserData({ timestamp, signature });
+  const response = await client.mining.hashrateResaleListUserData({
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1MiningHashTransferConfigDetailsListResponse
 } catch (err) {
-  if (err instanceof Mining.HashrateResaleListUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Mining.HashrateResaleListUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.mining.hashrateResaleListUserData({
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1MiningHashTransferConfigDetailsListResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -13872,9 +19779,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1MiningHashTransferConfigDetailsListResponse](src/models/sapi-v1-mining-hash-transfer-config-details-list-response.ts)</code>
+**Direct**: `await client.mining.hashrateResaleListUserData(request)`
 
-**OnError**: <code>[Mining.HashrateResaleListUserDataError](src/resources/mining.ts)</code>
+- **OnSuccess**: <code>[SapiV1MiningHashTransferConfigDetailsListResponse](src/models/sapi-v1-mining-hash-transfer-config-details-list-response.ts)</code>
+- **OnError**: throws <code>[Mining.HashrateResaleListUserDataError](src/resources/mining.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.mining.hashrateResaleListUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1MiningHashTransferConfigDetailsListResponse, Mining.HashrateResaleListUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1MiningHashTransferConfigDetailsListResponse](src/models/sapi-v1-mining-hash-transfer-config-details-list-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -13900,7 +19815,7 @@ Weight(IP): 5
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -13908,18 +19823,43 @@ Weight(IP): 5
 ```ts
 try {
   const response = await client.mining.hashrateResaleRequestUserData({
-    userName,
-    algo,
-    toPoolUser,
-    hashRate,
-    timestamp,
-    signature,
+    userName: "some example string",
+    algo: "some example string",
+    toPoolUser: "some example string",
+    hashRate: "some example string",
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1MiningHashTransferConfigResponse
 } catch (err) {
-  if (err instanceof Mining.HashrateResaleRequestUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Mining.HashrateResaleRequestUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.mining.hashrateResaleRequestUserData({
+  userName: "some example string",
+  algo: "some example string",
+  toPoolUser: "some example string",
+  hashRate: "some example string",
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1MiningHashTransferConfigResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -13951,9 +19891,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1MiningHashTransferConfigResponse](src/models/sapi-v1-mining-hash-transfer-config-response.ts)</code>
+**Direct**: `await client.mining.hashrateResaleRequestUserData(request)`
 
-**OnError**: <code>[Mining.HashrateResaleRequestUserDataError](src/resources/mining.ts)</code>
+- **OnSuccess**: <code>[SapiV1MiningHashTransferConfigResponse](src/models/sapi-v1-mining-hash-transfer-config-response.ts)</code>
+- **OnError**: throws <code>[Mining.HashrateResaleRequestUserDataError](src/resources/mining.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.mining.hashrateResaleRequestUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1MiningHashTransferConfigResponse, Mining.HashrateResaleRequestUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1MiningHashTransferConfigResponse](src/models/sapi-v1-mining-hash-transfer-config-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -13979,19 +19927,45 @@ Weight(IP): 5
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.mining.miningAccountEarningUserData({ algo, timestamp, signature });
+  const response = await client.mining.miningAccountEarningUserData({
+    algo: "some example string",
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1MiningPaymentUidResponse
 } catch (err) {
-  if (err instanceof Mining.MiningAccountEarningUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Mining.MiningAccountEarningUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.mining.miningAccountEarningUserData({
+  algo: "some example string",
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1MiningPaymentUidResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -14022,9 +19996,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1MiningPaymentUidResponse](src/models/sapi-v1-mining-payment-uid-response.ts)</code>
+**Direct**: `await client.mining.miningAccountEarningUserData(request)`
 
-**OnError**: <code>[Mining.MiningAccountEarningUserDataError](src/resources/mining.ts)</code>
+- **OnSuccess**: <code>[SapiV1MiningPaymentUidResponse](src/models/sapi-v1-mining-payment-uid-response.ts)</code>
+- **OnError**: throws <code>[Mining.MiningAccountEarningUserDataError](src/resources/mining.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.mining.miningAccountEarningUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1MiningPaymentUidResponse, Mining.MiningAccountEarningUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1MiningPaymentUidResponse](src/models/sapi-v1-mining-payment-uid-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -14050,7 +20032,7 @@ Weight(IP): 5
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -14058,17 +20040,41 @@ Weight(IP): 5
 ```ts
 try {
   const response = await client.mining.requestForDetailMinerListUserData({
-    algo,
-    userName,
-    workerName,
-    timestamp,
-    signature,
+    algo: "some example string",
+    userName: "some example string",
+    workerName: "some example string",
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1MiningWorkerDetailResponse
 } catch (err) {
-  if (err instanceof Mining.RequestForDetailMinerListUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Mining.RequestForDetailMinerListUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.mining.requestForDetailMinerListUserData({
+  algo: "some example string",
+  userName: "some example string",
+  workerName: "some example string",
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1MiningWorkerDetailResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -14097,9 +20103,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1MiningWorkerDetailResponse](src/models/sapi-v1-mining-worker-detail-response.ts)</code>
+**Direct**: `await client.mining.requestForDetailMinerListUserData(request)`
 
-**OnError**: <code>[Mining.RequestForDetailMinerListUserDataError](src/resources/mining.ts)</code>
+- **OnSuccess**: <code>[SapiV1MiningWorkerDetailResponse](src/models/sapi-v1-mining-worker-detail-response.ts)</code>
+- **OnError**: throws <code>[Mining.RequestForDetailMinerListUserDataError](src/resources/mining.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.mining.requestForDetailMinerListUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1MiningWorkerDetailResponse, Mining.RequestForDetailMinerListUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1MiningWorkerDetailResponse](src/models/sapi-v1-mining-worker-detail-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -14125,19 +20139,47 @@ Weight(IP): 5
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.mining.requestForMinerListUserData({ algo, userName, timestamp, signature });
+  const response = await client.mining.requestForMinerListUserData({
+    algo: "some example string",
+    userName: "some example string",
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1MiningWorkerListResponse
 } catch (err) {
-  if (err instanceof Mining.RequestForMinerListUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Mining.RequestForMinerListUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.mining.requestForMinerListUserData({
+  algo: "some example string",
+  userName: "some example string",
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1MiningWorkerListResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -14169,9 +20211,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1MiningWorkerListResponse](src/models/sapi-v1-mining-worker-list-response.ts)</code>
+**Direct**: `await client.mining.requestForMinerListUserData(request)`
 
-**OnError**: <code>[Mining.RequestForMinerListUserDataError](src/resources/mining.ts)</code>
+- **OnSuccess**: <code>[SapiV1MiningWorkerListResponse](src/models/sapi-v1-mining-worker-list-response.ts)</code>
+- **OnError**: throws <code>[Mining.RequestForMinerListUserDataError](src/resources/mining.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.mining.requestForMinerListUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1MiningWorkerListResponse, Mining.RequestForMinerListUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1MiningWorkerListResponse](src/models/sapi-v1-mining-worker-list-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -14197,19 +20247,47 @@ Weight(IP): 5
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.mining.statisticListUserData({ algo, userName, timestamp, signature });
+  const response = await client.mining.statisticListUserData({
+    algo: "some example string",
+    userName: "some example string",
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1MiningStatisticsUserStatusResponse
 } catch (err) {
-  if (err instanceof Mining.StatisticListUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Mining.StatisticListUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.mining.statisticListUserData({
+  algo: "some example string",
+  userName: "some example string",
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1MiningStatisticsUserStatusResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -14237,9 +20315,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1MiningStatisticsUserStatusResponse](src/models/sapi-v1-mining-statistics-user-status-response.ts)</code>
+**Direct**: `await client.mining.statisticListUserData(request)`
 
-**OnError**: <code>[Mining.StatisticListUserDataError](src/resources/mining.ts)</code>
+- **OnSuccess**: <code>[SapiV1MiningStatisticsUserStatusResponse](src/models/sapi-v1-mining-statistics-user-status-response.ts)</code>
+- **OnError**: throws <code>[Mining.StatisticListUserDataError](src/resources/mining.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.mining.statisticListUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1MiningStatisticsUserStatusResponse, Mining.StatisticListUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1MiningStatisticsUserStatusResponse](src/models/sapi-v1-mining-statistics-user-status-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -14269,7 +20355,7 @@ Weight(IP): 10
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -14277,18 +20363,43 @@ Weight(IP): 10
 ```ts
 try {
   const response = await client.futures.getFutureAccountTransactionHistoryListUserData({
-    asset,
-    startTime,
-    timestamp,
-    signature,
+    asset: "BTC",
+    startTime: 1,
+    timestamp: 1,
+    signature: "some example string",
+    current: 1,
+    size: 100,
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1FuturesTransferResponse1
 } catch (err) {
-  if (
-    err instanceof Futures.GetFutureAccountTransactionHistoryListUserDataError && err.payload.kind === "error"
-  ) {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Futures.GetFutureAccountTransactionHistoryListUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.futures.getFutureAccountTransactionHistoryListUserData({
+  asset: "BTC",
+  startTime: 1,
+  timestamp: 1,
+  signature: "some example string",
+  current: 1,
+  size: 100,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1FuturesTransferResponse1
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -14319,9 +20430,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1FuturesTransferResponse1](src/models/sapi-v1-futures-transfer-response1.ts)</code>
+**Direct**: `await client.futures.getFutureAccountTransactionHistoryListUserData(request)`
 
-**OnError**: <code>[Futures.GetFutureAccountTransactionHistoryListUserDataError](src/resources/futures.ts)</code>
+- **OnSuccess**: <code>[SapiV1FuturesTransferResponse1](src/models/sapi-v1-futures-transfer-response1.ts)</code>
+- **OnError**: throws <code>[Futures.GetFutureAccountTransactionHistoryListUserDataError](src/resources/futures.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.futures.getFutureAccountTransactionHistoryListUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1FuturesTransferResponse1, Futures.GetFutureAccountTransactionHistoryListUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1FuturesTransferResponse1](src/models/sapi-v1-futures-transfer-response1.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -14347,7 +20466,7 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -14355,19 +20474,39 @@ Weight(IP): 1
 ```ts
 try {
   const response = await client.futures.getFutureTickLevelOrderbookHistoricalDataDownloadLinkUserData({
-    symbol,
-    dataType,
-    timestamp,
-    signature,
+    symbol: "BTCUSDT",
+    dataType: DataType.TDepth,
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1FuturesHistDataLinkResponse
 } catch (err) {
-  if (
-    err instanceof Futures.GetFutureTickLevelOrderbookHistoricalDataDownloadLinkUserDataError &&
-      err.payload.kind === "error"
-  ) {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Futures.GetFutureTickLevelOrderbookHistoricalDataDownloadLinkUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.futures.getFutureTickLevelOrderbookHistoricalDataDownloadLinkUserData({
+  symbol: "BTCUSDT",
+  dataType: DataType.TDepth,
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1FuturesHistDataLinkResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -14397,9 +20536,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1FuturesHistDataLinkResponse](src/models/sapi-v1-futures-hist-data-link-response.ts)</code>
+**Direct**: `await client.futures.getFutureTickLevelOrderbookHistoricalDataDownloadLinkUserData(request)`
 
-**OnError**: <code>[Futures.GetFutureTickLevelOrderbookHistoricalDataDownloadLinkUserDataError](src/resources/futures.ts)</code>
+- **OnSuccess**: <code>[SapiV1FuturesHistDataLinkResponse](src/models/sapi-v1-futures-hist-data-link-response.ts)</code>
+- **OnError**: throws <code>[Futures.GetFutureTickLevelOrderbookHistoricalDataDownloadLinkUserDataError](src/resources/futures.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.futures.getFutureTickLevelOrderbookHistoricalDataDownloadLinkUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1FuturesHistDataLinkResponse, Futures.GetFutureTickLevelOrderbookHistoricalDataDownloadLinkUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1FuturesHistDataLinkResponse](src/models/sapi-v1-futures-hist-data-link-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -14427,7 +20574,7 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -14435,17 +20582,41 @@ Weight(IP): 1
 ```ts
 try {
   const response = await client.futures.newFutureAccountTransferUserData({
-    asset,
-    amount,
-    type,
-    timestamp,
-    signature,
+    asset: "BTC",
+    amount: 1.01,
+    type: 1,
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1FuturesTransferResponse
 } catch (err) {
-  if (err instanceof Futures.NewFutureAccountTransferUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Futures.NewFutureAccountTransferUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.futures.newFutureAccountTransferUserData({
+  asset: "BTC",
+  amount: 1.01,
+  type: 1,
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1FuturesTransferResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -14474,9 +20645,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1FuturesTransferResponse](src/models/sapi-v1-futures-transfer-response.ts)</code>
+**Direct**: `await client.futures.newFutureAccountTransferUserData(request)`
 
-**OnError**: <code>[Futures.NewFutureAccountTransferUserDataError](src/resources/futures.ts)</code>
+- **OnSuccess**: <code>[SapiV1FuturesTransferResponse](src/models/sapi-v1-futures-transfer-response.ts)</code>
+- **OnError**: throws <code>[Futures.NewFutureAccountTransferUserDataError](src/resources/futures.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.futures.newFutureAccountTransferUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1FuturesTransferResponse, Futures.NewFutureAccountTransferUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1FuturesTransferResponse](src/models/sapi-v1-futures-transfer-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -14510,19 +20689,45 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.futuresAlgo.cancelAlgoOrderTrade({ algoId, timestamp, signature });
+  const response = await client.futuresAlgo.cancelAlgoOrderTrade({
+    algoId: 1,
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1AlgoFuturesOrderResponse
 } catch (err) {
-  if (err instanceof FuturesAlgo.CancelAlgoOrderTradeError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type FuturesAlgo.CancelAlgoOrderTradeError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.futuresAlgo.cancelAlgoOrderTrade({
+  algoId: 1,
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1AlgoFuturesOrderResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -14549,9 +20754,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1AlgoFuturesOrderResponse](src/models/sapi-v1-algo-futures-order-response.ts)</code>
+**Direct**: `await client.futuresAlgo.cancelAlgoOrderTrade(request)`
 
-**OnError**: <code>[FuturesAlgo.CancelAlgoOrderTradeError](src/resources/futures-algo.ts)</code>
+- **OnSuccess**: <code>[SapiV1AlgoFuturesOrderResponse](src/models/sapi-v1-algo-futures-order-response.ts)</code>
+- **OnError**: throws <code>[FuturesAlgo.CancelAlgoOrderTradeError](src/resources/futures-algo.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.futuresAlgo.cancelAlgoOrderTrade(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1AlgoFuturesOrderResponse, FuturesAlgo.CancelAlgoOrderTradeError&gt;</code>, with `result.value` of type <code>[SapiV1AlgoFuturesOrderResponse](src/models/sapi-v1-algo-futures-order-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -14580,19 +20793,43 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.futuresAlgo.queryCurrentAlgoOpenOrdersUserData({ timestamp, signature });
+  const response = await client.futuresAlgo.queryCurrentAlgoOpenOrdersUserData({
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1AlgoFuturesOpenOrdersResponse
 } catch (err) {
-  if (err instanceof FuturesAlgo.QueryCurrentAlgoOpenOrdersUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type FuturesAlgo.QueryCurrentAlgoOpenOrdersUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.futuresAlgo.queryCurrentAlgoOpenOrdersUserData({
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1AlgoFuturesOpenOrdersResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -14618,9 +20855,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1AlgoFuturesOpenOrdersResponse](src/models/sapi-v1-algo-futures-open-orders-response.ts)</code>
+**Direct**: `await client.futuresAlgo.queryCurrentAlgoOpenOrdersUserData(request)`
 
-**OnError**: <code>[FuturesAlgo.QueryCurrentAlgoOpenOrdersUserDataError](src/resources/futures-algo.ts)</code>
+- **OnSuccess**: <code>[SapiV1AlgoFuturesOpenOrdersResponse](src/models/sapi-v1-algo-futures-open-orders-response.ts)</code>
+- **OnError**: throws <code>[FuturesAlgo.QueryCurrentAlgoOpenOrdersUserDataError](src/resources/futures-algo.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.futuresAlgo.queryCurrentAlgoOpenOrdersUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1AlgoFuturesOpenOrdersResponse, FuturesAlgo.QueryCurrentAlgoOpenOrdersUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1AlgoFuturesOpenOrdersResponse](src/models/sapi-v1-algo-futures-open-orders-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -14649,19 +20894,49 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.futuresAlgo.queryHistoricalAlgoOrdersUserData({ timestamp, signature });
+  const response = await client.futuresAlgo.queryHistoricalAlgoOrdersUserData({
+    timestamp: 1,
+    signature: "some example string",
+    symbol: "BNBUSDT",
+    side: Side.Sell,
+    page: 1,
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1AlgoFuturesHistoricalOrdersResponse
 } catch (err) {
-  if (err instanceof FuturesAlgo.QueryHistoricalAlgoOrdersUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type FuturesAlgo.QueryHistoricalAlgoOrdersUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.futuresAlgo.queryHistoricalAlgoOrdersUserData({
+  timestamp: 1,
+  signature: "some example string",
+  symbol: "BNBUSDT",
+  side: Side.Sell,
+  page: 1,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1AlgoFuturesHistoricalOrdersResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -14693,9 +20968,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1AlgoFuturesHistoricalOrdersResponse](src/models/sapi-v1-algo-futures-historical-orders-response.ts)</code>
+**Direct**: `await client.futuresAlgo.queryHistoricalAlgoOrdersUserData(request)`
 
-**OnError**: <code>[FuturesAlgo.QueryHistoricalAlgoOrdersUserDataError](src/resources/futures-algo.ts)</code>
+- **OnSuccess**: <code>[SapiV1AlgoFuturesHistoricalOrdersResponse](src/models/sapi-v1-algo-futures-historical-orders-response.ts)</code>
+- **OnError**: throws <code>[FuturesAlgo.QueryHistoricalAlgoOrdersUserDataError](src/resources/futures-algo.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.futuresAlgo.queryHistoricalAlgoOrdersUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1AlgoFuturesHistoricalOrdersResponse, FuturesAlgo.QueryHistoricalAlgoOrdersUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1AlgoFuturesHistoricalOrdersResponse](src/models/sapi-v1-algo-futures-historical-orders-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -14724,19 +21007,47 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.futuresAlgo.querySubOrdersUserData({ algoId, timestamp, signature });
+  const response = await client.futuresAlgo.querySubOrdersUserData({
+    algoId: 1,
+    timestamp: 1,
+    signature: "some example string",
+    page: 1,
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1AlgoFuturesSubOrdersResponse
 } catch (err) {
-  if (err instanceof FuturesAlgo.QuerySubOrdersUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type FuturesAlgo.QuerySubOrdersUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.futuresAlgo.querySubOrdersUserData({
+  algoId: 1,
+  timestamp: 1,
+  signature: "some example string",
+  page: 1,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1AlgoFuturesSubOrdersResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -14765,9 +21076,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1AlgoFuturesSubOrdersResponse](src/models/sapi-v1-algo-futures-sub-orders-response.ts)</code>
+**Direct**: `await client.futuresAlgo.querySubOrdersUserData(request)`
 
-**OnError**: <code>[FuturesAlgo.QuerySubOrdersUserDataError](src/resources/futures-algo.ts)</code>
+- **OnSuccess**: <code>[SapiV1AlgoFuturesSubOrdersResponse](src/models/sapi-v1-algo-futures-sub-orders-response.ts)</code>
+- **OnError**: throws <code>[FuturesAlgo.QuerySubOrdersUserDataError](src/resources/futures-algo.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.futuresAlgo.querySubOrdersUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1AlgoFuturesSubOrdersResponse, FuturesAlgo.QuerySubOrdersUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1AlgoFuturesSubOrdersResponse](src/models/sapi-v1-algo-futures-sub-orders-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -14805,7 +21124,7 @@ Weight(UID): 3000
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -14813,20 +21132,47 @@ Weight(UID): 3000
 ```ts
 try {
   const response = await client.futuresAlgo.timeWeightedAveragePriceTwapNewOrderTrade({
-    symbol,
-    side,
-    quantity,
-    duration,
-    timestamp,
-    signature,
+    symbol: "BNBUSDT",
+    side: Side.Sell,
+    quantity: 1.5,
+    duration: 300,
+    timestamp: 1,
+    signature: "some example string",
+    positionSide: PositionSide.Both,
+    clientAlgoId: "00358ce6a268403398bd34eaa36dffe7",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1AlgoFuturesNewOrderTwapResponse
 } catch (err) {
-  if (
-    err instanceof FuturesAlgo.TimeWeightedAveragePriceTwapNewOrderTradeError && err.payload.kind === "error"
-  ) {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type FuturesAlgo.TimeWeightedAveragePriceTwapNewOrderTradeError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.futuresAlgo.timeWeightedAveragePriceTwapNewOrderTrade({
+  symbol: "BNBUSDT",
+  side: Side.Sell,
+  quantity: 1.5,
+  duration: 300,
+  timestamp: 1,
+  signature: "some example string",
+  positionSide: PositionSide.Both,
+  clientAlgoId: "00358ce6a268403398bd34eaa36dffe7",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1AlgoFuturesNewOrderTwapResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -14860,9 +21206,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1AlgoFuturesNewOrderTwapResponse](src/models/sapi-v1-algo-futures-new-order-twap-response.ts)</code>
+**Direct**: `await client.futuresAlgo.timeWeightedAveragePriceTwapNewOrderTrade(request)`
 
-**OnError**: <code>[FuturesAlgo.TimeWeightedAveragePriceTwapNewOrderTradeError](src/resources/futures-algo.ts)</code>
+- **OnSuccess**: <code>[SapiV1AlgoFuturesNewOrderTwapResponse](src/models/sapi-v1-algo-futures-new-order-twap-response.ts)</code>
+- **OnError**: throws <code>[FuturesAlgo.TimeWeightedAveragePriceTwapNewOrderTradeError](src/resources/futures-algo.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.futuresAlgo.timeWeightedAveragePriceTwapNewOrderTrade(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1AlgoFuturesNewOrderTwapResponse, FuturesAlgo.TimeWeightedAveragePriceTwapNewOrderTradeError&gt;</code>, with `result.value` of type <code>[SapiV1AlgoFuturesNewOrderTwapResponse](src/models/sapi-v1-algo-futures-new-order-twap-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -14897,7 +21251,7 @@ Weight(UID): 3000
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -14905,18 +21259,47 @@ Weight(UID): 3000
 ```ts
 try {
   const response = await client.futuresAlgo.volumeParticipationVpNewOrderTrade({
-    symbol,
-    side,
-    quantity,
-    urgency,
-    timestamp,
-    signature,
+    symbol: "BNBUSDT",
+    side: Side.Sell,
+    quantity: 1.5,
+    urgency: Urgency.Low,
+    timestamp: 1,
+    signature: "some example string",
+    positionSide: PositionSide.Both,
+    clientAlgoId: "00358ce6a268403398bd34eaa36dffe7",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1AlgoFuturesNewOrderVpResponse
 } catch (err) {
-  if (err instanceof FuturesAlgo.VolumeParticipationVpNewOrderTradeError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type FuturesAlgo.VolumeParticipationVpNewOrderTradeError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.futuresAlgo.volumeParticipationVpNewOrderTrade({
+  symbol: "BNBUSDT",
+  side: Side.Sell,
+  quantity: 1.5,
+  urgency: Urgency.Low,
+  timestamp: 1,
+  signature: "some example string",
+  positionSide: PositionSide.Both,
+  clientAlgoId: "00358ce6a268403398bd34eaa36dffe7",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1AlgoFuturesNewOrderVpResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -14950,9 +21333,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1AlgoFuturesNewOrderVpResponse](src/models/sapi-v1-algo-futures-new-order-vp-response.ts)</code>
+**Direct**: `await client.futuresAlgo.volumeParticipationVpNewOrderTrade(request)`
 
-**OnError**: <code>[FuturesAlgo.VolumeParticipationVpNewOrderTradeError](src/resources/futures-algo.ts)</code>
+- **OnSuccess**: <code>[SapiV1AlgoFuturesNewOrderVpResponse](src/models/sapi-v1-algo-futures-new-order-vp-response.ts)</code>
+- **OnError**: throws <code>[FuturesAlgo.VolumeParticipationVpNewOrderTradeError](src/resources/futures-algo.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.futuresAlgo.volumeParticipationVpNewOrderTrade(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1AlgoFuturesNewOrderVpResponse, FuturesAlgo.VolumeParticipationVpNewOrderTradeError&gt;</code>, with `result.value` of type <code>[SapiV1AlgoFuturesNewOrderVpResponse](src/models/sapi-v1-algo-futures-new-order-vp-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -14984,19 +21375,45 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.spotAlgo.cancelAlgoOrder({ algoId, timestamp, signature });
+  const response = await client.spotAlgo.cancelAlgoOrder({
+    algoId: 1,
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1AlgoSpotOrderResponse
 } catch (err) {
-  if (err instanceof SpotAlgo.CancelAlgoOrderError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type SpotAlgo.CancelAlgoOrderError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.spotAlgo.cancelAlgoOrder({
+  algoId: 1,
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1AlgoSpotOrderResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -15023,9 +21440,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1AlgoSpotOrderResponse](src/models/sapi-v1-algo-spot-order-response.ts)</code>
+**Direct**: `await client.spotAlgo.cancelAlgoOrder(request)`
 
-**OnError**: <code>[SpotAlgo.CancelAlgoOrderError](src/resources/spot-algo.ts)</code>
+- **OnSuccess**: <code>[SapiV1AlgoSpotOrderResponse](src/models/sapi-v1-algo-spot-order-response.ts)</code>
+- **OnError**: throws <code>[SpotAlgo.CancelAlgoOrderError](src/resources/spot-algo.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.spotAlgo.cancelAlgoOrder(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1AlgoSpotOrderResponse, SpotAlgo.CancelAlgoOrderError&gt;</code>, with `result.value` of type <code>[SapiV1AlgoSpotOrderResponse](src/models/sapi-v1-algo-spot-order-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -15053,19 +21478,43 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.spotAlgo.queryCurrentAlgoOpenOrders({ timestamp, signature });
+  const response = await client.spotAlgo.queryCurrentAlgoOpenOrders({
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1AlgoSpotOpenOrdersResponse
 } catch (err) {
-  if (err instanceof SpotAlgo.QueryCurrentAlgoOpenOrdersError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type SpotAlgo.QueryCurrentAlgoOpenOrdersError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.spotAlgo.queryCurrentAlgoOpenOrders({
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1AlgoSpotOpenOrdersResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -15091,9 +21540,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1AlgoSpotOpenOrdersResponse](src/models/sapi-v1-algo-spot-open-orders-response.ts)</code>
+**Direct**: `await client.spotAlgo.queryCurrentAlgoOpenOrders(request)`
 
-**OnError**: <code>[SpotAlgo.QueryCurrentAlgoOpenOrdersError](src/resources/spot-algo.ts)</code>
+- **OnSuccess**: <code>[SapiV1AlgoSpotOpenOrdersResponse](src/models/sapi-v1-algo-spot-open-orders-response.ts)</code>
+- **OnError**: throws <code>[SpotAlgo.QueryCurrentAlgoOpenOrdersError](src/resources/spot-algo.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.spotAlgo.queryCurrentAlgoOpenOrders(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1AlgoSpotOpenOrdersResponse, SpotAlgo.QueryCurrentAlgoOpenOrdersError&gt;</code>, with `result.value` of type <code>[SapiV1AlgoSpotOpenOrdersResponse](src/models/sapi-v1-algo-spot-open-orders-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -15121,19 +21578,49 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.spotAlgo.queryHistoricalAlgoOrders({ symbol, side, timestamp, signature });
+  const response = await client.spotAlgo.queryHistoricalAlgoOrders({
+    symbol: "BNBUSDT",
+    side: Side.Sell,
+    timestamp: 1,
+    signature: "some example string",
+    page: 1,
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1AlgoSpotHistoricalOrdersResponse
 } catch (err) {
-  if (err instanceof SpotAlgo.QueryHistoricalAlgoOrdersError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type SpotAlgo.QueryHistoricalAlgoOrdersError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.spotAlgo.queryHistoricalAlgoOrders({
+  symbol: "BNBUSDT",
+  side: Side.Sell,
+  timestamp: 1,
+  signature: "some example string",
+  page: 1,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1AlgoSpotHistoricalOrdersResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -15165,9 +21652,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1AlgoSpotHistoricalOrdersResponse](src/models/sapi-v1-algo-spot-historical-orders-response.ts)</code>
+**Direct**: `await client.spotAlgo.queryHistoricalAlgoOrders(request)`
 
-**OnError**: <code>[SpotAlgo.QueryHistoricalAlgoOrdersError](src/resources/spot-algo.ts)</code>
+- **OnSuccess**: <code>[SapiV1AlgoSpotHistoricalOrdersResponse](src/models/sapi-v1-algo-spot-historical-orders-response.ts)</code>
+- **OnError**: throws <code>[SpotAlgo.QueryHistoricalAlgoOrdersError](src/resources/spot-algo.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.spotAlgo.queryHistoricalAlgoOrders(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1AlgoSpotHistoricalOrdersResponse, SpotAlgo.QueryHistoricalAlgoOrdersError&gt;</code>, with `result.value` of type <code>[SapiV1AlgoSpotHistoricalOrdersResponse](src/models/sapi-v1-algo-spot-historical-orders-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -15195,19 +21690,47 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.spotAlgo.querySubOrders({ algoId, timestamp, signature });
+  const response = await client.spotAlgo.querySubOrders({
+    algoId: 1,
+    timestamp: 1,
+    signature: "some example string",
+    page: 1,
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1AlgoSpotSubOrdersResponse
 } catch (err) {
-  if (err instanceof SpotAlgo.QuerySubOrdersError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type SpotAlgo.QuerySubOrdersError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.spotAlgo.querySubOrders({
+  algoId: 1,
+  timestamp: 1,
+  signature: "some example string",
+  page: 1,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1AlgoSpotSubOrdersResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -15236,9 +21759,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1AlgoSpotSubOrdersResponse](src/models/sapi-v1-algo-spot-sub-orders-response.ts)</code>
+**Direct**: `await client.spotAlgo.querySubOrders(request)`
 
-**OnError**: <code>[SpotAlgo.QuerySubOrdersError](src/resources/spot-algo.ts)</code>
+- **OnSuccess**: <code>[SapiV1AlgoSpotSubOrdersResponse](src/models/sapi-v1-algo-spot-sub-orders-response.ts)</code>
+- **OnError**: throws <code>[SpotAlgo.QuerySubOrdersError](src/resources/spot-algo.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.spotAlgo.querySubOrders(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1AlgoSpotSubOrdersResponse, SpotAlgo.QuerySubOrdersError&gt;</code>, with `result.value` of type <code>[SapiV1AlgoSpotSubOrdersResponse](src/models/sapi-v1-algo-spot-sub-orders-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -15266,7 +21797,7 @@ Weight(UID): 3000
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -15274,18 +21805,43 @@ Weight(UID): 3000
 ```ts
 try {
   const response = await client.spotAlgo.timeWeightedAveragePriceTwapNewOrder({
-    symbol,
-    side,
-    quantity,
-    duration,
-    timestamp,
-    signature,
+    symbol: "BNBUSDT",
+    side: Side.Sell,
+    quantity: 1,
+    duration: 300,
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1AlgoSpotNewOrderTwapResponse
 } catch (err) {
-  if (err instanceof SpotAlgo.TimeWeightedAveragePriceTwapNewOrderError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type SpotAlgo.TimeWeightedAveragePriceTwapNewOrderError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.spotAlgo.timeWeightedAveragePriceTwapNewOrder({
+  symbol: "BNBUSDT",
+  side: Side.Sell,
+  quantity: 1,
+  duration: 300,
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1AlgoSpotNewOrderTwapResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -15317,9 +21873,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1AlgoSpotNewOrderTwapResponse](src/models/sapi-v1-algo-spot-new-order-twap-response.ts)</code>
+**Direct**: `await client.spotAlgo.timeWeightedAveragePriceTwapNewOrder(request)`
 
-**OnError**: <code>[SpotAlgo.TimeWeightedAveragePriceTwapNewOrderError](src/resources/spot-algo.ts)</code>
+- **OnSuccess**: <code>[SapiV1AlgoSpotNewOrderTwapResponse](src/models/sapi-v1-algo-spot-new-order-twap-response.ts)</code>
+- **OnError**: throws <code>[SpotAlgo.TimeWeightedAveragePriceTwapNewOrderError](src/resources/spot-algo.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.spotAlgo.timeWeightedAveragePriceTwapNewOrder(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1AlgoSpotNewOrderTwapResponse, SpotAlgo.TimeWeightedAveragePriceTwapNewOrderError&gt;</code>, with `result.value` of type <code>[SapiV1AlgoSpotNewOrderTwapResponse](src/models/sapi-v1-algo-spot-new-order-twap-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -15351,7 +21915,7 @@ Weight(IP): 1500
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -15359,16 +21923,39 @@ Weight(IP): 1500
 ```ts
 try {
   const response = await client.portfolioMargin.bnbTransferUserData({
-    transferSide,
-    amount,
-    timestamp,
-    signature,
+    transferSide: TransferSide.ToUm,
+    amount: 1.01,
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1PortfolioBnbTransferResponse
 } catch (err) {
-  if (err instanceof PortfolioMargin.BnbTransferUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type PortfolioMargin.BnbTransferUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.portfolioMargin.bnbTransferUserData({
+  transferSide: TransferSide.ToUm,
+  amount: 1.01,
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1PortfolioBnbTransferResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -15396,9 +21983,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1PortfolioBnbTransferResponse](src/models/sapi-v1-portfolio-bnb-transfer-response.ts)</code>
+**Direct**: `await client.portfolioMargin.bnbTransferUserData(request)`
 
-**OnError**: <code>[PortfolioMargin.BnbTransferUserDataError](src/resources/portfolio-margin.ts)</code>
+- **OnSuccess**: <code>[SapiV1PortfolioBnbTransferResponse](src/models/sapi-v1-portfolio-bnb-transfer-response.ts)</code>
+- **OnError**: throws <code>[PortfolioMargin.BnbTransferUserDataError](src/resources/portfolio-margin.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.portfolioMargin.bnbTransferUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1PortfolioBnbTransferResponse, PortfolioMargin.BnbTransferUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1PortfolioBnbTransferResponse](src/models/sapi-v1-portfolio-bnb-transfer-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -15426,7 +22021,7 @@ Weight(IP): 1500
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -15434,17 +22029,37 @@ Weight(IP): 1500
 ```ts
 try {
   const response = await client.portfolioMargin.changeAutoRepayFuturesStatusUserData({
-    autoRepay,
-    timestamp,
-    signature,
+    autoRepay: true,
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1PortfolioRepayFuturesSwitchResponse
 } catch (err) {
-  if (
-    err instanceof PortfolioMargin.ChangeAutoRepayFuturesStatusUserDataError && err.payload.kind === "error"
-  ) {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type PortfolioMargin.ChangeAutoRepayFuturesStatusUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.portfolioMargin.changeAutoRepayFuturesStatusUserData({
+  autoRepay: true,
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1PortfolioRepayFuturesSwitchResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -15471,9 +22086,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1PortfolioRepayFuturesSwitchResponse](src/models/sapi-v1-portfolio-repay-futures-switch-response.ts)</code>
+**Direct**: `await client.portfolioMargin.changeAutoRepayFuturesStatusUserData(request)`
 
-**OnError**: <code>[PortfolioMargin.ChangeAutoRepayFuturesStatusUserDataError](src/resources/portfolio-margin.ts)</code>
+- **OnSuccess**: <code>[SapiV1PortfolioRepayFuturesSwitchResponse](src/models/sapi-v1-portfolio-repay-futures-switch-response.ts)</code>
+- **OnError**: throws <code>[PortfolioMargin.ChangeAutoRepayFuturesStatusUserDataError](src/resources/portfolio-margin.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.portfolioMargin.changeAutoRepayFuturesStatusUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1PortfolioRepayFuturesSwitchResponse, PortfolioMargin.ChangeAutoRepayFuturesStatusUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1PortfolioRepayFuturesSwitchResponse](src/models/sapi-v1-portfolio-repay-futures-switch-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -15501,19 +22124,43 @@ Weight(IP): 1500
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.portfolioMargin.fundAutoCollectionUserData({ timestamp, signature });
+  const response = await client.portfolioMargin.fundAutoCollectionUserData({
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1PortfolioAutoCollectionResponse
 } catch (err) {
-  if (err instanceof PortfolioMargin.FundAutoCollectionUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type PortfolioMargin.FundAutoCollectionUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.portfolioMargin.fundAutoCollectionUserData({
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1PortfolioAutoCollectionResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -15539,9 +22186,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1PortfolioAutoCollectionResponse](src/models/sapi-v1-portfolio-auto-collection-response.ts)</code>
+**Direct**: `await client.portfolioMargin.fundAutoCollectionUserData(request)`
 
-**OnError**: <code>[PortfolioMargin.FundAutoCollectionUserDataError](src/resources/portfolio-margin.ts)</code>
+- **OnSuccess**: <code>[SapiV1PortfolioAutoCollectionResponse](src/models/sapi-v1-portfolio-auto-collection-response.ts)</code>
+- **OnError**: throws <code>[PortfolioMargin.FundAutoCollectionUserDataError](src/resources/portfolio-margin.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.portfolioMargin.fundAutoCollectionUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1PortfolioAutoCollectionResponse, PortfolioMargin.FundAutoCollectionUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1PortfolioAutoCollectionResponse](src/models/sapi-v1-portfolio-auto-collection-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -15569,7 +22224,7 @@ Weight(IP): 60
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -15577,15 +22232,37 @@ Weight(IP): 60
 ```ts
 try {
   const response = await client.portfolioMargin.fundCollectionByAssetUserData({
-    asset,
-    timestamp,
-    signature,
+    asset: "BTC",
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1PortfolioAssetCollectionResponse
 } catch (err) {
-  if (err instanceof PortfolioMargin.FundCollectionByAssetUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type PortfolioMargin.FundCollectionByAssetUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.portfolioMargin.fundCollectionByAssetUserData({
+  asset: "BTC",
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1PortfolioAssetCollectionResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -15612,9 +22289,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1PortfolioAssetCollectionResponse](src/models/sapi-v1-portfolio-asset-collection-response.ts)</code>
+**Direct**: `await client.portfolioMargin.fundCollectionByAssetUserData(request)`
 
-**OnError**: <code>[PortfolioMargin.FundCollectionByAssetUserDataError](src/resources/portfolio-margin.ts)</code>
+- **OnSuccess**: <code>[SapiV1PortfolioAssetCollectionResponse](src/models/sapi-v1-portfolio-asset-collection-response.ts)</code>
+- **OnError**: throws <code>[PortfolioMargin.FundCollectionByAssetUserDataError](src/resources/portfolio-margin.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.portfolioMargin.fundCollectionByAssetUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1PortfolioAssetCollectionResponse, PortfolioMargin.FundCollectionByAssetUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1PortfolioAssetCollectionResponse](src/models/sapi-v1-portfolio-asset-collection-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -15642,19 +22327,43 @@ Weight(IP): 30
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.portfolioMargin.getAutoRepayFuturesStatusUserData({ timestamp, signature });
+  const response = await client.portfolioMargin.getAutoRepayFuturesStatusUserData({
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1PortfolioRepayFuturesSwitchResponse1
 } catch (err) {
-  if (err instanceof PortfolioMargin.GetAutoRepayFuturesStatusUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type PortfolioMargin.GetAutoRepayFuturesStatusUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.portfolioMargin.getAutoRepayFuturesStatusUserData({
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1PortfolioRepayFuturesSwitchResponse1
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -15680,9 +22389,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1PortfolioRepayFuturesSwitchResponse1](src/models/sapi-v1-portfolio-repay-futures-switch-response1.ts)</code>
+**Direct**: `await client.portfolioMargin.getAutoRepayFuturesStatusUserData(request)`
 
-**OnError**: <code>[PortfolioMargin.GetAutoRepayFuturesStatusUserDataError](src/resources/portfolio-margin.ts)</code>
+- **OnSuccess**: <code>[SapiV1PortfolioRepayFuturesSwitchResponse1](src/models/sapi-v1-portfolio-repay-futures-switch-response1.ts)</code>
+- **OnError**: throws <code>[PortfolioMargin.GetAutoRepayFuturesStatusUserDataError](src/resources/portfolio-margin.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.portfolioMargin.getAutoRepayFuturesStatusUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1PortfolioRepayFuturesSwitchResponse1, PortfolioMargin.GetAutoRepayFuturesStatusUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1PortfolioRepayFuturesSwitchResponse1](src/models/sapi-v1-portfolio-repay-futures-switch-response1.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -15708,7 +22425,7 @@ Weight(IP): 50
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -15718,12 +22435,25 @@ try {
   const response = await client.portfolioMargin.getPortfolioMarginAssetLeverageUserData();
   // TODO: Handle 'response' of type SapiV1PortfolioMarginAssetLeverageResponse[]
 } catch (err) {
-  if (
-    err instanceof PortfolioMargin.GetPortfolioMarginAssetLeverageUserDataError &&
-      err.payload.kind === "error"
-  ) {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type PortfolioMargin.GetPortfolioMarginAssetLeverageUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.portfolioMargin.getPortfolioMarginAssetLeverageUserData().asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1PortfolioMarginAssetLeverageResponse[]
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -15735,9 +22465,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1PortfolioMarginAssetLeverageResponse](src/models/sapi-v1-portfolio-margin-asset-leverage-response.ts)[]</code>
+**Direct**: `await client.portfolioMargin.getPortfolioMarginAssetLeverageUserData()`
 
-**OnError**: <code>[PortfolioMargin.GetPortfolioMarginAssetLeverageUserDataError](src/resources/portfolio-margin.ts)</code>
+- **OnSuccess**: <code>[SapiV1PortfolioMarginAssetLeverageResponse](src/models/sapi-v1-portfolio-margin-asset-leverage-response.ts)[]</code>
+- **OnError**: throws <code>[PortfolioMargin.GetPortfolioMarginAssetLeverageUserDataError](src/resources/portfolio-margin.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.portfolioMargin.getPortfolioMarginAssetLeverageUserData().asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1PortfolioMarginAssetLeverageResponse[], PortfolioMargin.GetPortfolioMarginAssetLeverageUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1PortfolioMarginAssetLeverageResponse](src/models/sapi-v1-portfolio-margin-asset-leverage-response.ts)[]</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -15765,19 +22503,43 @@ Get the account info
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.portfolioMargin.portfolioMarginAccountUserData({ timestamp, signature });
+  const response = await client.portfolioMargin.portfolioMarginAccountUserData({
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1PortfolioAccountResponse
 } catch (err) {
-  if (err instanceof PortfolioMargin.PortfolioMarginAccountUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type PortfolioMargin.PortfolioMarginAccountUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.portfolioMargin.portfolioMarginAccountUserData({
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1PortfolioAccountResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -15803,9 +22565,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1PortfolioAccountResponse](src/models/sapi-v1-portfolio-account-response.ts)</code>
+**Direct**: `await client.portfolioMargin.portfolioMarginAccountUserData(request)`
 
-**OnError**: <code>[PortfolioMargin.PortfolioMarginAccountUserDataError](src/resources/portfolio-margin.ts)</code>
+- **OnSuccess**: <code>[SapiV1PortfolioAccountResponse](src/models/sapi-v1-portfolio-account-response.ts)</code>
+- **OnError**: throws <code>[PortfolioMargin.PortfolioMarginAccountUserDataError](src/resources/portfolio-margin.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.portfolioMargin.portfolioMarginAccountUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1PortfolioAccountResponse, PortfolioMargin.PortfolioMarginAccountUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1PortfolioAccountResponse](src/models/sapi-v1-portfolio-account-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -15833,7 +22603,7 @@ Weight(UID): 500
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -15841,17 +22611,35 @@ Weight(UID): 500
 ```ts
 try {
   const response = await client.portfolioMargin.portfolioMarginBankruptcyLoanAmountUserData({
-    timestamp,
-    signature,
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1PortfolioPmLoanResponse
 } catch (err) {
-  if (
-    err instanceof PortfolioMargin.PortfolioMarginBankruptcyLoanAmountUserDataError &&
-      err.payload.kind === "error"
-  ) {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type PortfolioMargin.PortfolioMarginBankruptcyLoanAmountUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.portfolioMargin.portfolioMarginBankruptcyLoanAmountUserData({
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1PortfolioPmLoanResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -15877,9 +22665,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1PortfolioPmLoanResponse](src/models/sapi-v1-portfolio-pm-loan-response.ts)</code>
+**Direct**: `await client.portfolioMargin.portfolioMarginBankruptcyLoanAmountUserData(request)`
 
-**OnError**: <code>[PortfolioMargin.PortfolioMarginBankruptcyLoanAmountUserDataError](src/resources/portfolio-margin.ts)</code>
+- **OnSuccess**: <code>[SapiV1PortfolioPmLoanResponse](src/models/sapi-v1-portfolio-pm-loan-response.ts)</code>
+- **OnError**: throws <code>[PortfolioMargin.PortfolioMarginBankruptcyLoanAmountUserDataError](src/resources/portfolio-margin.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.portfolioMargin.portfolioMarginBankruptcyLoanAmountUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1PortfolioPmLoanResponse, PortfolioMargin.PortfolioMarginBankruptcyLoanAmountUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1PortfolioPmLoanResponse](src/models/sapi-v1-portfolio-pm-loan-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -15907,7 +22703,7 @@ Weight(UID): 3000
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -15915,17 +22711,37 @@ Weight(UID): 3000
 ```ts
 try {
   const response = await client.portfolioMargin.portfolioMarginBankruptcyLoanRepayUserData({
-    timestamp,
-    signature,
+    timestamp: 1,
+    signature: "some example string",
+    from: "SPOT",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1PortfolioRepayResponse
 } catch (err) {
-  if (
-    err instanceof PortfolioMargin.PortfolioMarginBankruptcyLoanRepayUserDataError &&
-      err.payload.kind === "error"
-  ) {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type PortfolioMargin.PortfolioMarginBankruptcyLoanRepayUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.portfolioMargin.portfolioMarginBankruptcyLoanRepayUserData({
+  timestamp: 1,
+  signature: "some example string",
+  from: "SPOT",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1PortfolioRepayResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -15952,9 +22768,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1PortfolioRepayResponse](src/models/sapi-v1-portfolio-repay-response.ts)</code>
+**Direct**: `await client.portfolioMargin.portfolioMarginBankruptcyLoanRepayUserData(request)`
 
-**OnError**: <code>[PortfolioMargin.PortfolioMarginBankruptcyLoanRepayUserDataError](src/resources/portfolio-margin.ts)</code>
+- **OnSuccess**: <code>[SapiV1PortfolioRepayResponse](src/models/sapi-v1-portfolio-repay-response.ts)</code>
+- **OnError**: throws <code>[PortfolioMargin.PortfolioMarginBankruptcyLoanRepayUserDataError](src/resources/portfolio-margin.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.portfolioMargin.portfolioMarginBankruptcyLoanRepayUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1PortfolioRepayResponse, PortfolioMargin.PortfolioMarginBankruptcyLoanRepayUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1PortfolioRepayResponse](src/models/sapi-v1-portfolio-repay-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -15982,7 +22806,7 @@ Weight(IP): 50
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -15992,12 +22816,25 @@ try {
   const response = await client.portfolioMargin.portfolioMarginCollateralRateMarketData();
   // TODO: Handle 'response' of type SapiV1PortfolioCollateralRateResponse[]
 } catch (err) {
-  if (
-    err instanceof PortfolioMargin.PortfolioMarginCollateralRateMarketDataError &&
-      err.payload.kind === "error"
-  ) {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type PortfolioMargin.PortfolioMarginCollateralRateMarketDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.portfolioMargin.portfolioMarginCollateralRateMarketData().asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1PortfolioCollateralRateResponse[]
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -16009,9 +22846,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1PortfolioCollateralRateResponse](src/models/sapi-v1-portfolio-collateral-rate-response.ts)[]</code>
+**Direct**: `await client.portfolioMargin.portfolioMarginCollateralRateMarketData()`
 
-**OnError**: <code>[PortfolioMargin.PortfolioMarginCollateralRateMarketDataError](src/resources/portfolio-margin.ts)</code>
+- **OnSuccess**: <code>[SapiV1PortfolioCollateralRateResponse](src/models/sapi-v1-portfolio-collateral-rate-response.ts)[]</code>
+- **OnError**: throws <code>[PortfolioMargin.PortfolioMarginCollateralRateMarketDataError](src/resources/portfolio-margin.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.portfolioMargin.portfolioMarginCollateralRateMarketData().asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1PortfolioCollateralRateResponse[], PortfolioMargin.PortfolioMarginCollateralRateMarketDataError&gt;</code>, with `result.value` of type <code>[SapiV1PortfolioCollateralRateResponse](src/models/sapi-v1-portfolio-collateral-rate-response.ts)[]</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -16039,7 +22884,7 @@ Weight(IP): 50
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -16047,17 +22892,35 @@ Weight(IP): 50
 ```ts
 try {
   const response = await client.portfolioMargin.portfolioMarginProTieredCollateralRateUserData({
-    timestamp,
-    signature,
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV2PortfolioCollateralRateResponse[]
 } catch (err) {
-  if (
-    err instanceof PortfolioMargin.PortfolioMarginProTieredCollateralRateUserDataError &&
-      err.payload.kind === "error"
-  ) {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type PortfolioMargin.PortfolioMarginProTieredCollateralRateUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.portfolioMargin.portfolioMarginProTieredCollateralRateUserData({
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV2PortfolioCollateralRateResponse[]
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -16083,9 +22946,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV2PortfolioCollateralRateResponse](src/models/sapi-v2-portfolio-collateral-rate-response.ts)[]</code>
+**Direct**: `await client.portfolioMargin.portfolioMarginProTieredCollateralRateUserData(request)`
 
-**OnError**: <code>[PortfolioMargin.PortfolioMarginProTieredCollateralRateUserDataError](src/resources/portfolio-margin.ts)</code>
+- **OnSuccess**: <code>[SapiV2PortfolioCollateralRateResponse](src/models/sapi-v2-portfolio-collateral-rate-response.ts)[]</code>
+- **OnError**: throws <code>[PortfolioMargin.PortfolioMarginProTieredCollateralRateUserDataError](src/resources/portfolio-margin.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.portfolioMargin.portfolioMarginProTieredCollateralRateUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV2PortfolioCollateralRateResponse[], PortfolioMargin.PortfolioMarginProTieredCollateralRateUserDataError&gt;</code>, with `result.value` of type <code>[SapiV2PortfolioCollateralRateResponse](src/models/sapi-v2-portfolio-collateral-rate-response.ts)[]</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -16113,7 +22984,7 @@ Weight(IP): 50
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -16122,18 +22993,35 @@ Weight(IP): 50
 try {
   const response =
     await client.portfolioMargin.queryClassicPortfolioMarginNegativeBalanceInterestHistoryUserData({
-      asset,
-      timestamp,
-      signature,
+      asset: "BTC",
+      timestamp: 1,
+      signature: "some example string",
+      size: 100,
+      recvWindow: 5000,
     });
   // TODO: Handle 'response' of type SapiV1PortfolioInterestHistoryResponse[]
 } catch (err) {
-  if (
-    err instanceof PortfolioMargin.QueryClassicPortfolioMarginNegativeBalanceInterestHistoryUserDataError &&
-      err.payload.kind === "error"
-  ) {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type PortfolioMargin.QueryClassicPortfolioMarginNegativeBalanceInterestHistoryUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.portfolioMargin.queryClassicPortfolioMarginNegativeBalanceInterestHistoryUserData(
+  { asset: "BTC", timestamp: 1, signature: "some example string", size: 100, recvWindow: 5000 },
+).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1PortfolioInterestHistoryResponse[]
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -16163,9 +23051,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1PortfolioInterestHistoryResponse](src/models/sapi-v1-portfolio-interest-history-response.ts)[]</code>
+**Direct**: `await client.portfolioMargin.queryClassicPortfolioMarginNegativeBalanceInterestHistoryUserData(request)`
 
-**OnError**: <code>[PortfolioMargin.QueryClassicPortfolioMarginNegativeBalanceInterestHistoryUserDataError](src/resources/portfolio-margin.ts)</code>
+- **OnSuccess**: <code>[SapiV1PortfolioInterestHistoryResponse](src/models/sapi-v1-portfolio-interest-history-response.ts)[]</code>
+- **OnError**: throws <code>[PortfolioMargin.QueryClassicPortfolioMarginNegativeBalanceInterestHistoryUserDataError](src/resources/portfolio-margin.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.portfolioMargin.queryClassicPortfolioMarginNegativeBalanceInterestHistoryUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1PortfolioInterestHistoryResponse[], PortfolioMargin.QueryClassicPortfolioMarginNegativeBalanceInterestHistoryUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1PortfolioInterestHistoryResponse](src/models/sapi-v1-portfolio-interest-history-response.ts)[]</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -16195,22 +23091,39 @@ Weight(IP):
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.portfolioMargin.queryPortfolioMarginAssetIndexPriceMarketData();
+  const response = await client.portfolioMargin.queryPortfolioMarginAssetIndexPriceMarketData({
+    asset: "BTC",
+  });
   // TODO: Handle 'response' of type SapiV1PortfolioAssetIndexPriceResponse[]
 } catch (err) {
-  if (
-    err instanceof PortfolioMargin.QueryPortfolioMarginAssetIndexPriceMarketDataError &&
-      err.payload.kind === "error"
-  ) {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type PortfolioMargin.QueryPortfolioMarginAssetIndexPriceMarketDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.portfolioMargin.queryPortfolioMarginAssetIndexPriceMarketData({
+  asset: "BTC",
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1PortfolioAssetIndexPriceResponse[]
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -16234,9 +23147,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1PortfolioAssetIndexPriceResponse](src/models/sapi-v1-portfolio-asset-index-price-response.ts)[]</code>
+**Direct**: `await client.portfolioMargin.queryPortfolioMarginAssetIndexPriceMarketData(request)`
 
-**OnError**: <code>[PortfolioMargin.QueryPortfolioMarginAssetIndexPriceMarketDataError](src/resources/portfolio-margin.ts)</code>
+- **OnSuccess**: <code>[SapiV1PortfolioAssetIndexPriceResponse](src/models/sapi-v1-portfolio-asset-index-price-response.ts)[]</code>
+- **OnError**: throws <code>[PortfolioMargin.QueryPortfolioMarginAssetIndexPriceMarketDataError](src/resources/portfolio-margin.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.portfolioMargin.queryPortfolioMarginAssetIndexPriceMarketData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1PortfolioAssetIndexPriceResponse[], PortfolioMargin.QueryPortfolioMarginAssetIndexPriceMarketDataError&gt;</code>, with `result.value` of type <code>[SapiV1PortfolioAssetIndexPriceResponse](src/models/sapi-v1-portfolio-asset-index-price-response.ts)[]</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -16264,21 +23185,43 @@ Weight(IP): 1500
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.portfolioMargin.repayFuturesNegativeBalanceUserData({ timestamp, signature });
+  const response = await client.portfolioMargin.repayFuturesNegativeBalanceUserData({
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1PortfolioRepayFuturesNegativeBalanceResponse
 } catch (err) {
-  if (
-    err instanceof PortfolioMargin.RepayFuturesNegativeBalanceUserDataError && err.payload.kind === "error"
-  ) {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type PortfolioMargin.RepayFuturesNegativeBalanceUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.portfolioMargin.repayFuturesNegativeBalanceUserData({
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1PortfolioRepayFuturesNegativeBalanceResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -16304,9 +23247,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1PortfolioRepayFuturesNegativeBalanceResponse](src/models/sapi-v1-portfolio-repay-futures-negative-balance-response.ts)</code>
+**Direct**: `await client.portfolioMargin.repayFuturesNegativeBalanceUserData(request)`
 
-**OnError**: <code>[PortfolioMargin.RepayFuturesNegativeBalanceUserDataError](src/resources/portfolio-margin.ts)</code>
+- **OnSuccess**: <code>[SapiV1PortfolioRepayFuturesNegativeBalanceResponse](src/models/sapi-v1-portfolio-repay-futures-negative-balance-response.ts)</code>
+- **OnError**: throws <code>[PortfolioMargin.RepayFuturesNegativeBalanceUserDataError](src/resources/portfolio-margin.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.portfolioMargin.repayFuturesNegativeBalanceUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1PortfolioRepayFuturesNegativeBalanceResponse, PortfolioMargin.RepayFuturesNegativeBalanceUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1PortfolioRepayFuturesNegativeBalanceResponse](src/models/sapi-v1-portfolio-repay-futures-negative-balance-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -16336,7 +23287,7 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -16346,9 +23297,25 @@ try {
   const response = await client.blvt.blvtInfoMarketData();
   // TODO: Handle 'response' of type SapiV1BlvtTokenInfoResponse[]
 } catch (err) {
-  if (err instanceof Blvt.BlvtInfoMarketDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Blvt.BlvtInfoMarketDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.blvt.blvtInfoMarketData().asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1BlvtTokenInfoResponse[]
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -16372,9 +23339,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1BlvtTokenInfoResponse](src/models/sapi-v1-blvt-token-info-response.ts)[]</code>
+**Direct**: `await client.blvt.blvtInfoMarketData(request)`
 
-**OnError**: <code>[Blvt.BlvtInfoMarketDataError](src/resources/blvt.ts)</code>
+- **OnSuccess**: <code>[SapiV1BlvtTokenInfoResponse](src/models/sapi-v1-blvt-token-info-response.ts)[]</code>
+- **OnError**: throws <code>[Blvt.BlvtInfoMarketDataError](src/resources/blvt.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.blvt.blvtInfoMarketData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1BlvtTokenInfoResponse[], Blvt.BlvtInfoMarketDataError&gt;</code>, with `result.value` of type <code>[SapiV1BlvtTokenInfoResponse](src/models/sapi-v1-blvt-token-info-response.ts)[]</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -16400,19 +23375,43 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.blvt.blvtUserLimitInfoUserData({ timestamp, signature });
+  const response = await client.blvt.blvtUserLimitInfoUserData({
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1BlvtUserLimitResponse[]
 } catch (err) {
-  if (err instanceof Blvt.BlvtUserLimitInfoUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Blvt.BlvtUserLimitInfoUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.blvt.blvtUserLimitInfoUserData({
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1BlvtUserLimitResponse[]
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -16439,9 +23438,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1BlvtUserLimitResponse](src/models/sapi-v1-blvt-user-limit-response.ts)[]</code>
+**Direct**: `await client.blvt.blvtUserLimitInfoUserData(request)`
 
-**OnError**: <code>[Blvt.BlvtUserLimitInfoUserDataError](src/resources/blvt.ts)</code>
+- **OnSuccess**: <code>[SapiV1BlvtUserLimitResponse](src/models/sapi-v1-blvt-user-limit-response.ts)[]</code>
+- **OnError**: throws <code>[Blvt.BlvtUserLimitInfoUserDataError](src/resources/blvt.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.blvt.blvtUserLimitInfoUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1BlvtUserLimitResponse[], Blvt.BlvtUserLimitInfoUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1BlvtUserLimitResponse](src/models/sapi-v1-blvt-user-limit-response.ts)[]</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -16469,19 +23476,45 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.blvt.querySubscriptionRecordUserData({ timestamp, signature });
+  const response = await client.blvt.querySubscriptionRecordUserData({
+    timestamp: 1,
+    signature: "some example string",
+    limit: 5,
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1BlvtSubscribeRecordResponse
 } catch (err) {
-  if (err instanceof Blvt.QuerySubscriptionRecordUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Blvt.QuerySubscriptionRecordUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.blvt.querySubscriptionRecordUserData({
+  timestamp: 1,
+  signature: "some example string",
+  limit: 5,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1BlvtSubscribeRecordResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -16512,9 +23545,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1BlvtSubscribeRecordResponse](src/models/sapi-v1-blvt-subscribe-record-response.ts)</code>
+**Direct**: `await client.blvt.querySubscriptionRecordUserData(request)`
 
-**OnError**: <code>[Blvt.QuerySubscriptionRecordUserDataError](src/resources/blvt.ts)</code>
+- **OnSuccess**: <code>[SapiV1BlvtSubscribeRecordResponse](src/models/sapi-v1-blvt-subscribe-record-response.ts)</code>
+- **OnError**: throws <code>[Blvt.QuerySubscriptionRecordUserDataError](src/resources/blvt.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.blvt.querySubscriptionRecordUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1BlvtSubscribeRecordResponse, Blvt.QuerySubscriptionRecordUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1BlvtSubscribeRecordResponse](src/models/sapi-v1-blvt-subscribe-record-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -16540,19 +23581,47 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.blvt.redeemBlvtUserData({ tokenName, amount, timestamp, signature });
+  const response = await client.blvt.redeemBlvtUserData({
+    tokenName: "some example string",
+    amount: 1.01,
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1BlvtRedeemResponse
 } catch (err) {
-  if (err instanceof Blvt.RedeemBlvtUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Blvt.RedeemBlvtUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.blvt.redeemBlvtUserData({
+  tokenName: "some example string",
+  amount: 1.01,
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1BlvtRedeemResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -16580,9 +23649,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1BlvtRedeemResponse](src/models/sapi-v1-blvt-redeem-response.ts)</code>
+**Direct**: `await client.blvt.redeemBlvtUserData(request)`
 
-**OnError**: <code>[Blvt.RedeemBlvtUserDataError](src/resources/blvt.ts)</code>
+- **OnSuccess**: <code>[SapiV1BlvtRedeemResponse](src/models/sapi-v1-blvt-redeem-response.ts)</code>
+- **OnError**: throws <code>[Blvt.RedeemBlvtUserDataError](src/resources/blvt.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.blvt.redeemBlvtUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1BlvtRedeemResponse, Blvt.RedeemBlvtUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1BlvtRedeemResponse](src/models/sapi-v1-blvt-redeem-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -16610,19 +23687,43 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.blvt.redemptionRecordUserData({ timestamp, signature });
+  const response = await client.blvt.redemptionRecordUserData({
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1BlvtRedeemRecordResponse[]
 } catch (err) {
-  if (err instanceof Blvt.RedemptionRecordUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Blvt.RedemptionRecordUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.blvt.redemptionRecordUserData({
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1BlvtRedeemRecordResponse[]
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -16653,9 +23754,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1BlvtRedeemRecordResponse](src/models/sapi-v1-blvt-redeem-record-response.ts)[]</code>
+**Direct**: `await client.blvt.redemptionRecordUserData(request)`
 
-**OnError**: <code>[Blvt.RedemptionRecordUserDataError](src/resources/blvt.ts)</code>
+- **OnSuccess**: <code>[SapiV1BlvtRedeemRecordResponse](src/models/sapi-v1-blvt-redeem-record-response.ts)[]</code>
+- **OnError**: throws <code>[Blvt.RedemptionRecordUserDataError](src/resources/blvt.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.blvt.redemptionRecordUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1BlvtRedeemRecordResponse[], Blvt.RedemptionRecordUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1BlvtRedeemRecordResponse](src/models/sapi-v1-blvt-redeem-record-response.ts)[]</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -16681,19 +23790,47 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.blvt.subscribeBlvtUserData({ tokenName, cost, timestamp, signature });
+  const response = await client.blvt.subscribeBlvtUserData({
+    tokenName: "some example string",
+    cost: 1.5,
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1BlvtSubscribeResponse
 } catch (err) {
-  if (err instanceof Blvt.SubscribeBlvtUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Blvt.SubscribeBlvtUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.blvt.subscribeBlvtUserData({
+  tokenName: "some example string",
+  cost: 1.5,
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1BlvtSubscribeResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -16721,9 +23858,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1BlvtSubscribeResponse](src/models/sapi-v1-blvt-subscribe-response.ts)</code>
+**Direct**: `await client.blvt.subscribeBlvtUserData(request)`
 
-**OnError**: <code>[Blvt.SubscribeBlvtUserDataError](src/resources/blvt.ts)</code>
+- **OnSuccess**: <code>[SapiV1BlvtSubscribeResponse](src/models/sapi-v1-blvt-subscribe-response.ts)</code>
+- **OnError**: throws <code>[Blvt.SubscribeBlvtUserDataError](src/resources/blvt.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.blvt.subscribeBlvtUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1BlvtSubscribeResponse, Blvt.SubscribeBlvtUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1BlvtSubscribeResponse](src/models/sapi-v1-blvt-subscribe-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -16755,7 +23900,7 @@ Weight(UID): 90000
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -16763,15 +23908,43 @@ Weight(UID): 90000
 ```ts
 try {
   const response = await client.fiat.fiatDepositWithdrawHistoryUserData({
-    transactionType,
-    timestamp,
-    signature,
+    transactionType: 1,
+    timestamp: 1,
+    signature: "some example string",
+    beginTime: 1626144956000,
+    page: 1,
+    rows: 300,
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1FiatOrdersResponse
 } catch (err) {
-  if (err instanceof Fiat.FiatDepositWithdrawHistoryUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Fiat.FiatDepositWithdrawHistoryUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.fiat.fiatDepositWithdrawHistoryUserData({
+  transactionType: 1,
+  timestamp: 1,
+  signature: "some example string",
+  beginTime: 1626144956000,
+  page: 1,
+  rows: 300,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1FiatOrdersResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -16802,9 +23975,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1FiatOrdersResponse](src/models/sapi-v1-fiat-orders-response.ts)</code>
+**Direct**: `await client.fiat.fiatDepositWithdrawHistoryUserData(request)`
 
-**OnError**: <code>[Fiat.FiatDepositWithdrawHistoryUserDataError](src/resources/fiat.ts)</code>
+- **OnSuccess**: <code>[SapiV1FiatOrdersResponse](src/models/sapi-v1-fiat-orders-response.ts)</code>
+- **OnError**: throws <code>[Fiat.FiatDepositWithdrawHistoryUserDataError](src/resources/fiat.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.fiat.fiatDepositWithdrawHistoryUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1FiatOrdersResponse, Fiat.FiatDepositWithdrawHistoryUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1FiatOrdersResponse](src/models/sapi-v1-fiat-orders-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -16832,19 +24013,51 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.fiat.fiatPaymentsHistoryUserData({ transactionType, timestamp, signature });
+  const response = await client.fiat.fiatPaymentsHistoryUserData({
+    transactionType: 1,
+    timestamp: 1,
+    signature: "some example string",
+    beginTime: 1626144956000,
+    page: 1,
+    rows: 300,
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1FiatPaymentsResponse
 } catch (err) {
-  if (err instanceof Fiat.FiatPaymentsHistoryUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Fiat.FiatPaymentsHistoryUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.fiat.fiatPaymentsHistoryUserData({
+  transactionType: 1,
+  timestamp: 1,
+  signature: "some example string",
+  beginTime: 1626144956000,
+  page: 1,
+  rows: 300,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1FiatPaymentsResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -16875,9 +24088,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1FiatPaymentsResponse](src/models/sapi-v1-fiat-payments-response.ts)</code>
+**Direct**: `await client.fiat.fiatPaymentsHistoryUserData(request)`
 
-**OnError**: <code>[Fiat.FiatPaymentsHistoryUserDataError](src/resources/fiat.ts)</code>
+- **OnSuccess**: <code>[SapiV1FiatPaymentsResponse](src/models/sapi-v1-fiat-payments-response.ts)</code>
+- **OnError**: throws <code>[Fiat.FiatPaymentsHistoryUserDataError](src/resources/fiat.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.fiat.fiatPaymentsHistoryUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1FiatPaymentsResponse, Fiat.FiatPaymentsHistoryUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1FiatPaymentsResponse](src/models/sapi-v1-fiat-payments-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -16910,19 +24131,47 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.c2C.getC2CTradeHistoryUserData({ tradeType, timestamp, signature });
+  const response = await client.c2C.getC2CTradeHistoryUserData({
+    tradeType: TradeType.Buy,
+    timestamp: 1,
+    signature: "some example string",
+    page: 1,
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1C2COrderMatchListUserOrderHistoryResponse
 } catch (err) {
-  if (err instanceof C2C.GetC2CTradeHistoryUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type C2C.GetC2CTradeHistoryUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.c2C.getC2CTradeHistoryUserData({
+  tradeType: TradeType.Buy,
+  timestamp: 1,
+  signature: "some example string",
+  page: 1,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1C2COrderMatchListUserOrderHistoryResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -16953,9 +24202,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1C2COrderMatchListUserOrderHistoryResponse](src/models/sapi-v1-c2-corder-match-list-user-order-history-response.ts)</code>
+**Direct**: `await client.c2C.getC2CTradeHistoryUserData(request)`
 
-**OnError**: <code>[C2C.GetC2CTradeHistoryUserDataError](src/resources/c2-c.ts)</code>
+- **OnSuccess**: <code>[SapiV1C2COrderMatchListUserOrderHistoryResponse](src/models/sapi-v1-c2-corder-match-list-user-order-history-response.ts)</code>
+- **OnError**: throws <code>[C2C.GetC2CTradeHistoryUserDataError](src/resources/c2-c.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.c2C.getC2CTradeHistoryUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1C2COrderMatchListUserOrderHistoryResponse, C2C.GetC2CTradeHistoryUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1C2COrderMatchListUserOrderHistoryResponse](src/models/sapi-v1-c2-corder-match-list-user-order-history-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -16987,7 +24244,7 @@ Weight(IP): 6000
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -16995,17 +24252,35 @@ Weight(IP): 6000
 ```ts
 try {
   const response = await client.vipLoans.checkLockedValueOfVipCollateralAccountUserData({
-    timestamp,
-    signature,
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1LoanVipCollateralAccountResponse
 } catch (err) {
-  if (
-    err instanceof VipLoans.CheckLockedValueOfVipCollateralAccountUserDataError &&
-      err.payload.kind === "error"
-  ) {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type VipLoans.CheckLockedValueOfVipCollateralAccountUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.vipLoans.checkLockedValueOfVipCollateralAccountUserData({
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1LoanVipCollateralAccountResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -17033,9 +24308,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1LoanVipCollateralAccountResponse](src/models/sapi-v1-loan-vip-collateral-account-response.ts)</code>
+**Direct**: `await client.vipLoans.checkLockedValueOfVipCollateralAccountUserData(request)`
 
-**OnError**: <code>[VipLoans.CheckLockedValueOfVipCollateralAccountUserDataError](src/resources/vip-loans.ts)</code>
+- **OnSuccess**: <code>[SapiV1LoanVipCollateralAccountResponse](src/models/sapi-v1-loan-vip-collateral-account-response.ts)</code>
+- **OnError**: throws <code>[VipLoans.CheckLockedValueOfVipCollateralAccountUserDataError](src/resources/vip-loans.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.vipLoans.checkLockedValueOfVipCollateralAccountUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1LoanVipCollateralAccountResponse, VipLoans.CheckLockedValueOfVipCollateralAccountUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1LoanVipCollateralAccountResponse](src/models/sapi-v1-loan-vip-collateral-account-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -17063,19 +24346,45 @@ Weight(UID): 400
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.vipLoans.getBorrowInterestRateUserData({ timestamp, signature });
+  const response = await client.vipLoans.getBorrowInterestRateUserData({
+    timestamp: 1,
+    signature: "some example string",
+    loanCoin: "BUSD",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1LoanVipRequestInterestRateResponse[]
 } catch (err) {
-  if (err instanceof VipLoans.GetBorrowInterestRateUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type VipLoans.GetBorrowInterestRateUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.vipLoans.getBorrowInterestRateUserData({
+  timestamp: 1,
+  signature: "some example string",
+  loanCoin: "BUSD",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1LoanVipRequestInterestRateResponse[]
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -17102,9 +24411,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1LoanVipRequestInterestRateResponse](src/models/sapi-v1-loan-vip-request-interest-rate-response.ts)[]</code>
+**Direct**: `await client.vipLoans.getBorrowInterestRateUserData(request)`
 
-**OnError**: <code>[VipLoans.GetBorrowInterestRateUserDataError](src/resources/vip-loans.ts)</code>
+- **OnSuccess**: <code>[SapiV1LoanVipRequestInterestRateResponse](src/models/sapi-v1-loan-vip-request-interest-rate-response.ts)[]</code>
+- **OnError**: throws <code>[VipLoans.GetBorrowInterestRateUserDataError](src/resources/vip-loans.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.vipLoans.getBorrowInterestRateUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1LoanVipRequestInterestRateResponse[], VipLoans.GetBorrowInterestRateUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1LoanVipRequestInterestRateResponse](src/models/sapi-v1-loan-vip-request-interest-rate-response.ts)[]</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -17132,19 +24449,45 @@ Weight(IP): 400
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.vipLoans.getCollateralAssetDataUserData({ timestamp, signature });
+  const response = await client.vipLoans.getCollateralAssetDataUserData({
+    timestamp: 1,
+    signature: "some example string",
+    collateralCoin: "BNB",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1LoanVipCollateralDataResponse
 } catch (err) {
-  if (err instanceof VipLoans.GetCollateralAssetDataUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type VipLoans.GetCollateralAssetDataUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.vipLoans.getCollateralAssetDataUserData({
+  timestamp: 1,
+  signature: "some example string",
+  collateralCoin: "BNB",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1LoanVipCollateralDataResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -17171,9 +24514,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1LoanVipCollateralDataResponse](src/models/sapi-v1-loan-vip-collateral-data-response.ts)</code>
+**Direct**: `await client.vipLoans.getCollateralAssetDataUserData(request)`
 
-**OnError**: <code>[VipLoans.GetCollateralAssetDataUserDataError](src/resources/vip-loans.ts)</code>
+- **OnSuccess**: <code>[SapiV1LoanVipCollateralDataResponse](src/models/sapi-v1-loan-vip-collateral-data-response.ts)</code>
+- **OnError**: throws <code>[VipLoans.GetCollateralAssetDataUserDataError](src/resources/vip-loans.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.vipLoans.getCollateralAssetDataUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1LoanVipCollateralDataResponse, VipLoans.GetCollateralAssetDataUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1LoanVipCollateralDataResponse](src/models/sapi-v1-loan-vip-collateral-data-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -17201,19 +24552,47 @@ Weight(IP): 400
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.vipLoans.getLoanableAssetsData({ timestamp, signature });
+  const response = await client.vipLoans.getLoanableAssetsData({
+    timestamp: 1,
+    signature: "some example string",
+    loanCoin: "BUSD",
+    vipLevel: 1,
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1LoanVipLoanableDataResponse
 } catch (err) {
-  if (err instanceof VipLoans.GetLoanableAssetsDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type VipLoans.GetLoanableAssetsDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.vipLoans.getLoanableAssetsData({
+  timestamp: 1,
+  signature: "some example string",
+  loanCoin: "BUSD",
+  vipLevel: 1,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1LoanVipLoanableDataResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -17241,9 +24620,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1LoanVipLoanableDataResponse](src/models/sapi-v1-loan-vip-loanable-data-response.ts)</code>
+**Direct**: `await client.vipLoans.getLoanableAssetsData(request)`
 
-**OnError**: <code>[VipLoans.GetLoanableAssetsDataError](src/resources/vip-loans.ts)</code>
+- **OnSuccess**: <code>[SapiV1LoanVipLoanableDataResponse](src/models/sapi-v1-loan-vip-loanable-data-response.ts)</code>
+- **OnError**: throws <code>[VipLoans.GetLoanableAssetsDataError](src/resources/vip-loans.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.vipLoans.getLoanableAssetsData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1LoanVipLoanableDataResponse, VipLoans.GetLoanableAssetsDataError&gt;</code>, with `result.value` of type <code>[SapiV1LoanVipLoanableDataResponse](src/models/sapi-v1-loan-vip-loanable-data-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -17271,19 +24658,51 @@ Weight(IP): 400
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.vipLoans.getVipLoanOngoingOrdersUserData({ timestamp, signature });
+  const response = await client.vipLoans.getVipLoanOngoingOrdersUserData({
+    timestamp: 1,
+    signature: "some example string",
+    loanCoin: "BUSD",
+    collateralCoin: "BNB",
+    current: 1,
+    limit: 10,
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1LoanVipOngoingOrdersResponse
 } catch (err) {
-  if (err instanceof VipLoans.GetVipLoanOngoingOrdersUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type VipLoans.GetVipLoanOngoingOrdersUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.vipLoans.getVipLoanOngoingOrdersUserData({
+  timestamp: 1,
+  signature: "some example string",
+  loanCoin: "BUSD",
+  collateralCoin: "BNB",
+  current: 1,
+  limit: 10,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1LoanVipOngoingOrdersResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -17315,9 +24734,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1LoanVipOngoingOrdersResponse](src/models/sapi-v1-loan-vip-ongoing-orders-response.ts)</code>
+**Direct**: `await client.vipLoans.getVipLoanOngoingOrdersUserData(request)`
 
-**OnError**: <code>[VipLoans.GetVipLoanOngoingOrdersUserDataError](src/resources/vip-loans.ts)</code>
+- **OnSuccess**: <code>[SapiV1LoanVipOngoingOrdersResponse](src/models/sapi-v1-loan-vip-ongoing-orders-response.ts)</code>
+- **OnError**: throws <code>[VipLoans.GetVipLoanOngoingOrdersUserDataError](src/resources/vip-loans.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.vipLoans.getVipLoanOngoingOrdersUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1LoanVipOngoingOrdersResponse, VipLoans.GetVipLoanOngoingOrdersUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1LoanVipOngoingOrdersResponse](src/models/sapi-v1-loan-vip-ongoing-orders-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -17345,19 +24772,49 @@ Weight(IP): 400
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.vipLoans.getVipLoanRepaymentHistoryUserData({ timestamp, signature });
+  const response = await client.vipLoans.getVipLoanRepaymentHistoryUserData({
+    timestamp: 1,
+    signature: "some example string",
+    loanCoin: "BUSD",
+    current: 1,
+    limit: 10,
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1LoanVipRepayHistoryResponse
 } catch (err) {
-  if (err instanceof VipLoans.GetVipLoanRepaymentHistoryUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type VipLoans.GetVipLoanRepaymentHistoryUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.vipLoans.getVipLoanRepaymentHistoryUserData({
+  timestamp: 1,
+  signature: "some example string",
+  loanCoin: "BUSD",
+  current: 1,
+  limit: 10,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1LoanVipRepayHistoryResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -17389,9 +24846,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1LoanVipRepayHistoryResponse](src/models/sapi-v1-loan-vip-repay-history-response.ts)</code>
+**Direct**: `await client.vipLoans.getVipLoanRepaymentHistoryUserData(request)`
 
-**OnError**: <code>[VipLoans.GetVipLoanRepaymentHistoryUserDataError](src/resources/vip-loans.ts)</code>
+- **OnSuccess**: <code>[SapiV1LoanVipRepayHistoryResponse](src/models/sapi-v1-loan-vip-repay-history-response.ts)</code>
+- **OnError**: throws <code>[VipLoans.GetVipLoanRepaymentHistoryUserDataError](src/resources/vip-loans.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.vipLoans.getVipLoanRepaymentHistoryUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1LoanVipRepayHistoryResponse, VipLoans.GetVipLoanRepaymentHistoryUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1LoanVipRepayHistoryResponse](src/models/sapi-v1-loan-vip-repay-history-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -17419,19 +24884,47 @@ Weight(UID): 400
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.vipLoans.queryApplicationStatusUserData({ timestamp, signature });
+  const response = await client.vipLoans.queryApplicationStatusUserData({
+    timestamp: 1,
+    signature: "some example string",
+    current: 1,
+    limit: 5,
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1LoanVipRequestDataResponse
 } catch (err) {
-  if (err instanceof VipLoans.QueryApplicationStatusUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type VipLoans.QueryApplicationStatusUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.vipLoans.queryApplicationStatusUserData({
+  timestamp: 1,
+  signature: "some example string",
+  current: 1,
+  limit: 5,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1LoanVipRequestDataResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -17459,9 +24952,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1LoanVipRequestDataResponse](src/models/sapi-v1-loan-vip-request-data-response.ts)</code>
+**Direct**: `await client.vipLoans.queryApplicationStatusUserData(request)`
 
-**OnError**: <code>[VipLoans.QueryApplicationStatusUserDataError](src/resources/vip-loans.ts)</code>
+- **OnSuccess**: <code>[SapiV1LoanVipRequestDataResponse](src/models/sapi-v1-loan-vip-request-data-response.ts)</code>
+- **OnError**: throws <code>[VipLoans.QueryApplicationStatusUserDataError](src/resources/vip-loans.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.vipLoans.queryApplicationStatusUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1LoanVipRequestDataResponse, VipLoans.QueryApplicationStatusUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1LoanVipRequestDataResponse](src/models/sapi-v1-loan-vip-request-data-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -17489,7 +24990,7 @@ Weight(UID): 6000
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -17497,19 +24998,47 @@ Weight(UID): 6000
 ```ts
 try {
   const response = await client.vipLoans.vipLoanBorrow({
-    loanAccountId,
-    loanAmount,
-    collateralAccountId,
-    collateralCoin,
-    isFlexibleRate,
-    timestamp,
-    signature,
+    loanAccountId: 1,
+    loanAmount: 1.5,
+    collateralAccountId: "some example string",
+    collateralCoin: "some example string",
+    isFlexibleRate: IsFlexibleRate.True,
+    timestamp: 1,
+    signature: "some example string",
+    loanCoin: "BUSD",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1LoanVipBorrowResponse
 } catch (err) {
-  if (err instanceof VipLoans.VipLoanBorrowError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type VipLoans.VipLoanBorrowError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.vipLoans.vipLoanBorrow({
+  loanAccountId: 1,
+  loanAmount: 1.5,
+  collateralAccountId: "some example string",
+  collateralCoin: "some example string",
+  isFlexibleRate: IsFlexibleRate.True,
+  timestamp: 1,
+  signature: "some example string",
+  loanCoin: "BUSD",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1LoanVipBorrowResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -17542,9 +25071,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1LoanVipBorrowResponse](src/models/sapi-v1-loan-vip-borrow-response.ts)</code>
+**Direct**: `await client.vipLoans.vipLoanBorrow(request)`
 
-**OnError**: <code>[VipLoans.VipLoanBorrowError](src/resources/vip-loans.ts)</code>
+- **OnSuccess**: <code>[SapiV1LoanVipBorrowResponse](src/models/sapi-v1-loan-vip-borrow-response.ts)</code>
+- **OnError**: throws <code>[VipLoans.VipLoanBorrowError](src/resources/vip-loans.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.vipLoans.vipLoanBorrow(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1LoanVipBorrowResponse, VipLoans.VipLoanBorrowError&gt;</code>, with `result.value` of type <code>[SapiV1LoanVipBorrowResponse](src/models/sapi-v1-loan-vip-borrow-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -17572,19 +25109,45 @@ Weight(UID): 6000
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.vipLoans.vipLoanRenew({ timestamp, signature });
+  const response = await client.vipLoans.vipLoanRenew({
+    timestamp: 1,
+    signature: "some example string",
+    loanTerm: 30,
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1LoanVipRenewResponse
 } catch (err) {
-  if (err instanceof VipLoans.VipLoanRenewError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type VipLoans.VipLoanRenewError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.vipLoans.vipLoanRenew({
+  timestamp: 1,
+  signature: "some example string",
+  loanTerm: 30,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1LoanVipRenewResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -17612,9 +25175,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1LoanVipRenewResponse](src/models/sapi-v1-loan-vip-renew-response.ts)</code>
+**Direct**: `await client.vipLoans.vipLoanRenew(request)`
 
-**OnError**: <code>[VipLoans.VipLoanRenewError](src/resources/vip-loans.ts)</code>
+- **OnSuccess**: <code>[SapiV1LoanVipRenewResponse](src/models/sapi-v1-loan-vip-renew-response.ts)</code>
+- **OnError**: throws <code>[VipLoans.VipLoanRenewError](src/resources/vip-loans.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.vipLoans.vipLoanRenew(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1LoanVipRenewResponse, VipLoans.VipLoanRenewError&gt;</code>, with `result.value` of type <code>[SapiV1LoanVipRenewResponse](src/models/sapi-v1-loan-vip-renew-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -17642,19 +25213,45 @@ Weight(UID): 6000
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.vipLoans.vipLoanRepayTrade({ amount, timestamp, signature });
+  const response = await client.vipLoans.vipLoanRepayTrade({
+    amount: 1.01,
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1LoanVipRepayResponse
 } catch (err) {
-  if (err instanceof VipLoans.VipLoanRepayTradeError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type VipLoans.VipLoanRepayTradeError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.vipLoans.vipLoanRepayTrade({
+  amount: 1.01,
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1LoanVipRepayResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -17682,9 +25279,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1LoanVipRepayResponse](src/models/sapi-v1-loan-vip-repay-response.ts)</code>
+**Direct**: `await client.vipLoans.vipLoanRepayTrade(request)`
 
-**OnError**: <code>[VipLoans.VipLoanRepayTradeError](src/resources/vip-loans.ts)</code>
+- **OnSuccess**: <code>[SapiV1LoanVipRepayResponse](src/models/sapi-v1-loan-vip-repay-response.ts)</code>
+- **OnError**: throws <code>[VipLoans.VipLoanRepayTradeError](src/resources/vip-loans.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.vipLoans.vipLoanRepayTrade(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1LoanVipRepayResponse, VipLoans.VipLoanRepayTradeError&gt;</code>, with `result.value` of type <code>[SapiV1LoanVipRepayResponse](src/models/sapi-v1-loan-vip-repay-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -17716,7 +25321,7 @@ Weight(UID): 6000
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -17724,16 +25329,43 @@ Weight(UID): 6000
 ```ts
 try {
   const response = await client.cryptoLoans.adjustLtvFlexibleLoanAdjustLtvTrade({
-    adjustmentAmount,
-    direction,
-    timestamp,
-    signature,
+    adjustmentAmount: 1.5,
+    direction: Direction.Additional,
+    timestamp: 1,
+    signature: "some example string",
+    loanCoin: "BUSD",
+    collateralCoin: "BNB",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV2LoanFlexibleAdjustLtvResponse
 } catch (err) {
-  if (err instanceof CryptoLoans.AdjustLtvFlexibleLoanAdjustLtvTradeError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type CryptoLoans.AdjustLtvFlexibleLoanAdjustLtvTradeError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.cryptoLoans.adjustLtvFlexibleLoanAdjustLtvTrade({
+  adjustmentAmount: 1.5,
+  direction: Direction.Additional,
+  timestamp: 1,
+  signature: "some example string",
+  loanCoin: "BUSD",
+  collateralCoin: "BNB",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV2LoanFlexibleAdjustLtvResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -17763,9 +25395,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV2LoanFlexibleAdjustLtvResponse](src/models/sapi-v2-loan-flexible-adjust-ltv-response.ts)</code>
+**Direct**: `await client.cryptoLoans.adjustLtvFlexibleLoanAdjustLtvTrade(request)`
 
-**OnError**: <code>[CryptoLoans.AdjustLtvFlexibleLoanAdjustLtvTradeError](src/resources/crypto-loans.ts)</code>
+- **OnSuccess**: <code>[SapiV2LoanFlexibleAdjustLtvResponse](src/models/sapi-v2-loan-flexible-adjust-ltv-response.ts)</code>
+- **OnError**: throws <code>[CryptoLoans.AdjustLtvFlexibleLoanAdjustLtvTradeError](src/resources/crypto-loans.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.cryptoLoans.adjustLtvFlexibleLoanAdjustLtvTrade(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV2LoanFlexibleAdjustLtvResponse, CryptoLoans.AdjustLtvFlexibleLoanAdjustLtvTradeError&gt;</code>, with `result.value` of type <code>[SapiV2LoanFlexibleAdjustLtvResponse](src/models/sapi-v2-loan-flexible-adjust-ltv-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -17794,7 +25434,7 @@ Weight(IP): 400
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -17802,17 +25442,43 @@ Weight(IP): 400
 ```ts
 try {
   const response = await client.cryptoLoans.adjustLtvGetFlexibleLoanLtvAdjustmentHistoryUserData({
-    timestamp,
-    signature,
+    timestamp: 1,
+    signature: "some example string",
+    loanCoin: "BUSD",
+    collateralCoin: "BNB",
+    current: 1,
+    limit: 5,
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV2LoanFlexibleLtvAdjustmentHistoryResponse
 } catch (err) {
-  if (
-    err instanceof CryptoLoans.AdjustLtvGetFlexibleLoanLtvAdjustmentHistoryUserDataError &&
-      err.payload.kind === "error"
-  ) {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type CryptoLoans.AdjustLtvGetFlexibleLoanLtvAdjustmentHistoryUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.cryptoLoans.adjustLtvGetFlexibleLoanLtvAdjustmentHistoryUserData({
+  timestamp: 1,
+  signature: "some example string",
+  loanCoin: "BUSD",
+  collateralCoin: "BNB",
+  current: 1,
+  limit: 5,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV2LoanFlexibleLtvAdjustmentHistoryResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -17844,9 +25510,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV2LoanFlexibleLtvAdjustmentHistoryResponse](src/models/sapi-v2-loan-flexible-ltv-adjustment-history-response.ts)</code>
+**Direct**: `await client.cryptoLoans.adjustLtvGetFlexibleLoanLtvAdjustmentHistoryUserData(request)`
 
-**OnError**: <code>[CryptoLoans.AdjustLtvGetFlexibleLoanLtvAdjustmentHistoryUserDataError](src/resources/crypto-loans.ts)</code>
+- **OnSuccess**: <code>[SapiV2LoanFlexibleLtvAdjustmentHistoryResponse](src/models/sapi-v2-loan-flexible-ltv-adjustment-history-response.ts)</code>
+- **OnError**: throws <code>[CryptoLoans.AdjustLtvGetFlexibleLoanLtvAdjustmentHistoryUserDataError](src/resources/crypto-loans.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.cryptoLoans.adjustLtvGetFlexibleLoanLtvAdjustmentHistoryUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV2LoanFlexibleLtvAdjustmentHistoryResponse, CryptoLoans.AdjustLtvGetFlexibleLoanLtvAdjustmentHistoryUserDataError&gt;</code>, with `result.value` of type <code>[SapiV2LoanFlexibleLtvAdjustmentHistoryResponse](src/models/sapi-v2-loan-flexible-ltv-adjustment-history-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -17874,19 +25548,51 @@ Weight(UID): 6000
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.cryptoLoans.borrowFlexibleLoanBorrowTrade({ timestamp, signature });
+  const response = await client.cryptoLoans.borrowFlexibleLoanBorrowTrade({
+    timestamp: 1,
+    signature: "some example string",
+    loanCoin: "BUSD",
+    loanAmount: 100.1,
+    collateralCoin: "BNB",
+    collateralAmount: 50.5,
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV2LoanFlexibleBorrowResponse
 } catch (err) {
-  if (err instanceof CryptoLoans.BorrowFlexibleLoanBorrowTradeError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type CryptoLoans.BorrowFlexibleLoanBorrowTradeError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.cryptoLoans.borrowFlexibleLoanBorrowTrade({
+  timestamp: 1,
+  signature: "some example string",
+  loanCoin: "BUSD",
+  loanAmount: 100.1,
+  collateralCoin: "BNB",
+  collateralAmount: 50.5,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV2LoanFlexibleBorrowResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -17916,9 +25622,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV2LoanFlexibleBorrowResponse](src/models/sapi-v2-loan-flexible-borrow-response.ts)</code>
+**Direct**: `await client.cryptoLoans.borrowFlexibleLoanBorrowTrade(request)`
 
-**OnError**: <code>[CryptoLoans.BorrowFlexibleLoanBorrowTradeError](src/resources/crypto-loans.ts)</code>
+- **OnSuccess**: <code>[SapiV2LoanFlexibleBorrowResponse](src/models/sapi-v2-loan-flexible-borrow-response.ts)</code>
+- **OnError**: throws <code>[CryptoLoans.BorrowFlexibleLoanBorrowTradeError](src/resources/crypto-loans.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.cryptoLoans.borrowFlexibleLoanBorrowTrade(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV2LoanFlexibleBorrowResponse, CryptoLoans.BorrowFlexibleLoanBorrowTradeError&gt;</code>, with `result.value` of type <code>[SapiV2LoanFlexibleBorrowResponse](src/models/sapi-v2-loan-flexible-borrow-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -17947,7 +25661,7 @@ Weight(IP): 400
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -17955,16 +25669,43 @@ Weight(IP): 400
 ```ts
 try {
   const response = await client.cryptoLoans.borrowGetFlexibleLoanBorrowHistoryUserData({
-    timestamp,
-    signature,
+    timestamp: 1,
+    signature: "some example string",
+    loanCoin: "BUSD",
+    collateralCoin: "BNB",
+    current: 1,
+    limit: 5,
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV2LoanFlexibleBorrowHistoryResponse
 } catch (err) {
-  if (
-    err instanceof CryptoLoans.BorrowGetFlexibleLoanBorrowHistoryUserDataError && err.payload.kind === "error"
-  ) {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type CryptoLoans.BorrowGetFlexibleLoanBorrowHistoryUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.cryptoLoans.borrowGetFlexibleLoanBorrowHistoryUserData({
+  timestamp: 1,
+  signature: "some example string",
+  loanCoin: "BUSD",
+  collateralCoin: "BNB",
+  current: 1,
+  limit: 5,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV2LoanFlexibleBorrowHistoryResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -17996,9 +25737,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV2LoanFlexibleBorrowHistoryResponse](src/models/sapi-v2-loan-flexible-borrow-history-response.ts)</code>
+**Direct**: `await client.cryptoLoans.borrowGetFlexibleLoanBorrowHistoryUserData(request)`
 
-**OnError**: <code>[CryptoLoans.BorrowGetFlexibleLoanBorrowHistoryUserDataError](src/resources/crypto-loans.ts)</code>
+- **OnSuccess**: <code>[SapiV2LoanFlexibleBorrowHistoryResponse](src/models/sapi-v2-loan-flexible-borrow-history-response.ts)</code>
+- **OnError**: throws <code>[CryptoLoans.BorrowGetFlexibleLoanBorrowHistoryUserDataError](src/resources/crypto-loans.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.cryptoLoans.borrowGetFlexibleLoanBorrowHistoryUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV2LoanFlexibleBorrowHistoryResponse, CryptoLoans.BorrowGetFlexibleLoanBorrowHistoryUserDataError&gt;</code>, with `result.value` of type <code>[SapiV2LoanFlexibleBorrowHistoryResponse](src/models/sapi-v2-loan-flexible-borrow-history-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -18025,7 +25774,7 @@ Weight(IP): 300
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -18033,16 +25782,43 @@ Weight(IP): 300
 ```ts
 try {
   const response = await client.cryptoLoans.borrowGetFlexibleLoanOngoingOrdersUserData({
-    timestamp,
-    signature,
+    timestamp: 1,
+    signature: "some example string",
+    loanCoin: "BUSD",
+    collateralCoin: "BNB",
+    current: 1,
+    limit: 5,
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV2LoanFlexibleOngoingOrdersResponse
 } catch (err) {
-  if (
-    err instanceof CryptoLoans.BorrowGetFlexibleLoanOngoingOrdersUserDataError && err.payload.kind === "error"
-  ) {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type CryptoLoans.BorrowGetFlexibleLoanOngoingOrdersUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.cryptoLoans.borrowGetFlexibleLoanOngoingOrdersUserData({
+  timestamp: 1,
+  signature: "some example string",
+  loanCoin: "BUSD",
+  collateralCoin: "BNB",
+  current: 1,
+  limit: 5,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV2LoanFlexibleOngoingOrdersResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -18072,9 +25848,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV2LoanFlexibleOngoingOrdersResponse](src/models/sapi-v2-loan-flexible-ongoing-orders-response.ts)</code>
+**Direct**: `await client.cryptoLoans.borrowGetFlexibleLoanOngoingOrdersUserData(request)`
 
-**OnError**: <code>[CryptoLoans.BorrowGetFlexibleLoanOngoingOrdersUserDataError](src/resources/crypto-loans.ts)</code>
+- **OnSuccess**: <code>[SapiV2LoanFlexibleOngoingOrdersResponse](src/models/sapi-v2-loan-flexible-ongoing-orders-response.ts)</code>
+- **OnError**: throws <code>[CryptoLoans.BorrowGetFlexibleLoanOngoingOrdersUserDataError](src/resources/crypto-loans.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.cryptoLoans.borrowGetFlexibleLoanOngoingOrdersUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV2LoanFlexibleOngoingOrdersResponse, CryptoLoans.BorrowGetFlexibleLoanOngoingOrdersUserDataError&gt;</code>, with `result.value` of type <code>[SapiV2LoanFlexibleOngoingOrdersResponse](src/models/sapi-v2-loan-flexible-ongoing-orders-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -18102,7 +25886,7 @@ Weight(IP): 6000
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -18110,17 +25894,41 @@ Weight(IP): 6000
 ```ts
 try {
   const response = await client.cryptoLoans.checkCollateralRepayRateUserData({
-    loanCoin,
-    collateralCoin,
-    repayAmount,
-    timestamp,
-    signature,
+    loanCoin: "BUSD",
+    collateralCoin: "BNB",
+    repayAmount: 1.5,
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1LoanRepayCollateralRateResponse
 } catch (err) {
-  if (err instanceof CryptoLoans.CheckCollateralRepayRateUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type CryptoLoans.CheckCollateralRepayRateUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.cryptoLoans.checkCollateralRepayRateUserData({
+  loanCoin: "BUSD",
+  collateralCoin: "BNB",
+  repayAmount: 1.5,
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1LoanRepayCollateralRateResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -18149,9 +25957,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1LoanRepayCollateralRateResponse](src/models/sapi-v1-loan-repay-collateral-rate-response.ts)</code>
+**Direct**: `await client.cryptoLoans.checkCollateralRepayRateUserData(request)`
 
-**OnError**: <code>[CryptoLoans.CheckCollateralRepayRateUserDataError](src/resources/crypto-loans.ts)</code>
+- **OnSuccess**: <code>[SapiV1LoanRepayCollateralRateResponse](src/models/sapi-v1-loan-repay-collateral-rate-response.ts)</code>
+- **OnError**: throws <code>[CryptoLoans.CheckCollateralRepayRateUserDataError](src/resources/crypto-loans.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.cryptoLoans.checkCollateralRepayRateUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1LoanRepayCollateralRateResponse, CryptoLoans.CheckCollateralRepayRateUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1LoanRepayCollateralRateResponse](src/models/sapi-v1-loan-repay-collateral-rate-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -18177,7 +25993,7 @@ Weight(UID): 6000
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -18185,17 +26001,41 @@ Weight(UID): 6000
 ```ts
 try {
   const response = await client.cryptoLoans.cryptoLoanAdjustLtvTrade({
-    orderId,
-    amount,
-    direction,
-    timestamp,
-    signature,
+    orderId: 123456789,
+    amount: 100.5,
+    direction: Direction.Additional,
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1LoanAdjustLtvResponse
 } catch (err) {
-  if (err instanceof CryptoLoans.CryptoLoanAdjustLtvTradeError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type CryptoLoans.CryptoLoanAdjustLtvTradeError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.cryptoLoans.cryptoLoanAdjustLtvTrade({
+  orderId: 123456789,
+  amount: 100.5,
+  direction: Direction.Additional,
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1LoanAdjustLtvResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -18224,9 +26064,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1LoanAdjustLtvResponse](src/models/sapi-v1-loan-adjust-ltv-response.ts)</code>
+**Direct**: `await client.cryptoLoans.cryptoLoanAdjustLtvTrade(request)`
 
-**OnError**: <code>[CryptoLoans.CryptoLoanAdjustLtvTradeError](src/resources/crypto-loans.ts)</code>
+- **OnSuccess**: <code>[SapiV1LoanAdjustLtvResponse](src/models/sapi-v1-loan-adjust-ltv-response.ts)</code>
+- **OnError**: throws <code>[CryptoLoans.CryptoLoanAdjustLtvTradeError](src/resources/crypto-loans.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.cryptoLoans.cryptoLoanAdjustLtvTrade(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1LoanAdjustLtvResponse, CryptoLoans.CryptoLoanAdjustLtvTradeError&gt;</code>, with `result.value` of type <code>[SapiV1LoanAdjustLtvResponse](src/models/sapi-v1-loan-adjust-ltv-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -18252,7 +26100,7 @@ Weight(UID): 6000
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -18260,17 +26108,45 @@ Weight(UID): 6000
 ```ts
 try {
   const response = await client.cryptoLoans.cryptoLoanBorrowTrade({
-    loanCoin,
-    collateralCoin,
-    loanTerm,
-    timestamp,
-    signature,
+    loanCoin: "BUSD",
+    collateralCoin: "BNB",
+    loanTerm: 30,
+    timestamp: 1,
+    signature: "some example string",
+    loanAmount: 100.1,
+    collateralAmount: 50.5,
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1LoanBorrowResponse
 } catch (err) {
-  if (err instanceof CryptoLoans.CryptoLoanBorrowTradeError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type CryptoLoans.CryptoLoanBorrowTradeError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.cryptoLoans.cryptoLoanBorrowTrade({
+  loanCoin: "BUSD",
+  collateralCoin: "BNB",
+  loanTerm: 30,
+  timestamp: 1,
+  signature: "some example string",
+  loanAmount: 100.1,
+  collateralAmount: 50.5,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1LoanBorrowResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -18301,9 +26177,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1LoanBorrowResponse](src/models/sapi-v1-loan-borrow-response.ts)</code>
+**Direct**: `await client.cryptoLoans.cryptoLoanBorrowTrade(request)`
 
-**OnError**: <code>[CryptoLoans.CryptoLoanBorrowTradeError](src/resources/crypto-loans.ts)</code>
+- **OnSuccess**: <code>[SapiV1LoanBorrowResponse](src/models/sapi-v1-loan-borrow-response.ts)</code>
+- **OnError**: throws <code>[CryptoLoans.CryptoLoanBorrowTradeError](src/resources/crypto-loans.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.cryptoLoans.cryptoLoanBorrowTrade(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1LoanBorrowResponse, CryptoLoans.CryptoLoanBorrowTradeError&gt;</code>, with `result.value` of type <code>[SapiV1LoanBorrowResponse](src/models/sapi-v1-loan-borrow-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -18331,7 +26215,7 @@ Weight(UID): 6000
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -18339,15 +26223,39 @@ Weight(UID): 6000
 ```ts
 try {
   const response = await client.cryptoLoans.cryptoLoanCustomizeMarginCallTrade({
-    marginCall,
-    timestamp,
-    signature,
+    marginCall: 1.5,
+    timestamp: 1,
+    signature: "some example string",
+    collateralCoin: "BNB",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1LoanCustomizeMarginCallResponse
 } catch (err) {
-  if (err instanceof CryptoLoans.CryptoLoanCustomizeMarginCallTradeError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type CryptoLoans.CryptoLoanCustomizeMarginCallTradeError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.cryptoLoans.cryptoLoanCustomizeMarginCallTrade({
+  marginCall: 1.5,
+  timestamp: 1,
+  signature: "some example string",
+  collateralCoin: "BNB",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1LoanCustomizeMarginCallResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -18376,9 +26284,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1LoanCustomizeMarginCallResponse](src/models/sapi-v1-loan-customize-margin-call-response.ts)</code>
+**Direct**: `await client.cryptoLoans.cryptoLoanCustomizeMarginCallTrade(request)`
 
-**OnError**: <code>[CryptoLoans.CryptoLoanCustomizeMarginCallTradeError](src/resources/crypto-loans.ts)</code>
+- **OnSuccess**: <code>[SapiV1LoanCustomizeMarginCallResponse](src/models/sapi-v1-loan-customize-margin-call-response.ts)</code>
+- **OnError**: throws <code>[CryptoLoans.CryptoLoanCustomizeMarginCallTradeError](src/resources/crypto-loans.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.cryptoLoans.cryptoLoanCustomizeMarginCallTrade(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1LoanCustomizeMarginCallResponse, CryptoLoans.CryptoLoanCustomizeMarginCallTradeError&gt;</code>, with `result.value` of type <code>[SapiV1LoanCustomizeMarginCallResponse](src/models/sapi-v1-loan-customize-margin-call-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -18404,19 +26320,51 @@ Weight(UID): 6000
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.cryptoLoans.cryptoLoanRepayTrade({ orderId, amount, timestamp, signature });
+  const response = await client.cryptoLoans.cryptoLoanRepayTrade({
+    orderId: 123456789,
+    amount: 100.5,
+    timestamp: 1,
+    signature: "some example string",
+    type: 1,
+    collateralReturn: true,
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1LoanRepayResponse
 } catch (err) {
-  if (err instanceof CryptoLoans.CryptoLoanRepayTradeError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type CryptoLoans.CryptoLoanRepayTradeError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.cryptoLoans.cryptoLoanRepayTrade({
+  orderId: 123456789,
+  amount: 100.5,
+  timestamp: 1,
+  signature: "some example string",
+  type: 1,
+  collateralReturn: true,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1LoanRepayResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -18446,9 +26394,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1LoanRepayResponse](src/models/unions/sapi-v1-loan-repay-response.ts)</code>
+**Direct**: `await client.cryptoLoans.cryptoLoanRepayTrade(request)`
 
-**OnError**: <code>[CryptoLoans.CryptoLoanRepayTradeError](src/resources/crypto-loans.ts)</code>
+- **OnSuccess**: <code>[SapiV1LoanRepayResponse](src/models/unions/sapi-v1-loan-repay-response.ts)</code>
+- **OnError**: throws <code>[CryptoLoans.CryptoLoanRepayTradeError](src/resources/crypto-loans.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.cryptoLoans.cryptoLoanRepayTrade(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1LoanRepayResponse, CryptoLoans.CryptoLoanRepayTradeError&gt;</code>, with `result.value` of type <code>[SapiV1LoanRepayResponse](src/models/unions/sapi-v1-loan-repay-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -18476,19 +26432,47 @@ Weight(IP): 400
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.cryptoLoans.getCollateralAssetsDataUserData({ timestamp, signature });
+  const response = await client.cryptoLoans.getCollateralAssetsDataUserData({
+    timestamp: 1,
+    signature: "some example string",
+    collateralCoin: "BNB",
+    vipLevel: 1,
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1LoanCollateralDataResponse
 } catch (err) {
-  if (err instanceof CryptoLoans.GetCollateralAssetsDataUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type CryptoLoans.GetCollateralAssetsDataUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.cryptoLoans.getCollateralAssetsDataUserData({
+  timestamp: 1,
+  signature: "some example string",
+  collateralCoin: "BNB",
+  vipLevel: 1,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1LoanCollateralDataResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -18516,9 +26500,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1LoanCollateralDataResponse](src/models/sapi-v1-loan-collateral-data-response.ts)</code>
+**Direct**: `await client.cryptoLoans.getCollateralAssetsDataUserData(request)`
 
-**OnError**: <code>[CryptoLoans.GetCollateralAssetsDataUserDataError](src/resources/crypto-loans.ts)</code>
+- **OnSuccess**: <code>[SapiV1LoanCollateralDataResponse](src/models/sapi-v1-loan-collateral-data-response.ts)</code>
+- **OnError**: throws <code>[CryptoLoans.GetCollateralAssetsDataUserDataError](src/resources/crypto-loans.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.cryptoLoans.getCollateralAssetsDataUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1LoanCollateralDataResponse, CryptoLoans.GetCollateralAssetsDataUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1LoanCollateralDataResponse](src/models/sapi-v1-loan-collateral-data-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -18547,19 +26539,53 @@ Weight(IP): 400
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.cryptoLoans.getCryptoLoansBorrowHistoryUserData({ timestamp, signature });
+  const response = await client.cryptoLoans.getCryptoLoansBorrowHistoryUserData({
+    timestamp: 1,
+    signature: "some example string",
+    orderId: 10,
+    loanCoin: "BUSD",
+    collateralCoin: "BNB",
+    current: 1,
+    limit: 10,
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1LoanBorrowHistoryResponse
 } catch (err) {
-  if (err instanceof CryptoLoans.GetCryptoLoansBorrowHistoryUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type CryptoLoans.GetCryptoLoansBorrowHistoryUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.cryptoLoans.getCryptoLoansBorrowHistoryUserData({
+  timestamp: 1,
+  signature: "some example string",
+  orderId: 10,
+  loanCoin: "BUSD",
+  collateralCoin: "BNB",
+  current: 1,
+  limit: 10,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1LoanBorrowHistoryResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -18592,9 +26618,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1LoanBorrowHistoryResponse](src/models/sapi-v1-loan-borrow-history-response.ts)</code>
+**Direct**: `await client.cryptoLoans.getCryptoLoansBorrowHistoryUserData(request)`
 
-**OnError**: <code>[CryptoLoans.GetCryptoLoansBorrowHistoryUserDataError](src/resources/crypto-loans.ts)</code>
+- **OnSuccess**: <code>[SapiV1LoanBorrowHistoryResponse](src/models/sapi-v1-loan-borrow-history-response.ts)</code>
+- **OnError**: throws <code>[CryptoLoans.GetCryptoLoansBorrowHistoryUserDataError](src/resources/crypto-loans.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.cryptoLoans.getCryptoLoansBorrowHistoryUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1LoanBorrowHistoryResponse, CryptoLoans.GetCryptoLoansBorrowHistoryUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1LoanBorrowHistoryResponse](src/models/sapi-v1-loan-borrow-history-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -18623,19 +26657,47 @@ Weight(UID): 6000
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.cryptoLoans.getCryptoLoansIncomeHistoryUserData({ timestamp, signature });
+  const response = await client.cryptoLoans.getCryptoLoansIncomeHistoryUserData({
+    timestamp: 1,
+    signature: "some example string",
+    asset: "BNB",
+    limit: 20,
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1LoanIncomeResponse[]
 } catch (err) {
-  if (err instanceof CryptoLoans.GetCryptoLoansIncomeHistoryUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type CryptoLoans.GetCryptoLoansIncomeHistoryUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.cryptoLoans.getCryptoLoansIncomeHistoryUserData({
+  timestamp: 1,
+  signature: "some example string",
+  asset: "BNB",
+  limit: 20,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1LoanIncomeResponse[]
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -18666,9 +26728,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1LoanIncomeResponse](src/models/sapi-v1-loan-income-response.ts)[]</code>
+**Direct**: `await client.cryptoLoans.getCryptoLoansIncomeHistoryUserData(request)`
 
-**OnError**: <code>[CryptoLoans.GetCryptoLoansIncomeHistoryUserDataError](src/resources/crypto-loans.ts)</code>
+- **OnSuccess**: <code>[SapiV1LoanIncomeResponse](src/models/sapi-v1-loan-income-response.ts)[]</code>
+- **OnError**: throws <code>[CryptoLoans.GetCryptoLoansIncomeHistoryUserDataError](src/resources/crypto-loans.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.cryptoLoans.getCryptoLoansIncomeHistoryUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1LoanIncomeResponse[], CryptoLoans.GetCryptoLoansIncomeHistoryUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1LoanIncomeResponse](src/models/sapi-v1-loan-income-response.ts)[]</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -18696,19 +26766,45 @@ Weight(IP): 400
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.cryptoLoans.getFlexibleLoanAssetsDataUserData({ timestamp, signature });
+  const response = await client.cryptoLoans.getFlexibleLoanAssetsDataUserData({
+    timestamp: 1,
+    signature: "some example string",
+    loanCoin: "BUSD",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV2LoanFlexibleLoanableDataResponse
 } catch (err) {
-  if (err instanceof CryptoLoans.GetFlexibleLoanAssetsDataUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type CryptoLoans.GetFlexibleLoanAssetsDataUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.cryptoLoans.getFlexibleLoanAssetsDataUserData({
+  timestamp: 1,
+  signature: "some example string",
+  loanCoin: "BUSD",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV2LoanFlexibleLoanableDataResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -18735,9 +26831,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV2LoanFlexibleLoanableDataResponse](src/models/sapi-v2-loan-flexible-loanable-data-response.ts)</code>
+**Direct**: `await client.cryptoLoans.getFlexibleLoanAssetsDataUserData(request)`
 
-**OnError**: <code>[CryptoLoans.GetFlexibleLoanAssetsDataUserDataError](src/resources/crypto-loans.ts)</code>
+- **OnSuccess**: <code>[SapiV2LoanFlexibleLoanableDataResponse](src/models/sapi-v2-loan-flexible-loanable-data-response.ts)</code>
+- **OnError**: throws <code>[CryptoLoans.GetFlexibleLoanAssetsDataUserDataError](src/resources/crypto-loans.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.cryptoLoans.getFlexibleLoanAssetsDataUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV2LoanFlexibleLoanableDataResponse, CryptoLoans.GetFlexibleLoanAssetsDataUserDataError&gt;</code>, with `result.value` of type <code>[SapiV2LoanFlexibleLoanableDataResponse](src/models/sapi-v2-loan-flexible-loanable-data-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -18765,7 +26869,7 @@ Weight(IP): 400
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -18773,17 +26877,37 @@ Weight(IP): 400
 ```ts
 try {
   const response = await client.cryptoLoans.getFlexibleLoanCollateralAssetsDataUserData({
-    timestamp,
-    signature,
+    timestamp: 1,
+    signature: "some example string",
+    collateralCoin: "BNB",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV2LoanFlexibleCollateralDataResponse
 } catch (err) {
-  if (
-    err instanceof CryptoLoans.GetFlexibleLoanCollateralAssetsDataUserDataError &&
-      err.payload.kind === "error"
-  ) {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type CryptoLoans.GetFlexibleLoanCollateralAssetsDataUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.cryptoLoans.getFlexibleLoanCollateralAssetsDataUserData({
+  timestamp: 1,
+  signature: "some example string",
+  collateralCoin: "BNB",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV2LoanFlexibleCollateralDataResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -18810,9 +26934,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV2LoanFlexibleCollateralDataResponse](src/models/sapi-v2-loan-flexible-collateral-data-response.ts)</code>
+**Direct**: `await client.cryptoLoans.getFlexibleLoanCollateralAssetsDataUserData(request)`
 
-**OnError**: <code>[CryptoLoans.GetFlexibleLoanCollateralAssetsDataUserDataError](src/resources/crypto-loans.ts)</code>
+- **OnSuccess**: <code>[SapiV2LoanFlexibleCollateralDataResponse](src/models/sapi-v2-loan-flexible-collateral-data-response.ts)</code>
+- **OnError**: throws <code>[CryptoLoans.GetFlexibleLoanCollateralAssetsDataUserDataError](src/resources/crypto-loans.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.cryptoLoans.getFlexibleLoanCollateralAssetsDataUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV2LoanFlexibleCollateralDataResponse, CryptoLoans.GetFlexibleLoanCollateralAssetsDataUserDataError&gt;</code>, with `result.value` of type <code>[SapiV2LoanFlexibleCollateralDataResponse](src/models/sapi-v2-loan-flexible-collateral-data-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -18841,19 +26973,53 @@ Weight(IP): 400
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.cryptoLoans.getLoanLtvAdjustmentHistoryUserData({ timestamp, signature });
+  const response = await client.cryptoLoans.getLoanLtvAdjustmentHistoryUserData({
+    timestamp: 1,
+    signature: "some example string",
+    orderId: 10,
+    loanCoin: "BUSD",
+    collateralCoin: "BNB",
+    current: 1,
+    limit: 10,
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1LoanLtvAdjustmentHistoryResponse
 } catch (err) {
-  if (err instanceof CryptoLoans.GetLoanLtvAdjustmentHistoryUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type CryptoLoans.GetLoanLtvAdjustmentHistoryUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.cryptoLoans.getLoanLtvAdjustmentHistoryUserData({
+  timestamp: 1,
+  signature: "some example string",
+  orderId: 10,
+  loanCoin: "BUSD",
+  collateralCoin: "BNB",
+  current: 1,
+  limit: 10,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1LoanLtvAdjustmentHistoryResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -18886,9 +27052,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1LoanLtvAdjustmentHistoryResponse](src/models/sapi-v1-loan-ltv-adjustment-history-response.ts)</code>
+**Direct**: `await client.cryptoLoans.getLoanLtvAdjustmentHistoryUserData(request)`
 
-**OnError**: <code>[CryptoLoans.GetLoanLtvAdjustmentHistoryUserDataError](src/resources/crypto-loans.ts)</code>
+- **OnSuccess**: <code>[SapiV1LoanLtvAdjustmentHistoryResponse](src/models/sapi-v1-loan-ltv-adjustment-history-response.ts)</code>
+- **OnError**: throws <code>[CryptoLoans.GetLoanLtvAdjustmentHistoryUserDataError](src/resources/crypto-loans.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.cryptoLoans.getLoanLtvAdjustmentHistoryUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1LoanLtvAdjustmentHistoryResponse, CryptoLoans.GetLoanLtvAdjustmentHistoryUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1LoanLtvAdjustmentHistoryResponse](src/models/sapi-v1-loan-ltv-adjustment-history-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -18914,19 +27088,53 @@ Weight(IP): 300
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.cryptoLoans.getLoanOngoingOrdersUserData({ timestamp, signature });
+  const response = await client.cryptoLoans.getLoanOngoingOrdersUserData({
+    timestamp: 1,
+    signature: "some example string",
+    orderId: 10,
+    loanCoin: "BUSD",
+    collateralCoin: "BNB",
+    current: 1,
+    limit: 10,
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1LoanOngoingOrdersResponse
 } catch (err) {
-  if (err instanceof CryptoLoans.GetLoanOngoingOrdersUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type CryptoLoans.GetLoanOngoingOrdersUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.cryptoLoans.getLoanOngoingOrdersUserData({
+  timestamp: 1,
+  signature: "some example string",
+  orderId: 10,
+  loanCoin: "BUSD",
+  collateralCoin: "BNB",
+  current: 1,
+  limit: 10,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1LoanOngoingOrdersResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -18957,9 +27165,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1LoanOngoingOrdersResponse](src/models/sapi-v1-loan-ongoing-orders-response.ts)</code>
+**Direct**: `await client.cryptoLoans.getLoanOngoingOrdersUserData(request)`
 
-**OnError**: <code>[CryptoLoans.GetLoanOngoingOrdersUserDataError](src/resources/crypto-loans.ts)</code>
+- **OnSuccess**: <code>[SapiV1LoanOngoingOrdersResponse](src/models/sapi-v1-loan-ongoing-orders-response.ts)</code>
+- **OnError**: throws <code>[CryptoLoans.GetLoanOngoingOrdersUserDataError](src/resources/crypto-loans.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.cryptoLoans.getLoanOngoingOrdersUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1LoanOngoingOrdersResponse, CryptoLoans.GetLoanOngoingOrdersUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1LoanOngoingOrdersResponse](src/models/sapi-v1-loan-ongoing-orders-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -18988,19 +27204,53 @@ Weight(IP): 400
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.cryptoLoans.getLoanRepaymentHistoryUserData({ timestamp, signature });
+  const response = await client.cryptoLoans.getLoanRepaymentHistoryUserData({
+    timestamp: 1,
+    signature: "some example string",
+    orderId: 10,
+    loanCoin: "BUSD",
+    collateralCoin: "BNB",
+    current: 1,
+    limit: 10,
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1LoanRepayHistoryResponse
 } catch (err) {
-  if (err instanceof CryptoLoans.GetLoanRepaymentHistoryUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type CryptoLoans.GetLoanRepaymentHistoryUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.cryptoLoans.getLoanRepaymentHistoryUserData({
+  timestamp: 1,
+  signature: "some example string",
+  orderId: 10,
+  loanCoin: "BUSD",
+  collateralCoin: "BNB",
+  current: 1,
+  limit: 10,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1LoanRepayHistoryResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -19033,9 +27283,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1LoanRepayHistoryResponse](src/models/sapi-v1-loan-repay-history-response.ts)</code>
+**Direct**: `await client.cryptoLoans.getLoanRepaymentHistoryUserData(request)`
 
-**OnError**: <code>[CryptoLoans.GetLoanRepaymentHistoryUserDataError](src/resources/crypto-loans.ts)</code>
+- **OnSuccess**: <code>[SapiV1LoanRepayHistoryResponse](src/models/sapi-v1-loan-repay-history-response.ts)</code>
+- **OnError**: throws <code>[CryptoLoans.GetLoanRepaymentHistoryUserDataError](src/resources/crypto-loans.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.cryptoLoans.getLoanRepaymentHistoryUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1LoanRepayHistoryResponse, CryptoLoans.GetLoanRepaymentHistoryUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1LoanRepayHistoryResponse](src/models/sapi-v1-loan-repay-history-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -19063,19 +27321,47 @@ Weight(IP): 400
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.cryptoLoans.getLoanableAssetsDataUserData({ timestamp, signature });
+  const response = await client.cryptoLoans.getLoanableAssetsDataUserData({
+    timestamp: 1,
+    signature: "some example string",
+    loanCoin: "BUSD",
+    vipLevel: 1,
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1LoanLoanableDataResponse
 } catch (err) {
-  if (err instanceof CryptoLoans.GetLoanableAssetsDataUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type CryptoLoans.GetLoanableAssetsDataUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.cryptoLoans.getLoanableAssetsDataUserData({
+  timestamp: 1,
+  signature: "some example string",
+  loanCoin: "BUSD",
+  vipLevel: 1,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1LoanLoanableDataResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -19103,9 +27389,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1LoanLoanableDataResponse](src/models/sapi-v1-loan-loanable-data-response.ts)</code>
+**Direct**: `await client.cryptoLoans.getLoanableAssetsDataUserData(request)`
 
-**OnError**: <code>[CryptoLoans.GetLoanableAssetsDataUserDataError](src/resources/crypto-loans.ts)</code>
+- **OnSuccess**: <code>[SapiV1LoanLoanableDataResponse](src/models/sapi-v1-loan-loanable-data-response.ts)</code>
+- **OnError**: throws <code>[CryptoLoans.GetLoanableAssetsDataUserDataError](src/resources/crypto-loans.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.cryptoLoans.getLoanableAssetsDataUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1LoanLoanableDataResponse, CryptoLoans.GetLoanableAssetsDataUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1LoanLoanableDataResponse](src/models/sapi-v1-loan-loanable-data-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -19133,7 +27427,7 @@ Weight(IP): 6000
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -19141,15 +27435,45 @@ Weight(IP): 6000
 ```ts
 try {
   const response = await client.cryptoLoans.repayFlexibleLoanRepayTrade({
-    repayAmount,
-    timestamp,
-    signature,
+    repayAmount: 1.5,
+    timestamp: 1,
+    signature: "some example string",
+    loanCoin: "BUSD",
+    collateralCoin: "BNB",
+    collateralReturn: true,
+    fullRepayment: true,
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV2LoanFlexibleRepayResponse
 } catch (err) {
-  if (err instanceof CryptoLoans.RepayFlexibleLoanRepayTradeError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type CryptoLoans.RepayFlexibleLoanRepayTradeError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.cryptoLoans.repayFlexibleLoanRepayTrade({
+  repayAmount: 1.5,
+  timestamp: 1,
+  signature: "some example string",
+  loanCoin: "BUSD",
+  collateralCoin: "BNB",
+  collateralReturn: true,
+  fullRepayment: true,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV2LoanFlexibleRepayResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -19180,9 +27504,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV2LoanFlexibleRepayResponse](src/models/sapi-v2-loan-flexible-repay-response.ts)</code>
+**Direct**: `await client.cryptoLoans.repayFlexibleLoanRepayTrade(request)`
 
-**OnError**: <code>[CryptoLoans.RepayFlexibleLoanRepayTradeError](src/resources/crypto-loans.ts)</code>
+- **OnSuccess**: <code>[SapiV2LoanFlexibleRepayResponse](src/models/sapi-v2-loan-flexible-repay-response.ts)</code>
+- **OnError**: throws <code>[CryptoLoans.RepayFlexibleLoanRepayTradeError](src/resources/crypto-loans.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.cryptoLoans.repayFlexibleLoanRepayTrade(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV2LoanFlexibleRepayResponse, CryptoLoans.RepayFlexibleLoanRepayTradeError&gt;</code>, with `result.value` of type <code>[SapiV2LoanFlexibleRepayResponse](src/models/sapi-v2-loan-flexible-repay-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -19211,7 +27543,7 @@ Weight(IP): 400
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -19219,17 +27551,43 @@ Weight(IP): 400
 ```ts
 try {
   const response = await client.cryptoLoans.repayGetFlexibleLoanRepaymentHistoryUserData({
-    timestamp,
-    signature,
+    timestamp: 1,
+    signature: "some example string",
+    loanCoin: "BUSD",
+    collateralCoin: "BNB",
+    current: 1,
+    limit: 5,
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV2LoanFlexibleRepayHistoryResponse
 } catch (err) {
-  if (
-    err instanceof CryptoLoans.RepayGetFlexibleLoanRepaymentHistoryUserDataError &&
-      err.payload.kind === "error"
-  ) {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type CryptoLoans.RepayGetFlexibleLoanRepaymentHistoryUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.cryptoLoans.repayGetFlexibleLoanRepaymentHistoryUserData({
+  timestamp: 1,
+  signature: "some example string",
+  loanCoin: "BUSD",
+  collateralCoin: "BNB",
+  current: 1,
+  limit: 5,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV2LoanFlexibleRepayHistoryResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -19261,9 +27619,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV2LoanFlexibleRepayHistoryResponse](src/models/sapi-v2-loan-flexible-repay-history-response.ts)</code>
+**Direct**: `await client.cryptoLoans.repayGetFlexibleLoanRepaymentHistoryUserData(request)`
 
-**OnError**: <code>[CryptoLoans.RepayGetFlexibleLoanRepaymentHistoryUserDataError](src/resources/crypto-loans.ts)</code>
+- **OnSuccess**: <code>[SapiV2LoanFlexibleRepayHistoryResponse](src/models/sapi-v2-loan-flexible-repay-history-response.ts)</code>
+- **OnError**: throws <code>[CryptoLoans.RepayGetFlexibleLoanRepaymentHistoryUserDataError](src/resources/crypto-loans.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.cryptoLoans.repayGetFlexibleLoanRepaymentHistoryUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV2LoanFlexibleRepayHistoryResponse, CryptoLoans.RepayGetFlexibleLoanRepaymentHistoryUserDataError&gt;</code>, with `result.value` of type <code>[SapiV2LoanFlexibleRepayHistoryResponse](src/models/sapi-v2-loan-flexible-repay-history-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -19297,19 +27663,45 @@ Weight(UID): 3000
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.pay.getPayTradeHistoryUserData({ timestamp, signature });
+  const response = await client.pay.getPayTradeHistoryUserData({
+    timestamp: 1,
+    signature: "some example string",
+    limit: 100,
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1PayTransactionsResponse
 } catch (err) {
-  if (err instanceof Pay.GetPayTradeHistoryUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Pay.GetPayTradeHistoryUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.pay.getPayTradeHistoryUserData({
+  timestamp: 1,
+  signature: "some example string",
+  limit: 100,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1PayTransactionsResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -19338,9 +27730,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1PayTransactionsResponse](src/models/sapi-v1-pay-transactions-response.ts)</code>
+**Direct**: `await client.pay.getPayTradeHistoryUserData(request)`
 
-**OnError**: <code>[Pay.GetPayTradeHistoryUserDataError](src/resources/pay.ts)</code>
+- **OnSuccess**: <code>[SapiV1PayTransactionsResponse](src/models/sapi-v1-pay-transactions-response.ts)</code>
+- **OnError**: throws <code>[Pay.GetPayTradeHistoryUserDataError](src/resources/pay.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.pay.getPayTradeHistoryUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1PayTransactionsResponse, Pay.GetPayTradeHistoryUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1PayTransactionsResponse](src/models/sapi-v1-pay-transactions-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -19372,19 +27772,45 @@ Weight(UID): 500
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.convert.acceptQuoteTrade({ quoteId, timestamp, signature });
+  const response = await client.convert.acceptQuoteTrade({
+    quoteId: "1000",
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1ConvertAcceptQuoteResponse
 } catch (err) {
-  if (err instanceof Convert.AcceptQuoteTradeError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Convert.AcceptQuoteTradeError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.convert.acceptQuoteTrade({
+  quoteId: "1000",
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1ConvertAcceptQuoteResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -19411,9 +27837,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1ConvertAcceptQuoteResponse](src/models/sapi-v1-convert-accept-quote-response.ts)</code>
+**Direct**: `await client.convert.acceptQuoteTrade(request)`
 
-**OnError**: <code>[Convert.AcceptQuoteTradeError](src/resources/convert.ts)</code>
+- **OnSuccess**: <code>[SapiV1ConvertAcceptQuoteResponse](src/models/sapi-v1-convert-accept-quote-response.ts)</code>
+- **OnError**: throws <code>[Convert.AcceptQuoteTradeError](src/resources/convert.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.convert.acceptQuoteTrade(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1ConvertAcceptQuoteResponse, Convert.AcceptQuoteTradeError&gt;</code>, with `result.value` of type <code>[SapiV1ConvertAcceptQuoteResponse](src/models/sapi-v1-convert-accept-quote-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -19441,19 +27875,45 @@ Weight(UID): 200
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.convert.cancelLimitOrderUserData({ orderId, timestamp, signature });
+  const response = await client.convert.cancelLimitOrderUserData({
+    orderId: 1603680255057330400,
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1ConvertLimitCancelOrderResponse
 } catch (err) {
-  if (err instanceof Convert.CancelLimitOrderUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Convert.CancelLimitOrderUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.convert.cancelLimitOrderUserData({
+  orderId: 1603680255057330400,
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1ConvertLimitCancelOrderResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -19480,9 +27940,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1ConvertLimitCancelOrderResponse](src/models/sapi-v1-convert-limit-cancel-order-response.ts)</code>
+**Direct**: `await client.convert.cancelLimitOrderUserData(request)`
 
-**OnError**: <code>[Convert.CancelLimitOrderUserDataError](src/resources/convert.ts)</code>
+- **OnSuccess**: <code>[SapiV1ConvertLimitCancelOrderResponse](src/models/sapi-v1-convert-limit-cancel-order-response.ts)</code>
+- **OnError**: throws <code>[Convert.CancelLimitOrderUserDataError](src/resources/convert.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.convert.cancelLimitOrderUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1ConvertLimitCancelOrderResponse, Convert.CancelLimitOrderUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1ConvertLimitCancelOrderResponse](src/models/sapi-v1-convert-limit-cancel-order-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -19510,7 +27978,7 @@ Weight(UID): 3000
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -19518,16 +27986,41 @@ Weight(UID): 3000
 ```ts
 try {
   const response = await client.convert.getConvertTradeHistoryUserData({
-    startTime,
-    endTime,
-    timestamp,
-    signature,
+    startTime: 1624248872184,
+    endTime: 1624248872185,
+    timestamp: 1,
+    signature: "some example string",
+    limit: 100,
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1ConvertTradeFlowResponse
 } catch (err) {
-  if (err instanceof Convert.GetConvertTradeHistoryUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Convert.GetConvertTradeHistoryUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.convert.getConvertTradeHistoryUserData({
+  startTime: 1624248872184,
+  endTime: 1624248872185,
+  timestamp: 1,
+  signature: "some example string",
+  limit: 100,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1ConvertTradeFlowResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -19556,9 +28049,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1ConvertTradeFlowResponse](src/models/sapi-v1-convert-trade-flow-response.ts)</code>
+**Direct**: `await client.convert.getConvertTradeHistoryUserData(request)`
 
-**OnError**: <code>[Convert.GetConvertTradeHistoryUserDataError](src/resources/convert.ts)</code>
+- **OnSuccess**: <code>[SapiV1ConvertTradeFlowResponse](src/models/sapi-v1-convert-trade-flow-response.ts)</code>
+- **OnError**: throws <code>[Convert.GetConvertTradeHistoryUserDataError](src/resources/convert.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.convert.getConvertTradeHistoryUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1ConvertTradeFlowResponse, Convert.GetConvertTradeHistoryUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1ConvertTradeFlowResponse](src/models/sapi-v1-convert-trade-flow-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -19586,19 +28087,35 @@ Weight(IP): 3000
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.convert.listAllConvertPairs();
+  const response = await client.convert.listAllConvertPairs({ fromAsset: "BTC", toAsset: "USDT" });
   // TODO: Handle 'response' of type SapiV1ConvertExchangeInfoResponse[]
 } catch (err) {
-  if (err instanceof Convert.ListAllConvertPairsError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Convert.ListAllConvertPairsError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.convert.listAllConvertPairs({ fromAsset: "BTC", toAsset: "USDT" }).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1ConvertExchangeInfoResponse[]
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -19623,9 +28140,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1ConvertExchangeInfoResponse](src/models/sapi-v1-convert-exchange-info-response.ts)[]</code>
+**Direct**: `await client.convert.listAllConvertPairs(request)`
 
-**OnError**: <code>[Convert.ListAllConvertPairsError](src/resources/convert.ts)</code>
+- **OnSuccess**: <code>[SapiV1ConvertExchangeInfoResponse](src/models/sapi-v1-convert-exchange-info-response.ts)[]</code>
+- **OnError**: throws <code>[Convert.ListAllConvertPairsError](src/resources/convert.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.convert.listAllConvertPairs(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1ConvertExchangeInfoResponse[], Convert.ListAllConvertPairsError&gt;</code>, with `result.value` of type <code>[SapiV1ConvertExchangeInfoResponse](src/models/sapi-v1-convert-exchange-info-response.ts)[]</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -19653,19 +28178,47 @@ Weight(UID): 100
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.convert.orderStatusUserData({ timestamp, signature });
+  const response = await client.convert.orderStatusUserData({
+    timestamp: 1,
+    signature: "some example string",
+    orderId: "1000",
+    quoteId: "1000",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1ConvertOrderStatusResponse
 } catch (err) {
-  if (err instanceof Convert.OrderStatusUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Convert.OrderStatusUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.convert.orderStatusUserData({
+  timestamp: 1,
+  signature: "some example string",
+  orderId: "1000",
+  quoteId: "1000",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1ConvertOrderStatusResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -19693,9 +28246,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1ConvertOrderStatusResponse](src/models/sapi-v1-convert-order-status-response.ts)</code>
+**Direct**: `await client.convert.orderStatusUserData(request)`
 
-**OnError**: <code>[Convert.OrderStatusUserDataError](src/resources/convert.ts)</code>
+- **OnSuccess**: <code>[SapiV1ConvertOrderStatusResponse](src/models/sapi-v1-convert-order-status-response.ts)</code>
+- **OnError**: throws <code>[Convert.OrderStatusUserDataError](src/resources/convert.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.convert.orderStatusUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1ConvertOrderStatusResponse, Convert.OrderStatusUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1ConvertOrderStatusResponse](src/models/sapi-v1-convert-order-status-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -19727,7 +28288,7 @@ Weight(UID): 500
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -19735,18 +28296,47 @@ Weight(UID): 500
 ```ts
 try {
   const response = await client.convert.placeLimitOrderUserData({
-    baseAsset,
-    quoteAsset,
-    limitPrice,
-    side,
-    timestamp,
-    signature,
+    baseAsset: "BUSD",
+    quoteAsset: "USDT",
+    limitPrice: 1.5,
+    side: Side.Sell,
+    timestamp: 1,
+    signature: "some example string",
+    walletType: WalletType.Spot,
+    expiredType: ExpiredType._1D,
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1ConvertLimitPlaceOrderResponse
 } catch (err) {
-  if (err instanceof Convert.PlaceLimitOrderUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Convert.PlaceLimitOrderUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.convert.placeLimitOrderUserData({
+  baseAsset: "BUSD",
+  quoteAsset: "USDT",
+  limitPrice: 1.5,
+  side: Side.Sell,
+  timestamp: 1,
+  signature: "some example string",
+  walletType: WalletType.Spot,
+  expiredType: ExpiredType._1D,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1ConvertLimitPlaceOrderResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -19780,9 +28370,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1ConvertLimitPlaceOrderResponse](src/models/sapi-v1-convert-limit-place-order-response.ts)</code>
+**Direct**: `await client.convert.placeLimitOrderUserData(request)`
 
-**OnError**: <code>[Convert.PlaceLimitOrderUserDataError](src/resources/convert.ts)</code>
+- **OnSuccess**: <code>[SapiV1ConvertLimitPlaceOrderResponse](src/models/sapi-v1-convert-limit-place-order-response.ts)</code>
+- **OnError**: throws <code>[Convert.PlaceLimitOrderUserDataError](src/resources/convert.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.convert.placeLimitOrderUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1ConvertLimitPlaceOrderResponse, Convert.PlaceLimitOrderUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1ConvertLimitPlaceOrderResponse](src/models/sapi-v1-convert-limit-place-order-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -19810,19 +28408,43 @@ Weight(UID): 3000
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.convert.queryLimitOpenOrdersUserData({ timestamp, signature });
+  const response = await client.convert.queryLimitOpenOrdersUserData({
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1ConvertLimitQueryOpenOrdersResponse
 } catch (err) {
-  if (err instanceof Convert.QueryLimitOpenOrdersUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Convert.QueryLimitOpenOrdersUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.convert.queryLimitOpenOrdersUserData({
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1ConvertLimitQueryOpenOrdersResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -19848,9 +28470,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1ConvertLimitQueryOpenOrdersResponse](src/models/sapi-v1-convert-limit-query-open-orders-response.ts)</code>
+**Direct**: `await client.convert.queryLimitOpenOrdersUserData(request)`
 
-**OnError**: <code>[Convert.QueryLimitOpenOrdersUserDataError](src/resources/convert.ts)</code>
+- **OnSuccess**: <code>[SapiV1ConvertLimitQueryOpenOrdersResponse](src/models/sapi-v1-convert-limit-query-open-orders-response.ts)</code>
+- **OnError**: throws <code>[Convert.QueryLimitOpenOrdersUserDataError](src/resources/convert.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.convert.queryLimitOpenOrdersUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1ConvertLimitQueryOpenOrdersResponse, Convert.QueryLimitOpenOrdersUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1ConvertLimitQueryOpenOrdersResponse](src/models/sapi-v1-convert-limit-query-open-orders-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -19878,21 +28508,43 @@ Weight(IP): 100
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.convert.queryOrderQuantityPrecisionPerAssetUserData({ timestamp, signature });
+  const response = await client.convert.queryOrderQuantityPrecisionPerAssetUserData({
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1ConvertAssetInfoResponse[]
 } catch (err) {
-  if (
-    err instanceof Convert.QueryOrderQuantityPrecisionPerAssetUserDataError && err.payload.kind === "error"
-  ) {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Convert.QueryOrderQuantityPrecisionPerAssetUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.convert.queryOrderQuantityPrecisionPerAssetUserData({
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1ConvertAssetInfoResponse[]
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -19918,9 +28570,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1ConvertAssetInfoResponse](src/models/sapi-v1-convert-asset-info-response.ts)[]</code>
+**Direct**: `await client.convert.queryOrderQuantityPrecisionPerAssetUserData(request)`
 
-**OnError**: <code>[Convert.QueryOrderQuantityPrecisionPerAssetUserDataError](src/resources/convert.ts)</code>
+- **OnSuccess**: <code>[SapiV1ConvertAssetInfoResponse](src/models/sapi-v1-convert-asset-info-response.ts)[]</code>
+- **OnError**: throws <code>[Convert.QueryOrderQuantityPrecisionPerAssetUserDataError](src/resources/convert.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.convert.queryOrderQuantityPrecisionPerAssetUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1ConvertAssetInfoResponse[], Convert.QueryOrderQuantityPrecisionPerAssetUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1ConvertAssetInfoResponse](src/models/sapi-v1-convert-asset-info-response.ts)[]</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -19948,7 +28608,7 @@ Weight(UID): 200
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -19956,16 +28616,47 @@ Weight(UID): 200
 ```ts
 try {
   const response = await client.convert.sendQuoteRequestUserData({
-    fromAsset,
-    toAsset,
-    timestamp,
-    signature,
+    fromAsset: "BTC",
+    toAsset: "USDT",
+    timestamp: 1,
+    signature: "some example string",
+    fromAmount: 1,
+    toAmount: 1,
+    validTime: "10s",
+    walletType: "SPOT",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1ConvertGetQuoteResponse
 } catch (err) {
-  if (err instanceof Convert.SendQuoteRequestUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Convert.SendQuoteRequestUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.convert.sendQuoteRequestUserData({
+  fromAsset: "BTC",
+  toAsset: "USDT",
+  timestamp: 1,
+  signature: "some example string",
+  fromAmount: 1,
+  toAmount: 1,
+  validTime: "10s",
+  walletType: "SPOT",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1ConvertGetQuoteResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -19997,9 +28688,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1ConvertGetQuoteResponse](src/models/sapi-v1-convert-get-quote-response.ts)</code>
+**Direct**: `await client.convert.sendQuoteRequestUserData(request)`
 
-**OnError**: <code>[Convert.SendQuoteRequestUserDataError](src/resources/convert.ts)</code>
+- **OnSuccess**: <code>[SapiV1ConvertGetQuoteResponse](src/models/sapi-v1-convert-get-quote-response.ts)</code>
+- **OnError**: throws <code>[Convert.SendQuoteRequestUserDataError](src/resources/convert.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.convert.sendQuoteRequestUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1ConvertGetQuoteResponse, Convert.SendQuoteRequestUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1ConvertGetQuoteResponse](src/models/sapi-v1-convert-get-quote-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -20033,19 +28732,45 @@ Weight(UID): 3000
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.rebate.getSpotRebateHistoryRecordsUserData({ timestamp, signature });
+  const response = await client.rebate.getSpotRebateHistoryRecordsUserData({
+    timestamp: 1,
+    signature: "some example string",
+    page: 1,
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1RebateTaxQueryResponse
 } catch (err) {
-  if (err instanceof Rebate.GetSpotRebateHistoryRecordsUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Rebate.GetSpotRebateHistoryRecordsUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.rebate.getSpotRebateHistoryRecordsUserData({
+  timestamp: 1,
+  signature: "some example string",
+  page: 1,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1RebateTaxQueryResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -20074,9 +28799,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1RebateTaxQueryResponse](src/models/sapi-v1-rebate-tax-query-response.ts)</code>
+**Direct**: `await client.rebate.getSpotRebateHistoryRecordsUserData(request)`
 
-**OnError**: <code>[Rebate.GetSpotRebateHistoryRecordsUserDataError](src/resources/rebate.ts)</code>
+- **OnSuccess**: <code>[SapiV1RebateTaxQueryResponse](src/models/sapi-v1-rebate-tax-query-response.ts)</code>
+- **OnError**: throws <code>[Rebate.GetSpotRebateHistoryRecordsUserDataError](src/resources/rebate.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.rebate.getSpotRebateHistoryRecordsUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1RebateTaxQueryResponse, Rebate.GetSpotRebateHistoryRecordsUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1RebateTaxQueryResponse](src/models/sapi-v1-rebate-tax-query-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -20106,19 +28839,47 @@ Weight(UID): 3000
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.nft.getNftAssetUserData({ timestamp, signature });
+  const response = await client.nft.getNftAssetUserData({
+    timestamp: 1,
+    signature: "some example string",
+    limit: 50,
+    page: 1,
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1NftUserGetAssetResponse
 } catch (err) {
-  if (err instanceof Nft.GetNftAssetUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Nft.GetNftAssetUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.nft.getNftAssetUserData({
+  timestamp: 1,
+  signature: "some example string",
+  limit: 50,
+  page: 1,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1NftUserGetAssetResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -20146,9 +28907,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1NftUserGetAssetResponse](src/models/sapi-v1-nft-user-get-asset-response.ts)</code>
+**Direct**: `await client.nft.getNftAssetUserData(request)`
 
-**OnError**: <code>[Nft.GetNftAssetUserDataError](src/resources/nft.ts)</code>
+- **OnSuccess**: <code>[SapiV1NftUserGetAssetResponse](src/models/sapi-v1-nft-user-get-asset-response.ts)</code>
+- **OnError**: throws <code>[Nft.GetNftAssetUserDataError](src/resources/nft.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.nft.getNftAssetUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1NftUserGetAssetResponse, Nft.GetNftAssetUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1NftUserGetAssetResponse](src/models/sapi-v1-nft-user-get-asset-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -20177,19 +28946,47 @@ Weight(UID): 3000
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.nft.getNftDepositHistoryUserData({ timestamp, signature });
+  const response = await client.nft.getNftDepositHistoryUserData({
+    timestamp: 1,
+    signature: "some example string",
+    limit: 50,
+    page: 1,
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1NftHistoryDepositResponse
 } catch (err) {
-  if (err instanceof Nft.GetNftDepositHistoryUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Nft.GetNftDepositHistoryUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.nft.getNftDepositHistoryUserData({
+  timestamp: 1,
+  signature: "some example string",
+  limit: 50,
+  page: 1,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1NftHistoryDepositResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -20219,9 +29016,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1NftHistoryDepositResponse](src/models/sapi-v1-nft-history-deposit-response.ts)</code>
+**Direct**: `await client.nft.getNftDepositHistoryUserData(request)`
 
-**OnError**: <code>[Nft.GetNftDepositHistoryUserDataError](src/resources/nft.ts)</code>
+- **OnSuccess**: <code>[SapiV1NftHistoryDepositResponse](src/models/sapi-v1-nft-history-deposit-response.ts)</code>
+- **OnError**: throws <code>[Nft.GetNftDepositHistoryUserDataError](src/resources/nft.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.nft.getNftDepositHistoryUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1NftHistoryDepositResponse, Nft.GetNftDepositHistoryUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1NftHistoryDepositResponse](src/models/sapi-v1-nft-history-deposit-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -20250,19 +29055,49 @@ Weight(UID): 3000
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.nft.getNftTransactionHistoryUserData({ orderType, timestamp, signature });
+  const response = await client.nft.getNftTransactionHistoryUserData({
+    orderType: 1,
+    timestamp: 1,
+    signature: "some example string",
+    limit: 50,
+    page: 1,
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1NftHistoryTransactionsResponse
 } catch (err) {
-  if (err instanceof Nft.GetNftTransactionHistoryUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Nft.GetNftTransactionHistoryUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.nft.getNftTransactionHistoryUserData({
+  orderType: 1,
+  timestamp: 1,
+  signature: "some example string",
+  limit: 50,
+  page: 1,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1NftHistoryTransactionsResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -20293,9 +29128,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1NftHistoryTransactionsResponse](src/models/sapi-v1-nft-history-transactions-response.ts)</code>
+**Direct**: `await client.nft.getNftTransactionHistoryUserData(request)`
 
-**OnError**: <code>[Nft.GetNftTransactionHistoryUserDataError](src/resources/nft.ts)</code>
+- **OnSuccess**: <code>[SapiV1NftHistoryTransactionsResponse](src/models/sapi-v1-nft-history-transactions-response.ts)</code>
+- **OnError**: throws <code>[Nft.GetNftTransactionHistoryUserDataError](src/resources/nft.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.nft.getNftTransactionHistoryUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1NftHistoryTransactionsResponse, Nft.GetNftTransactionHistoryUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1NftHistoryTransactionsResponse](src/models/sapi-v1-nft-history-transactions-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -20324,19 +29167,47 @@ Weight(UID): 3000
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.nft.getNftWithdrawHistoryUserData({ timestamp, signature });
+  const response = await client.nft.getNftWithdrawHistoryUserData({
+    timestamp: 1,
+    signature: "some example string",
+    limit: 50,
+    page: 1,
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1NftHistoryWithdrawResponse
 } catch (err) {
-  if (err instanceof Nft.GetNftWithdrawHistoryUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Nft.GetNftWithdrawHistoryUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.nft.getNftWithdrawHistoryUserData({
+  timestamp: 1,
+  signature: "some example string",
+  limit: 50,
+  page: 1,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1NftHistoryWithdrawResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -20366,9 +29237,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1NftHistoryWithdrawResponse](src/models/sapi-v1-nft-history-withdraw-response.ts)</code>
+**Direct**: `await client.nft.getNftWithdrawHistoryUserData(request)`
 
-**OnError**: <code>[Nft.GetNftWithdrawHistoryUserDataError](src/resources/nft.ts)</code>
+- **OnSuccess**: <code>[SapiV1NftHistoryWithdrawResponse](src/models/sapi-v1-nft-history-withdraw-response.ts)</code>
+- **OnError**: throws <code>[Nft.GetNftWithdrawHistoryUserDataError](src/resources/nft.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.nft.getNftWithdrawHistoryUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1NftHistoryWithdrawResponse, Nft.GetNftWithdrawHistoryUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1NftHistoryWithdrawResponse](src/models/sapi-v1-nft-history-withdraw-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -20410,7 +29289,7 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -20418,17 +29297,41 @@ Weight(IP): 1
 ```ts
 try {
   const response = await client.giftCard.buyABinanceCodeTrade({
-    baseToken,
-    faceToken,
-    baseTokenAmount,
-    timestamp,
-    signature,
+    baseToken: "some example string",
+    faceToken: "some example string",
+    baseTokenAmount: 1.5,
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1GiftcardBuyCodeResponse
 } catch (err) {
-  if (err instanceof GiftCard.BuyABinanceCodeTradeError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type GiftCard.BuyABinanceCodeTradeError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.giftCard.buyABinanceCodeTrade({
+  baseToken: "some example string",
+  faceToken: "some example string",
+  baseTokenAmount: 1.5,
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1GiftcardBuyCodeResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -20457,9 +29360,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1GiftcardBuyCodeResponse](src/models/sapi-v1-giftcard-buy-code-response.ts)</code>
+**Direct**: `await client.giftCard.buyABinanceCodeTrade(request)`
 
-**OnError**: <code>[GiftCard.BuyABinanceCodeTradeError](src/resources/gift-card.ts)</code>
+- **OnSuccess**: <code>[SapiV1GiftcardBuyCodeResponse](src/models/sapi-v1-giftcard-buy-code-response.ts)</code>
+- **OnError**: throws <code>[GiftCard.BuyABinanceCodeTradeError](src/resources/gift-card.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.giftCard.buyABinanceCodeTrade(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1GiftcardBuyCodeResponse, GiftCard.BuyABinanceCodeTradeError&gt;</code>, with `result.value` of type <code>[SapiV1GiftcardBuyCodeResponse](src/models/sapi-v1-giftcard-buy-code-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -20494,19 +29405,47 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.giftCard.createABinanceCodeUserData({ token, amount, timestamp, signature });
+  const response = await client.giftCard.createABinanceCodeUserData({
+    token: "some example string",
+    amount: 1.5,
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1GiftcardCreateCodeResponse
 } catch (err) {
-  if (err instanceof GiftCard.CreateABinanceCodeUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type GiftCard.CreateABinanceCodeUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.giftCard.createABinanceCodeUserData({
+  token: "some example string",
+  amount: 1.5,
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1GiftcardCreateCodeResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -20534,9 +29473,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1GiftcardCreateCodeResponse](src/models/sapi-v1-giftcard-create-code-response.ts)</code>
+**Direct**: `await client.giftCard.createABinanceCodeUserData(request)`
 
-**OnError**: <code>[GiftCard.CreateABinanceCodeUserDataError](src/resources/gift-card.ts)</code>
+- **OnSuccess**: <code>[SapiV1GiftcardCreateCodeResponse](src/models/sapi-v1-giftcard-create-code-response.ts)</code>
+- **OnError**: throws <code>[GiftCard.CreateABinanceCodeUserDataError](src/resources/gift-card.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.giftCard.createABinanceCodeUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1GiftcardCreateCodeResponse, GiftCard.CreateABinanceCodeUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1GiftcardCreateCodeResponse](src/models/sapi-v1-giftcard-create-code-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -20566,19 +29513,43 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.giftCard.fetchRsaPublicKeyUserData({ timestamp, signature });
+  const response = await client.giftCard.fetchRsaPublicKeyUserData({
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1GiftcardCryptographyRsaPublicKeyResponse
 } catch (err) {
-  if (err instanceof GiftCard.FetchRsaPublicKeyUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type GiftCard.FetchRsaPublicKeyUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.giftCard.fetchRsaPublicKeyUserData({
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1GiftcardCryptographyRsaPublicKeyResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -20604,9 +29575,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1GiftcardCryptographyRsaPublicKeyResponse](src/models/sapi-v1-giftcard-cryptography-rsa-public-key-response.ts)</code>
+**Direct**: `await client.giftCard.fetchRsaPublicKeyUserData(request)`
 
-**OnError**: <code>[GiftCard.FetchRsaPublicKeyUserDataError](src/resources/gift-card.ts)</code>
+- **OnSuccess**: <code>[SapiV1GiftcardCryptographyRsaPublicKeyResponse](src/models/sapi-v1-giftcard-cryptography-rsa-public-key-response.ts)</code>
+- **OnError**: throws <code>[GiftCard.FetchRsaPublicKeyUserDataError](src/resources/gift-card.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.giftCard.fetchRsaPublicKeyUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1GiftcardCryptographyRsaPublicKeyResponse, GiftCard.FetchRsaPublicKeyUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1GiftcardCryptographyRsaPublicKeyResponse](src/models/sapi-v1-giftcard-cryptography-rsa-public-key-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -20634,19 +29613,45 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.giftCard.fetchTokenLimitUserData({ baseToken, timestamp, signature });
+  const response = await client.giftCard.fetchTokenLimitUserData({
+    baseToken: "some example string",
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1GiftcardBuyCodeTokenLimitResponse
 } catch (err) {
-  if (err instanceof GiftCard.FetchTokenLimitUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type GiftCard.FetchTokenLimitUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.giftCard.fetchTokenLimitUserData({
+  baseToken: "some example string",
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1GiftcardBuyCodeTokenLimitResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -20673,9 +29678,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1GiftcardBuyCodeTokenLimitResponse](src/models/sapi-v1-giftcard-buy-code-token-limit-response.ts)</code>
+**Direct**: `await client.giftCard.fetchTokenLimitUserData(request)`
 
-**OnError**: <code>[GiftCard.FetchTokenLimitUserDataError](src/resources/gift-card.ts)</code>
+- **OnSuccess**: <code>[SapiV1GiftcardBuyCodeTokenLimitResponse](src/models/sapi-v1-giftcard-buy-code-token-limit-response.ts)</code>
+- **OnError**: throws <code>[GiftCard.FetchTokenLimitUserDataError](src/resources/gift-card.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.giftCard.fetchTokenLimitUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1GiftcardBuyCodeTokenLimitResponse, GiftCard.FetchTokenLimitUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1GiftcardBuyCodeTokenLimitResponse](src/models/sapi-v1-giftcard-buy-code-token-limit-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -20705,19 +29718,45 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.giftCard.redeemABinanceCodeUserData({ code, timestamp, signature });
+  const response = await client.giftCard.redeemABinanceCodeUserData({
+    code: "some example string",
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1GiftcardRedeemCodeResponse
 } catch (err) {
-  if (err instanceof GiftCard.RedeemABinanceCodeUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type GiftCard.RedeemABinanceCodeUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.giftCard.redeemABinanceCodeUserData({
+  code: "some example string",
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1GiftcardRedeemCodeResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -20745,9 +29784,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1GiftcardRedeemCodeResponse](src/models/sapi-v1-giftcard-redeem-code-response.ts)</code>
+**Direct**: `await client.giftCard.redeemABinanceCodeUserData(request)`
 
-**OnError**: <code>[GiftCard.RedeemABinanceCodeUserDataError](src/resources/gift-card.ts)</code>
+- **OnSuccess**: <code>[SapiV1GiftcardRedeemCodeResponse](src/models/sapi-v1-giftcard-redeem-code-response.ts)</code>
+- **OnError**: throws <code>[GiftCard.RedeemABinanceCodeUserDataError](src/resources/gift-card.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.giftCard.redeemABinanceCodeUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1GiftcardRedeemCodeResponse, GiftCard.RedeemABinanceCodeUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1GiftcardRedeemCodeResponse](src/models/sapi-v1-giftcard-redeem-code-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -20777,19 +29824,45 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.giftCard.verifyABinanceCodeUserData({ referenceNo, timestamp, signature });
+  const response = await client.giftCard.verifyABinanceCodeUserData({
+    referenceNo: "some example string",
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1GiftcardVerifyResponse
 } catch (err) {
-  if (err instanceof GiftCard.VerifyABinanceCodeUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type GiftCard.VerifyABinanceCodeUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.giftCard.verifyABinanceCodeUserData({
+  referenceNo: "some example string",
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1GiftcardVerifyResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -20816,9 +29889,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1GiftcardVerifyResponse](src/models/sapi-v1-giftcard-verify-response.ts)</code>
+**Direct**: `await client.giftCard.verifyABinanceCodeUserData(request)`
 
-**OnError**: <code>[GiftCard.VerifyABinanceCodeUserDataError](src/resources/gift-card.ts)</code>
+- **OnSuccess**: <code>[SapiV1GiftcardVerifyResponse](src/models/sapi-v1-giftcard-verify-response.ts)</code>
+- **OnError**: throws <code>[GiftCard.VerifyABinanceCodeUserDataError](src/resources/gift-card.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.giftCard.verifyABinanceCodeUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1GiftcardVerifyResponse, GiftCard.VerifyABinanceCodeUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1GiftcardVerifyResponse](src/models/sapi-v1-giftcard-verify-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -20850,19 +29931,47 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.autoInvest.changePlanStatus({ planId, status, timestamp, signature });
+  const response = await client.autoInvest.changePlanStatus({
+    planId: 1,
+    status: Status1.Ongoing,
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1LendingAutoInvestPlanEditStatusResponse
 } catch (err) {
-  if (err instanceof AutoInvest.ChangePlanStatusError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type AutoInvest.ChangePlanStatusError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.autoInvest.changePlanStatus({
+  planId: 1,
+  status: Status1.Ongoing,
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1LendingAutoInvestPlanEditStatusResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -20890,9 +29999,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1LendingAutoInvestPlanEditStatusResponse](src/models/sapi-v1-lending-auto-invest-plan-edit-status-response.ts)</code>
+**Direct**: `await client.autoInvest.changePlanStatus(request)`
 
-**OnError**: <code>[AutoInvest.ChangePlanStatusError](src/resources/auto-invest.ts)</code>
+- **OnSuccess**: <code>[SapiV1LendingAutoInvestPlanEditStatusResponse](src/models/sapi-v1-lending-auto-invest-plan-edit-status-response.ts)</code>
+- **OnError**: throws <code>[AutoInvest.ChangePlanStatusError](src/resources/auto-invest.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.autoInvest.changePlanStatus(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1LendingAutoInvestPlanEditStatusResponse, AutoInvest.ChangePlanStatusError&gt;</code>, with `result.value` of type <code>[SapiV1LendingAutoInvestPlanEditStatusResponse](src/models/sapi-v1-lending-auto-invest-plan-edit-status-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -20920,19 +30037,45 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.autoInvest.getListOfPlans({ planType, timestamp, signature });
+  const response = await client.autoInvest.getListOfPlans({
+    planType: "some example string",
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1LendingAutoInvestPlanListResponse
 } catch (err) {
-  if (err instanceof AutoInvest.GetListOfPlansError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type AutoInvest.GetListOfPlansError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.autoInvest.getListOfPlans({
+  planType: "some example string",
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1LendingAutoInvestPlanListResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -20959,9 +30102,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1LendingAutoInvestPlanListResponse](src/models/sapi-v1-lending-auto-invest-plan-list-response.ts)</code>
+**Direct**: `await client.autoInvest.getListOfPlans(request)`
 
-**OnError**: <code>[AutoInvest.GetListOfPlansError](src/resources/auto-invest.ts)</code>
+- **OnSuccess**: <code>[SapiV1LendingAutoInvestPlanListResponse](src/models/sapi-v1-lending-auto-invest-plan-list-response.ts)</code>
+- **OnError**: throws <code>[AutoInvest.GetListOfPlansError](src/resources/auto-invest.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.autoInvest.getListOfPlans(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1LendingAutoInvestPlanListResponse, AutoInvest.GetListOfPlansError&gt;</code>, with `result.value` of type <code>[SapiV1LendingAutoInvestPlanListResponse](src/models/sapi-v1-lending-auto-invest-plan-list-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -20989,7 +30140,7 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -20997,16 +30148,39 @@ Weight(IP): 1
 ```ts
 try {
   const response = await client.autoInvest.getTargetAssetRoiDataUserData({
-    targetAsset,
-    hisRoiType,
-    timestamp,
-    signature,
+    targetAsset: "BTC",
+    hisRoiType: "FIVE_YEAR",
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1LendingAutoInvestTargetAssetRoiListResponse[]
 } catch (err) {
-  if (err instanceof AutoInvest.GetTargetAssetRoiDataUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type AutoInvest.GetTargetAssetRoiDataUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.autoInvest.getTargetAssetRoiDataUserData({
+  targetAsset: "BTC",
+  hisRoiType: "FIVE_YEAR",
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1LendingAutoInvestTargetAssetRoiListResponse[]
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -21034,9 +30208,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1LendingAutoInvestTargetAssetRoiListResponse](src/models/sapi-v1-lending-auto-invest-target-asset-roi-list-response.ts)[]</code>
+**Direct**: `await client.autoInvest.getTargetAssetRoiDataUserData(request)`
 
-**OnError**: <code>[AutoInvest.GetTargetAssetRoiDataUserDataError](src/resources/auto-invest.ts)</code>
+- **OnSuccess**: <code>[SapiV1LendingAutoInvestTargetAssetRoiListResponse](src/models/sapi-v1-lending-auto-invest-target-asset-roi-list-response.ts)[]</code>
+- **OnError**: throws <code>[AutoInvest.GetTargetAssetRoiDataUserDataError](src/resources/auto-invest.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.autoInvest.getTargetAssetRoiDataUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1LendingAutoInvestTargetAssetRoiListResponse[], AutoInvest.GetTargetAssetRoiDataUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1LendingAutoInvestTargetAssetRoiListResponse](src/models/sapi-v1-lending-auto-invest-target-asset-roi-list-response.ts)[]</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -21062,19 +30244,47 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.autoInvest.getTargetAssetListUserData({ timestamp, signature });
+  const response = await client.autoInvest.getTargetAssetListUserData({
+    timestamp: 1,
+    signature: "some example string",
+    size: 100,
+    current: 1,
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1LendingAutoInvestTargetAssetListResponse
 } catch (err) {
-  if (err instanceof AutoInvest.GetTargetAssetListUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type AutoInvest.GetTargetAssetListUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.autoInvest.getTargetAssetListUserData({
+  timestamp: 1,
+  signature: "some example string",
+  size: 100,
+  current: 1,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1LendingAutoInvestTargetAssetListResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -21103,9 +30313,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1LendingAutoInvestTargetAssetListResponse](src/models/sapi-v1-lending-auto-invest-target-asset-list-response.ts)</code>
+**Direct**: `await client.autoInvest.getTargetAssetListUserData(request)`
 
-**OnError**: <code>[AutoInvest.GetTargetAssetListUserDataError](src/resources/auto-invest.ts)</code>
+- **OnSuccess**: <code>[SapiV1LendingAutoInvestTargetAssetListResponse](src/models/sapi-v1-lending-auto-invest-target-asset-list-response.ts)</code>
+- **OnError**: throws <code>[AutoInvest.GetTargetAssetListUserDataError](src/resources/auto-invest.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.autoInvest.getTargetAssetListUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1LendingAutoInvestTargetAssetListResponse, AutoInvest.GetTargetAssetListUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1LendingAutoInvestTargetAssetListResponse](src/models/sapi-v1-lending-auto-invest-target-asset-list-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -21136,21 +30354,47 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.autoInvest.indexLinkedPlanRebalanceDetailsUserData({ timestamp, signature });
+  const response = await client.autoInvest.indexLinkedPlanRebalanceDetailsUserData({
+    timestamp: 1,
+    signature: "some example string",
+    current: 1,
+    size: 100,
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1LendingAutoInvestRebalanceHistoryResponse[]
 } catch (err) {
-  if (
-    err instanceof AutoInvest.IndexLinkedPlanRebalanceDetailsUserDataError && err.payload.kind === "error"
-  ) {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type AutoInvest.IndexLinkedPlanRebalanceDetailsUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.autoInvest.indexLinkedPlanRebalanceDetailsUserData({
+  timestamp: 1,
+  signature: "some example string",
+  current: 1,
+  size: 100,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1LendingAutoInvestRebalanceHistoryResponse[]
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -21180,9 +30424,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1LendingAutoInvestRebalanceHistoryResponse](src/models/sapi-v1-lending-auto-invest-rebalance-history-response.ts)[]</code>
+**Direct**: `await client.autoInvest.indexLinkedPlanRebalanceDetailsUserData(request)`
 
-**OnError**: <code>[AutoInvest.IndexLinkedPlanRebalanceDetailsUserDataError](src/resources/auto-invest.ts)</code>
+- **OnSuccess**: <code>[SapiV1LendingAutoInvestRebalanceHistoryResponse](src/models/sapi-v1-lending-auto-invest-rebalance-history-response.ts)[]</code>
+- **OnError**: throws <code>[AutoInvest.IndexLinkedPlanRebalanceDetailsUserDataError](src/resources/auto-invest.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.autoInvest.indexLinkedPlanRebalanceDetailsUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1LendingAutoInvestRebalanceHistoryResponse[], AutoInvest.IndexLinkedPlanRebalanceDetailsUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1LendingAutoInvestRebalanceHistoryResponse](src/models/sapi-v1-lending-auto-invest-rebalance-history-response.ts)[]</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -21210,7 +30462,7 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -21218,16 +30470,41 @@ Weight(IP): 1
 ```ts
 try {
   const response = await client.autoInvest.indexLinkedPlanRedemptionTrade({
-    indexId,
-    redemptionPercentage,
-    timestamp,
-    signature,
+    indexId: 123456,
+    redemptionPercentage: 10,
+    timestamp: 1,
+    signature: "some example string",
+    requestId: "TR12354859",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1LendingAutoInvestRedeemResponse
 } catch (err) {
-  if (err instanceof AutoInvest.IndexLinkedPlanRedemptionTradeError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type AutoInvest.IndexLinkedPlanRedemptionTradeError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.autoInvest.indexLinkedPlanRedemptionTrade({
+  indexId: 123456,
+  redemptionPercentage: 10,
+  timestamp: 1,
+  signature: "some example string",
+  requestId: "TR12354859",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1LendingAutoInvestRedeemResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -21256,9 +30533,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1LendingAutoInvestRedeemResponse](src/models/sapi-v1-lending-auto-invest-redeem-response.ts)</code>
+**Direct**: `await client.autoInvest.indexLinkedPlanRedemptionTrade(request)`
 
-**OnError**: <code>[AutoInvest.IndexLinkedPlanRedemptionTradeError](src/resources/auto-invest.ts)</code>
+- **OnSuccess**: <code>[SapiV1LendingAutoInvestRedeemResponse](src/models/sapi-v1-lending-auto-invest-redeem-response.ts)</code>
+- **OnError**: throws <code>[AutoInvest.IndexLinkedPlanRedemptionTradeError](src/resources/auto-invest.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.autoInvest.indexLinkedPlanRedemptionTrade(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1LendingAutoInvestRedeemResponse, AutoInvest.IndexLinkedPlanRedemptionTradeError&gt;</code>, with `result.value` of type <code>[SapiV1LendingAutoInvestRedeemResponse](src/models/sapi-v1-lending-auto-invest-redeem-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -21289,7 +30574,7 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -21297,17 +30582,43 @@ Weight(IP): 1
 ```ts
 try {
   const response = await client.autoInvest.indexLinkedPlanRedemptionHistoryUserData({
-    requestId,
-    timestamp,
-    signature,
+    requestId: 12345,
+    timestamp: 1,
+    signature: "some example string",
+    current: 1,
+    asset: "BTC",
+    size: 100,
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1LendingAutoInvestRedeemHistoryResponse[]
 } catch (err) {
-  if (
-    err instanceof AutoInvest.IndexLinkedPlanRedemptionHistoryUserDataError && err.payload.kind === "error"
-  ) {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type AutoInvest.IndexLinkedPlanRedemptionHistoryUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.autoInvest.indexLinkedPlanRedemptionHistoryUserData({
+  requestId: 12345,
+  timestamp: 1,
+  signature: "some example string",
+  current: 1,
+  asset: "BTC",
+  size: 100,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1LendingAutoInvestRedeemHistoryResponse[]
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -21339,9 +30650,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1LendingAutoInvestRedeemHistoryResponse](src/models/sapi-v1-lending-auto-invest-redeem-history-response.ts)[]</code>
+**Direct**: `await client.autoInvest.indexLinkedPlanRedemptionHistoryUserData(request)`
 
-**OnError**: <code>[AutoInvest.IndexLinkedPlanRedemptionHistoryUserDataError](src/resources/auto-invest.ts)</code>
+- **OnSuccess**: <code>[SapiV1LendingAutoInvestRedeemHistoryResponse](src/models/sapi-v1-lending-auto-invest-redeem-history-response.ts)[]</code>
+- **OnError**: throws <code>[AutoInvest.IndexLinkedPlanRedemptionHistoryUserDataError](src/resources/auto-invest.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.autoInvest.indexLinkedPlanRedemptionHistoryUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1LendingAutoInvestRedeemHistoryResponse[], AutoInvest.IndexLinkedPlanRedemptionHistoryUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1LendingAutoInvestRedeemHistoryResponse](src/models/sapi-v1-lending-auto-invest-redeem-history-response.ts)[]</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -21369,7 +30688,7 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -21377,19 +30696,47 @@ Weight(IP): 1
 ```ts
 try {
   const response = await client.autoInvest.investmentPlanAdjustment({
-    planId,
-    subscriptionAmount,
-    subscriptionCycle,
-    subscriptionStartTime,
-    sourceAsset,
-    timestamp,
-    signature,
+    planId: 1,
+    subscriptionAmount: 1.5,
+    subscriptionCycle: SubscriptionCycle.H1,
+    subscriptionStartTime: 1,
+    sourceAsset: "USDT",
+    timestamp: 1,
+    signature: "some example string",
+    flexibleAllowedToUse: true,
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1LendingAutoInvestPlanEditResponse
 } catch (err) {
-  if (err instanceof AutoInvest.InvestmentPlanAdjustmentError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type AutoInvest.InvestmentPlanAdjustmentError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.autoInvest.investmentPlanAdjustment({
+  planId: 1,
+  subscriptionAmount: 1.5,
+  subscriptionCycle: SubscriptionCycle.H1,
+  subscriptionStartTime: 1,
+  sourceAsset: "USDT",
+  timestamp: 1,
+  signature: "some example string",
+  flexibleAllowedToUse: true,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1LendingAutoInvestPlanEditResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -21424,9 +30771,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1LendingAutoInvestPlanEditResponse](src/models/sapi-v1-lending-auto-invest-plan-edit-response.ts)</code>
+**Direct**: `await client.autoInvest.investmentPlanAdjustment(request)`
 
-**OnError**: <code>[AutoInvest.InvestmentPlanAdjustmentError](src/resources/auto-invest.ts)</code>
+- **OnSuccess**: <code>[SapiV1LendingAutoInvestPlanEditResponse](src/models/sapi-v1-lending-auto-invest-plan-edit-response.ts)</code>
+- **OnError**: throws <code>[AutoInvest.InvestmentPlanAdjustmentError](src/resources/auto-invest.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.autoInvest.investmentPlanAdjustment(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1LendingAutoInvestPlanEditResponse, AutoInvest.InvestmentPlanAdjustmentError&gt;</code>, with `result.value` of type <code>[SapiV1LendingAutoInvestPlanEditResponse](src/models/sapi-v1-lending-auto-invest-plan-edit-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -21454,7 +30809,7 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -21462,21 +30817,51 @@ Weight(IP): 1
 ```ts
 try {
   const response = await client.autoInvest.investmentPlanCreationUserData({
-    sourceType,
-    planType,
-    subscriptionAmount,
-    subscriptionCycle,
-    subscriptionStartTime,
-    sourceAsset,
-    details,
-    timestamp,
-    signature,
+    sourceType: SourceType.MainSite,
+    planType: PlanType.Single,
+    subscriptionAmount: 1.5,
+    subscriptionCycle: SubscriptionCycle.H1,
+    subscriptionStartTime: 1,
+    sourceAsset: "USDT",
+    details: [{}],
+    timestamp: 1,
+    signature: "some example string",
+    flexibleAllowedToUse: true,
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1LendingAutoInvestPlanAddResponse
 } catch (err) {
-  if (err instanceof AutoInvest.InvestmentPlanCreationUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type AutoInvest.InvestmentPlanCreationUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.autoInvest.investmentPlanCreationUserData({
+  sourceType: SourceType.MainSite,
+  planType: PlanType.Single,
+  subscriptionAmount: 1.5,
+  subscriptionCycle: SubscriptionCycle.H1,
+  subscriptionStartTime: 1,
+  sourceAsset: "USDT",
+  details: [{}],
+  timestamp: 1,
+  signature: "some example string",
+  flexibleAllowedToUse: true,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1LendingAutoInvestPlanAddResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -21514,9 +30899,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1LendingAutoInvestPlanAddResponse](src/models/sapi-v1-lending-auto-invest-plan-add-response.ts)</code>
+**Direct**: `await client.autoInvest.investmentPlanCreationUserData(request)`
 
-**OnError**: <code>[AutoInvest.InvestmentPlanCreationUserDataError](src/resources/auto-invest.ts)</code>
+- **OnSuccess**: <code>[SapiV1LendingAutoInvestPlanAddResponse](src/models/sapi-v1-lending-auto-invest-plan-add-response.ts)</code>
+- **OnError**: throws <code>[AutoInvest.InvestmentPlanCreationUserDataError](src/resources/auto-invest.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.autoInvest.investmentPlanCreationUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1LendingAutoInvestPlanAddResponse, AutoInvest.InvestmentPlanCreationUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1LendingAutoInvestPlanAddResponse](src/models/sapi-v1-lending-auto-invest-plan-add-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -21544,7 +30937,7 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -21552,17 +30945,49 @@ Weight(IP): 1
 ```ts
 try {
   const response = await client.autoInvest.oneTimeTransactionTrade({
-    sourceType,
-    subscriptionAmount,
-    sourceAsset,
-    timestamp,
-    signature,
+    sourceType: "MAIN_SITE",
+    subscriptionAmount: 10.1,
+    sourceAsset: "USDT",
+    timestamp: 1,
+    signature: "some example string",
+    requestId: "TR12354859",
+    flexibleAllowedToUse: true,
+    planId: 12345,
+    indexId: 1,
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1LendingAutoInvestOneOffResponse
 } catch (err) {
-  if (err instanceof AutoInvest.OneTimeTransactionTradeError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type AutoInvest.OneTimeTransactionTradeError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.autoInvest.oneTimeTransactionTrade({
+  sourceType: "MAIN_SITE",
+  subscriptionAmount: 10.1,
+  sourceAsset: "USDT",
+  timestamp: 1,
+  signature: "some example string",
+  requestId: "TR12354859",
+  flexibleAllowedToUse: true,
+  planId: 12345,
+  indexId: 1,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1LendingAutoInvestOneOffResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -21596,9 +31021,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1LendingAutoInvestOneOffResponse](src/models/sapi-v1-lending-auto-invest-one-off-response.ts)</code>
+**Direct**: `await client.autoInvest.oneTimeTransactionTrade(request)`
 
-**OnError**: <code>[AutoInvest.OneTimeTransactionTradeError](src/resources/auto-invest.ts)</code>
+- **OnSuccess**: <code>[SapiV1LendingAutoInvestOneOffResponse](src/models/sapi-v1-lending-auto-invest-one-off-response.ts)</code>
+- **OnError**: throws <code>[AutoInvest.OneTimeTransactionTradeError](src/resources/auto-invest.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.autoInvest.oneTimeTransactionTrade(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1LendingAutoInvestOneOffResponse, AutoInvest.OneTimeTransactionTradeError&gt;</code>, with `result.value` of type <code>[SapiV1LendingAutoInvestOneOffResponse](src/models/sapi-v1-lending-auto-invest-one-off-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -21626,19 +31059,45 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.autoInvest.queryIndexDetailsUserData({ indexId, timestamp, signature });
+  const response = await client.autoInvest.queryIndexDetailsUserData({
+    indexId: 1,
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1LendingAutoInvestIndexInfoResponse
 } catch (err) {
-  if (err instanceof AutoInvest.QueryIndexDetailsUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type AutoInvest.QueryIndexDetailsUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.autoInvest.queryIndexDetailsUserData({
+  indexId: 1,
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1LendingAutoInvestIndexInfoResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -21665,9 +31124,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1LendingAutoInvestIndexInfoResponse](src/models/sapi-v1-lending-auto-invest-index-info-response.ts)</code>
+**Direct**: `await client.autoInvest.queryIndexDetailsUserData(request)`
 
-**OnError**: <code>[AutoInvest.QueryIndexDetailsUserDataError](src/resources/auto-invest.ts)</code>
+- **OnSuccess**: <code>[SapiV1LendingAutoInvestIndexInfoResponse](src/models/sapi-v1-lending-auto-invest-index-info-response.ts)</code>
+- **OnError**: throws <code>[AutoInvest.QueryIndexDetailsUserDataError](src/resources/auto-invest.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.autoInvest.queryIndexDetailsUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1LendingAutoInvestIndexInfoResponse, AutoInvest.QueryIndexDetailsUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1LendingAutoInvestIndexInfoResponse](src/models/sapi-v1-lending-auto-invest-index-info-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -21695,7 +31162,7 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -21703,17 +31170,37 @@ Weight(IP): 1
 ```ts
 try {
   const response = await client.autoInvest.queryIndexLinkedPlanPositionDetailsUserData({
-    indexId,
-    timestamp,
-    signature,
+    indexId: 1,
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1LendingAutoInvestIndexUserSummaryResponse
 } catch (err) {
-  if (
-    err instanceof AutoInvest.QueryIndexLinkedPlanPositionDetailsUserDataError && err.payload.kind === "error"
-  ) {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type AutoInvest.QueryIndexLinkedPlanPositionDetailsUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.autoInvest.queryIndexLinkedPlanPositionDetailsUserData({
+  indexId: 1,
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1LendingAutoInvestIndexUserSummaryResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -21740,9 +31227,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1LendingAutoInvestIndexUserSummaryResponse](src/models/sapi-v1-lending-auto-invest-index-user-summary-response.ts)</code>
+**Direct**: `await client.autoInvest.queryIndexLinkedPlanPositionDetailsUserData(request)`
 
-**OnError**: <code>[AutoInvest.QueryIndexLinkedPlanPositionDetailsUserDataError](src/resources/auto-invest.ts)</code>
+- **OnSuccess**: <code>[SapiV1LendingAutoInvestIndexUserSummaryResponse](src/models/sapi-v1-lending-auto-invest-index-user-summary-response.ts)</code>
+- **OnError**: throws <code>[AutoInvest.QueryIndexLinkedPlanPositionDetailsUserDataError](src/resources/auto-invest.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.autoInvest.queryIndexLinkedPlanPositionDetailsUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1LendingAutoInvestIndexUserSummaryResponse, AutoInvest.QueryIndexLinkedPlanPositionDetailsUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1LendingAutoInvestIndexUserSummaryResponse](src/models/sapi-v1-lending-auto-invest-index-user-summary-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -21770,7 +31265,7 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -21778,15 +31273,39 @@ Weight(IP): 1
 ```ts
 try {
   const response = await client.autoInvest.queryOneTimeTransactionStatusUserData({
-    transactionId,
-    timestamp,
-    signature,
+    transactionId: 12345,
+    timestamp: 1,
+    signature: "some example string",
+    requestId: "TR12354859",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1LendingAutoInvestOneOffStatusResponse
 } catch (err) {
-  if (err instanceof AutoInvest.QueryOneTimeTransactionStatusUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type AutoInvest.QueryOneTimeTransactionStatusUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.autoInvest.queryOneTimeTransactionStatusUserData({
+  transactionId: 12345,
+  timestamp: 1,
+  signature: "some example string",
+  requestId: "TR12354859",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1LendingAutoInvestOneOffStatusResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -21814,9 +31333,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1LendingAutoInvestOneOffStatusResponse](src/models/sapi-v1-lending-auto-invest-one-off-status-response.ts)</code>
+**Direct**: `await client.autoInvest.queryOneTimeTransactionStatusUserData(request)`
 
-**OnError**: <code>[AutoInvest.QueryOneTimeTransactionStatusUserDataError](src/resources/auto-invest.ts)</code>
+- **OnSuccess**: <code>[SapiV1LendingAutoInvestOneOffStatusResponse](src/models/sapi-v1-lending-auto-invest-one-off-status-response.ts)</code>
+- **OnError**: throws <code>[AutoInvest.QueryOneTimeTransactionStatusUserDataError](src/resources/auto-invest.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.autoInvest.queryOneTimeTransactionStatusUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1LendingAutoInvestOneOffStatusResponse, AutoInvest.QueryOneTimeTransactionStatusUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1LendingAutoInvestOneOffStatusResponse](src/models/sapi-v1-lending-auto-invest-one-off-status-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -21844,7 +31371,7 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -21852,16 +31379,35 @@ Weight(IP): 1
 ```ts
 try {
   const response = await client.autoInvest.queryAllSourceAssetAndTargetAssetUserData({
-    timestamp,
-    signature,
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1LendingAutoInvestAllAssetResponse
 } catch (err) {
-  if (
-    err instanceof AutoInvest.QueryAllSourceAssetAndTargetAssetUserDataError && err.payload.kind === "error"
-  ) {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type AutoInvest.QueryAllSourceAssetAndTargetAssetUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.autoInvest.queryAllSourceAssetAndTargetAssetUserData({
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1LendingAutoInvestAllAssetResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -21887,9 +31433,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1LendingAutoInvestAllAssetResponse](src/models/sapi-v1-lending-auto-invest-all-asset-response.ts)</code>
+**Direct**: `await client.autoInvest.queryAllSourceAssetAndTargetAssetUserData(request)`
 
-**OnError**: <code>[AutoInvest.QueryAllSourceAssetAndTargetAssetUserDataError](src/resources/auto-invest.ts)</code>
+- **OnSuccess**: <code>[SapiV1LendingAutoInvestAllAssetResponse](src/models/sapi-v1-lending-auto-invest-all-asset-response.ts)</code>
+- **OnError**: throws <code>[AutoInvest.QueryAllSourceAssetAndTargetAssetUserDataError](src/resources/auto-invest.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.autoInvest.queryAllSourceAssetAndTargetAssetUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1LendingAutoInvestAllAssetResponse, AutoInvest.QueryAllSourceAssetAndTargetAssetUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1LendingAutoInvestAllAssetResponse](src/models/sapi-v1-lending-auto-invest-all-asset-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -21917,19 +31471,43 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.autoInvest.queryHoldingDetailsOfThePlan({ timestamp, signature });
+  const response = await client.autoInvest.queryHoldingDetailsOfThePlan({
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1LendingAutoInvestPlanIdResponse
 } catch (err) {
-  if (err instanceof AutoInvest.QueryHoldingDetailsOfThePlanError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type AutoInvest.QueryHoldingDetailsOfThePlanError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.autoInvest.queryHoldingDetailsOfThePlan({
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1LendingAutoInvestPlanIdResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -21957,9 +31535,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1LendingAutoInvestPlanIdResponse](src/models/sapi-v1-lending-auto-invest-plan-id-response.ts)</code>
+**Direct**: `await client.autoInvest.queryHoldingDetailsOfThePlan(request)`
 
-**OnError**: <code>[AutoInvest.QueryHoldingDetailsOfThePlanError](src/resources/auto-invest.ts)</code>
+- **OnSuccess**: <code>[SapiV1LendingAutoInvestPlanIdResponse](src/models/sapi-v1-lending-auto-invest-plan-id-response.ts)</code>
+- **OnError**: throws <code>[AutoInvest.QueryHoldingDetailsOfThePlanError](src/resources/auto-invest.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.autoInvest.queryHoldingDetailsOfThePlan(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1LendingAutoInvestPlanIdResponse, AutoInvest.QueryHoldingDetailsOfThePlanError&gt;</code>, with `result.value` of type <code>[SapiV1LendingAutoInvestPlanIdResponse](src/models/sapi-v1-lending-auto-invest-plan-id-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -21987,19 +31573,51 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.autoInvest.querySourceAssetListUserData({ usageType, timestamp, signature });
+  const response = await client.autoInvest.querySourceAssetListUserData({
+    usageType: "RECURRING",
+    timestamp: 1,
+    signature: "some example string",
+    targetAsset: "BTC",
+    indexId: 1,
+    flexibleAllowedToUse: true,
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1LendingAutoInvestSourceAssetListResponse
 } catch (err) {
-  if (err instanceof AutoInvest.QuerySourceAssetListUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type AutoInvest.QuerySourceAssetListUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.autoInvest.querySourceAssetListUserData({
+  usageType: "RECURRING",
+  timestamp: 1,
+  signature: "some example string",
+  targetAsset: "BTC",
+  indexId: 1,
+  flexibleAllowedToUse: true,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1LendingAutoInvestSourceAssetListResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -22029,9 +31647,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1LendingAutoInvestSourceAssetListResponse](src/models/sapi-v1-lending-auto-invest-source-asset-list-response.ts)</code>
+**Direct**: `await client.autoInvest.querySourceAssetListUserData(request)`
 
-**OnError**: <code>[AutoInvest.QuerySourceAssetListUserDataError](src/resources/auto-invest.ts)</code>
+- **OnSuccess**: <code>[SapiV1LendingAutoInvestSourceAssetListResponse](src/models/sapi-v1-lending-auto-invest-source-asset-list-response.ts)</code>
+- **OnError**: throws <code>[AutoInvest.QuerySourceAssetListUserDataError](src/resources/auto-invest.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.autoInvest.querySourceAssetListUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1LendingAutoInvestSourceAssetListResponse, AutoInvest.QuerySourceAssetListUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1LendingAutoInvestSourceAssetListResponse](src/models/sapi-v1-lending-auto-invest-source-asset-list-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -22059,19 +31685,47 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.autoInvest.querySubscriptionTransactionHistory({ timestamp, signature });
+  const response = await client.autoInvest.querySubscriptionTransactionHistory({
+    timestamp: 1,
+    signature: "some example string",
+    size: 100,
+    current: 1,
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1LendingAutoInvestHistoryListResponse[]
 } catch (err) {
-  if (err instanceof AutoInvest.QuerySubscriptionTransactionHistoryError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type AutoInvest.QuerySubscriptionTransactionHistoryError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.autoInvest.querySubscriptionTransactionHistory({
+  timestamp: 1,
+  signature: "some example string",
+  size: 100,
+  current: 1,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1LendingAutoInvestHistoryListResponse[]
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -22104,9 +31758,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1LendingAutoInvestHistoryListResponse](src/models/sapi-v1-lending-auto-invest-history-list-response.ts)[]</code>
+**Direct**: `await client.autoInvest.querySubscriptionTransactionHistory(request)`
 
-**OnError**: <code>[AutoInvest.QuerySubscriptionTransactionHistoryError](src/resources/auto-invest.ts)</code>
+- **OnSuccess**: <code>[SapiV1LendingAutoInvestHistoryListResponse](src/models/sapi-v1-lending-auto-invest-history-list-response.ts)[]</code>
+- **OnError**: throws <code>[AutoInvest.QuerySubscriptionTransactionHistoryError](src/resources/auto-invest.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.autoInvest.querySubscriptionTransactionHistory(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1LendingAutoInvestHistoryListResponse[], AutoInvest.QuerySubscriptionTransactionHistoryError&gt;</code>, with `result.value` of type <code>[SapiV1LendingAutoInvestHistoryListResponse](src/models/sapi-v1-lending-auto-invest-history-list-response.ts)[]</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -22138,19 +31800,43 @@ Weight(UID): 20
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.copyTrading.getFuturesLeadTraderStatusTrade({ timestamp, signature });
+  const response = await client.copyTrading.getFuturesLeadTraderStatusTrade({
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1CopyTradingFuturesUserStatusResponse
 } catch (err) {
-  if (err instanceof CopyTrading.GetFuturesLeadTraderStatusTradeError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type CopyTrading.GetFuturesLeadTraderStatusTradeError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.copyTrading.getFuturesLeadTraderStatusTrade({
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1CopyTradingFuturesUserStatusResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -22176,9 +31862,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1CopyTradingFuturesUserStatusResponse](src/models/sapi-v1-copy-trading-futures-user-status-response.ts)</code>
+**Direct**: `await client.copyTrading.getFuturesLeadTraderStatusTrade(request)`
 
-**OnError**: <code>[CopyTrading.GetFuturesLeadTraderStatusTradeError](src/resources/copy-trading.ts)</code>
+- **OnSuccess**: <code>[SapiV1CopyTradingFuturesUserStatusResponse](src/models/sapi-v1-copy-trading-futures-user-status-response.ts)</code>
+- **OnError**: throws <code>[CopyTrading.GetFuturesLeadTraderStatusTradeError](src/resources/copy-trading.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.copyTrading.getFuturesLeadTraderStatusTrade(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1CopyTradingFuturesUserStatusResponse, CopyTrading.GetFuturesLeadTraderStatusTradeError&gt;</code>, with `result.value` of type <code>[SapiV1CopyTradingFuturesUserStatusResponse](src/models/sapi-v1-copy-trading-futures-user-status-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -22206,7 +31900,7 @@ Weight(IP): 20
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -22214,17 +31908,35 @@ Weight(IP): 20
 ```ts
 try {
   const response = await client.copyTrading.getFuturesLeadTradingSymbolWhitelistUserData({
-    timestamp,
-    signature,
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1CopyTradingFuturesLeadSymbolResponse
 } catch (err) {
-  if (
-    err instanceof CopyTrading.GetFuturesLeadTradingSymbolWhitelistUserDataError &&
-      err.payload.kind === "error"
-  ) {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type CopyTrading.GetFuturesLeadTradingSymbolWhitelistUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.copyTrading.getFuturesLeadTradingSymbolWhitelistUserData({
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1CopyTradingFuturesLeadSymbolResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -22250,9 +31962,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1CopyTradingFuturesLeadSymbolResponse](src/models/sapi-v1-copy-trading-futures-lead-symbol-response.ts)</code>
+**Direct**: `await client.copyTrading.getFuturesLeadTradingSymbolWhitelistUserData(request)`
 
-**OnError**: <code>[CopyTrading.GetFuturesLeadTradingSymbolWhitelistUserDataError](src/resources/copy-trading.ts)</code>
+- **OnSuccess**: <code>[SapiV1CopyTradingFuturesLeadSymbolResponse](src/models/sapi-v1-copy-trading-futures-lead-symbol-response.ts)</code>
+- **OnError**: throws <code>[CopyTrading.GetFuturesLeadTradingSymbolWhitelistUserDataError](src/resources/copy-trading.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.copyTrading.getFuturesLeadTradingSymbolWhitelistUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1CopyTradingFuturesLeadSymbolResponse, CopyTrading.GetFuturesLeadTradingSymbolWhitelistUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1CopyTradingFuturesLeadSymbolResponse](src/models/sapi-v1-copy-trading-futures-lead-symbol-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -22282,19 +32002,47 @@ Weight(IP): 150
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.simpleEarn.getCollateralRecordUserData({ timestamp, signature });
+  const response = await client.simpleEarn.getCollateralRecordUserData({
+    timestamp: 1,
+    signature: "some example string",
+    current: 1,
+    size: 100,
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1SimpleEarnFlexibleHistoryCollateralRecordResponse
 } catch (err) {
-  if (err instanceof SimpleEarn.GetCollateralRecordUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type SimpleEarn.GetCollateralRecordUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.simpleEarn.getCollateralRecordUserData({
+  timestamp: 1,
+  signature: "some example string",
+  current: 1,
+  size: 100,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1SimpleEarnFlexibleHistoryCollateralRecordResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -22325,9 +32073,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1SimpleEarnFlexibleHistoryCollateralRecordResponse](src/models/sapi-v1-simple-earn-flexible-history-collateral-record-response.ts)</code>
+**Direct**: `await client.simpleEarn.getCollateralRecordUserData(request)`
 
-**OnError**: <code>[SimpleEarn.GetCollateralRecordUserDataError](src/resources/simple-earn.ts)</code>
+- **OnSuccess**: <code>[SapiV1SimpleEarnFlexibleHistoryCollateralRecordResponse](src/models/sapi-v1-simple-earn-flexible-history-collateral-record-response.ts)</code>
+- **OnError**: throws <code>[SimpleEarn.GetCollateralRecordUserDataError](src/resources/simple-earn.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.simpleEarn.getCollateralRecordUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1SimpleEarnFlexibleHistoryCollateralRecordResponse, SimpleEarn.GetCollateralRecordUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1SimpleEarnFlexibleHistoryCollateralRecordResponse](src/models/sapi-v1-simple-earn-flexible-history-collateral-record-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -22353,7 +32109,7 @@ Weight(IP): 150
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -22361,15 +32117,37 @@ Weight(IP): 150
 ```ts
 try {
   const response = await client.simpleEarn.getFlexiblePersonalLeftQuotaUserData({
-    productId,
-    timestamp,
-    signature,
+    productId: "some example string",
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1SimpleEarnFlexiblePersonalLeftQuotaResponse
 } catch (err) {
-  if (err instanceof SimpleEarn.GetFlexiblePersonalLeftQuotaUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type SimpleEarn.GetFlexiblePersonalLeftQuotaUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.simpleEarn.getFlexiblePersonalLeftQuotaUserData({
+  productId: "some example string",
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1SimpleEarnFlexiblePersonalLeftQuotaResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -22396,9 +32174,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1SimpleEarnFlexiblePersonalLeftQuotaResponse](src/models/sapi-v1-simple-earn-flexible-personal-left-quota-response.ts)</code>
+**Direct**: `await client.simpleEarn.getFlexiblePersonalLeftQuotaUserData(request)`
 
-**OnError**: <code>[SimpleEarn.GetFlexiblePersonalLeftQuotaUserDataError](src/resources/simple-earn.ts)</code>
+- **OnSuccess**: <code>[SapiV1SimpleEarnFlexiblePersonalLeftQuotaResponse](src/models/sapi-v1-simple-earn-flexible-personal-left-quota-response.ts)</code>
+- **OnError**: throws <code>[SimpleEarn.GetFlexiblePersonalLeftQuotaUserDataError](src/resources/simple-earn.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.simpleEarn.getFlexiblePersonalLeftQuotaUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1SimpleEarnFlexiblePersonalLeftQuotaResponse, SimpleEarn.GetFlexiblePersonalLeftQuotaUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1SimpleEarnFlexiblePersonalLeftQuotaResponse](src/models/sapi-v1-simple-earn-flexible-personal-left-quota-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -22424,19 +32210,47 @@ Weight(IP): 150
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.simpleEarn.getFlexibleProductPositionUserData({ timestamp, signature });
+  const response = await client.simpleEarn.getFlexibleProductPositionUserData({
+    timestamp: 1,
+    signature: "some example string",
+    current: 1,
+    size: 100,
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1SimpleEarnFlexiblePositionResponse
 } catch (err) {
-  if (err instanceof SimpleEarn.GetFlexibleProductPositionUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type SimpleEarn.GetFlexibleProductPositionUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.simpleEarn.getFlexibleProductPositionUserData({
+  timestamp: 1,
+  signature: "some example string",
+  current: 1,
+  size: 100,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1SimpleEarnFlexiblePositionResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -22466,9 +32280,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1SimpleEarnFlexiblePositionResponse](src/models/sapi-v1-simple-earn-flexible-position-response.ts)</code>
+**Direct**: `await client.simpleEarn.getFlexibleProductPositionUserData(request)`
 
-**OnError**: <code>[SimpleEarn.GetFlexibleProductPositionUserDataError](src/resources/simple-earn.ts)</code>
+- **OnSuccess**: <code>[SapiV1SimpleEarnFlexiblePositionResponse](src/models/sapi-v1-simple-earn-flexible-position-response.ts)</code>
+- **OnError**: throws <code>[SimpleEarn.GetFlexibleProductPositionUserDataError](src/resources/simple-earn.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.simpleEarn.getFlexibleProductPositionUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1SimpleEarnFlexiblePositionResponse, SimpleEarn.GetFlexibleProductPositionUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1SimpleEarnFlexiblePositionResponse](src/models/sapi-v1-simple-earn-flexible-position-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -22494,19 +32316,38 @@ Weight(IP): 150
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.simpleEarn.getFlexibleRedemptionRecordUserData();
+  const response = await client.simpleEarn.getFlexibleRedemptionRecordUserData({ current: 1, size: 100 });
   // TODO: Handle 'response' of type SapiV1SimpleEarnFlexibleHistoryRedemptionRecordResponse
 } catch (err) {
-  if (err instanceof SimpleEarn.GetFlexibleRedemptionRecordUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type SimpleEarn.GetFlexibleRedemptionRecordUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.simpleEarn.getFlexibleRedemptionRecordUserData({
+  current: 1,
+  size: 100,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1SimpleEarnFlexibleHistoryRedemptionRecordResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -22536,9 +32377,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1SimpleEarnFlexibleHistoryRedemptionRecordResponse](src/models/sapi-v1-simple-earn-flexible-history-redemption-record-response.ts)</code>
+**Direct**: `await client.simpleEarn.getFlexibleRedemptionRecordUserData(request)`
 
-**OnError**: <code>[SimpleEarn.GetFlexibleRedemptionRecordUserDataError](src/resources/simple-earn.ts)</code>
+- **OnSuccess**: <code>[SapiV1SimpleEarnFlexibleHistoryRedemptionRecordResponse](src/models/sapi-v1-simple-earn-flexible-history-redemption-record-response.ts)</code>
+- **OnError**: throws <code>[SimpleEarn.GetFlexibleRedemptionRecordUserDataError](src/resources/simple-earn.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.simpleEarn.getFlexibleRedemptionRecordUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1SimpleEarnFlexibleHistoryRedemptionRecordResponse, SimpleEarn.GetFlexibleRedemptionRecordUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1SimpleEarnFlexibleHistoryRedemptionRecordResponse](src/models/sapi-v1-simple-earn-flexible-history-redemption-record-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -22564,19 +32413,37 @@ Weight(IP): 150
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.simpleEarn.getFlexibleRewardsHistoryUserData({ type });
+  const response = await client.simpleEarn.getFlexibleRewardsHistoryUserData({ type: "some example string" });
   // TODO: Handle 'response' of type SapiV1SimpleEarnFlexibleHistoryRewardsRecordResponse
 } catch (err) {
-  if (err instanceof SimpleEarn.GetFlexibleRewardsHistoryUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type SimpleEarn.GetFlexibleRewardsHistoryUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.simpleEarn.getFlexibleRewardsHistoryUserData({
+  type: "some example string",
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1SimpleEarnFlexibleHistoryRewardsRecordResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -22604,9 +32471,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1SimpleEarnFlexibleHistoryRewardsRecordResponse](src/models/sapi-v1-simple-earn-flexible-history-rewards-record-response.ts)</code>
+**Direct**: `await client.simpleEarn.getFlexibleRewardsHistoryUserData(request)`
 
-**OnError**: <code>[SimpleEarn.GetFlexibleRewardsHistoryUserDataError](src/resources/simple-earn.ts)</code>
+- **OnSuccess**: <code>[SapiV1SimpleEarnFlexibleHistoryRewardsRecordResponse](src/models/sapi-v1-simple-earn-flexible-history-rewards-record-response.ts)</code>
+- **OnError**: throws <code>[SimpleEarn.GetFlexibleRewardsHistoryUserDataError](src/resources/simple-earn.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.simpleEarn.getFlexibleRewardsHistoryUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1SimpleEarnFlexibleHistoryRewardsRecordResponse, SimpleEarn.GetFlexibleRewardsHistoryUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1SimpleEarnFlexibleHistoryRewardsRecordResponse](src/models/sapi-v1-simple-earn-flexible-history-rewards-record-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -22632,7 +32507,7 @@ Weight(IP): 150
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -22640,16 +32515,39 @@ Weight(IP): 150
 ```ts
 try {
   const response = await client.simpleEarn.getFlexibleSubscriptionPreviewUserData({
-    productId,
-    amount,
-    timestamp,
-    signature,
+    productId: "some example string",
+    amount: 1.5,
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1SimpleEarnFlexibleSubscriptionPreviewResponse
 } catch (err) {
-  if (err instanceof SimpleEarn.GetFlexibleSubscriptionPreviewUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type SimpleEarn.GetFlexibleSubscriptionPreviewUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.simpleEarn.getFlexibleSubscriptionPreviewUserData({
+  productId: "some example string",
+  amount: 1.5,
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1SimpleEarnFlexibleSubscriptionPreviewResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -22677,9 +32575,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1SimpleEarnFlexibleSubscriptionPreviewResponse](src/models/sapi-v1-simple-earn-flexible-subscription-preview-response.ts)</code>
+**Direct**: `await client.simpleEarn.getFlexibleSubscriptionPreviewUserData(request)`
 
-**OnError**: <code>[SimpleEarn.GetFlexibleSubscriptionPreviewUserDataError](src/resources/simple-earn.ts)</code>
+- **OnSuccess**: <code>[SapiV1SimpleEarnFlexibleSubscriptionPreviewResponse](src/models/sapi-v1-simple-earn-flexible-subscription-preview-response.ts)</code>
+- **OnError**: throws <code>[SimpleEarn.GetFlexibleSubscriptionPreviewUserDataError](src/resources/simple-earn.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.simpleEarn.getFlexibleSubscriptionPreviewUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1SimpleEarnFlexibleSubscriptionPreviewResponse, SimpleEarn.GetFlexibleSubscriptionPreviewUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1SimpleEarnFlexibleSubscriptionPreviewResponse](src/models/sapi-v1-simple-earn-flexible-subscription-preview-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -22705,19 +32611,47 @@ Weight(IP): 150
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.simpleEarn.getFlexibleSubscriptionRecordUserData({ timestamp, signature });
+  const response = await client.simpleEarn.getFlexibleSubscriptionRecordUserData({
+    timestamp: 1,
+    signature: "some example string",
+    current: 1,
+    size: 100,
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1SimpleEarnFlexibleHistorySubscriptionRecordResponse
 } catch (err) {
-  if (err instanceof SimpleEarn.GetFlexibleSubscriptionRecordUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type SimpleEarn.GetFlexibleSubscriptionRecordUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.simpleEarn.getFlexibleSubscriptionRecordUserData({
+  timestamp: 1,
+  signature: "some example string",
+  current: 1,
+  size: 100,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1SimpleEarnFlexibleHistorySubscriptionRecordResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -22750,9 +32684,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1SimpleEarnFlexibleHistorySubscriptionRecordResponse](src/models/sapi-v1-simple-earn-flexible-history-subscription-record-response.ts)</code>
+**Direct**: `await client.simpleEarn.getFlexibleSubscriptionRecordUserData(request)`
 
-**OnError**: <code>[SimpleEarn.GetFlexibleSubscriptionRecordUserDataError](src/resources/simple-earn.ts)</code>
+- **OnSuccess**: <code>[SapiV1SimpleEarnFlexibleHistorySubscriptionRecordResponse](src/models/sapi-v1-simple-earn-flexible-history-subscription-record-response.ts)</code>
+- **OnError**: throws <code>[SimpleEarn.GetFlexibleSubscriptionRecordUserDataError](src/resources/simple-earn.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.simpleEarn.getFlexibleSubscriptionRecordUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1SimpleEarnFlexibleHistorySubscriptionRecordResponse, SimpleEarn.GetFlexibleSubscriptionRecordUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1SimpleEarnFlexibleHistorySubscriptionRecordResponse](src/models/sapi-v1-simple-earn-flexible-history-subscription-record-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -22778,7 +32720,7 @@ Weight(IP): 150
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -22786,15 +32728,37 @@ Weight(IP): 150
 ```ts
 try {
   const response = await client.simpleEarn.getLockedPersonalLeftQuotaUserData({
-    projectId,
-    timestamp,
-    signature,
+    projectId: "some example string",
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1SimpleEarnLockedPersonalLeftQuotaResponse
 } catch (err) {
-  if (err instanceof SimpleEarn.GetLockedPersonalLeftQuotaUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type SimpleEarn.GetLockedPersonalLeftQuotaUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.simpleEarn.getLockedPersonalLeftQuotaUserData({
+  projectId: "some example string",
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1SimpleEarnLockedPersonalLeftQuotaResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -22821,9 +32785,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1SimpleEarnLockedPersonalLeftQuotaResponse](src/models/sapi-v1-simple-earn-locked-personal-left-quota-response.ts)</code>
+**Direct**: `await client.simpleEarn.getLockedPersonalLeftQuotaUserData(request)`
 
-**OnError**: <code>[SimpleEarn.GetLockedPersonalLeftQuotaUserDataError](src/resources/simple-earn.ts)</code>
+- **OnSuccess**: <code>[SapiV1SimpleEarnLockedPersonalLeftQuotaResponse](src/models/sapi-v1-simple-earn-locked-personal-left-quota-response.ts)</code>
+- **OnError**: throws <code>[SimpleEarn.GetLockedPersonalLeftQuotaUserDataError](src/resources/simple-earn.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.simpleEarn.getLockedPersonalLeftQuotaUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1SimpleEarnLockedPersonalLeftQuotaResponse, SimpleEarn.GetLockedPersonalLeftQuotaUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1SimpleEarnLockedPersonalLeftQuotaResponse](src/models/sapi-v1-simple-earn-locked-personal-left-quota-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -22849,19 +32821,47 @@ Weight(IP): 150
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.simpleEarn.getLockedProductPositionUserData({ timestamp, signature });
+  const response = await client.simpleEarn.getLockedProductPositionUserData({
+    timestamp: 1,
+    signature: "some example string",
+    current: 1,
+    size: 100,
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1SimpleEarnLockedPositionResponse
 } catch (err) {
-  if (err instanceof SimpleEarn.GetLockedProductPositionUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type SimpleEarn.GetLockedProductPositionUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.simpleEarn.getLockedProductPositionUserData({
+  timestamp: 1,
+  signature: "some example string",
+  current: 1,
+  size: 100,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1SimpleEarnLockedPositionResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -22892,9 +32892,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1SimpleEarnLockedPositionResponse](src/models/sapi-v1-simple-earn-locked-position-response.ts)</code>
+**Direct**: `await client.simpleEarn.getLockedProductPositionUserData(request)`
 
-**OnError**: <code>[SimpleEarn.GetLockedProductPositionUserDataError](src/resources/simple-earn.ts)</code>
+- **OnSuccess**: <code>[SapiV1SimpleEarnLockedPositionResponse](src/models/sapi-v1-simple-earn-locked-position-response.ts)</code>
+- **OnError**: throws <code>[SimpleEarn.GetLockedProductPositionUserDataError](src/resources/simple-earn.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.simpleEarn.getLockedProductPositionUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1SimpleEarnLockedPositionResponse, SimpleEarn.GetLockedProductPositionUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1SimpleEarnLockedPositionResponse](src/models/sapi-v1-simple-earn-locked-position-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -22920,19 +32928,47 @@ Weight(IP): 150
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.simpleEarn.getLockedRedemptionRecordUserData({ timestamp, signature });
+  const response = await client.simpleEarn.getLockedRedemptionRecordUserData({
+    timestamp: 1,
+    signature: "some example string",
+    current: 1,
+    size: 100,
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1SimpleEarnLockedHistoryRedemptionRecordResponse
 } catch (err) {
-  if (err instanceof SimpleEarn.GetLockedRedemptionRecordUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type SimpleEarn.GetLockedRedemptionRecordUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.simpleEarn.getLockedRedemptionRecordUserData({
+  timestamp: 1,
+  signature: "some example string",
+  current: 1,
+  size: 100,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1SimpleEarnLockedHistoryRedemptionRecordResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -22965,9 +33001,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1SimpleEarnLockedHistoryRedemptionRecordResponse](src/models/sapi-v1-simple-earn-locked-history-redemption-record-response.ts)</code>
+**Direct**: `await client.simpleEarn.getLockedRedemptionRecordUserData(request)`
 
-**OnError**: <code>[SimpleEarn.GetLockedRedemptionRecordUserDataError](src/resources/simple-earn.ts)</code>
+- **OnSuccess**: <code>[SapiV1SimpleEarnLockedHistoryRedemptionRecordResponse](src/models/sapi-v1-simple-earn-locked-history-redemption-record-response.ts)</code>
+- **OnError**: throws <code>[SimpleEarn.GetLockedRedemptionRecordUserDataError](src/resources/simple-earn.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.simpleEarn.getLockedRedemptionRecordUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1SimpleEarnLockedHistoryRedemptionRecordResponse, SimpleEarn.GetLockedRedemptionRecordUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1SimpleEarnLockedHistoryRedemptionRecordResponse](src/models/sapi-v1-simple-earn-locked-history-redemption-record-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -22993,19 +33037,45 @@ Weight(IP): 150
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.simpleEarn.getLockedRewardsHistoryUserData({ timestamp, signature });
+  const response = await client.simpleEarn.getLockedRewardsHistoryUserData({
+    timestamp: 1,
+    signature: "some example string",
+    size: 100,
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1SimpleEarnLockedHistoryRewardsRecordResponse
 } catch (err) {
-  if (err instanceof SimpleEarn.GetLockedRewardsHistoryUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type SimpleEarn.GetLockedRewardsHistoryUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.simpleEarn.getLockedRewardsHistoryUserData({
+  timestamp: 1,
+  signature: "some example string",
+  size: 100,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1SimpleEarnLockedHistoryRewardsRecordResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -23036,9 +33106,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1SimpleEarnLockedHistoryRewardsRecordResponse](src/models/sapi-v1-simple-earn-locked-history-rewards-record-response.ts)</code>
+**Direct**: `await client.simpleEarn.getLockedRewardsHistoryUserData(request)`
 
-**OnError**: <code>[SimpleEarn.GetLockedRewardsHistoryUserDataError](src/resources/simple-earn.ts)</code>
+- **OnSuccess**: <code>[SapiV1SimpleEarnLockedHistoryRewardsRecordResponse](src/models/sapi-v1-simple-earn-locked-history-rewards-record-response.ts)</code>
+- **OnError**: throws <code>[SimpleEarn.GetLockedRewardsHistoryUserDataError](src/resources/simple-earn.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.simpleEarn.getLockedRewardsHistoryUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1SimpleEarnLockedHistoryRewardsRecordResponse, SimpleEarn.GetLockedRewardsHistoryUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1SimpleEarnLockedHistoryRewardsRecordResponse](src/models/sapi-v1-simple-earn-locked-history-rewards-record-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -23064,7 +33142,7 @@ Weight(IP): 150
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -23072,16 +33150,39 @@ Weight(IP): 150
 ```ts
 try {
   const response = await client.simpleEarn.getLockedSubscriptionPreviewUserData({
-    projectId,
-    amount,
-    timestamp,
-    signature,
+    projectId: "some example string",
+    amount: 1.5,
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1SimpleEarnLockedSubscriptionPreviewResponse[]
 } catch (err) {
-  if (err instanceof SimpleEarn.GetLockedSubscriptionPreviewUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type SimpleEarn.GetLockedSubscriptionPreviewUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.simpleEarn.getLockedSubscriptionPreviewUserData({
+  projectId: "some example string",
+  amount: 1.5,
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1SimpleEarnLockedSubscriptionPreviewResponse[]
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -23110,9 +33211,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1SimpleEarnLockedSubscriptionPreviewResponse](src/models/sapi-v1-simple-earn-locked-subscription-preview-response.ts)[]</code>
+**Direct**: `await client.simpleEarn.getLockedSubscriptionPreviewUserData(request)`
 
-**OnError**: <code>[SimpleEarn.GetLockedSubscriptionPreviewUserDataError](src/resources/simple-earn.ts)</code>
+- **OnSuccess**: <code>[SapiV1SimpleEarnLockedSubscriptionPreviewResponse](src/models/sapi-v1-simple-earn-locked-subscription-preview-response.ts)[]</code>
+- **OnError**: throws <code>[SimpleEarn.GetLockedSubscriptionPreviewUserDataError](src/resources/simple-earn.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.simpleEarn.getLockedSubscriptionPreviewUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1SimpleEarnLockedSubscriptionPreviewResponse[], SimpleEarn.GetLockedSubscriptionPreviewUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1SimpleEarnLockedSubscriptionPreviewResponse](src/models/sapi-v1-simple-earn-locked-subscription-preview-response.ts)[]</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -23138,19 +33247,47 @@ Weight(IP): 150
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.simpleEarn.getLockedSubscriptionRecordUserData({ timestamp, signature });
+  const response = await client.simpleEarn.getLockedSubscriptionRecordUserData({
+    timestamp: 1,
+    signature: "some example string",
+    current: 1,
+    size: 100,
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1SimpleEarnLockedHistorySubscriptionRecordResponse
 } catch (err) {
-  if (err instanceof SimpleEarn.GetLockedSubscriptionRecordUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type SimpleEarn.GetLockedSubscriptionRecordUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.simpleEarn.getLockedSubscriptionRecordUserData({
+  timestamp: 1,
+  signature: "some example string",
+  current: 1,
+  size: 100,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1SimpleEarnLockedHistorySubscriptionRecordResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -23182,9 +33319,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1SimpleEarnLockedHistorySubscriptionRecordResponse](src/models/sapi-v1-simple-earn-locked-history-subscription-record-response.ts)</code>
+**Direct**: `await client.simpleEarn.getLockedSubscriptionRecordUserData(request)`
 
-**OnError**: <code>[SimpleEarn.GetLockedSubscriptionRecordUserDataError](src/resources/simple-earn.ts)</code>
+- **OnSuccess**: <code>[SapiV1SimpleEarnLockedHistorySubscriptionRecordResponse](src/models/sapi-v1-simple-earn-locked-history-subscription-record-response.ts)</code>
+- **OnError**: throws <code>[SimpleEarn.GetLockedSubscriptionRecordUserDataError](src/resources/simple-earn.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.simpleEarn.getLockedSubscriptionRecordUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1SimpleEarnLockedHistorySubscriptionRecordResponse, SimpleEarn.GetLockedSubscriptionRecordUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1SimpleEarnLockedHistorySubscriptionRecordResponse](src/models/sapi-v1-simple-earn-locked-history-subscription-record-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -23210,19 +33355,49 @@ Weight(IP): 150
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.simpleEarn.getRateHistoryUserData({ productId, timestamp, signature });
+  const response = await client.simpleEarn.getRateHistoryUserData({
+    productId: "some example string",
+    timestamp: 1,
+    signature: "some example string",
+    current: 1,
+    size: 100,
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1SimpleEarnFlexibleHistoryRateHistoryResponse
 } catch (err) {
-  if (err instanceof SimpleEarn.GetRateHistoryUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type SimpleEarn.GetRateHistoryUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.simpleEarn.getRateHistoryUserData({
+  productId: "some example string",
+  timestamp: 1,
+  signature: "some example string",
+  current: 1,
+  size: 100,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1SimpleEarnFlexibleHistoryRateHistoryResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -23253,9 +33428,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1SimpleEarnFlexibleHistoryRateHistoryResponse](src/models/sapi-v1-simple-earn-flexible-history-rate-history-response.ts)</code>
+**Direct**: `await client.simpleEarn.getRateHistoryUserData(request)`
 
-**OnError**: <code>[SimpleEarn.GetRateHistoryUserDataError](src/resources/simple-earn.ts)</code>
+- **OnSuccess**: <code>[SapiV1SimpleEarnFlexibleHistoryRateHistoryResponse](src/models/sapi-v1-simple-earn-flexible-history-rate-history-response.ts)</code>
+- **OnError**: throws <code>[SimpleEarn.GetRateHistoryUserDataError](src/resources/simple-earn.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.simpleEarn.getRateHistoryUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1SimpleEarnFlexibleHistoryRateHistoryResponse, SimpleEarn.GetRateHistoryUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1SimpleEarnFlexibleHistoryRateHistoryResponse](src/models/sapi-v1-simple-earn-flexible-history-rate-history-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -23283,21 +33466,49 @@ Weight(IP): 150
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.simpleEarn.getSimpleEarnFlexibleProductListUserData({ timestamp, signature });
+  const response = await client.simpleEarn.getSimpleEarnFlexibleProductListUserData({
+    timestamp: 1,
+    signature: "some example string",
+    asset: "BTC",
+    current: 1,
+    size: 100,
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1SimpleEarnFlexibleListResponse
 } catch (err) {
-  if (
-    err instanceof SimpleEarn.GetSimpleEarnFlexibleProductListUserDataError && err.payload.kind === "error"
-  ) {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type SimpleEarn.GetSimpleEarnFlexibleProductListUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.simpleEarn.getSimpleEarnFlexibleProductListUserData({
+  timestamp: 1,
+  signature: "some example string",
+  asset: "BTC",
+  current: 1,
+  size: 100,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1SimpleEarnFlexibleListResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -23326,9 +33537,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1SimpleEarnFlexibleListResponse](src/models/sapi-v1-simple-earn-flexible-list-response.ts)</code>
+**Direct**: `await client.simpleEarn.getSimpleEarnFlexibleProductListUserData(request)`
 
-**OnError**: <code>[SimpleEarn.GetSimpleEarnFlexibleProductListUserDataError](src/resources/simple-earn.ts)</code>
+- **OnSuccess**: <code>[SapiV1SimpleEarnFlexibleListResponse](src/models/sapi-v1-simple-earn-flexible-list-response.ts)</code>
+- **OnError**: throws <code>[SimpleEarn.GetSimpleEarnFlexibleProductListUserDataError](src/resources/simple-earn.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.simpleEarn.getSimpleEarnFlexibleProductListUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1SimpleEarnFlexibleListResponse, SimpleEarn.GetSimpleEarnFlexibleProductListUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1SimpleEarnFlexibleListResponse](src/models/sapi-v1-simple-earn-flexible-list-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -23354,19 +33573,49 @@ Weight(IP): 150
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.simpleEarn.getSimpleEarnLockedProductListUserData({ timestamp, signature });
+  const response = await client.simpleEarn.getSimpleEarnLockedProductListUserData({
+    timestamp: 1,
+    signature: "some example string",
+    asset: "BNB",
+    current: 1,
+    size: 100,
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1SimpleEarnLockedListResponse
 } catch (err) {
-  if (err instanceof SimpleEarn.GetSimpleEarnLockedProductListUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type SimpleEarn.GetSimpleEarnLockedProductListUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.simpleEarn.getSimpleEarnLockedProductListUserData({
+  timestamp: 1,
+  signature: "some example string",
+  asset: "BNB",
+  current: 1,
+  size: 100,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1SimpleEarnLockedListResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -23395,9 +33644,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1SimpleEarnLockedListResponse](src/models/sapi-v1-simple-earn-locked-list-response.ts)</code>
+**Direct**: `await client.simpleEarn.getSimpleEarnLockedProductListUserData(request)`
 
-**OnError**: <code>[SimpleEarn.GetSimpleEarnLockedProductListUserDataError](src/resources/simple-earn.ts)</code>
+- **OnSuccess**: <code>[SapiV1SimpleEarnLockedListResponse](src/models/sapi-v1-simple-earn-locked-list-response.ts)</code>
+- **OnError**: throws <code>[SimpleEarn.GetSimpleEarnLockedProductListUserDataError](src/resources/simple-earn.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.simpleEarn.getSimpleEarnLockedProductListUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1SimpleEarnLockedListResponse, SimpleEarn.GetSimpleEarnLockedProductListUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1SimpleEarnLockedListResponse](src/models/sapi-v1-simple-earn-locked-list-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -23425,19 +33682,45 @@ Rate Limit: 1/3s per account
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.simpleEarn.redeemFlexibleProductTrade({ productId, timestamp, signature });
+  const response = await client.simpleEarn.redeemFlexibleProductTrade({
+    productId: "some example string",
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1SimpleEarnFlexibleRedeemResponse
 } catch (err) {
-  if (err instanceof SimpleEarn.RedeemFlexibleProductTradeError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type SimpleEarn.RedeemFlexibleProductTradeError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.simpleEarn.redeemFlexibleProductTrade({
+  productId: "some example string",
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1SimpleEarnFlexibleRedeemResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -23467,9 +33750,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1SimpleEarnFlexibleRedeemResponse](src/models/sapi-v1-simple-earn-flexible-redeem-response.ts)</code>
+**Direct**: `await client.simpleEarn.redeemFlexibleProductTrade(request)`
 
-**OnError**: <code>[SimpleEarn.RedeemFlexibleProductTradeError](src/resources/simple-earn.ts)</code>
+- **OnSuccess**: <code>[SapiV1SimpleEarnFlexibleRedeemResponse](src/models/sapi-v1-simple-earn-flexible-redeem-response.ts)</code>
+- **OnError**: throws <code>[SimpleEarn.RedeemFlexibleProductTradeError](src/resources/simple-earn.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.simpleEarn.redeemFlexibleProductTrade(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1SimpleEarnFlexibleRedeemResponse, SimpleEarn.RedeemFlexibleProductTradeError&gt;</code>, with `result.value` of type <code>[SapiV1SimpleEarnFlexibleRedeemResponse](src/models/sapi-v1-simple-earn-flexible-redeem-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -23497,19 +33788,45 @@ Rate Limit: 1/3s per account
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.simpleEarn.redeemLockedProductTrade({ positionId, timestamp, signature });
+  const response = await client.simpleEarn.redeemLockedProductTrade({
+    positionId: "some example string",
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1SimpleEarnLockedRedeemResponse
 } catch (err) {
-  if (err instanceof SimpleEarn.RedeemLockedProductTradeError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type SimpleEarn.RedeemLockedProductTradeError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.simpleEarn.redeemLockedProductTrade({
+  positionId: "some example string",
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1SimpleEarnLockedRedeemResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -23536,9 +33853,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1SimpleEarnLockedRedeemResponse](src/models/sapi-v1-simple-earn-locked-redeem-response.ts)</code>
+**Direct**: `await client.simpleEarn.redeemLockedProductTrade(request)`
 
-**OnError**: <code>[SimpleEarn.RedeemLockedProductTradeError](src/resources/simple-earn.ts)</code>
+- **OnSuccess**: <code>[SapiV1SimpleEarnLockedRedeemResponse](src/models/sapi-v1-simple-earn-locked-redeem-response.ts)</code>
+- **OnError**: throws <code>[SimpleEarn.RedeemLockedProductTradeError](src/resources/simple-earn.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.simpleEarn.redeemLockedProductTrade(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1SimpleEarnLockedRedeemResponse, SimpleEarn.RedeemLockedProductTradeError&gt;</code>, with `result.value` of type <code>[SapiV1SimpleEarnLockedRedeemResponse](src/models/sapi-v1-simple-earn-locked-redeem-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -23564,7 +33889,7 @@ Weight(IP): 150
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -23572,16 +33897,39 @@ Weight(IP): 150
 ```ts
 try {
   const response = await client.simpleEarn.setFlexibleAutoSubscribeUserData({
-    productId,
-    autoSubscribe,
-    timestamp,
-    signature,
+    productId: "some example string",
+    autoSubscribe: true,
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1SimpleEarnFlexibleSetAutoSubscribeResponse
 } catch (err) {
-  if (err instanceof SimpleEarn.SetFlexibleAutoSubscribeUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type SimpleEarn.SetFlexibleAutoSubscribeUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.simpleEarn.setFlexibleAutoSubscribeUserData({
+  productId: "some example string",
+  autoSubscribe: true,
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1SimpleEarnFlexibleSetAutoSubscribeResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -23609,9 +33957,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1SimpleEarnFlexibleSetAutoSubscribeResponse](src/models/sapi-v1-simple-earn-flexible-set-auto-subscribe-response.ts)</code>
+**Direct**: `await client.simpleEarn.setFlexibleAutoSubscribeUserData(request)`
 
-**OnError**: <code>[SimpleEarn.SetFlexibleAutoSubscribeUserDataError](src/resources/simple-earn.ts)</code>
+- **OnSuccess**: <code>[SapiV1SimpleEarnFlexibleSetAutoSubscribeResponse](src/models/sapi-v1-simple-earn-flexible-set-auto-subscribe-response.ts)</code>
+- **OnError**: throws <code>[SimpleEarn.SetFlexibleAutoSubscribeUserDataError](src/resources/simple-earn.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.simpleEarn.setFlexibleAutoSubscribeUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1SimpleEarnFlexibleSetAutoSubscribeResponse, SimpleEarn.SetFlexibleAutoSubscribeUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1SimpleEarnFlexibleSetAutoSubscribeResponse](src/models/sapi-v1-simple-earn-flexible-set-auto-subscribe-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -23637,7 +33993,7 @@ Weight(IP): 150
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -23645,16 +34001,39 @@ Weight(IP): 150
 ```ts
 try {
   const response = await client.simpleEarn.setLockedAutoSubscribeUserData({
-    positionId,
-    autoSubscribe,
-    timestamp,
-    signature,
+    positionId: "some example string",
+    autoSubscribe: true,
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1SimpleEarnLockedSetAutoSubscribeResponse
 } catch (err) {
-  if (err instanceof SimpleEarn.SetLockedAutoSubscribeUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type SimpleEarn.SetLockedAutoSubscribeUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.simpleEarn.setLockedAutoSubscribeUserData({
+  positionId: "some example string",
+  autoSubscribe: true,
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1SimpleEarnLockedSetAutoSubscribeResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -23682,9 +34061,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1SimpleEarnLockedSetAutoSubscribeResponse](src/models/sapi-v1-simple-earn-locked-set-auto-subscribe-response.ts)</code>
+**Direct**: `await client.simpleEarn.setLockedAutoSubscribeUserData(request)`
 
-**OnError**: <code>[SimpleEarn.SetLockedAutoSubscribeUserDataError](src/resources/simple-earn.ts)</code>
+- **OnSuccess**: <code>[SapiV1SimpleEarnLockedSetAutoSubscribeResponse](src/models/sapi-v1-simple-earn-locked-set-auto-subscribe-response.ts)</code>
+- **OnError**: throws <code>[SimpleEarn.SetLockedAutoSubscribeUserDataError](src/resources/simple-earn.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.simpleEarn.setLockedAutoSubscribeUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1SimpleEarnLockedSetAutoSubscribeResponse, SimpleEarn.SetLockedAutoSubscribeUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1SimpleEarnLockedSetAutoSubscribeResponse](src/models/sapi-v1-simple-earn-locked-set-auto-subscribe-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -23712,7 +34099,7 @@ Weight(IP): 50
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -23720,15 +34107,37 @@ Weight(IP): 50
 ```ts
 try {
   const response = await client.simpleEarn.setLockedProductRedeemOptionUserData({
-    positionId,
-    timestamp,
-    signature,
+    positionId: "some example string",
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1SimpleEarnLockedSetRedeemOptionResponse
 } catch (err) {
-  if (err instanceof SimpleEarn.SetLockedProductRedeemOptionUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type SimpleEarn.SetLockedProductRedeemOptionUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.simpleEarn.setLockedProductRedeemOptionUserData({
+  positionId: "some example string",
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1SimpleEarnLockedSetRedeemOptionResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -23756,9 +34165,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1SimpleEarnLockedSetRedeemOptionResponse](src/models/sapi-v1-simple-earn-locked-set-redeem-option-response.ts)</code>
+**Direct**: `await client.simpleEarn.setLockedProductRedeemOptionUserData(request)`
 
-**OnError**: <code>[SimpleEarn.SetLockedProductRedeemOptionUserDataError](src/resources/simple-earn.ts)</code>
+- **OnSuccess**: <code>[SapiV1SimpleEarnLockedSetRedeemOptionResponse](src/models/sapi-v1-simple-earn-locked-set-redeem-option-response.ts)</code>
+- **OnError**: throws <code>[SimpleEarn.SetLockedProductRedeemOptionUserDataError](src/resources/simple-earn.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.simpleEarn.setLockedProductRedeemOptionUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1SimpleEarnLockedSetRedeemOptionResponse, SimpleEarn.SetLockedProductRedeemOptionUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1SimpleEarnLockedSetRedeemOptionResponse](src/models/sapi-v1-simple-earn-locked-set-redeem-option-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -23784,19 +34201,43 @@ Weight(IP): 150
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.simpleEarn.simpleAccountUserData({ timestamp, signature });
+  const response = await client.simpleEarn.simpleAccountUserData({
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1SimpleEarnAccountResponse
 } catch (err) {
-  if (err instanceof SimpleEarn.SimpleAccountUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type SimpleEarn.SimpleAccountUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.simpleEarn.simpleAccountUserData({
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1SimpleEarnAccountResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -23822,9 +34263,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1SimpleEarnAccountResponse](src/models/sapi-v1-simple-earn-account-response.ts)</code>
+**Direct**: `await client.simpleEarn.simpleAccountUserData(request)`
 
-**OnError**: <code>[SimpleEarn.SimpleAccountUserDataError](src/resources/simple-earn.ts)</code>
+- **OnSuccess**: <code>[SapiV1SimpleEarnAccountResponse](src/models/sapi-v1-simple-earn-account-response.ts)</code>
+- **OnError**: throws <code>[SimpleEarn.SimpleAccountUserDataError](src/resources/simple-earn.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.simpleEarn.simpleAccountUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1SimpleEarnAccountResponse, SimpleEarn.SimpleAccountUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1SimpleEarnAccountResponse](src/models/sapi-v1-simple-earn-account-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -23852,7 +34301,7 @@ Rate Limit: 1/3s per account
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -23860,16 +34309,39 @@ Rate Limit: 1/3s per account
 ```ts
 try {
   const response = await client.simpleEarn.subscribeFlexibleProductTrade({
-    productId,
-    amount,
-    timestamp,
-    signature,
+    productId: "some example string",
+    amount: 1.5,
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1SimpleEarnFlexibleSubscribeResponse
 } catch (err) {
-  if (err instanceof SimpleEarn.SubscribeFlexibleProductTradeError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type SimpleEarn.SubscribeFlexibleProductTradeError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.simpleEarn.subscribeFlexibleProductTrade({
+  productId: "some example string",
+  amount: 1.5,
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1SimpleEarnFlexibleSubscribeResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -23899,9 +34371,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1SimpleEarnFlexibleSubscribeResponse](src/models/sapi-v1-simple-earn-flexible-subscribe-response.ts)</code>
+**Direct**: `await client.simpleEarn.subscribeFlexibleProductTrade(request)`
 
-**OnError**: <code>[SimpleEarn.SubscribeFlexibleProductTradeError](src/resources/simple-earn.ts)</code>
+- **OnSuccess**: <code>[SapiV1SimpleEarnFlexibleSubscribeResponse](src/models/sapi-v1-simple-earn-flexible-subscribe-response.ts)</code>
+- **OnError**: throws <code>[SimpleEarn.SubscribeFlexibleProductTradeError](src/resources/simple-earn.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.simpleEarn.subscribeFlexibleProductTrade(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1SimpleEarnFlexibleSubscribeResponse, SimpleEarn.SubscribeFlexibleProductTradeError&gt;</code>, with `result.value` of type <code>[SapiV1SimpleEarnFlexibleSubscribeResponse](src/models/sapi-v1-simple-earn-flexible-subscribe-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -23929,7 +34409,7 @@ Rate Limit: 1/3s per account
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -23937,16 +34417,39 @@ Rate Limit: 1/3s per account
 ```ts
 try {
   const response = await client.simpleEarn.subscribeLockedProductTrade({
-    projectId,
-    amount,
-    timestamp,
-    signature,
+    projectId: "some example string",
+    amount: 1.5,
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1SimpleEarnLockedSubscribeResponse
 } catch (err) {
-  if (err instanceof SimpleEarn.SubscribeLockedProductTradeError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type SimpleEarn.SubscribeLockedProductTradeError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.simpleEarn.subscribeLockedProductTrade({
+  projectId: "some example string",
+  amount: 1.5,
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1SimpleEarnLockedSubscribeResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -23977,9 +34480,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1SimpleEarnLockedSubscribeResponse](src/models/sapi-v1-simple-earn-locked-subscribe-response.ts)</code>
+**Direct**: `await client.simpleEarn.subscribeLockedProductTrade(request)`
 
-**OnError**: <code>[SimpleEarn.SubscribeLockedProductTradeError](src/resources/simple-earn.ts)</code>
+- **OnSuccess**: <code>[SapiV1SimpleEarnLockedSubscribeResponse](src/models/sapi-v1-simple-earn-locked-subscribe-response.ts)</code>
+- **OnError**: throws <code>[SimpleEarn.SubscribeLockedProductTradeError](src/resources/simple-earn.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.simpleEarn.subscribeLockedProductTrade(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1SimpleEarnLockedSubscribeResponse, SimpleEarn.SubscribeLockedProductTradeError&gt;</code>, with `result.value` of type <code>[SapiV1SimpleEarnLockedSubscribeResponse](src/models/sapi-v1-simple-earn-locked-subscribe-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -24009,19 +34520,43 @@ Weight(IP): 150
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.staking.ethStakingAccountV2UserData({ timestamp, signature });
+  const response = await client.staking.ethStakingAccountV2UserData({
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV2EthStakingAccountResponse
 } catch (err) {
-  if (err instanceof Staking.EthStakingAccountV2UserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Staking.EthStakingAccountV2UserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.staking.ethStakingAccountV2UserData({
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV2EthStakingAccountResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -24047,9 +34582,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV2EthStakingAccountResponse](src/models/sapi-v2-eth-staking-account-response.ts)</code>
+**Direct**: `await client.staking.ethStakingAccountV2UserData(request)`
 
-**OnError**: <code>[Staking.EthStakingAccountV2UserDataError](src/resources/staking.ts)</code>
+- **OnSuccess**: <code>[SapiV2EthStakingAccountResponse](src/models/sapi-v2-eth-staking-account-response.ts)</code>
+- **OnError**: throws <code>[Staking.EthStakingAccountV2UserDataError](src/resources/staking.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.staking.ethStakingAccountV2UserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV2EthStakingAccountResponse, Staking.EthStakingAccountV2UserDataError&gt;</code>, with `result.value` of type <code>[SapiV2EthStakingAccountResponse](src/models/sapi-v2-eth-staking-account-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -24080,19 +34623,47 @@ Weight(IP): 150
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.staking.getBethRewardsDistributionHistoryUserData({ timestamp, signature });
+  const response = await client.staking.getBethRewardsDistributionHistoryUserData({
+    timestamp: 1,
+    signature: "some example string",
+    current: 1,
+    size: 100,
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1EthStakingEthHistoryRewardsHistoryResponse
 } catch (err) {
-  if (err instanceof Staking.GetBethRewardsDistributionHistoryUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Staking.GetBethRewardsDistributionHistoryUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.staking.getBethRewardsDistributionHistoryUserData({
+  timestamp: 1,
+  signature: "some example string",
+  current: 1,
+  size: 100,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1EthStakingEthHistoryRewardsHistoryResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -24122,9 +34693,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1EthStakingEthHistoryRewardsHistoryResponse](src/models/sapi-v1-eth-staking-eth-history-rewards-history-response.ts)</code>
+**Direct**: `await client.staking.getBethRewardsDistributionHistoryUserData(request)`
 
-**OnError**: <code>[Staking.GetBethRewardsDistributionHistoryUserDataError](src/resources/staking.ts)</code>
+- **OnSuccess**: <code>[SapiV1EthStakingEthHistoryRewardsHistoryResponse](src/models/sapi-v1-eth-staking-eth-history-rewards-history-response.ts)</code>
+- **OnError**: throws <code>[Staking.GetBethRewardsDistributionHistoryUserDataError](src/resources/staking.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.staking.getBethRewardsDistributionHistoryUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1EthStakingEthHistoryRewardsHistoryResponse, Staking.GetBethRewardsDistributionHistoryUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1EthStakingEthHistoryRewardsHistoryResponse](src/models/sapi-v1-eth-staking-eth-history-rewards-history-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -24155,19 +34734,47 @@ Weight(IP): 150
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.staking.getEthRedemptionHistoryUserData({ timestamp, signature });
+  const response = await client.staking.getEthRedemptionHistoryUserData({
+    timestamp: 1,
+    signature: "some example string",
+    current: 1,
+    size: 100,
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1EthStakingEthHistoryRedemptionHistoryResponse
 } catch (err) {
-  if (err instanceof Staking.GetEthRedemptionHistoryUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Staking.GetEthRedemptionHistoryUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.staking.getEthRedemptionHistoryUserData({
+  timestamp: 1,
+  signature: "some example string",
+  current: 1,
+  size: 100,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1EthStakingEthHistoryRedemptionHistoryResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -24197,9 +34804,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1EthStakingEthHistoryRedemptionHistoryResponse](src/models/sapi-v1-eth-staking-eth-history-redemption-history-response.ts)</code>
+**Direct**: `await client.staking.getEthRedemptionHistoryUserData(request)`
 
-**OnError**: <code>[Staking.GetEthRedemptionHistoryUserDataError](src/resources/staking.ts)</code>
+- **OnSuccess**: <code>[SapiV1EthStakingEthHistoryRedemptionHistoryResponse](src/models/sapi-v1-eth-staking-eth-history-redemption-history-response.ts)</code>
+- **OnError**: throws <code>[Staking.GetEthRedemptionHistoryUserDataError](src/resources/staking.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.staking.getEthRedemptionHistoryUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1EthStakingEthHistoryRedemptionHistoryResponse, Staking.GetEthRedemptionHistoryUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1EthStakingEthHistoryRedemptionHistoryResponse](src/models/sapi-v1-eth-staking-eth-history-redemption-history-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -24230,19 +34845,47 @@ Weight(IP): 150
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.staking.getEthStakingHistoryUserData({ timestamp, signature });
+  const response = await client.staking.getEthStakingHistoryUserData({
+    timestamp: 1,
+    signature: "some example string",
+    current: 1,
+    size: 100,
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1EthStakingEthHistoryStakingHistoryResponse
 } catch (err) {
-  if (err instanceof Staking.GetEthStakingHistoryUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Staking.GetEthStakingHistoryUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.staking.getEthStakingHistoryUserData({
+  timestamp: 1,
+  signature: "some example string",
+  current: 1,
+  size: 100,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1EthStakingEthHistoryStakingHistoryResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -24272,9 +34915,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1EthStakingEthHistoryStakingHistoryResponse](src/models/sapi-v1-eth-staking-eth-history-staking-history-response.ts)</code>
+**Direct**: `await client.staking.getEthStakingHistoryUserData(request)`
 
-**OnError**: <code>[Staking.GetEthStakingHistoryUserDataError](src/resources/staking.ts)</code>
+- **OnSuccess**: <code>[SapiV1EthStakingEthHistoryStakingHistoryResponse](src/models/sapi-v1-eth-staking-eth-history-staking-history-response.ts)</code>
+- **OnError**: throws <code>[Staking.GetEthStakingHistoryUserDataError](src/resources/staking.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.staking.getEthStakingHistoryUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1EthStakingEthHistoryStakingHistoryResponse, Staking.GetEthStakingHistoryUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1EthStakingEthHistoryStakingHistoryResponse](src/models/sapi-v1-eth-staking-eth-history-staking-history-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -24305,19 +34956,47 @@ Weight(IP): 150
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.staking.getWbethRateHistoryUserData({ timestamp, signature });
+  const response = await client.staking.getWbethRateHistoryUserData({
+    timestamp: 1,
+    signature: "some example string",
+    current: 1,
+    size: 100,
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1EthStakingEthHistoryRateHistoryResponse
 } catch (err) {
-  if (err instanceof Staking.GetWbethRateHistoryUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Staking.GetWbethRateHistoryUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.staking.getWbethRateHistoryUserData({
+  timestamp: 1,
+  signature: "some example string",
+  current: 1,
+  size: 100,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1EthStakingEthHistoryRateHistoryResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -24347,9 +35026,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1EthStakingEthHistoryRateHistoryResponse](src/models/sapi-v1-eth-staking-eth-history-rate-history-response.ts)</code>
+**Direct**: `await client.staking.getWbethRateHistoryUserData(request)`
 
-**OnError**: <code>[Staking.GetWbethRateHistoryUserDataError](src/resources/staking.ts)</code>
+- **OnSuccess**: <code>[SapiV1EthStakingEthHistoryRateHistoryResponse](src/models/sapi-v1-eth-staking-eth-history-rate-history-response.ts)</code>
+- **OnError**: throws <code>[Staking.GetWbethRateHistoryUserDataError](src/resources/staking.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.staking.getWbethRateHistoryUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1EthStakingEthHistoryRateHistoryResponse, Staking.GetWbethRateHistoryUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1EthStakingEthHistoryRateHistoryResponse](src/models/sapi-v1-eth-staking-eth-history-rate-history-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -24380,19 +35067,47 @@ Weight(IP): 150
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.staking.getWbethRewardsHistoryUserData({ timestamp, signature });
+  const response = await client.staking.getWbethRewardsHistoryUserData({
+    timestamp: 1,
+    signature: "some example string",
+    current: 1,
+    size: 100,
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1EthStakingEthHistoryWbethRewardsHistoryResponse
 } catch (err) {
-  if (err instanceof Staking.GetWbethRewardsHistoryUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Staking.GetWbethRewardsHistoryUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.staking.getWbethRewardsHistoryUserData({
+  timestamp: 1,
+  signature: "some example string",
+  current: 1,
+  size: 100,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1EthStakingEthHistoryWbethRewardsHistoryResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -24422,9 +35137,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1EthStakingEthHistoryWbethRewardsHistoryResponse](src/models/sapi-v1-eth-staking-eth-history-wbeth-rewards-history-response.ts)</code>
+**Direct**: `await client.staking.getWbethRewardsHistoryUserData(request)`
 
-**OnError**: <code>[Staking.GetWbethRewardsHistoryUserDataError](src/resources/staking.ts)</code>
+- **OnSuccess**: <code>[SapiV1EthStakingEthHistoryWbethRewardsHistoryResponse](src/models/sapi-v1-eth-staking-eth-history-wbeth-rewards-history-response.ts)</code>
+- **OnError**: throws <code>[Staking.GetWbethRewardsHistoryUserDataError](src/resources/staking.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.staking.getWbethRewardsHistoryUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1EthStakingEthHistoryWbethRewardsHistoryResponse, Staking.GetWbethRewardsHistoryUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1EthStakingEthHistoryWbethRewardsHistoryResponse](src/models/sapi-v1-eth-staking-eth-history-wbeth-rewards-history-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -24455,19 +35178,47 @@ Weight(IP): 150
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.staking.getWbethUnwrapHistoryUserData({ timestamp, signature });
+  const response = await client.staking.getWbethUnwrapHistoryUserData({
+    timestamp: 1,
+    signature: "some example string",
+    current: 1,
+    size: 100,
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1EthStakingWbethHistoryUnwrapHistoryResponse
 } catch (err) {
-  if (err instanceof Staking.GetWbethUnwrapHistoryUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Staking.GetWbethUnwrapHistoryUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.staking.getWbethUnwrapHistoryUserData({
+  timestamp: 1,
+  signature: "some example string",
+  current: 1,
+  size: 100,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1EthStakingWbethHistoryUnwrapHistoryResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -24497,9 +35248,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1EthStakingWbethHistoryUnwrapHistoryResponse](src/models/sapi-v1-eth-staking-wbeth-history-unwrap-history-response.ts)</code>
+**Direct**: `await client.staking.getWbethUnwrapHistoryUserData(request)`
 
-**OnError**: <code>[Staking.GetWbethUnwrapHistoryUserDataError](src/resources/staking.ts)</code>
+- **OnSuccess**: <code>[SapiV1EthStakingWbethHistoryUnwrapHistoryResponse](src/models/sapi-v1-eth-staking-wbeth-history-unwrap-history-response.ts)</code>
+- **OnError**: throws <code>[Staking.GetWbethUnwrapHistoryUserDataError](src/resources/staking.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.staking.getWbethUnwrapHistoryUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1EthStakingWbethHistoryUnwrapHistoryResponse, Staking.GetWbethUnwrapHistoryUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1EthStakingWbethHistoryUnwrapHistoryResponse](src/models/sapi-v1-eth-staking-wbeth-history-unwrap-history-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -24530,19 +35289,47 @@ Weight(IP): 150
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.staking.getWbethWrapHistoryUserData({ timestamp, signature });
+  const response = await client.staking.getWbethWrapHistoryUserData({
+    timestamp: 1,
+    signature: "some example string",
+    current: 1,
+    size: 100,
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1EthStakingWbethHistoryWrapHistoryResponse
 } catch (err) {
-  if (err instanceof Staking.GetWbethWrapHistoryUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Staking.GetWbethWrapHistoryUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.staking.getWbethWrapHistoryUserData({
+  timestamp: 1,
+  signature: "some example string",
+  current: 1,
+  size: 100,
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1EthStakingWbethHistoryWrapHistoryResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -24572,9 +35359,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1EthStakingWbethHistoryWrapHistoryResponse](src/models/sapi-v1-eth-staking-wbeth-history-wrap-history-response.ts)</code>
+**Direct**: `await client.staking.getWbethWrapHistoryUserData(request)`
 
-**OnError**: <code>[Staking.GetWbethWrapHistoryUserDataError](src/resources/staking.ts)</code>
+- **OnSuccess**: <code>[SapiV1EthStakingWbethHistoryWrapHistoryResponse](src/models/sapi-v1-eth-staking-wbeth-history-wrap-history-response.ts)</code>
+- **OnError**: throws <code>[Staking.GetWbethWrapHistoryUserDataError](src/resources/staking.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.staking.getWbethWrapHistoryUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1EthStakingWbethHistoryWrapHistoryResponse, Staking.GetWbethWrapHistoryUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1EthStakingWbethHistoryWrapHistoryResponse](src/models/sapi-v1-eth-staking-wbeth-history-wrap-history-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -24600,19 +35395,43 @@ Weight(IP): 150
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.staking.getCurrentEthStakingQuotaUserData({ timestamp, signature });
+  const response = await client.staking.getCurrentEthStakingQuotaUserData({
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1EthStakingEthQuotaResponse
 } catch (err) {
-  if (err instanceof Staking.GetCurrentEthStakingQuotaUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Staking.GetCurrentEthStakingQuotaUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.staking.getCurrentEthStakingQuotaUserData({
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1EthStakingEthQuotaResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -24638,9 +35457,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1EthStakingEthQuotaResponse](src/models/sapi-v1-eth-staking-eth-quota-response.ts)</code>
+**Direct**: `await client.staking.getCurrentEthStakingQuotaUserData(request)`
 
-**OnError**: <code>[Staking.GetCurrentEthStakingQuotaUserDataError](src/resources/staking.ts)</code>
+- **OnSuccess**: <code>[SapiV1EthStakingEthQuotaResponse](src/models/sapi-v1-eth-staking-eth-quota-response.ts)</code>
+- **OnError**: throws <code>[Staking.GetCurrentEthStakingQuotaUserDataError](src/resources/staking.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.staking.getCurrentEthStakingQuotaUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1EthStakingEthQuotaResponse, Staking.GetCurrentEthStakingQuotaUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1EthStakingEthQuotaResponse](src/models/sapi-v1-eth-staking-eth-quota-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -24670,19 +35497,45 @@ Weight(IP): 150
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.staking.redeemEthTrade({ amount, timestamp, signature });
+  const response = await client.staking.redeemEthTrade({
+    amount: 1.5,
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1EthStakingEthRedeemResponse
 } catch (err) {
-  if (err instanceof Staking.RedeemEthTradeError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Staking.RedeemEthTradeError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.staking.redeemEthTrade({
+  amount: 1.5,
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1EthStakingEthRedeemResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -24710,9 +35563,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1EthStakingEthRedeemResponse](src/models/sapi-v1-eth-staking-eth-redeem-response.ts)</code>
+**Direct**: `await client.staking.redeemEthTrade(request)`
 
-**OnError**: <code>[Staking.RedeemEthTradeError](src/resources/staking.ts)</code>
+- **OnSuccess**: <code>[SapiV1EthStakingEthRedeemResponse](src/models/sapi-v1-eth-staking-eth-redeem-response.ts)</code>
+- **OnError**: throws <code>[Staking.RedeemEthTradeError](src/resources/staking.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.staking.redeemEthTrade(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1EthStakingEthRedeemResponse, Staking.RedeemEthTradeError&gt;</code>, with `result.value` of type <code>[SapiV1EthStakingEthRedeemResponse](src/models/sapi-v1-eth-staking-eth-redeem-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -24742,19 +35603,45 @@ Weight(IP): 150
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.staking.subscribeEthStakingV2Trade({ amount, timestamp, signature });
+  const response = await client.staking.subscribeEthStakingV2Trade({
+    amount: 1.5,
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV2EthStakingEthStakeResponse
 } catch (err) {
-  if (err instanceof Staking.SubscribeEthStakingV2TradeError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Staking.SubscribeEthStakingV2TradeError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.staking.subscribeEthStakingV2Trade({
+  amount: 1.5,
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV2EthStakingEthStakeResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -24781,9 +35668,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV2EthStakingEthStakeResponse](src/models/sapi-v2-eth-staking-eth-stake-response.ts)</code>
+**Direct**: `await client.staking.subscribeEthStakingV2Trade(request)`
 
-**OnError**: <code>[Staking.SubscribeEthStakingV2TradeError](src/resources/staking.ts)</code>
+- **OnSuccess**: <code>[SapiV2EthStakingEthStakeResponse](src/models/sapi-v2-eth-staking-eth-stake-response.ts)</code>
+- **OnError**: throws <code>[Staking.SubscribeEthStakingV2TradeError](src/resources/staking.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.staking.subscribeEthStakingV2Trade(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV2EthStakingEthStakeResponse, Staking.SubscribeEthStakingV2TradeError&gt;</code>, with `result.value` of type <code>[SapiV2EthStakingEthStakeResponse](src/models/sapi-v2-eth-staking-eth-stake-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -24811,19 +35706,45 @@ Weight(IP): 150
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.staking.wrapBethTrade({ amount, timestamp, signature });
+  const response = await client.staking.wrapBethTrade({
+    amount: 1.5,
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1EthStakingWbethWrapResponse
 } catch (err) {
-  if (err instanceof Staking.WrapBethTradeError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type Staking.WrapBethTradeError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.staking.wrapBethTrade({
+  amount: 1.5,
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1EthStakingWbethWrapResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -24850,9 +35771,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1EthStakingWbethWrapResponse](src/models/sapi-v1-eth-staking-wbeth-wrap-response.ts)</code>
+**Direct**: `await client.staking.wrapBethTrade(request)`
 
-**OnError**: <code>[Staking.WrapBethTradeError](src/resources/staking.ts)</code>
+- **OnSuccess**: <code>[SapiV1EthStakingWbethWrapResponse](src/models/sapi-v1-eth-staking-wbeth-wrap-response.ts)</code>
+- **OnError**: throws <code>[Staking.WrapBethTradeError](src/resources/staking.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.staking.wrapBethTrade(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1EthStakingWbethWrapResponse, Staking.WrapBethTradeError&gt;</code>, with `result.value` of type <code>[SapiV1EthStakingWbethWrapResponse](src/models/sapi-v1-eth-staking-wbeth-wrap-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -24888,7 +35817,7 @@ Rate Limit: Maximum 1 time/s per account
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -24896,16 +35825,39 @@ Rate Limit: Maximum 1 time/s per account
 ```ts
 try {
   const response = await client.dualInvestment.changeAutoCompoundStatusUserData({
-    positionId,
-    autoCompoundPlan,
-    timestamp,
-    signature,
+    positionId: 1,
+    autoCompoundPlan: AutoCompoundPlan.None,
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1DciProductAutoCompoundEditStatusResponse
 } catch (err) {
-  if (err instanceof DualInvestment.ChangeAutoCompoundStatusUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type DualInvestment.ChangeAutoCompoundStatusUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.dualInvestment.changeAutoCompoundStatusUserData({
+  positionId: 1,
+  autoCompoundPlan: AutoCompoundPlan.None,
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1DciProductAutoCompoundEditStatusResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -24933,9 +35885,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1DciProductAutoCompoundEditStatusResponse](src/models/sapi-v1-dci-product-auto-compound-edit-status-response.ts)</code>
+**Direct**: `await client.dualInvestment.changeAutoCompoundStatusUserData(request)`
 
-**OnError**: <code>[DualInvestment.ChangeAutoCompoundStatusUserDataError](src/resources/dual-investment.ts)</code>
+- **OnSuccess**: <code>[SapiV1DciProductAutoCompoundEditStatusResponse](src/models/sapi-v1-dci-product-auto-compound-edit-status-response.ts)</code>
+- **OnError**: throws <code>[DualInvestment.ChangeAutoCompoundStatusUserDataError](src/resources/dual-investment.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.dualInvestment.changeAutoCompoundStatusUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1DciProductAutoCompoundEditStatusResponse, DualInvestment.ChangeAutoCompoundStatusUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1DciProductAutoCompoundEditStatusResponse](src/models/sapi-v1-dci-product-auto-compound-edit-status-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -24963,21 +35923,43 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.dualInvestment.checkDualInvestmentAccountsUserData({ timestamp, signature });
+  const response = await client.dualInvestment.checkDualInvestmentAccountsUserData({
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1DciProductAccountsResponse
 } catch (err) {
-  if (
-    err instanceof DualInvestment.CheckDualInvestmentAccountsUserDataError && err.payload.kind === "error"
-  ) {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type DualInvestment.CheckDualInvestmentAccountsUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.dualInvestment.checkDualInvestmentAccountsUserData({
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1DciProductAccountsResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -25003,9 +35985,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1DciProductAccountsResponse](src/models/sapi-v1-dci-product-accounts-response.ts)</code>
+**Direct**: `await client.dualInvestment.checkDualInvestmentAccountsUserData(request)`
 
-**OnError**: <code>[DualInvestment.CheckDualInvestmentAccountsUserDataError](src/resources/dual-investment.ts)</code>
+- **OnSuccess**: <code>[SapiV1DciProductAccountsResponse](src/models/sapi-v1-dci-product-accounts-response.ts)</code>
+- **OnError**: throws <code>[DualInvestment.CheckDualInvestmentAccountsUserDataError](src/resources/dual-investment.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.dualInvestment.checkDualInvestmentAccountsUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1DciProductAccountsResponse, DualInvestment.CheckDualInvestmentAccountsUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1DciProductAccountsResponse](src/models/sapi-v1-dci-product-accounts-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -25033,19 +36023,43 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
 
 ```ts
 try {
-  const response = await client.dualInvestment.getDualInvestmentPositionsUserData({ timestamp, signature });
+  const response = await client.dualInvestment.getDualInvestmentPositionsUserData({
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
+  });
   // TODO: Handle 'response' of type SapiV1DciProductPositionsResponse
 } catch (err) {
-  if (err instanceof DualInvestment.GetDualInvestmentPositionsUserDataError && err.payload.kind === "error") {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type DualInvestment.GetDualInvestmentPositionsUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.dualInvestment.getDualInvestmentPositionsUserData({
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1DciProductPositionsResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -25074,9 +36088,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1DciProductPositionsResponse](src/models/sapi-v1-dci-product-positions-response.ts)</code>
+**Direct**: `await client.dualInvestment.getDualInvestmentPositionsUserData(request)`
 
-**OnError**: <code>[DualInvestment.GetDualInvestmentPositionsUserDataError](src/resources/dual-investment.ts)</code>
+- **OnSuccess**: <code>[SapiV1DciProductPositionsResponse](src/models/sapi-v1-dci-product-positions-response.ts)</code>
+- **OnError**: throws <code>[DualInvestment.GetDualInvestmentPositionsUserDataError](src/resources/dual-investment.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.dualInvestment.getDualInvestmentPositionsUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1DciProductPositionsResponse, DualInvestment.GetDualInvestmentPositionsUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1DciProductPositionsResponse](src/models/sapi-v1-dci-product-positions-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -25104,7 +36126,7 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -25112,19 +36134,41 @@ Weight(IP): 1
 ```ts
 try {
   const response = await client.dualInvestment.getDualInvestmentProductListUserData({
-    optionType,
-    exercisedCoin,
-    investCoin,
-    timestamp,
-    signature,
+    optionType: OptionType.Call,
+    exercisedCoin: "some example string",
+    investCoin: "some example string",
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1DciProductListResponse
 } catch (err) {
-  if (
-    err instanceof DualInvestment.GetDualInvestmentProductListUserDataError && err.payload.kind === "error"
-  ) {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type DualInvestment.GetDualInvestmentProductListUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.dualInvestment.getDualInvestmentProductListUserData({
+  optionType: OptionType.Call,
+  exercisedCoin: "some example string",
+  investCoin: "some example string",
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1DciProductListResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -25155,9 +36199,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1DciProductListResponse](src/models/sapi-v1-dci-product-list-response.ts)</code>
+**Direct**: `await client.dualInvestment.getDualInvestmentProductListUserData(request)`
 
-**OnError**: <code>[DualInvestment.GetDualInvestmentProductListUserDataError](src/resources/dual-investment.ts)</code>
+- **OnSuccess**: <code>[SapiV1DciProductListResponse](src/models/sapi-v1-dci-product-list-response.ts)</code>
+- **OnError**: throws <code>[DualInvestment.GetDualInvestmentProductListUserDataError](src/resources/dual-investment.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.dualInvestment.getDualInvestmentProductListUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1DciProductListResponse, DualInvestment.GetDualInvestmentProductListUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1DciProductListResponse](src/models/sapi-v1-dci-product-list-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>
@@ -25188,7 +36240,7 @@ Weight(IP): 1
 </dd>
 </dl>
 
-### Usage
+### Direct Usage
 
 <dl>
 <dd>
@@ -25196,20 +36248,43 @@ Weight(IP): 1
 ```ts
 try {
   const response = await client.dualInvestment.subscribeDualInvestmentProductsUserData({
-    id,
-    orderId,
-    depositAmount,
-    autoCompoundPlan,
-    timestamp,
-    signature,
+    id: "some example string",
+    orderId: "some example string",
+    depositAmount: 1.5,
+    autoCompoundPlan: AutoCompoundPlan.None,
+    timestamp: 1,
+    signature: "some example string",
+    recvWindow: 5000,
   });
   // TODO: Handle 'response' of type SapiV1DciProductSubscribeResponse
 } catch (err) {
-  if (
-    err instanceof DualInvestment.SubscribeDualInvestmentProductsUserDataError && err.payload.kind === "error"
-  ) {
-    // TODO: Handle 'err.payload.body' of type Error
-  }
+  // TODO: Handle 'err' of type DualInvestment.SubscribeDualInvestmentProductsUserDataError, discriminated with 'err.payload.kind'
+}
+```
+
+</dd>
+</dl>
+
+### Usage as ApiResult
+
+<dl>
+<dd>
+
+```ts
+const result = await client.dualInvestment.subscribeDualInvestmentProductsUserData({
+  id: "some example string",
+  orderId: "some example string",
+  depositAmount: 1.5,
+  autoCompoundPlan: AutoCompoundPlan.None,
+  timestamp: 1,
+  signature: "some example string",
+  recvWindow: 5000,
+}).asApiResult();
+// TODO: Use 'result.status' and 'result.headers' to read the raw response status and headers
+if (result.ok) {
+  // TODO: Use 'result.value' of type SapiV1DciProductSubscribeResponse
+} else {
+  // TODO: Handle 'result', discriminated with 'result.payload.kind'
 }
 ```
 
@@ -25239,9 +36314,17 @@ try {
 <dl>
 <dd>
 
-**OnSuccess**: <code>[SapiV1DciProductSubscribeResponse](src/models/sapi-v1-dci-product-subscribe-response.ts)</code>
+**Direct**: `await client.dualInvestment.subscribeDualInvestmentProductsUserData(request)`
 
-**OnError**: <code>[DualInvestment.SubscribeDualInvestmentProductsUserDataError](src/resources/dual-investment.ts)</code>
+- **OnSuccess**: <code>[SapiV1DciProductSubscribeResponse](src/models/sapi-v1-dci-product-subscribe-response.ts)</code>
+- **OnError**: throws <code>[DualInvestment.SubscribeDualInvestmentProductsUserDataError](src/resources/dual-investment.ts)</code>, with `err.payload` discriminated on `kind`
+
+**As ApiResult**: `await client.dualInvestment.subscribeDualInvestmentProductsUserData(request).asApiResult()`
+
+- **OnSuccess**: <code>[ApiResult](src/core/api-promise.ts)&lt;SapiV1DciProductSubscribeResponse, DualInvestment.SubscribeDualInvestmentProductsUserDataError&gt;</code>, with `result.value` of type <code>[SapiV1DciProductSubscribeResponse](src/models/sapi-v1-dci-product-subscribe-response.ts)</code>
+- **OnError**: `result.payload` discriminated on `kind`, with `result.message`
+
+**Thrown**: <code>[BinanceError](src/core/errors.ts)</code> on any operational failure — a caller abort and a programmer error stay outside the family and reach you raw
 
 </dd>
 </dl>

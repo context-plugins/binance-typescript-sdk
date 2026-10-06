@@ -12,6 +12,6 @@ export const sapiV1AlgoSpotNewOrderTwapResponseSchema: Schema<SapiV1AlgoSpotNewO
   s.object<SapiV1AlgoSpotNewOrderTwapResponse>({
     clientAlgoId: s.string(),
     success: s.boolean(),
-    code: s.number(),
+    code: s.int(),
     msg: s.string(),
   });

@@ -10,5 +10,5 @@ export type Data25 = {
 export const data25Schema: Schema<Data25> = s.object<Data25>({
   referenceNo: s.string(),
   code: s.string(),
-  expiredTime: s.number(),
+  expiredTime: s.int(),
 });

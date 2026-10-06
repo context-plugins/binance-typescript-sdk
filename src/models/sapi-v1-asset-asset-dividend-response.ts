@@ -10,5 +10,5 @@ export type SapiV1AssetAssetDividendResponse = {
 export const sapiV1AssetAssetDividendResponseSchema: Schema<SapiV1AssetAssetDividendResponse> =
   s.object<SapiV1AssetAssetDividendResponse>({
     rows: s.array(s.lazy(() => row6Schema)),
-    total: s.number(),
+    total: s.int(),
   });

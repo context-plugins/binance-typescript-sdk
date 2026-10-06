@@ -9,6 +9,6 @@ export type SapiV1LoanVipRequestDataResponse = {
 
 export const sapiV1LoanVipRequestDataResponseSchema: Schema<SapiV1LoanVipRequestDataResponse> =
   s.object<SapiV1LoanVipRequestDataResponse>({
-    total: s.number(),
+    total: s.int(),
     rows: s.array(s.lazy(() => row17Schema)),
   });

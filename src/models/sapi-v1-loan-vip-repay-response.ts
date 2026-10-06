@@ -8,6 +8,7 @@ export type SapiV1LoanVipRepayResponse = {
   remainingInterest: string;
   collateralCoin: string;
   currentLtv: string;
+  /** Repaid, Repaying, Failed */
   repayStatus: string;
 };
 

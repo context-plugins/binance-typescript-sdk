@@ -10,5 +10,5 @@ export type SapiV1EthStakingEthHistoryRateHistoryResponse = {
 export const sapiV1EthStakingEthHistoryRateHistoryResponseSchema: Schema<SapiV1EthStakingEthHistoryRateHistoryResponse> =
   s.object<SapiV1EthStakingEthHistoryRateHistoryResponse>({
     rows: s.array(s.lazy(() => row34Schema)),
-    total: s.number(),
+    total: s.int(),
   });

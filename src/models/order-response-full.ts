@@ -25,10 +25,10 @@ export type OrderResponseFull = {
 
 export const orderResponseFullSchema: Schema<OrderResponseFull> = s.object<OrderResponseFull>({
   symbol: s.string(),
-  orderId: s.number(),
-  orderListId: s.number(),
+  orderId: s.int(),
+  orderListId: s.int(),
   clientOrderId: s.string(),
-  transactTime: s.number(),
+  transactTime: s.int(),
   price: s.string(),
   origQty: s.string(),
   executedQty: s.string(),
@@ -37,9 +37,9 @@ export const orderResponseFullSchema: Schema<OrderResponseFull> = s.object<Order
   timeInForce: s.string(),
   type: s.string(),
   side: s.string(),
-  strategyId: s.optional(s.number()),
-  strategyType: s.optional(s.number()),
-  workingTime: s.number(),
+  strategyId: s.optional(s.int()),
+  strategyType: s.optional(s.int()),
+  workingTime: s.int(),
   selfTradePreventionMode: s.string(),
   fills: s.array(s.lazy(() => fillSchema)),
 });

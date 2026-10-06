@@ -11,5 +11,5 @@ export const sapiV1PortfolioAssetIndexPriceResponseSchema: Schema<SapiV1Portfoli
   s.object<SapiV1PortfolioAssetIndexPriceResponse>({
     asset: s.string(),
     assetIndexPrice: s.string(),
-    time: s.number(),
+    time: s.int(),
   });

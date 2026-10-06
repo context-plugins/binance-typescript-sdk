@@ -9,7 +9,7 @@ export type SapiV1MarginPriceIndexResponse = {
 
 export const sapiV1MarginPriceIndexResponseSchema: Schema<SapiV1MarginPriceIndexResponse> =
   s.object<SapiV1MarginPriceIndexResponse>({
-    calcTime: s.number(),
+    calcTime: s.int(),
     price: s.string(),
     symbol: s.string(),
   });

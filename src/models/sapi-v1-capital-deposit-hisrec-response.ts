@@ -11,6 +11,7 @@ export type SapiV1CapitalDepositHisrecResponse = {
   txId: string;
   insertTime: number;
   transferType: number;
+  /** confirm times for unlocking */
   unlockConfirm: string;
   confirmTimes: string;
 };
@@ -20,12 +21,12 @@ export const sapiV1CapitalDepositHisrecResponseSchema: Schema<SapiV1CapitalDepos
     amount: s.string(),
     coin: s.string(),
     network: s.string(),
-    status: s.number(),
+    status: s.int(),
     address: s.string(),
     addressTag: s.string(),
     txId: s.string(),
-    insertTime: s.number(),
-    transferType: s.number(),
+    insertTime: s.int(),
+    transferType: s.int(),
     unlockConfirm: s.string(),
     confirmTimes: s.string(),
   });

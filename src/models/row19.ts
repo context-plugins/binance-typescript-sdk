@@ -13,14 +13,14 @@ export type Row19 = {
 };
 
 export const row19Schema: Schema<Row19> = s.object<Row19>({
-  orderId: s.number(),
+  orderId: s.int(),
   loanCoin: s.string(),
   totalDebt: s.string(),
   residualInterest: s.string(),
   collateralCoin: s.string(),
   collateralAmount: s.string(),
   currentLtv: s.string(),
-  expirationTime: s.number(),
+  expirationTime: s.int(),
   _keysMap: {
     currentLtv: "currentLTV",
   },

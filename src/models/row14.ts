@@ -4,6 +4,7 @@ import type { Schema } from "../core/validation/schema.js";
 export type Row14 = {
   collateralAccountId: string;
   collateralCoin: string;
+  /** locked collateral value shown in USD value */
   collateralValue: string;
 };
 

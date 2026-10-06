@@ -8,6 +8,6 @@ export type SapiV1LendingAutoInvestPlanEditResponse = {
 
 export const sapiV1LendingAutoInvestPlanEditResponseSchema: Schema<SapiV1LendingAutoInvestPlanEditResponse> =
   s.object<SapiV1LendingAutoInvestPlanEditResponse>({
-    planId: s.number(),
-    nextExecutionDateTime: s.number(),
+    planId: s.int(),
+    nextExecutionDateTime: s.int(),
   });

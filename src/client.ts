@@ -80,7 +80,7 @@ export class BinanceClient {
 
   constructor(options: ClientOptions = {}) {
     this.#rawClient = new RawClient({
-      ...buildCoreClientOptions(options),
+      ...buildCoreClientOptions(options, "BINANCE_CLIENT_LOG"),
       defaultHeaders: [
         { name: "User-Agent", value: "BinanceClient/1.0.0 TypeScript", schema: s.string() },
         { name: "X-APIMatic-Lang", value: "TypeScript", schema: s.string() },
